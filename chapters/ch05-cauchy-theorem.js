@@ -5,675 +5,682 @@ window.CHAPTERS.push({
     title: "Cauchy's Theorem",
     subtitle: 'The most important theorem in complex analysis',
     sections: [
-
         // ================================================================
-        // SECTION 1: Motivation
+        // SECTION 1: Motivation — Why Cauchy's Theorem Matters
         // ================================================================
         {
             id: 'sec-motivation',
             title: 'Motivation',
             content: `
-<h2>Motivation: Why Contour Integrals Vanish</h2>
+<h2>Why Cauchy's Theorem Matters</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">A Surprising Observation</div>
+    <div class="env-title">The Central Mystery</div>
     <div class="env-body">
-        <p>Compute the integral of \\(f(z) = z^2\\) around the unit circle \\(\\gamma(t) = e^{it}\\), \\(t \\in [0, 2\\pi]\\). Parametrize: \\(dz = ie^{it}\\,dt\\), so</p>
-        \\[\\oint_\\gamma z^2\\,dz = \\int_0^{2\\pi} e^{2it} \\cdot ie^{it}\\,dt = i\\int_0^{2\\pi} e^{3it}\\,dt = i \\cdot \\frac{e^{3it}}{3i}\\Big|_0^{2\\pi} = 0.\\]
-        <p>Try \\(f(z) = z^n\\) for any integer \\(n \\neq -1\\): the answer is still zero. Something deeper is going on.</p>
+        <p>In real analysis, the value of \\(\\int_a^b f(x)\\,dx\\) depends on <em>every</em> value of \\(f\\) between \\(a\\) and \\(b\\). Change the function at even one interior point and the integral might change. But in complex analysis, something astonishing happens: if \\(f\\) is analytic inside and on a closed curve \\(\\gamma\\), then</p>
+        \\[\\oint_\\gamma f(z)\\,dz = 0.\\]
+        <p>The integral around any closed loop is zero. This single fact has consequences that would take volumes to exhaust: it gives us the Cauchy integral formula, Taylor and Laurent series, the residue theorem, and much of the rest of the subject.</p>
     </div>
 </div>
 
-<p>In real analysis, \\(\\int_a^b f(x)\\,dx\\) depends on every value \\(f\\) takes on \\([a,b]\\). Contour integrals in the complex plane behave very differently: if \\(f\\) is <em>holomorphic</em> (complex-differentiable) on and inside a closed curve, the integral is exactly zero. This is Cauchy's theorem, and it is the cornerstone of the entire subject.</p>
+<p>To appreciate the depth of this result, recall what we know from Chapter 4. A contour integral \\(\\int_\\gamma f(z)\\,dz\\) sums up the values of \\(f\\) along a path \\(\\gamma\\), weighted by the direction of travel. The claim that this integral vanishes for <em>every</em> closed contour (not just circles, but any reasonable loop) inside the domain of analyticity is a profound rigidity statement about analytic functions.</p>
 
-<h3>Why Should We Believe This?</h3>
+<h3>A Comparison with Real Analysis</h3>
 
-<p>Holomorphicity is an extraordinarily rigid condition. The Cauchy-Riemann equations \\(u_x = v_y\\), \\(u_y = -v_x\\) interlock the real and imaginary parts so tightly that specifying \\(f\\) on any open set determines it everywhere (by analytic continuation). Cauchy's theorem is one face of this rigidity: a holomorphic function has no "room" to accumulate net circulation around a closed loop.</p>
+<p>Consider the real function \\(f(x) = x\\). Then \\(\\int_0^1 f(x)\\,dx = 1/2\\), and the value depends on the entire path from 0 to 1. In complex analysis, the analogous statement would be: for \\(f(z) = z\\), integrate along <em>any</em> path from \\(z_0\\) to \\(z_1\\) in the complex plane. If \\(f\\) is analytic, the answer depends only on the endpoints, not the path. This is <strong>path-independence</strong>, and it is equivalent to Cauchy's theorem.</p>
 
-<p>Concretely, recall from Green's theorem that for \\(f = u + iv\\),</p>
-\\[\\oint_\\gamma f(z)\\,dz = \\oint_\\gamma (u\\,dx - v\\,dy) + i\\oint_\\gamma (v\\,dx + u\\,dy).\\]
-<p>Each piece is a real line integral; Green's theorem converts each to an area integral over the region \\(D\\) enclosed by \\(\\gamma\\):</p>
-\\[= \\iint_D \\!\\left(-v_x - u_y\\right)dA + i\\iint_D \\!\\left(u_x - v_y\\right)dA.\\]
-<p>The Cauchy-Riemann equations make both integrands identically zero. This is Cauchy's theorem at the level of intuition; making it rigorous requires care about smoothness assumptions.</p>
-
-<div class="env-block remark">
-    <div class="env-title">Historical Note</div>
+<div class="env-block definition">
+    <div class="env-title">Definition (Path-Independence)</div>
     <div class="env-body">
-        <p>Cauchy stated the theorem in 1814 but assumed \\(f'\\) was <em>continuous</em>. This is enough to apply Green's theorem directly. In 1883, Édouard Goursat gave a proof requiring only that \\(f\\) be holomorphic (complex-differentiable), without assuming continuity of the derivative — a genuinely harder result. The theorem in full generality is therefore called the <strong>Cauchy-Goursat theorem</strong>.</p>
+        <p>We say that the integral \\(\\int_\\gamma f(z)\\,dz\\) is <strong>path-independent</strong> in a domain \\(D\\) if for every pair of points \\(z_0, z_1 \\in D\\), the integral has the same value for every contour \\(\\gamma\\) from \\(z_0\\) to \\(z_1\\) that lies entirely in \\(D\\).</p>
     </div>
 </div>
-
-<h3>What This Chapter Proves</h3>
-<ol>
-    <li><strong>Cauchy-Goursat (triangle version):</strong> If \\(f\\) is holomorphic on a closed triangle \\(T\\), then \\(\\oint_{\\partial T} f\\,dz = 0\\).</li>
-    <li><strong>Simply connected domains:</strong> If \\(f\\) is holomorphic on a simply connected open set \\(U\\), then \\(\\oint_\\gamma f\\,dz = 0\\) for every closed curve \\(\\gamma\\) in \\(U\\).</li>
-    <li><strong>Deformation of contours:</strong> Two homotopic contours give the same integral.</li>
-    <li><strong>Multiply connected domains:</strong> On an annulus, the integral depends only on how many times \\(\\gamma\\) winds around each hole.</li>
-    <li><strong>Cauchy's Integral Formula:</strong> The value of \\(f\\) at any interior point is determined by its values on a surrounding contour.</li>
-</ol>
-`,
-            visualizations: [],
-            exercises: [
-                {
-                    question: 'Verify directly that \\(\\oint_{|z|=1} z^n\\,dz = 0\\) for \\(n = 0, 1, 2, 3\\) by parametrizing \\(z = e^{it}\\).',
-                    hint: 'After substituting \\(z = e^{it}\\), \\(dz = ie^{it}\\,dt\\), you get \\(i\\int_0^{2\\pi} e^{(n+1)it}\\,dt\\). When does this vanish?',
-                    solution: 'For \\(n \\neq -1\\), \\(\\int_0^{2\\pi} e^{(n+1)it}\\,dt = \\frac{e^{(n+1)it}}{(n+1)i}\\big|_0^{2\\pi} = 0\\) since \\(e^{2\\pi i(n+1)} = 1\\). For \\(n = -1\\), the integrand is \\(e^0 = 1\\) and the integral is \\(2\\pi i \\neq 0\\). This single exception — the \\(1/z\\) singularity — is the source of residues.'
-                },
-                {
-                    question: 'Use the Cauchy-Riemann equations to verify the Green\'s theorem argument: if \\(u_x = v_y\\) and \\(u_y = -v_x\\), show both area integrands in the motivation section are zero.',
-                    hint: 'The first integrand is \\(-v_x - u_y\\); substitute from the CR equations.',
-                    solution: 'First integrand: \\(-v_x - u_y\\). The CR equation \\(u_y = -v_x\\) gives \\(-v_x - u_y = -v_x - (-v_x) = 0\\). Second integrand: \\(u_x - v_y\\). The CR equation \\(u_x = v_y\\) gives \\(u_x - v_y = v_y - v_y = 0\\). Both vanish identically on any domain where \\(f\\) is holomorphic.'
-                }
-            ]
-        },
-
-        // ================================================================
-        // SECTION 2: Cauchy-Goursat Theorem
-        // ================================================================
-        {
-            id: 'sec-goursat',
-            title: 'Cauchy-Goursat Theorem',
-            content: `
-<h2>Cauchy-Goursat Theorem: The Triangular Case</h2>
-
-<p>The Cauchy-Goursat theorem builds the full theorem from a single elementary case: a closed triangle. The proof technique — <em>triangular subdivision</em> — is one of the most elegant in analysis.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.1 (Cauchy-Goursat, Triangle Version)</div>
+    <div class="env-title">Theorem 5.1 (Equivalence of Path-Independence and Vanishing Loop Integrals)</div>
     <div class="env-body">
-        <p>Let \\(U \\subseteq \\mathbb{C}\\) be open, and let \\(T\\) be a closed triangle with \\(T \\subseteq U\\). If \\(f : U \\to \\mathbb{C}\\) is holomorphic, then</p>
-        \\[\\oint_{\\partial T} f(z)\\,dz = 0.\\]
+        <p>Let \\(f\\) be continuous on a domain \\(D\\). The following are equivalent:</p>
+        <ol>
+            <li>\\(\\int_\\gamma f(z)\\,dz\\) is path-independent in \\(D\\).</li>
+            <li>\\(\\oint_\\gamma f(z)\\,dz = 0\\) for every closed contour \\(\\gamma\\) in \\(D\\).</li>
+            <li>\\(f\\) has an antiderivative \\(F\\) in \\(D\\), i.e., \\(F'(z) = f(z)\\).</li>
+        </ol>
     </div>
 </div>
 
-<h3>Proof Idea (Goursat's Argument)</h3>
-
-<p>Let \\(I = \\oint_{\\partial T} f\\,dz\\). We will show \\(|I| = 0\\).</p>
-
-<p><strong>Step 1: Subdivide.</strong> Connect the midpoints of the three sides of \\(T\\). This splits \\(T\\) into four congruent subtriangles \\(T^{(1)}, T^{(2)}, T^{(3)}, T^{(4)}\\), each similar to \\(T\\) with half the side lengths.</p>
-
-<p><strong>Step 2: Pigeonhole.</strong> Orienting each subtriangle consistently, interior edges cancel:</p>
-\\[I = \\oint_{\\partial T^{(1)}} f\\,dz + \\oint_{\\partial T^{(2)}} f\\,dz + \\oint_{\\partial T^{(3)}} f\\,dz + \\oint_{\\partial T^{(4)}} f\\,dz.\\]
-<p>By the triangle inequality, at least one term satisfies \\(\\left|\\oint_{\\partial T^{(j)}} f\\,dz\\right| \\geq |I|/4\\). Call that subtriangle \\(T_1\\).</p>
-
-<p><strong>Step 3: Iterate.</strong> Subdivide \\(T_1\\) the same way to get \\(T_2\\) with \\(\\left|\\oint_{\\partial T_2} f\\,dz\\right| \\geq |I|/4^2\\), then \\(T_3\\), and so on. After \\(n\\) steps:</p>
-\\[\\left|\\oint_{\\partial T_n} f\\,dz\\right| \\geq \\frac{|I|}{4^n}.\\]
-
-<p><strong>Step 4: Apply holomorphicity.</strong> The triangles \\(T_n\\) are nested and shrink to a point \\(z_0 \\in T\\). Since \\(f\\) is holomorphic at \\(z_0\\):</p>
-\\[f(z) = f(z_0) + f'(z_0)(z - z_0) + \\varepsilon(z)(z - z_0),\\]
-<p>where \\(\\varepsilon(z) \\to 0\\) as \\(z \\to z_0\\). The integrals of the first two terms over \\(\\partial T_n\\) are zero (they are polynomials). Thus</p>
-\\[\\left|\\oint_{\\partial T_n} f\\,dz\\right| = \\left|\\oint_{\\partial T_n} \\varepsilon(z)(z-z_0)\\,dz\\right| \\leq \\sup_{\\partial T_n}|\\varepsilon(z)| \\cdot \\text{diam}(T_n) \\cdot \\text{perim}(T_n).\\]
-
-<p><strong>Step 5: Estimate.</strong> If \\(T\\) has perimeter \\(L\\) and diameter \\(d\\), then \\(T_n\\) has perimeter \\(L/2^n\\) and diameter \\(d/2^n\\). So</p>
-\\[\\left|\\oint_{\\partial T_n} f\\,dz\\right| \\leq \\sup_{\\partial T_n}|\\varepsilon(z)| \\cdot \\frac{d}{2^n} \\cdot \\frac{L}{2^n} = \\frac{dL}{4^n} \\cdot \\sup_{\\partial T_n}|\\varepsilon(z)|.\\]
-
-<p>Combining with Step 3: \\(|I| \\leq dL \\cdot \\sup_{\\partial T_n}|\\varepsilon(z)|\\). As \\(n \\to \\infty\\), the sup \\(\\to 0\\) since \\(\\varepsilon(z_0) = 0\\) and \\(\\varepsilon\\) is continuous. Hence \\(|I| = 0\\). \\(\\blacksquare\\)</p>
-
-<div class="env-block remark">
-    <div class="env-title">Why the Triangle?</div>
+<div class="env-block proof">
+    <div class="env-title">Sketch of Proof</div>
     <div class="env-body">
-        <p>The triangle is the simplest polygon that supports the subdivision argument. Once we have the triangular case, any polygon decomposes into triangles, and simply connected domains are approximated by polygons. The whole edifice rests on this single lemma.</p>
+        <p>(1)\\(\\Rightarrow\\)(2): If \\(\\gamma\\) is closed (same start and end point), path-independence means the integral from \\(z_0\\) to \\(z_0\\) is zero regardless of path, so \\(\\oint_\\gamma f\\,dz = 0\\).</p>
+        <p>(2)\\(\\Rightarrow\\)(3): Fix \\(z_0 \\in D\\) and define \\(F(z) = \\int_{z_0}^z f(w)\\,dw\\) along any path in \\(D\\). Because all closed loop integrals vanish, this is well-defined (independent of path choice). A standard argument shows \\(F'(z) = f(z)\\).</p>
+        <p>(3)\\(\\Rightarrow\\)(1): If \\(F' = f\\), then \\(\\int_\\gamma f\\,dz = F(z_1) - F(z_0)\\) depends only on endpoints.</p>
     </div>
+    <div class="qed">&marker;</div>
 </div>
 
-<div class="env-block corollary">
-    <div class="env-title">Corollary 5.2</div>
-    <div class="env-body">
-        <p>If \\(f\\) is holomorphic on \\(U\\), then \\(\\oint_{\\partial P} f\\,dz = 0\\) for any polygon \\(P \\subseteq U\\) (triangulate \\(P\\) and apply Theorem 5.1 to each piece).</p>
-    </div>
-</div>
+<h3>The Plan of This Chapter</h3>
+
+<p>We will prove Cauchy's theorem in stages of increasing generality:</p>
+<ol>
+    <li><strong>Goursat's lemma</strong>: the theorem for triangles, proved by a beautiful subdivision argument that requires no regularity assumption on \\(f'\\).</li>
+    <li><strong>Cauchy's theorem for simply connected domains</strong>: the full theorem for domains with no holes.</li>
+    <li><strong>Deformation of contours</strong>: the homotopy viewpoint, connecting topology to analysis.</li>
+    <li><strong>Multiply connected domains</strong>: what happens when there <em>are</em> holes (the keyhole argument and annular domains).</li>
+</ol>
+
+<div class="viz-placeholder" data-viz="viz-cauchy-theorem"></div>
 `,
             visualizations: [
                 {
-                    id: 'viz-triangle-subdivision',
-                    title: 'Goursat Subdivision: Bounding the Integral',
-                    description: 'Watch the subdivision argument. At each step, one subtriangle must carry at least 1/4 of the total integral weight. As the triangles shrink to a point, holomorphicity forces the integral to zero.',
+                    id: 'viz-cauchy-theorem',
+                    title: "Cauchy's Theorem: Path-Independence",
+                    description: 'Two different paths (blue and orange) connect the same endpoints for the analytic function \\(f(z) = z^2\\). The integral along both paths gives the same value. The animated particle traces both paths simultaneously, accumulating the integral in real time.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 280, originY: 220 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 400,
+                            scale: 50
+                        });
 
-                        var step = 0;
-                        var maxSteps = 5;
-                        var animating = false;
-                        var animId = null;
+                        var t = 0;
+                        var speed = 1;
+                        VizEngine.createSlider(controls, 'Speed', 0.2, 3, 1, 0.1, function(v) { speed = v; });
 
-                        // Triangle vertices (math coords)
-                        var T0 = [[-2.5, -1.5], [2.5, -1.5], [0, 2.2]];
+                        // f(z) = z^2: integral from z0 to z1 is (z1^3 - z0^3)/3
+                        var z0 = [-2, -1];
+                        var z1 = [2, 1];
 
-                        function midpoint(a, b) {
-                            return [(a[0]+b[0])/2, (a[1]+b[1])/2];
+                        // Path 1: straight line
+                        function path1(s) {
+                            return [z0[0] + (z1[0] - z0[0]) * s, z0[1] + (z1[1] - z0[1]) * s];
                         }
 
-                        // Generate the "dominant" subtriangle at each step
-                        // We pick the top subtriangle (index 3) at each level for visual clarity
-                        function getTriangleAtStep(n) {
-                            var T = T0;
-                            for (var i = 0; i < n; i++) {
-                                var m01 = midpoint(T[0], T[1]);
-                                var m12 = midpoint(T[1], T[2]);
-                                var m20 = midpoint(T[2], T[0]);
-                                // Pick top sub-triangle (vertex 2, m12, m20)
-                                T = [m20, m12, T[2]];
+                        // Path 2: curved (arc via upper half)
+                        function path2(s) {
+                            var mx = (z0[0] + z1[0]) / 2;
+                            var my = (z0[1] + z1[1]) / 2 + 2.5;
+                            if (s < 0.5) {
+                                var t2 = s * 2;
+                                return [z0[0] + (mx - z0[0]) * t2, z0[1] + (my - z0[1]) * t2];
+                            } else {
+                                var t2 = (s - 0.5) * 2;
+                                return [mx + (z1[0] - mx) * t2, my + (z1[1] - my) * t2];
                             }
-                            return T;
                         }
 
-                        function getAllSubtriangles(T) {
-                            var m01 = midpoint(T[0], T[1]);
-                            var m12 = midpoint(T[1], T[2]);
-                            var m20 = midpoint(T[2], T[0]);
-                            return [
-                                [T[0], m01, m20],   // bottom-left
-                                [m01, T[1], m12],   // bottom-right
-                                [m20, m12, T[2]],   // top
-                                [m01, m12, m20]     // center
-                            ];
+                        // Complex multiplication: (a+bi)(c+di)
+                        function cmul(a, b, c, d) {
+                            return [a * c - b * d, a * d + b * c];
                         }
 
-                        function drawTriangle(T, fillColor, strokeColor, lw) {
-                            viz.drawPolygon(T, fillColor, strokeColor, lw);
+                        // Numerical integral of z^2 along a path up to parameter s
+                        function numIntegral(pathFn, sMax, steps) {
+                            var re = 0, im = 0;
+                            var ds = sMax / steps;
+                            for (var i = 0; i < steps; i++) {
+                                var s0 = i * ds;
+                                var s1 = (i + 1) * ds;
+                                var p0 = pathFn(s0);
+                                var p1 = pathFn(s1);
+                                var pm = pathFn((s0 + s1) / 2);
+                                // f(z) = z^2 at midpoint
+                                var fz = cmul(pm[0], pm[1], pm[0], pm[1]);
+                                // dz = (p1 - p0)
+                                var dx = p1[0] - p0[0];
+                                var dy = p1[1] - p0[1];
+                                // f(z)*dz
+                                var prod = cmul(fz[0], fz[1], dx, dy);
+                                re += prod[0];
+                                im += prod[1];
+                            }
+                            return [re, im];
                         }
 
-                        function draw() {
+                        function draw(time) {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
-                            // Draw original outline
-                            drawTriangle(T0, null, viz.colors.axis, 1);
+                            t = (time * speed * 0.0005) % 1;
 
-                            // At step 0: show full triangle
-                            if (step === 0) {
-                                drawTriangle(T0, viz.colors.blue + '33', viz.colors.blue, 2.5);
-                                viz.screenText('Original triangle T', viz.width/2, 30, viz.colors.white, 14);
-                                viz.screenText('|I| = |∮∂T f dz|', viz.width/2, 54, viz.colors.yellow, 13);
-                            } else {
-                                // Show subdivisions up to current step
-                                var current = T0;
-                                for (var s = 1; s <= step; s++) {
-                                    var subs = getAllSubtriangles(current);
-                                    // Draw all 4 subtriangles lightly
-                                    for (var k = 0; k < 4; k++) {
-                                        drawTriangle(subs[k], null, viz.colors.grid, 1);
-                                    }
-                                    // Highlight the dominant one (top = index 2)
-                                    if (s === step) {
-                                        for (var k2 = 0; k2 < 4; k2++) {
-                                            var col = (k2 === 2) ? viz.colors.orange + '55' : viz.colors.blue + '22';
-                                            var scol = (k2 === 2) ? viz.colors.orange : viz.colors.blue;
-                                            var slw = (k2 === 2) ? 2.5 : 1;
-                                            drawTriangle(subs[k2], col, scol, slw);
-                                        }
-                                        // Label
-                                        var cx = (subs[2][0][0]+subs[2][1][0]+subs[2][2][0])/3;
-                                        var cy = (subs[2][0][1]+subs[2][1][1]+subs[2][2][1])/3;
-                                        viz.drawText('T' + step, cx, cy, viz.colors.orange, 12);
-                                    }
-                                    current = getAllSubtriangles(current)[2];
-                                }
-
-                                var bound = Math.pow(0.25, step);
-                                viz.screenText('Step ' + step + ': |∮∂T' + step + ' f dz| \u2265 |I| / 4\u207F = |I| \u00D7 ' + bound.toFixed(4), viz.width/2, 30, viz.colors.white, 13);
-                                viz.screenText('Perimeter and diameter each halved \u2192 area = (1/4)\u207F of original', viz.width/2, 52, viz.colors.text, 12);
-                                if (step >= maxSteps) {
-                                    viz.screenText('As n\u2192\u221E: triangles shrink to z\u2080, \u03B5(z)\u21920, so |I| = 0', viz.width/2, viz.height - 20, viz.colors.teal, 13);
-                                }
-                            }
-
-                            // Bound display
                             var ctx = viz.ctx;
-                            var bx = 14, by = viz.height - 95;
-                            ctx.fillStyle = '#1a1a40';
-                            ctx.fillRect(bx, by, 200, 80);
-                            ctx.strokeStyle = viz.colors.grid;
-                            ctx.lineWidth = 1;
-                            ctx.strokeRect(bx, by, 200, 80);
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
+
+                            // Draw both full paths
+                            ctx.lineWidth = 2;
+
+                            // Path 1 (blue)
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 100; i++) {
+                                var s = i / 100;
+                                var p = path1(s);
+                                var sc = viz.toScreen(p[0], p[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
+                            }
+                            ctx.stroke();
+
+                            // Path 2 (orange)
+                            ctx.strokeStyle = viz.colors.orange;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 100; i++) {
+                                var s = i / 100;
+                                var p = path2(s);
+                                var sc = viz.toScreen(p[0], p[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
+                            }
+                            ctx.stroke();
+
+                            // Animated particles
+                            var p1t = path1(t);
+                            var p2t = path2(t);
+                            viz.drawPoint(p1t[0], p1t[1], viz.colors.blue, null, 6);
+                            viz.drawPoint(p2t[0], p2t[1], viz.colors.orange, null, 6);
+
+                            // Endpoints
+                            viz.drawPoint(z0[0], z0[1], viz.colors.white, 'z\u2080', 5);
+                            viz.drawPoint(z1[0], z1[1], viz.colors.white, 'z\u2081', 5);
+
+                            // Integrals
+                            var int1 = numIntegral(path1, t, 200);
+                            var int2 = numIntegral(path2, t, 200);
+
+                            ctx.font = '13px -apple-system,sans-serif';
                             ctx.textAlign = 'left';
                             ctx.textBaseline = 'top';
-                            ctx.fillText('n = ' + step, bx+10, by+10);
-                            ctx.fillText('Bound: |I| / 4^' + step, bx+10, by+28);
+
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.fillText('Path 1: ' + int1[0].toFixed(3) + ' + ' + int1[1].toFixed(3) + 'i', 12, 12);
                             ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('= |I| \u00D7 ' + Math.pow(0.25, step).toFixed(6), bx+10, by+46);
-                            ctx.fillStyle = viz.colors.teal;
-                            ctx.fillText('Side length: (1/2)^' + step + ' = ' + Math.pow(0.5, step).toFixed(4), bx+10, by+62);
+                            ctx.fillText('Path 2: ' + int2[0].toFixed(3) + ' + ' + int2[1].toFixed(3) + 'i', 12, 30);
+
+                            if (t > 0.98) {
+                                ctx.fillStyle = viz.colors.green;
+                                ctx.font = 'bold 13px -apple-system,sans-serif';
+                                ctx.fillText('Both integrals agree!', 12, 52);
+                            }
+
+                            viz.screenText('f(z) = z\u00B2', viz.width - 70, 20, viz.colors.teal, 14);
                         }
 
-                        draw();
-
-                        VizEngine.createButton(controls, 'Subdivide', function() {
-                            if (step < maxSteps) { step++; draw(); }
-                        });
-                        VizEngine.createButton(controls, 'Reset', function() {
-                            step = 0; draw();
-                        });
-
+                        viz.animate(draw);
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'In the Goursat subdivision argument, explain why the integrals over interior edges cancel when we sum over all four subtriangles.',
-                    hint: 'Each interior edge is traversed twice, once in each direction.',
-                    solution: 'When we orient each subtriangle with the same (counterclockwise) orientation as the parent, each interior edge (connecting midpoints) is shared by exactly two subtriangles and traversed in opposite directions. The contributions cancel, leaving only the outer boundary \\(\\partial T\\).'
-                },
-                {
-                    question: 'Verify that \\(\\oint_{\\partial T} f(z_0)\\,dz = 0\\) and \\(\\oint_{\\partial T} f\'(z_0)(z-z_0)\\,dz = 0\\) for any triangle \\(T\\) and constants \\(f(z_0)\\), \\(f\'(z_0)\\).',
-                    hint: 'These are integrals of polynomials in \\(z\\). Use antiderivatives.',
-                    solution: 'The antiderivative of \\(c\\) is \\(cz\\), and of \\(c(z-z_0)\\) is \\(c(z-z_0)^2/2\\). Both are single-valued holomorphic functions, so their integrals around any closed curve are zero (the curve returns to its starting point and the antiderivative is single-valued).'
-                },
-                {
-                    question: 'Suppose \\(f\\) is holomorphic on \\(U\\) except at one point \\(z_0\\) where \\(f\\) is merely continuous. Show that \\(\\oint_{\\partial T} f\\,dz = 0\\) still holds for any triangle \\(T \\subseteq U\\) with \\(z_0\\) on or inside it.',
-                    hint: 'For \\(\\varepsilon > 0\\), cut out a small triangle around \\(z_0\\). Apply Cauchy-Goursat to the remaining region.',
-                    solution: 'For any \\(\\varepsilon > 0\\), cut a small triangle \\(T_\\varepsilon\\) around \\(z_0\\). Apply Cauchy-Goursat to the rest: the outer integral equals the integral over \\(\\partial T_\\varepsilon\\). Since \\(f\\) is continuous (hence bounded by \\(M\\) near \\(z_0\\)), \\(|\\oint_{\\partial T_\\varepsilon} f\\,dz| \\leq M \\cdot \\text{perim}(T_\\varepsilon) \\to 0\\) as \\(T_\\varepsilon\\) shrinks. So \\(\\oint_{\\partial T} f\\,dz = 0\\).'
+                    question: 'Let \\(f(z) = \\bar{z}\\). Is \\(\\int_\\gamma f(z)\\,dz\\) path-independent? Compute the integral from \\(0\\) to \\(1+i\\) along (a) the straight line, and (b) the path going first to \\(1\\) then up to \\(1+i\\).',
+                    hint: '\\(\\bar{z}\\) is not analytic (it fails the Cauchy-Riemann equations). Parametrize each path and compute directly.',
+                    solution: '(a) Straight line: \\(z(t) = (1+i)t\\), so \\(\\bar{z} = (1-i)t\\), \\(dz = (1+i)dt\\). \\(\\int_0^1 (1-i)t(1+i)dt = \\int_0^1 2t\\,dt = 1\\). (b) Two segments: first \\(\\int_0^1 t\\,dt = 1/2\\), then \\(\\int_0^1 (1-it)(i\\,dt) = i - i/2 = i/2\\). Total: \\(1/2 + i/2\\). Since \\(1 \\neq 1/2 + i/2\\), the integral is <em>not</em> path-independent. This is expected: \\(\\bar{z}\\) is not analytic.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: Simply Connected Domains
+        // SECTION 2: Goursat's Lemma (Triangular Version)
+        // ================================================================
+        {
+            id: 'sec-goursat',
+            title: "Goursat's Lemma",
+            content: `
+<h2>Goursat's Lemma: Cauchy's Theorem for Triangles</h2>
+
+<div class="env-block intuition">
+    <div class="env-title">Why Start with Triangles?</div>
+    <div class="env-body">
+        <p>Triangles are the simplest polygons, and any polygon can be subdivided into triangles. The genius of Goursat's approach (1900) is a subdivision argument: if the integral around a triangle is not zero, then it must be concentrated in a very small sub-triangle. But analyticity forces the function to be "locally linear," and linear functions have zero integrals around triangles. This contradiction proves the theorem.</p>
+        <p>Goursat's improvement over Cauchy's original proof is that it requires only <em>complex differentiability</em>, not continuity of the derivative. This seemingly technical distinction turns out to be fundamental.</p>
+    </div>
+</div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 5.2 (Goursat's Lemma)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be analytic on an open set \\(\\Omega\\). If \\(T\\) is a triangle whose interior and boundary are contained in \\(\\Omega\\), then</p>
+        \\[\\oint_{\\partial T} f(z)\\,dz = 0.\\]
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof (Subdivision Argument)</div>
+    <div class="env-body">
+        <p><strong>Step 1: Subdivide.</strong> Connect the midpoints of the three sides of \\(T\\) to form four congruent sub-triangles \\(T_1, T_2, T_3, T_4\\). The integral around \\(\\partial T\\) equals the sum of the integrals around the four sub-triangles (integrals along shared interior edges cancel due to opposite orientations):</p>
+        \\[\\oint_{\\partial T} f\\,dz = \\sum_{j=1}^{4} \\oint_{\\partial T_j} f\\,dz.\\]
+        <p>By the triangle inequality, at least one sub-triangle, call it \\(T^{(1)}\\), satisfies</p>
+        \\[\\left|\\oint_{\\partial T^{(1)}} f\\,dz\\right| \\geq \\frac{1}{4}\\left|\\oint_{\\partial T} f\\,dz\\right|.\\]
+
+        <p><strong>Step 2: Iterate.</strong> Repeat the subdivision on \\(T^{(1)}\\) to get \\(T^{(2)}\\), and so on. After \\(n\\) steps we have a nested sequence \\(T \\supset T^{(1)} \\supset T^{(2)} \\supset \\cdots\\) with</p>
+        \\[\\left|\\oint_{\\partial T^{(n)}} f\\,dz\\right| \\geq \\frac{1}{4^n}\\left|\\oint_{\\partial T} f\\,dz\\right|,\\]
+        <p>and the perimeter of \\(T^{(n)}\\) is \\(\\ell(T^{(n)}) = \\ell(T)/2^n\\), while its diameter is \\(\\text{diam}(T^{(n)}) = \\text{diam}(T)/2^n\\).</p>
+
+        <p><strong>Step 3: Use analyticity.</strong> The nested compact sets \\(\\overline{T^{(n)}}\\) shrink to a point \\(z_0\\). Since \\(f\\) is analytic at \\(z_0\\), we can write</p>
+        \\[f(z) = f(z_0) + f'(z_0)(z - z_0) + \\psi(z)(z - z_0),\\]
+        <p>where \\(\\psi(z) \\to 0\\) as \\(z \\to z_0\\). The function \\(g(z) = f(z_0) + f'(z_0)(z - z_0)\\) is affine, so \\(\\oint_{\\partial T^{(n)}} g\\,dz = 0\\) (any polynomial of degree \\(\\leq 1\\) has zero integral around a closed contour). Therefore</p>
+        \\[\\oint_{\\partial T^{(n)}} f\\,dz = \\oint_{\\partial T^{(n)}} \\psi(z)(z - z_0)\\,dz.\\]
+
+        <p><strong>Step 4: Estimate.</strong> For \\(z \\in \\partial T^{(n)}\\), we have \\(|z - z_0| \\leq \\text{diam}(T^{(n)}) = d/2^n\\) where \\(d = \\text{diam}(T)\\). Given \\(\\varepsilon > 0\\), choose \\(n\\) large enough that \\(|\\psi(z)| < \\varepsilon\\) on \\(T^{(n)}\\). Then</p>
+        \\[\\left|\\oint_{\\partial T^{(n)}} f\\,dz\\right| \\leq \\varepsilon \\cdot \\frac{d}{2^n} \\cdot \\frac{\\ell}{2^n} = \\frac{\\varepsilon \\, d \\, \\ell}{4^n}.\\]
+
+        <p>Combining with the lower bound from Step 2:</p>
+        \\[\\frac{1}{4^n}\\left|\\oint_{\\partial T} f\\,dz\\right| \\leq \\frac{\\varepsilon \\, d \\, \\ell}{4^n}.\\]
+        <p>Cancelling \\(1/4^n\\) gives \\(\\left|\\oint_{\\partial T} f\\,dz\\right| \\leq \\varepsilon \\, d \\, \\ell\\). Since \\(\\varepsilon\\) is arbitrary, we conclude \\(\\oint_{\\partial T} f\\,dz = 0\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block remark">
+    <div class="env-title">Why "Goursat" and not just "Cauchy"?</div>
+    <div class="env-body">
+        <p>Cauchy's original proof assumed \\(f'\\) is continuous. Goursat showed that mere existence of \\(f'\\) suffices. This is not a pedantic distinction: it means we do not need to separately verify continuity of \\(f'\\), which is instead a <em>consequence</em> of Cauchy's integral formula (Chapter 6). Without Goursat's improvement, the logical structure of the subject would be circular.</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-triangle-subdivision"></div>
+`,
+            visualizations: [
+                {
+                    id: 'viz-triangle-subdivision',
+                    title: "Goursat's Subdivision Argument",
+                    description: 'Watch the triangle subdivision in action. At each step, the midpoints are connected to form 4 sub-triangles. One sub-triangle (highlighted) carries at least 1/4 of the total integral. Click "Subdivide" to go deeper.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420,
+                            scale: 55
+                        });
+
+                        var depth = 0;
+                        var maxDepth = 7;
+
+                        VizEngine.createButton(controls, 'Subdivide', function() {
+                            if (depth < maxDepth) { depth++; draw(); }
+                        });
+                        VizEngine.createButton(controls, 'Reset', function() {
+                            depth = 0; draw();
+                        });
+
+                        // Triangle vertices in math coords
+                        var A = [-3, -2.5];
+                        var B = [3, -2.5];
+                        var C = [0, 3];
+
+                        function mid(p, q) {
+                            return [(p[0] + q[0]) / 2, (p[1] + q[1]) / 2];
+                        }
+
+                        function drawTriangle(v0, v1, v2, color, lw) {
+                            viz.drawSegment(v0[0], v0[1], v1[0], v1[1], color, lw);
+                            viz.drawSegment(v1[0], v1[1], v2[0], v2[1], color, lw);
+                            viz.drawSegment(v2[0], v2[1], v0[0], v0[1], color, lw);
+                        }
+
+                        function fillTriangle(v0, v1, v2, color) {
+                            viz.drawPolygon([v0, v1, v2], color, null);
+                        }
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var ctx = viz.ctx;
+
+                            // Draw outer triangle
+                            drawTriangle(A, B, C, viz.colors.blue, 2);
+
+                            // Build subdivision chain
+                            var tri = [A, B, C];
+                            for (var d = 0; d < depth; d++) {
+                                var p0 = tri[0], p1 = tri[1], p2 = tri[2];
+                                var m01 = mid(p0, p1);
+                                var m12 = mid(p1, p2);
+                                var m20 = mid(p2, p0);
+
+                                // Draw all 4 sub-triangles at this level
+                                var subs = [
+                                    [p0, m01, m20],
+                                    [m01, p1, m12],
+                                    [m20, m12, p2],
+                                    [m01, m12, m20]
+                                ];
+
+                                for (var s = 0; s < 4; s++) {
+                                    var alpha = (d < depth - 1) ? '22' : '44';
+                                    drawTriangle(subs[s][0], subs[s][1], subs[s][2], viz.colors.teal + alpha, 1);
+                                }
+
+                                // "Choose" one sub-triangle (deterministic: always bottom-left for visual clarity)
+                                // Alternate: 0, 1, 2, 3, 0, 1, 2, 3...
+                                var chosen = d % 4;
+                                tri = subs[chosen];
+                            }
+
+                            // Highlight the chosen sub-triangle
+                            if (depth > 0) {
+                                fillTriangle(tri[0], tri[1], tri[2], viz.colors.orange + '55');
+                                drawTriangle(tri[0], tri[1], tri[2], viz.colors.orange, 2.5);
+                            }
+
+                            // Labels
+                            viz.screenText("Goursat's Subdivision", viz.width / 2, 18, viz.colors.white, 15);
+                            viz.screenText('Depth: ' + depth, viz.width / 2, 38, viz.colors.teal, 13);
+
+                            if (depth > 0) {
+                                var perimFrac = '1/' + Math.pow(2, depth);
+                                var intFrac = '1/' + Math.pow(4, depth);
+                                ctx.fillStyle = viz.colors.orange;
+                                ctx.font = '12px -apple-system,sans-serif';
+                                ctx.textAlign = 'left';
+                                ctx.textBaseline = 'top';
+                                ctx.fillText('Perimeter ratio: ' + perimFrac, 12, viz.height - 50);
+                                ctx.fillText('Integral bound: \u2265 ' + intFrac + ' |original|', 12, viz.height - 34);
+                                ctx.fillStyle = viz.colors.text;
+                                ctx.fillText('Diameter \u2192 0, so analyticity forces integral \u2192 0', 12, viz.height - 16);
+                            }
+                        }
+                        draw();
+                        return viz;
+                    }
+                }
+            ],
+            exercises: [
+                {
+                    question: 'Why does the integral over the four sub-triangles sum to the integral over the original triangle? What happens to the integrals along the interior edges?',
+                    hint: 'Each interior edge is traversed twice, once in each direction.',
+                    solution: 'When we integrate around each sub-triangle with the same (counterclockwise) orientation, each interior edge appears in two adjacent sub-triangles with opposite orientations. These contributions cancel. The only surviving edges are the three sides of the original triangle, so the sum of the four sub-integrals equals the integral over \\(\\partial T\\).'
+                },
+                {
+                    question: 'In the proof, we used \\(\\oint_{\\partial T^{(n)}} g(z)\\,dz = 0\\) where \\(g(z) = a + bz\\) is affine. Prove this directly.',
+                    hint: 'An affine function has an antiderivative \\(G(z) = az + bz^2/2\\).',
+                    solution: 'Since \\(g(z) = a + bz\\) has antiderivative \\(G(z) = az + bz^2/2\\), we get \\(\\oint_{\\partial T} g\\,dz = G(z_{\\text{start}}) - G(z_{\\text{start}}) = 0\\) because the contour is closed (start = end point). Alternatively, compute directly: the contributions from the three sides of any triangle sum to zero by the fundamental theorem of calculus applied to \\(G\\).'
+                }
+            ]
+        },
+
+        // ================================================================
+        // SECTION 3: Cauchy's Theorem for Simply Connected Domains
         // ================================================================
         {
             id: 'sec-simply-connected',
             title: 'Simply Connected Domains',
             content: `
-<h2>Simply Connected Domains: The Full Cauchy Theorem</h2>
+<h2>Cauchy's Theorem for Simply Connected Domains</h2>
 
-<div class="env-block definition">
-    <div class="env-title">Definition 5.3 (Simply Connected Domain)</div>
+<div class="env-block intuition">
+    <div class="env-title">From Triangles to Arbitrary Contours</div>
     <div class="env-body">
-        <p>An open connected set \\(U \\subseteq \\mathbb{C}\\) is <strong>simply connected</strong> if every closed curve in \\(U\\) is contractible to a point within \\(U\\). Equivalently, \\(U\\) has no "holes": its complement \\(\\mathbb{C} \\setminus U\\) is connected (in \\(\\hat{\\mathbb{C}} = \\mathbb{C} \\cup \\{\\infty\\}\\)).</p>
+        <p>Goursat's lemma handles triangles. But we want Cauchy's theorem for arbitrary closed contours. The bridge is the concept of a <strong>simply connected domain</strong>: a domain with no holes. In such a domain, any closed contour can be "triangulated," reducing the general case to a sum of triangular integrals, each of which vanishes by Goursat.</p>
     </div>
 </div>
 
-<p>Examples of simply connected domains: the entire plane \\(\\mathbb{C}\\), any disk \\(\\mathbb{D}_r(z_0)\\), the upper half-plane \\(\\{\\text{Im}\\,z > 0\\}\\), any convex open set. Examples that are <em>not</em> simply connected: the punctured plane \\(\\mathbb{C} \\setminus \\{0\\}\\), an annulus \\(\\{r < |z| < R\\}\\), \\(\\mathbb{C}\\) minus a closed segment.</p>
+<div class="env-block definition">
+    <div class="env-title">Definition (Simply Connected Domain)</div>
+    <div class="env-body">
+        <p>A domain \\(D \\subseteq \\mathbb{C}\\) is <strong>simply connected</strong> if it is connected and every closed curve in \\(D\\) can be continuously deformed (contracted) to a point within \\(D\\). Equivalently, \\(D\\) has no "holes."</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Examples</div>
+    <div class="env-body">
+        <ul>
+            <li>\\(\\mathbb{C}\\) itself: simply connected.</li>
+            <li>Any open disk \\(D(z_0, r)\\): simply connected.</li>
+            <li>Any open half-plane: simply connected.</li>
+            <li>\\(\\mathbb{C} \\setminus \\{0\\}\\) (the punctured plane): <strong>not</strong> simply connected. A circle around the origin cannot be contracted to a point without leaving the domain.</li>
+            <li>An annulus \\(\\{z : r < |z| < R\\}\\): <strong>not</strong> simply connected.</li>
+        </ul>
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.4 (Cauchy's Theorem for Simply Connected Domains)</div>
+    <div class="env-title">Theorem 5.3 (Cauchy's Theorem, Simply Connected Version)</div>
     <div class="env-body">
-        <p>Let \\(U\\) be a simply connected open subset of \\(\\mathbb{C}\\), and let \\(f : U \\to \\mathbb{C}\\) be holomorphic. Then for every closed rectifiable curve \\(\\gamma\\) in \\(U\\),</p>
+        <p>Let \\(f\\) be analytic on a simply connected domain \\(D\\). Then for every closed contour \\(\\gamma\\) in \\(D\\),</p>
         \\[\\oint_\\gamma f(z)\\,dz = 0.\\]
     </div>
 </div>
 
-<h3>Proof Sketch</h3>
-<p>Every rectifiable closed curve in a simply connected domain can be approximated by closed polygons (by rectifiability). Each polygon triangulates into finitely many triangles. By Cauchy-Goursat (Theorem 5.1) applied to each triangle, each sub-integral is zero, so the total is zero. The approximation argument extends this to the original curve. \\(\\blacksquare\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof Sketch (Triangulation Argument)</div>
+    <div class="env-body">
+        <p>The idea is to decompose the interior of \\(\\gamma\\) into triangles. Since \\(D\\) is simply connected and \\(\\gamma\\) lies in \\(D\\), the interior of \\(\\gamma\\) also lies in \\(D\\) (by the Jordan Curve Theorem and simple connectivity).</p>
+        <p>Subdivide the region bounded by \\(\\gamma\\) into small triangles \\(T_1, \\ldots, T_N\\). Then</p>
+        \\[\\oint_\\gamma f\\,dz = \\sum_{j=1}^{N} \\oint_{\\partial T_j} f\\,dz = 0\\]
+        <p>because each triangular integral vanishes by Goursat's lemma, and interior edges cancel in pairs.</p>
+        <p>The rigorous version requires careful handling of the triangulation (approximating \\(\\gamma\\) by a polygon, then triangulating the polygon). We omit the full details, which are topological in nature.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-<h3>The Antiderivative Theorem</h3>
+<h3>Existence of Antiderivatives</h3>
+
+<p>An immediate corollary of Cauchy's theorem in simply connected domains is the existence of antiderivatives.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.5 (Existence of Antiderivatives)</div>
+    <div class="env-title">Corollary 5.4 (Antiderivatives in Simply Connected Domains)</div>
     <div class="env-body">
-        <p>If \\(f\\) is holomorphic on a simply connected domain \\(U\\), then \\(f\\) has a holomorphic antiderivative \\(F\\) on \\(U\\): that is, \\(F' = f\\) on \\(U\\). Moreover,</p>
-        \\[\\int_\\gamma f\\,dz = F(\\gamma(b)) - F(\\gamma(a))\\]
-        <p>for any path \\(\\gamma : [a,b] \\to U\\).</p>
+        <p>If \\(f\\) is analytic on a simply connected domain \\(D\\), then \\(f\\) has an antiderivative \\(F\\) on \\(D\\): a function \\(F\\) analytic on \\(D\\) with \\(F'(z) = f(z)\\) for all \\(z \\in D\\).</p>
     </div>
 </div>
 
-<p><strong>Proof.</strong> Fix \\(z_0 \\in U\\) and define \\(F(z) = \\int_{z_0}^z f(w)\\,dw\\), integrating along any path from \\(z_0\\) to \\(z\\). By Cauchy's theorem, this is path-independent (any two paths form a closed curve, and the integral around it is zero). A direct computation shows \\(F'(z) = f(z)\\). \\(\\blacksquare\\)</p>
-
 <div class="env-block example">
-    <div class="env-title">Example: Log on a Simply Connected Domain</div>
+    <div class="env-title">Example: \\(1/z\\) on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\)</div>
     <div class="env-body">
-        <p>On \\(U = \\mathbb{C} \\setminus (-\\infty, 0]\\) (the plane minus the negative real axis and zero), define</p>
-        \\[\\log z = \\int_1^z \\frac{dw}{w},\\]
-        <p>integrating along a path in \\(U\\). This is well-defined (\\(U\\) is simply connected), and \\((\\log z)' = 1/z\\). This is the <em>principal branch</em> of the logarithm.</p>
+        <p>The function \\(f(z) = 1/z\\) is analytic on the slit plane \\(\\mathbb{C} \\setminus (-\\infty, 0]\\), which is simply connected. By the corollary, \\(f\\) has an antiderivative there: it is the principal branch of \\(\\log z\\). On the other hand, \\(1/z\\) does <em>not</em> have an antiderivative on \\(\\mathbb{C} \\setminus \\{0\\}\\), which is not simply connected. Indeed, \\(\\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i \\neq 0\\).</p>
     </div>
 </div>
 
 <div class="env-block remark">
-    <div class="env-title">The Role of Simply Connected</div>
+    <div class="env-title">The Topology-Analysis Connection</div>
     <div class="env-body">
-        <p>If \\(U\\) is not simply connected, \\(f\\) may have no antiderivative even if \\(f\\) is holomorphic throughout \\(U\\). The standard example: \\(f(z) = 1/z\\) on \\(\\mathbb{C} \\setminus \\{0\\}\\). We have \\(\\oint_{|z|=1} dz/z = 2\\pi i \\neq 0\\), so no single-valued antiderivative exists. The "hole" at \\(0\\) obstruct it.</p>
+        <p>Cauchy's theorem reveals a deep link between <strong>topology</strong> (the shape of the domain) and <strong>analysis</strong> (the vanishing of integrals). Simple connectivity is a purely topological condition, yet it controls the analytic property of path-independence. This interplay between topology and analysis is one of the hallmarks of complex analysis.</p>
     </div>
 </div>
 `,
-            visualizations: [
-                {
-                    id: 'viz-cauchy-theorem',
-                    title: 'Cauchy\'s Theorem: Integral Around a Closed Contour',
-                    description: 'A closed contour in a simply connected domain. The running integral \\(\\int_0^t f(\\gamma(s))\\gamma\'(s)\\,ds\\) is shown as it traces the curve — it returns exactly to zero. Toggle between holomorphic and non-holomorphic functions.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 230, originY: 200 });
-                        var t = 0;
-                        var mode = 'holomorphic'; // or 'nonholo'
-                        var running = false;
-                        var animId = null;
-
-                        // Contour: a rounded "star" shaped closed curve
-                        function gamma(s) {
-                            var a = 2 * Math.PI * s;
-                            var r = 1.5 + 0.5 * Math.cos(3 * a);
-                            return [r * Math.cos(a), r * Math.sin(a)];
-                        }
-                        function gammaDeriv(s) {
-                            var ds = 0.0001;
-                            var p1 = gamma(s + ds), p0 = gamma(s - ds);
-                            return [(p1[0]-p0[0])/(2*ds), (p1[1]-p0[1])/(2*ds)];
-                        }
-
-                        // f(z) = z^2 (holomorphic, integral = 0)
-                        // g(z) = 1/z (pole at origin — non-holomorphic on region enclosed)
-                        function integrand(s) {
-                            var p = gamma(s);
-                            var x = p[0], y = p[1];
-                            var dp = gammaDeriv(s);
-                            var dx = dp[0], dy = dp[1];
-                            if (mode === 'holomorphic') {
-                                // f(z) = z^2: (x+iy)^2 = x^2-y^2 + 2ixy
-                                var re = x*x - y*y, im = 2*x*y;
-                                // integral: (re + i*im)(dx + i*dy) = re*dx - im*dy + i*(im*dx + re*dy)
-                                return [re*dx - im*dy, im*dx + re*dy];
-                            } else {
-                                // f(z) = 1/z: (x - iy)/(x^2+y^2)
-                                var r2 = x*x + y*y;
-                                if (r2 < 0.0001) return [0, 0];
-                                var re2 = x/r2, im2 = -y/r2;
-                                return [re2*dx - im2*dy, im2*dx + re2*dy];
-                            }
-                        }
-
-                        function numericalIntegral(s0, s1, steps) {
-                            var re = 0, im = 0;
-                            var ds = (s1 - s0) / steps;
-                            for (var k = 0; k < steps; k++) {
-                                var s = s0 + (k + 0.5) * ds;
-                                var v = integrand(s);
-                                re += v[0] * ds;
-                                im += v[1] * ds;
-                            }
-                            return [re, im];
-                        }
-
-                        function draw() {
-                            viz.clear();
-                            viz.drawGrid(1);
-                            viz.drawAxes();
-
-                            // Draw contour (full)
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = viz.colors.axis;
-                            ctx.lineWidth = 1;
-                            ctx.setLineDash([4, 4]);
-                            ctx.beginPath();
-                            for (var k = 0; k <= 200; k++) {
-                                var s = k / 200;
-                                var p = gamma(s);
-                                var sc = viz.toScreen(p[0], p[1]);
-                                k === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
-                            }
-                            ctx.closePath();
-                            ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            // Draw traversed part
-                            ctx.strokeStyle = viz.colors.blue;
-                            ctx.lineWidth = 2.5;
-                            ctx.beginPath();
-                            var steps = Math.floor(t * 200);
-                            for (var k2 = 0; k2 <= steps; k2++) {
-                                var s2 = k2 / 200;
-                                var p2 = gamma(s2);
-                                var sc2 = viz.toScreen(p2[0], p2[1]);
-                                k2 === 0 ? ctx.moveTo(sc2[0], sc2[1]) : ctx.lineTo(sc2[0], sc2[1]);
-                            }
-                            ctx.stroke();
-
-                            // Moving point
-                            var pp = gamma(t);
-                            viz.drawPoint(pp[0], pp[1], viz.colors.orange, null, 6);
-
-                            // Compute running integral
-                            var intVal = numericalIntegral(0, t, Math.max(1, Math.floor(t * 400)));
-
-                            // Show singularity if non-holomorphic
-                            if (mode === 'nonholo') {
-                                viz.drawPoint(0, 0, viz.colors.red, null, 5);
-                                viz.drawText('pole', 0.25, -0.25, viz.colors.red, 11);
-                            }
-
-                            // Right side: running integral display
-                            var px = viz.width - 170, py = 40;
-                            ctx.fillStyle = '#1a1a40cc';
-                            ctx.fillRect(px-10, py, 175, 130);
-                            ctx.strokeStyle = viz.colors.grid;
-                            ctx.lineWidth = 1;
-                            ctx.strokeRect(px-10, py, 175, 130);
-
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.textBaseline = 'top';
-                            ctx.fillText('Running integral:', px, py + 8);
-                            ctx.fillStyle = viz.colors.blue;
-                            ctx.fillText('Re = ' + intVal[0].toFixed(4), px, py + 30);
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('Im = ' + intVal[1].toFixed(4), px, py + 52);
-
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.fillText('t = ' + t.toFixed(2) + ' / 1.00', px, py + 74);
-
-                            if (t >= 0.999) {
-                                var total = numericalIntegral(0, 1, 1000);
-                                var label = (Math.abs(total[0]) < 0.05 && Math.abs(total[1]) < 0.05)
-                                    ? '\u2192 Total \u2248 0 \u2713' : '\u2192 Total \u2248 ' + total[1].toFixed(3) + 'i';
-                                ctx.fillStyle = mode === 'holomorphic' ? viz.colors.teal : viz.colors.red;
-                                ctx.font = 'bold 13px -apple-system,sans-serif';
-                                ctx.fillText(label, px, py + 100);
-                            }
-
-                            var modeLabel = mode === 'holomorphic' ? 'f(z) = z\u00B2 (holomorphic)' : 'f(z) = 1/z (pole inside!)';
-                            viz.screenText(modeLabel, viz.width/2, viz.height - 18, mode === 'holomorphic' ? viz.colors.teal : viz.colors.red, 12);
-                        }
-
-                        draw();
-
-                        VizEngine.createButton(controls, 'Animate', function() {
-                            if (animId) { cancelAnimationFrame(animId); animId = null; running = false; return; }
-                            running = true;
-                            t = 0;
-                            var last = null;
-                            function step(ts) {
-                                if (!running) return;
-                                if (last === null) last = ts;
-                                var dt = (ts - last) / 4000;
-                                last = ts;
-                                t = Math.min(1, t + dt);
-                                draw();
-                                if (t < 1) animId = requestAnimationFrame(step);
-                                else { animId = null; running = false; }
-                            }
-                            animId = requestAnimationFrame(step);
-                        });
-                        VizEngine.createButton(controls, 'Toggle f(z)', function() {
-                            mode = mode === 'holomorphic' ? 'nonholo' : 'holomorphic';
-                            t = 0;
-                            draw();
-                        });
-                        VizEngine.createButton(controls, 'Reset', function() {
-                            if (animId) { cancelAnimationFrame(animId); animId = null; }
-                            running = false; t = 0; draw();
-                        });
-                        return viz;
-                    }
-                }
-            ],
+            visualizations: [],
             exercises: [
                 {
-                    question: 'Is the domain \\(U = \\{z : |z| > 1\\}\\) (exterior of the unit disk) simply connected? Justify your answer, and determine whether \\(\\oint_{|z|=2} \\frac{dz}{z} = 0\\).',
-                    hint: 'Check whether every closed curve in \\(U\\) can be contracted to a point within \\(U\\). The curve \\(|z|=2\\) encircles the "hole" at \\(|z| \\leq 1\\).',
-                    solution: '\\(U\\) is not simply connected: the curve \\(|z|=2\\) cannot be contracted to a point within \\(U\\) (it would have to cross the excluded disk). Indeed, \\(\\oint_{|z|=2} dz/z = 2\\pi i \\neq 0\\), confirming Cauchy\'s theorem fails. The "hole" is \\(\\{|z| \\leq 1\\}\\).'
+                    question: 'Is the domain \\(D = \\mathbb{C} \\setminus [0, \\infty)\\) (the plane minus the positive real axis) simply connected? Does \\(1/z\\) have an antiderivative on \\(D\\)?',
+                    hint: 'Can every closed curve in this slit plane be contracted to a point?',
+                    solution: 'Yes, \\(D = \\mathbb{C} \\setminus [0, \\infty)\\) is simply connected (cutting along a ray does not create a hole that a curve can wind around). Therefore \\(1/z\\) has an antiderivative on \\(D\\), namely a branch of \\(\\log z\\) (for example, with argument in \\((0, 2\\pi)\\)).'
                 },
                 {
-                    question: 'Let \\(U = \\mathbb{C} \\setminus \\{1, -1\\}\\) and \\(f(z) = 1/(z^2-1)\\). Is \\(\\oint_\\gamma f\\,dz = 0\\) for every closed curve \\(\\gamma\\) in \\(U\\)? Explain.',
-                    hint: 'The domain has two holes. The answer depends on the winding numbers of \\(\\gamma\\) around \\(1\\) and \\(-1\\).',
-                    solution: 'No. \\(U\\) has holes at \\(\\pm 1\\), so it is not simply connected. \\(f\\) is holomorphic on \\(U\\) but \\(\\oint_\\gamma f\\,dz\\) depends on winding numbers around each pole. By partial fractions, \\(f = \\frac{1/2}{z-1} - \\frac{1/2}{z+1}\\), so \\(\\oint_\\gamma f\\,dz = \\pi i\\,n(\\gamma,1) - \\pi i\\,n(\\gamma,-1)\\), which is zero only when the winding numbers around both poles are equal.'
+                    question: 'Show that \\(\\int_\\gamma e^{z^2}\\,dz = 0\\) for any closed contour \\(\\gamma\\) in \\(\\mathbb{C}\\).',
+                    hint: '\\(e^{z^2}\\) is entire (analytic on all of \\(\\mathbb{C}\\)), and \\(\\mathbb{C}\\) is simply connected.',
+                    solution: '\\(e^{z^2}\\) is entire because it is the composition of entire functions \\(z \\mapsto z^2\\) and \\(z \\mapsto e^z\\). Since \\(\\mathbb{C}\\) is simply connected, Cauchy\\'s theorem gives \\(\\oint_\\gamma e^{z^2}\\,dz = 0\\) for every closed contour \\(\\gamma\\). Note: \\(e^{z^2}\\) does not have an elementary antiderivative, yet the closed integral still vanishes.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 4: Deformation of Contours
+        // SECTION 4: Deformation of Contours (Homotopy)
         // ================================================================
         {
             id: 'sec-deformation',
             title: 'Deformation of Contours',
             content: `
-<h2>Deformation of Contours: Homotopy</h2>
+<h2>Deformation of Contours: The Homotopy Viewpoint</h2>
 
-<p>Cauchy's theorem says integrals over null-homotopic curves vanish. The deeper principle is that <em>homotopic</em> curves give the <em>same</em> integral — even if neither integral is zero.</p>
+<div class="env-block intuition">
+    <div class="env-title">Rubber-Band Analogy</div>
+    <div class="env-body">
+        <p>Think of a contour as a rubber band stretched in the complex plane. If you can continuously deform one rubber band into another without crossing any singularity of \\(f\\), then the integral of \\(f\\) along both contours is the same. This is the <strong>principle of deformation of contours</strong>, arguably the most useful computational tool in complex analysis.</p>
+    </div>
+</div>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 5.6 (Homotopy of Paths)</div>
+    <div class="env-title">Definition (Homotopy of Curves)</div>
     <div class="env-body">
-        <p>Two closed curves \\(\\gamma_0, \\gamma_1 : [0,1] \\to U\\) are <strong>homotopic in \\(U\\)</strong> if there exists a continuous map \\(H : [0,1] \\times [0,1] \\to U\\) with</p>
+        <p>Two closed curves \\(\\gamma_0, \\gamma_1\\) in a domain \\(D\\) are <strong>homotopic</strong> in \\(D\\) if there exists a continuous map \\(H: [0,1] \\times [0,1] \\to D\\) such that</p>
         <ul>
-            <li>\\(H(s, 0) = \\gamma_0(s)\\) and \\(H(s, 1) = \\gamma_1(s)\\) for all \\(s\\),</li>
-            <li>\\(H(0, t) = H(1, t)\\) for all \\(t\\) (closed curves throughout).</li>
+            <li>\\(H(s, 0) = \\gamma_0(s)\\) for all \\(s\\) (at "time" 0, we have \\(\\gamma_0\\));</li>
+            <li>\\(H(s, 1) = \\gamma_1(s)\\) for all \\(s\\) (at "time" 1, we have \\(\\gamma_1\\));</li>
+            <li>\\(H(0, t) = H(1, t)\\) for all \\(t\\) (the curve stays closed throughout the deformation).</li>
         </ul>
-        <p>\\(H\\) is called a <strong>homotopy</strong> from \\(\\gamma_0\\) to \\(\\gamma_1\\). Intuitively: \\(\\gamma_0\\) can be continuously deformed to \\(\\gamma_1\\) while staying in \\(U\\).</p>
+        <p>A closed curve is <strong>null-homotopic</strong> (or contractible) if it is homotopic to a constant curve (a point).</p>
     </div>
 </div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.7 (Deformation Invariance)</div>
+    <div class="env-title">Theorem 5.5 (Deformation Theorem)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be holomorphic on an open set \\(U\\), and let \\(\\gamma_0\\) and \\(\\gamma_1\\) be homotopic closed curves in \\(U\\). Then</p>
+        <p>Let \\(f\\) be analytic on a domain \\(D\\), and let \\(\\gamma_0, \\gamma_1\\) be two closed contours in \\(D\\) that are homotopic in \\(D\\). Then</p>
         \\[\\oint_{\\gamma_0} f(z)\\,dz = \\oint_{\\gamma_1} f(z)\\,dz.\\]
+        <p>In particular, if \\(\\gamma\\) is null-homotopic in \\(D\\), then \\(\\oint_\\gamma f(z)\\,dz = 0\\).</p>
     </div>
 </div>
 
-<p><strong>Proof sketch.</strong> Consider the "combined" closed curve \\(\\gamma_0 - \\gamma_1\\) (traverse \\(\\gamma_0\\) forward, \\(\\gamma_1\\) backward). The homotopy \\(H\\) fills in a 2-cell; since \\(f\\) is holomorphic throughout, Cauchy's theorem (applied to an approximating triangulation of the homotopy) gives \\(\\oint_{\\gamma_0} f\\,dz - \\oint_{\\gamma_1} f\\,dz = 0\\). \\(\\blacksquare\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof Idea</div>
+    <div class="env-body">
+        <p>The homotopy \\(H\\) sweeps out a "ribbon" between \\(\\gamma_0\\) and \\(\\gamma_1\\). Cover this ribbon by finitely many small disks (using compactness). Within each disk, \\(f\\) is analytic, so by Cauchy's theorem the integral around each small boundary vanishes. A telescoping argument shows the integral along \\(\\gamma_0\\) equals the integral along \\(\\gamma_1\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-<h3>Key Examples</h3>
+<h3>Applications of Deformation</h3>
 
 <div class="env-block example">
-    <div class="env-title">Example: All Circles Around the Same Point</div>
+    <div class="env-title">Example: Computing \\(\\oint_{|z|=2} \\frac{dz}{z}\\) via Deformation</div>
     <div class="env-body">
-        <p>Let \\(f\\) be holomorphic on \\(\\mathbb{C} \\setminus \\{0\\}\\). Any two circles \\(|z| = r_1\\) and \\(|z| = r_2\\) (same counterclockwise orientation) are homotopic in \\(\\mathbb{C} \\setminus \\{0\\}\\). Therefore</p>
-        \\[\\oint_{|z|=r_1} f(z)\\,dz = \\oint_{|z|=r_2} f(z)\\,dz.\\]
-        <p>In particular, \\(\\oint_{|z|=r} dz/z = 2\\pi i\\) for every \\(r > 0\\).</p>
+        <p>The circle \\(|z| = 2\\) can be deformed to \\(|z| = 1\\) in \\(\\mathbb{C} \\setminus \\{0\\}\\) (they are homotopic there). So</p>
+        \\[\\oint_{|z|=2} \\frac{dz}{z} = \\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i.\\]
+        <p>More generally, any simple closed curve winding once around the origin gives \\(2\\pi i\\).</p>
     </div>
 </div>
 
-<div class="env-block corollary">
-    <div class="env-title">Corollary 5.8 (Shrinking Contours)</div>
+<div class="env-block example">
+    <div class="env-title">Example: Deforming to a Convenient Contour</div>
     <div class="env-body">
-        <p>If \\(f\\) is holomorphic on \\(U \\setminus \\{z_0\\}\\) and has an isolated singularity at \\(z_0\\), then \\(\\oint_\\gamma f\\,dz\\) is the same for <em>any</em> simple closed curve \\(\\gamma\\) encircling \\(z_0\\) once counterclockwise. This common value is \\(2\\pi i \\cdot \\text{Res}(f, z_0)\\) — the foundation of residue calculus.</p>
+        <p>To compute \\(\\oint_\\gamma \\frac{dz}{z-1}\\) where \\(\\gamma\\) is a complicated curve winding once around \\(z = 1\\) (and no other singularity), deform \\(\\gamma\\) to a small circle \\(|z - 1| = \\varepsilon\\). Parametrize as \\(z = 1 + \\varepsilon e^{i\\theta}\\):</p>
+        \\[\\oint_{|z-1|=\\varepsilon} \\frac{dz}{z-1} = \\int_0^{2\\pi} \\frac{i\\varepsilon e^{i\\theta}}{\\varepsilon e^{i\\theta}}\\,d\\theta = 2\\pi i.\\]
     </div>
 </div>
+
+<p>The deformation theorem transforms difficult integral computations into easy ones: replace a complicated contour by a simple one (usually a circle), compute, and invoke the theorem.</p>
+
+<div class="viz-placeholder" data-viz="viz-homotopy"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-homotopy',
-                    title: 'Homotopy: Continuously Deforming a Contour',
-                    description: 'Watch a circle continuously deform into an ellipse (or a square-ish shape). As long as the deformation avoids all singularities, the integral stays constant. Drag the slider to animate the homotopy parameter \\(t\\).',
+                    title: 'Homotopy: Deforming Contours',
+                    description: 'Watch a contour continuously deform from one shape to another. The singularity at the origin (red dot) blocks certain deformations. The slider controls the homotopy parameter \\(t\\). When the contour does not cross the singularity, the integral is preserved.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 250, originY: 200 });
-                        var homotopyT = 0;
-                        var singularity = false;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420,
+                            scale: 50
+                        });
 
-                        // gamma_0: circle of radius 1.5
-                        // gamma_1: ellipse a=2.5, b=1.0 (same center)
-                        // homotopy: lerp between them
-                        function contourPt(s, t) {
-                            var a = 2 * Math.PI * s;
-                            // circle: r=1.5
-                            var x0 = 1.5 * Math.cos(a), y0 = 1.5 * Math.sin(a);
-                            // ellipse:
-                            var x1 = 2.2 * Math.cos(a), y1 = 0.9 * Math.sin(a);
-                            return [x0 + t * (x1 - x0), y0 + t * (y1 - y0)];
+                        var homotopyT = 0;
+                        VizEngine.createSlider(controls, 't (homotopy)', 0, 1, 0, 0.01, function(v) {
+                            homotopyT = v;
+                            draw();
+                        });
+
+                        // Curve 0: large circle radius 3
+                        // Curve 1: small circle radius 1
+                        // Both centered at origin, so homotopic in C\{0}
+                        function curve0(s) {
+                            var theta = 2 * Math.PI * s;
+                            var r = 3;
+                            return [r * Math.cos(theta), r * Math.sin(theta)];
+                        }
+
+                        function curve1(s) {
+                            var theta = 2 * Math.PI * s;
+                            var r = 1;
+                            return [r * Math.cos(theta), r * Math.sin(theta)];
+                        }
+
+                        function interpCurve(s, t) {
+                            var p0 = curve0(s);
+                            var p1 = curve1(s);
+                            return [
+                                p0[0] + (p1[0] - p0[0]) * t,
+                                p0[1] + (p1[1] - p0[1]) * t
+                            ];
                         }
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
 
-                            // Draw start contour (dim)
-                            ctx.strokeStyle = viz.colors.blue + '55';
-                            ctx.lineWidth = 1.5;
-                            ctx.setLineDash([4,4]);
+                            // Draw singularity
+                            viz.drawPoint(0, 0, viz.colors.red, '0 (singularity)', 7);
+
+                            // Draw initial curve (faded)
+                            ctx.strokeStyle = viz.colors.blue + '44';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
                             ctx.beginPath();
-                            for (var k = 0; k <= 100; k++) {
-                                var p = contourPt(k/100, 0);
+                            for (var i = 0; i <= 200; i++) {
+                                var s = i / 200;
+                                var p = curve0(s);
                                 var sc = viz.toScreen(p[0], p[1]);
-                                k===0 ? ctx.moveTo(sc[0],sc[1]) : ctx.lineTo(sc[0],sc[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
                             }
-                            ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+                            ctx.closePath();
+                            ctx.stroke();
+                            ctx.setLineDash([]);
 
-                            // Draw end contour (dim)
-                            ctx.strokeStyle = viz.colors.teal + '55';
-                            ctx.lineWidth = 1.5;
-                            ctx.setLineDash([4,4]);
+                            // Draw final curve (faded)
+                            ctx.strokeStyle = viz.colors.orange + '44';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
                             ctx.beginPath();
-                            for (var k2 = 0; k2 <= 100; k2++) {
-                                var p2 = contourPt(k2/100, 1);
-                                var sc2 = viz.toScreen(p2[0], p2[1]);
-                                k2===0 ? ctx.moveTo(sc2[0],sc2[1]) : ctx.lineTo(sc2[0],sc2[1]);
+                            for (var i = 0; i <= 200; i++) {
+                                var s = i / 200;
+                                var p = curve1(s);
+                                var sc = viz.toScreen(p[0], p[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
                             }
-                            ctx.closePath(); ctx.stroke(); ctx.setLineDash([]);
+                            ctx.closePath();
+                            ctx.stroke();
+                            ctx.setLineDash([]);
 
-                            // Draw current contour (bright)
-                            var col = singularity ? viz.colors.red : viz.colors.orange;
-                            ctx.strokeStyle = col;
+                            // Draw current deformed curve
+                            ctx.strokeStyle = viz.colors.teal;
                             ctx.lineWidth = 2.5;
                             ctx.beginPath();
-                            for (var k3 = 0; k3 <= 200; k3++) {
-                                var p3 = contourPt(k3/200, homotopyT);
-                                var sc3 = viz.toScreen(p3[0], p3[1]);
-                                k3===0 ? ctx.moveTo(sc3[0],sc3[1]) : ctx.lineTo(sc3[0],sc3[1]);
+                            for (var i = 0; i <= 200; i++) {
+                                var s = i / 200;
+                                var p = interpCurve(s, homotopyT);
+                                var sc = viz.toScreen(p[0], p[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
                             }
-                            ctx.closePath(); ctx.stroke();
+                            ctx.closePath();
+                            ctx.stroke();
 
-                            // Arrow showing direction
-                            var pa = contourPt(0.27, homotopyT);
-                            var pb = contourPt(0.28, homotopyT);
-                            viz.drawVector(pa[0], pa[1], pb[0], pb[1], col, null, 2);
+                            // Direction arrow
+                            var arrowS = 0.12;
+                            var pa = interpCurve(arrowS, homotopyT);
+                            var pb = interpCurve(arrowS + 0.01, homotopyT);
+                            var dx = pb[0] - pa[0];
+                            var dy = pb[1] - pa[1];
+                            var sca = viz.toScreen(pa[0], pa[1]);
+                            var angle = Math.atan2(-dy * viz.scale, dx * viz.scale);
+                            ctx.fillStyle = viz.colors.teal;
+                            ctx.beginPath();
+                            ctx.moveTo(sca[0] + 10 * Math.cos(angle), sca[1] + 10 * Math.sin(angle));
+                            ctx.lineTo(sca[0] + 10 * Math.cos(angle + 2.5), sca[1] + 10 * Math.sin(angle + 2.5));
+                            ctx.lineTo(sca[0] + 10 * Math.cos(angle - 2.5), sca[1] + 10 * Math.sin(angle - 2.5));
+                            ctx.closePath();
+                            ctx.fill();
 
                             // Labels
-                            viz.screenText('\u03B3\u2080 (t=0)', 50, 50, viz.colors.blue, 12);
-                            viz.screenText('\u03B3\u2081 (t=1)', 50, 68, viz.colors.teal, 12);
-                            viz.screenText('current (t=' + homotopyT.toFixed(2) + ')', 50, 86, col, 12);
-
-                            // Singularity toggle
-                            if (singularity) {
-                                viz.drawPoint(0, 0, viz.colors.red, null, 6);
-                                viz.drawText('pole', 0.3, -0.3, viz.colors.red, 11);
-                            }
-
-                            // Integral stays same annotation
-                            var ix = viz.width - 180, iy = 40;
-                            ctx.fillStyle = '#1a1a40cc';
-                            ctx.fillRect(ix, iy, 168, singularity ? 90 : 70);
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth=1;
-                            ctx.strokeRect(ix, iy, 168, singularity ? 90 : 70);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline='top';
-                            ctx.fillText('Homotopy parameter:', ix+8, iy+8);
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('t = ' + homotopyT.toFixed(2), ix+8, iy+28);
-                            if (!singularity) {
-                                ctx.fillStyle = viz.colors.teal;
-                                ctx.fillText('\u222E\u03B3 f dz = const', ix+8, iy+48);
-                            } else {
-                                ctx.fillStyle = viz.colors.red;
-                                ctx.fillText('Pole at 0!', ix+8, iy+48);
-                                ctx.fillText('Deform freely', ix+8, iy+68);
-                                ctx.fillText('(zero stays inside)', ix+8, iy+84);
-                            }
+                            viz.screenText('t = ' + homotopyT.toFixed(2), viz.width / 2, 18, viz.colors.white, 14);
+                            ctx.fillStyle = viz.colors.blue + '88';
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('\u03B3\u2080 (R=3)', 12, 14);
+                            ctx.fillStyle = viz.colors.orange + '88';
+                            ctx.fillText('\u03B3\u2081 (R=1)', 12, 30);
+                            ctx.fillStyle = viz.colors.teal;
+                            ctx.fillText('\u222E f dz is the same for both!', 12, viz.height - 14);
                         }
-
-                        VizEngine.createSlider(controls, 't', 0, 1, 0, 0.01, function(v) {
-                            homotopyT = v; draw();
-                        });
-                        VizEngine.createButton(controls, 'Toggle Singularity', function() {
-                            singularity = !singularity; draw();
-                        });
                         draw();
                         return viz;
                     }
@@ -681,14 +688,14 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Evaluate \\(\\oint_{\\gamma} \\frac{e^z}{z}\\,dz\\) where \\(\\gamma\\) is the ellipse \\(\\frac{x^2}{9} + y^2 = 1\\) traversed counterclockwise.',
-                    hint: 'Deform the ellipse to a small circle around \\(z=0\\) — the only singularity inside. Use the known formula for \\(\\oint_{|z|=\\varepsilon} e^z/z\\,dz\\).',
-                    solution: 'By deformation invariance, \\(\\oint_\\gamma \\frac{e^z}{z}\\,dz = \\oint_{|z|=\\varepsilon} \\frac{e^z}{z}\\,dz\\) for small \\(\\varepsilon > 0\\). On \\(|z|=\\varepsilon\\): \\(e^z = 1 + z + z^2/2 + \\cdots\\), so \\(e^z/z = 1/z + 1 + z/2 + \\cdots\\). Integrating: \\(\\oint 1/z\\,dz = 2\\pi i\\), and all other terms integrate to zero. So the answer is \\(2\\pi i\\).'
+                    question: 'Let \\(\\gamma_1\\) be the circle \\(|z| = 1\\) and \\(\\gamma_2\\) be the square with vertices \\(\\pm 1 \\pm i\\), both traversed counterclockwise. Show that \\(\\oint_{\\gamma_1} \\frac{dz}{z} = \\oint_{\\gamma_2} \\frac{dz}{z}\\).',
+                    hint: 'Are \\(\\gamma_1\\) and \\(\\gamma_2\\) homotopic in \\(\\mathbb{C} \\setminus \\{0\\}\\)?',
+                    solution: 'Both \\(\\gamma_1\\) and \\(\\gamma_2\\) wind once around the origin in \\(\\mathbb{C} \\setminus \\{0\\}\\). We can continuously deform the circle to the square without crossing the origin (for example, use the homotopy \\(H(s,t) = (1-t)\\gamma_1(s) + t\\gamma_2(s)\\); since both curves stay away from 0, so does the interpolation). By the deformation theorem, the integrals are equal, both equaling \\(2\\pi i\\).'
                 },
                 {
-                    question: 'Let \\(\\gamma_0\\) be the unit circle and \\(\\gamma_1\\) be a figure-eight contour that crosses itself at the origin (winding number \\(+1\\) around \\(i/2\\) and \\(-1\\) around \\(-i/2\\)). Are \\(\\gamma_0\\) and \\(\\gamma_1\\) homotopic in \\(\\mathbb{C}\\)? In \\(\\mathbb{C} \\setminus \\{i/2, -i/2\\}\\)?',
-                    hint: 'In \\(\\mathbb{C}\\) there are no holes, so all closed curves are null-homotopic (hence homotopic to each other). In the punctured domain, check whether the winding numbers around the punctures agree.',
-                    solution: 'In \\(\\mathbb{C}\\): yes — every closed curve in \\(\\mathbb{C}\\) is null-homotopic (contract to a point), so any two are homotopic. In \\(\\mathbb{C} \\setminus \\{i/2, -i/2\\}\\): no — \\(\\gamma_0\\) has winding number \\(+1\\) around both \\(i/2\\) and \\(-i/2\\), while \\(\\gamma_1\\) has winding number \\(+1\\) around \\(i/2\\) and \\(-1\\) around \\(-i/2\\). Different winding numbers mean the curves are not homotopic in the punctured domain.'
+                    question: 'Let \\(\\gamma\\) be a closed curve in \\(\\mathbb{C} \\setminus \\{0, 1\\}\\) that winds once around \\(z=0\\) and zero times around \\(z=1\\). Compute \\(\\oint_\\gamma \\frac{dz}{z(z-1)}\\) using partial fractions and the deformation theorem.',
+                    hint: 'Write \\(\\frac{1}{z(z-1)} = \\frac{-1}{z} + \\frac{1}{z-1}\\). Each term integrates separately by deformation.',
+                    solution: 'Partial fractions: \\(\\frac{1}{z(z-1)} = \\frac{-1}{z} + \\frac{1}{z-1}\\). Then \\(\\oint_\\gamma \\frac{dz}{z(z-1)} = -\\oint_\\gamma \\frac{dz}{z} + \\oint_\\gamma \\frac{dz}{z-1}\\). Since \\(\\gamma\\) winds once around 0, \\(\\oint_\\gamma \\frac{dz}{z} = 2\\pi i\\). Since \\(\\gamma\\) winds zero times around 1, \\(\\oint_\\gamma \\frac{dz}{z-1} = 0\\). Total: \\(-2\\pi i\\).'
                 }
             ]
         },
@@ -700,288 +707,273 @@ window.CHAPTERS.push({
             id: 'sec-multiply-connected',
             title: 'Multiply Connected Domains',
             content: `
-<h2>Multiply Connected Domains: Annuli and Keyholes</h2>
+<h2>Multiply Connected Domains</h2>
 
-<p>In a domain with holes, Cauchy's theorem fails for curves that encircle the holes. The correct generalization tracks winding numbers around each hole.</p>
+<div class="env-block intuition">
+    <div class="env-title">What If There Are Holes?</div>
+    <div class="env-body">
+        <p>Cauchy's theorem as stated requires simple connectivity. But many important domains have holes: the punctured plane \\(\\mathbb{C} \\setminus \\{0\\}\\), annuli \\(\\{r < |z| < R\\}\\), domains with finitely many punctures. The integral around a contour in such a domain need not vanish; instead, it equals the sum of integrals around the holes. The <strong>keyhole contour</strong> is the classical device for making this precise.</p>
+    </div>
+</div>
 
-<h3>The Annulus</h3>
+<h3>The Keyhole Argument</h3>
+
+<p>Suppose \\(f\\) is analytic on a region between two simple closed curves \\(C_1\\) (outer) and \\(C_2\\) (inner). We want to relate \\(\\oint_{C_1} f\\,dz\\) and \\(\\oint_{C_2} f\\,dz\\).</p>
+
+<p>The keyhole construction works as follows:</p>
+<ol>
+    <li>Cut a narrow corridor from \\(C_1\\) to \\(C_2\\).</li>
+    <li>This creates a single closed curve \\(\\Gamma\\) that traverses \\(C_1\\) counterclockwise, travels along one side of the corridor to \\(C_2\\), traverses \\(C_2\\) clockwise, and returns along the other side of the corridor.</li>
+    <li>The domain enclosed by \\(\\Gamma\\) lies entirely in the region of analyticity, so by Cauchy's theorem for simply connected domains, \\(\\oint_\\Gamma f\\,dz = 0\\).</li>
+    <li>As the corridor width shrinks to zero, the contributions from the two sides of the corridor cancel, giving</li>
+</ol>
+\\[\\oint_{C_1} f\\,dz = \\oint_{C_2} f\\,dz,\\]
+<p>where both integrals are taken counterclockwise.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.9 (Cauchy for Multiply Connected Domains)</div>
+    <div class="env-title">Theorem 5.6 (Cauchy's Theorem for Multiply Connected Domains)</div>
     <div class="env-body">
-        <p>Let \\(U\\) be the annulus \\(A = \\{z : r_1 < |z - z_0| < r_2\\}\\), and let \\(f\\) be holomorphic on \\(\\bar{A}\\). Let \\(C_1 = \\{|z-z_0|=r_1\\}\\) and \\(C_2 = \\{|z-z_0|=r_2\\}\\), both counterclockwise. Then</p>
-        \\[\\oint_{C_2} f(z)\\,dz = \\oint_{C_1} f(z)\\,dz.\\]
-        <p>Equivalently, \\(\\oint_{C_2} f\\,dz - \\oint_{C_1} f\\,dz = 0\\), which we write as \\(\\oint_{\\partial A} f\\,dz = 0\\) where \\(\\partial A = C_2 - C_1\\) (outer minus inner, consistently oriented).</p>
+        <p>Let \\(f\\) be analytic on a domain \\(D\\) whose boundary consists of a simple closed curve \\(C_0\\) (outer boundary, traversed counterclockwise) and simple closed curves \\(C_1, \\ldots, C_n\\) (boundaries of holes, each traversed clockwise). Then</p>
+        \\[\\oint_{C_0} f\\,dz + \\oint_{C_1} f\\,dz + \\cdots + \\oint_{C_n} f\\,dz = 0.\\]
+        <p>Equivalently, with all curves counterclockwise:</p>
+        \\[\\oint_{C_0} f\\,dz = \\sum_{k=1}^{n} \\oint_{C_k} f\\,dz.\\]
     </div>
 </div>
-
-<p><strong>Proof idea.</strong> Connect \\(C_1\\) and \\(C_2\\) by two "cuts" (line segments across the annulus). This creates a simply connected domain. Cauchy's theorem applies; the cuts cancel (traversed in opposite directions), leaving \\(\\oint_{C_2} f\\,dz - \\oint_{C_1} f\\,dz = 0\\). \\(\\blacksquare\\)</p>
-
-<h3>The Keyhole Contour</h3>
-
-<p>To integrate around a branch cut or an isolated singularity, we use the <strong>keyhole contour</strong>:</p>
-<ul>
-    <li>Outer circle \\(C_R\\): radius \\(R\\), counterclockwise;</li>
-    <li>Inner circle \\(C_\\varepsilon\\): radius \\(\\varepsilon\\), clockwise;</li>
-    <li>Two straight segments along the branch cut, traversed in opposite directions.</li>
-</ul>
-
-<p>The full keyhole contour encloses no singularities (they are excluded), so the integral is zero by Cauchy's theorem. This gives a relation between the straight integrals (the ones we want) and the circular integrals (often estimable).</p>
 
 <div class="env-block example">
-    <div class="env-title">Example: \\(\\int_0^\\infty \\frac{x^{a-1}}{1+x}\\,dx\\) via Keyhole</div>
+    <div class="env-title">Example: Annular Domain</div>
     <div class="env-body">
-        <p>Let \\(0 < a < 1\\). Consider \\(f(z) = z^{a-1}/(1+z)\\) on \\(\\mathbb{C} \\setminus [0,\\infty)\\). The keyhole contour (around the positive real axis) gives, as \\(R \\to \\infty\\), \\(\\varepsilon \\to 0\\):</p>
-        \\[\\int_0^\\infty \\frac{x^{a-1}}{1+x}\\,dx - e^{2\\pi i(a-1)} \\int_0^\\infty \\frac{x^{a-1}}{1+x}\\,dx = 2\\pi i \\cdot \\text{Res}\\left(\\frac{z^{a-1}}{1+z}, -1\\right) = 2\\pi i e^{i\\pi(a-1)}.\\]
-        <p>Solving: \\(\\int_0^\\infty \\frac{x^{a-1}}{1+x}\\,dx = \\frac{\\pi}{\\sin(\\pi a)}\\).</p>
+        <p>Let \\(f(z) = 1/z\\) on the annulus \\(1 < |z| < 3\\). The outer boundary is \\(|z| = 3\\) (counterclockwise) and the inner boundary is \\(|z| = 1\\) (clockwise). By Theorem 5.6:</p>
+        \\[\\oint_{|z|=3} \\frac{dz}{z} - \\oint_{|z|=1} \\frac{dz}{z} = 0,\\]
+        <p>confirming that both integrals equal \\(2\\pi i\\).</p>
     </div>
 </div>
 
-<h3>Winding Numbers and the General Principle</h3>
+<div class="viz-placeholder" data-viz="viz-keyhole"></div>
 
-<p>For a domain \\(U\\) with holes bounded by curves \\(\\Gamma_1, \\ldots, \\Gamma_n\\), and \\(f\\) holomorphic on \\(U\\), if \\(\\gamma\\) is a closed curve in \\(U\\) with winding number \\(n_k\\) around the \\(k\\)th hole, then</p>
-\\[\\oint_\\gamma f\\,dz = \\sum_{k=1}^n n_k \\oint_{\\Gamma_k} f\\,dz.\\]
-
-<p>This is the full generalization: the integral depends only on the topological data (winding numbers), not the specific curve.</p>
+<div class="viz-placeholder" data-viz="viz-multiply-connected"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-keyhole',
-                    title: 'Keyhole Contour: Integration Around a Branch Cut',
-                    description: 'Watch the keyhole contour animate: outer arc (radius R), inner arc (radius ε, clockwise), and two straight segments straddling the branch cut along the positive real axis. As R→∞ and ε→0, the arcs vanish and only the straight-line integrals remain.',
+                    title: 'The Keyhole Contour',
+                    description: 'Watch the keyhole contour construction. The outer and inner circles are connected by a narrow corridor. An animated particle traces the full keyhole path. As the corridor narrows, the contributions from its two sides cancel, proving that the outer and inner integrals are equal.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 55, originX: 260, originY: 200 });
-                        var phase = 0; // 0..1 animation
-                        var animId = null;
-                        var R = 3.0, eps = 0.5;
-                        var gapAngle = 0.12; // gap above/below real axis
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420,
+                            scale: 55
+                        });
+
+                        var corridorWidth = 0.3;
+                        var animT = 0;
+                        var animating = false;
+
+                        VizEngine.createSlider(controls, 'Corridor width', 0.02, 0.5, 0.3, 0.01, function(v) {
+                            corridorWidth = v;
+                            draw();
+                        });
+
+                        VizEngine.createButton(controls, 'Animate', function() {
+                            if (animating) return;
+                            animating = true;
+                            animT = 0;
+                            viz.animate(function(time) {
+                                animT = (time * 0.0003) % 1;
+                                draw();
+                                if (animT > 0.999) {
+                                    animating = false;
+                                    viz.stopAnimation();
+                                }
+                            });
+                        });
+
+                        var R1 = 3;  // outer radius
+                        var R2 = 1;  // inner radius
+
+                        // Keyhole path: outer CCW, corridor down, inner CW, corridor up
+                        function keyholePoint(t) {
+                            // t in [0,1] traverses the full keyhole
+                            var hw = corridorWidth / 2;
+                            var corridorAngle = Math.atan2(hw, R1);
+                            var innerCorridorAngle = Math.atan2(hw, R2);
+
+                            // Phase 1: outer circle CCW from corridorAngle to 2pi - corridorAngle
+                            // Phase 2: corridor from outer to inner (right side)
+                            // Phase 3: inner circle CW from -innerCorridorAngle to -(2pi - innerCorridorAngle)
+                            // Phase 4: corridor from inner to outer (left side)
+
+                            var phaseLengths = [
+                                2 * Math.PI - 2 * corridorAngle,  // outer arc
+                                R1 - R2,                           // corridor right
+                                2 * Math.PI - 2 * innerCorridorAngle, // inner arc
+                                R1 - R2                            // corridor left
+                            ];
+                            var totalLen = phaseLengths[0] + phaseLengths[1] + phaseLengths[2] + phaseLengths[3];
+
+                            var s = t * totalLen;
+
+                            if (s < phaseLengths[0]) {
+                                // Outer circle CCW
+                                var angle = corridorAngle + s;
+                                return [R1 * Math.cos(angle), R1 * Math.sin(angle)];
+                            }
+                            s -= phaseLengths[0];
+
+                            if (s < phaseLengths[1]) {
+                                // Right corridor (going inward)
+                                var frac = s / phaseLengths[1];
+                                var r = R1 - (R1 - R2) * frac;
+                                var angle = 2 * Math.PI - corridorAngle + (corridorAngle - innerCorridorAngle) * frac;
+                                // Simpler: straight line at angle near 0, offset by hw
+                                return [r * Math.cos(-hw / r), r * Math.sin(-hw / r)];
+                            }
+                            s -= phaseLengths[1];
+
+                            if (s < phaseLengths[2]) {
+                                // Inner circle CW
+                                var angle = -innerCorridorAngle - s;
+                                return [R2 * Math.cos(angle), R2 * Math.sin(angle)];
+                            }
+                            s -= phaseLengths[2];
+
+                            // Left corridor (going outward)
+                            var frac = s / phaseLengths[3];
+                            var r = R2 + (R1 - R2) * frac;
+                            return [r * Math.cos(hw / r), r * Math.sin(hw / r)];
+                        }
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
 
-                            // Fill interior of keyhole region
-                            ctx.save();
+                            // Singularity
+                            viz.drawPoint(0, 0, viz.colors.red, '0', 6);
+
+                            // Outer circle (dashed)
+                            viz.drawCircle(0, 0, R1, null, viz.colors.blue + '44', 1);
+
+                            // Inner circle (dashed)
+                            viz.drawCircle(0, 0, R2, null, viz.colors.orange + '44', 1);
+
+                            // Fill annular region lightly
+                            // Draw keyhole contour
+                            ctx.strokeStyle = viz.colors.teal;
+                            ctx.lineWidth = 2;
                             ctx.beginPath();
-                            // Outer arc: from +gapAngle to 2pi-gapAngle CCW
-                            var [ox1, oy1] = viz.toScreen(R*Math.cos(gapAngle), R*Math.sin(gapAngle));
-                            var [ox2, oy2] = viz.toScreen(R, 0);
-                            // draw filled region
-                            ctx.fillStyle = viz.colors.blue + '18';
-                            ctx.arc(viz.originX, viz.originY, R * viz.scale, -(Math.PI*2 - gapAngle), -gapAngle, false);
-                            ctx.arc(viz.originX, viz.originY, eps * viz.scale, -gapAngle, -(Math.PI*2 - gapAngle), true);
+                            var steps = 500;
+                            for (var i = 0; i <= steps; i++) {
+                                var pt = keyholePoint(i / steps);
+                                var sc = viz.toScreen(pt[0], pt[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
+                            }
                             ctx.closePath();
-                            ctx.fill();
-                            ctx.restore();
+                            ctx.stroke();
 
-                            // --- Draw the 4 segments of keyhole ---
-                            // 1. Outer arc (CCW, gap at positive real axis)
-                            var seg1Frac = Math.min(1, phase * 4);
-                            if (seg1Frac > 0) {
-                                ctx.strokeStyle = viz.colors.blue;
-                                ctx.lineWidth = 2.5;
-                                ctx.beginPath();
-                                var startAngle = gapAngle;
-                                var endAngle = 2*Math.PI - gapAngle;
-                                var sweepAngle = (endAngle - startAngle) * seg1Frac;
-                                var [sx, sy] = viz.toScreen(R*Math.cos(startAngle), R*Math.sin(startAngle));
-                                ctx.moveTo(sx, sy);
-                                var steps = 120;
-                                for (var k = 1; k <= Math.ceil(steps * seg1Frac); k++) {
-                                    var a = startAngle + (endAngle - startAngle) * k / steps;
-                                    if (a > startAngle + sweepAngle) break;
-                                    var [px, py] = viz.toScreen(R*Math.cos(a), R*Math.sin(a));
-                                    ctx.lineTo(px, py);
-                                }
-                                ctx.stroke();
-                                // Arrow
-                                if (seg1Frac > 0.5) {
-                                    var am = startAngle + sweepAngle * 0.5;
-                                    var am2 = am + 0.05;
-                                    viz.drawVector(R*Math.cos(am), R*Math.sin(am), R*Math.cos(am2), R*Math.sin(am2), viz.colors.blue, null, 2);
-                                }
+                            // Animated particle
+                            if (animating) {
+                                var pp = keyholePoint(animT);
+                                viz.drawPoint(pp[0], pp[1], viz.colors.green, null, 7);
                             }
-
-                            // 2. Upper straight line: (R, +ε_gap) to (eps, +ε_gap) — "top" of cut
-                            var seg2Frac = Math.min(1, Math.max(0, phase * 4 - 1));
-                            if (seg2Frac > 0) {
-                                var yOff = 0.07;
-                                var x2s = R * Math.cos(gapAngle), y2s = R * Math.sin(gapAngle);
-                                var x2e = eps * Math.cos(gapAngle), y2e = eps * Math.sin(gapAngle);
-                                ctx.strokeStyle = viz.colors.orange;
-                                ctx.lineWidth = 2.5;
-                                var [sx2a, sy2a] = viz.toScreen(x2s, y2s);
-                                var [sx2b, sy2b] = viz.toScreen(x2s + (x2e-x2s)*seg2Frac, y2s + (y2e-y2s)*seg2Frac);
-                                ctx.beginPath(); ctx.moveTo(sx2a, sy2a); ctx.lineTo(sx2b, sy2b); ctx.stroke();
-                            }
-
-                            // 3. Inner arc (CW, from small angle to -small angle)
-                            var seg3Frac = Math.min(1, Math.max(0, phase * 4 - 2));
-                            if (seg3Frac > 0) {
-                                ctx.strokeStyle = viz.colors.teal;
-                                ctx.lineWidth = 2.5;
-                                ctx.beginPath();
-                                var [ix0, iy0] = viz.toScreen(eps*Math.cos(gapAngle), eps*Math.sin(gapAngle));
-                                ctx.moveTo(ix0, iy0);
-                                var steps2 = 80;
-                                for (var k2 = 1; k2 <= Math.ceil(steps2 * seg3Frac); k2++) {
-                                    var a2 = gapAngle - (2*Math.PI - 2*gapAngle) * k2 / steps2;
-                                    var [ipx, ipy] = viz.toScreen(eps*Math.cos(a2), eps*Math.sin(a2));
-                                    ctx.lineTo(ipx, ipy);
-                                }
-                                ctx.stroke();
-                                if (seg3Frac > 0.5) {
-                                    var am3 = gapAngle - (Math.PI - gapAngle);
-                                    var am4 = am3 - 0.05;
-                                    viz.drawVector(eps*Math.cos(am3), eps*Math.sin(am3), eps*Math.cos(am4), eps*Math.sin(am4), viz.colors.teal, null, 2);
-                                }
-                            }
-
-                            // 4. Lower straight line: (eps, -ε_gap) back to (R, -ε_gap)
-                            var seg4Frac = Math.min(1, Math.max(0, phase * 4 - 3));
-                            if (seg4Frac > 0) {
-                                var x4s = eps * Math.cos(-gapAngle), y4s = eps * Math.sin(-gapAngle);
-                                var x4e = R * Math.cos(-gapAngle), y4e = R * Math.sin(-gapAngle);
-                                ctx.strokeStyle = viz.colors.purple;
-                                ctx.lineWidth = 2.5;
-                                var [sx4a, sy4a] = viz.toScreen(x4s, y4s);
-                                var [sx4b, sy4b] = viz.toScreen(x4s + (x4e-x4s)*seg4Frac, y4s + (y4e-y4s)*seg4Frac);
-                                ctx.beginPath(); ctx.moveTo(sx4a, sy4a); ctx.lineTo(sx4b, sy4b); ctx.stroke();
-                            }
-
-                            // Branch cut indicator
-                            ctx.strokeStyle = viz.colors.red + '88';
-                            ctx.lineWidth = 1.5;
-                            ctx.setLineDash([3, 3]);
-                            var [bx1, by1] = viz.toScreen(0, 0);
-                            var [bx2, by2] = viz.toScreen(3.5, 0);
-                            ctx.beginPath(); ctx.moveTo(bx1, by1); ctx.lineTo(bx2, by2); ctx.stroke();
-                            ctx.setLineDash([]);
-                            viz.screenText('branch cut', viz.width - 70, viz.originY - 16, viz.colors.red, 10);
 
                             // Labels
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            // R label
-                            var [Rx, Ry] = viz.toScreen(R * 0.7, R * 0.7);
+                            viz.screenText('Keyhole Contour', viz.width / 2, 18, viz.colors.white, 15);
+                            ctx.font = '11px -apple-system,sans-serif';
                             ctx.fillStyle = viz.colors.blue;
-                            ctx.fillText('C_R (CCW)', Rx + 5, Ry);
-                            // eps label
-                            var [ex, ey] = viz.toScreen(-eps * 0.8, eps * 0.8);
+                            ctx.textAlign = 'left';
+                            ctx.fillText('Outer: |z| = ' + R1, 12, viz.height - 44);
+                            ctx.fillStyle = viz.colors.orange;
+                            ctx.fillText('Inner: |z| = ' + R2, 12, viz.height - 28);
                             ctx.fillStyle = viz.colors.teal;
-                            ctx.fillText('C_\u03B5 (CW)', ex - 60, ey);
-
-                            // Legend
-                            var lx = 14, ly = viz.height - 80;
-                            ctx.fillStyle = viz.colors.blue; ctx.fillRect(lx, ly, 12, 3);
-                            ctx.fillStyle = viz.colors.text; ctx.fillText('Outer arc (CCW)', lx+16, ly+2);
-                            ctx.fillStyle = viz.colors.teal; ctx.fillRect(lx, ly+18, 12, 3);
-                            ctx.fillStyle = viz.colors.text; ctx.fillText('Inner arc (CW)', lx+16, ly+20);
-                            ctx.fillStyle = viz.colors.orange; ctx.fillRect(lx, ly+36, 12, 3);
-                            ctx.fillStyle = viz.colors.text; ctx.fillText('Upper edge of cut', lx+16, ly+38);
-                            ctx.fillStyle = viz.colors.purple; ctx.fillRect(lx, ly+54, 12, 3);
-                            ctx.fillStyle = viz.colors.text; ctx.fillText('Lower edge of cut', lx+16, ly+56);
-
-                            if (phase >= 0.99) {
-                                viz.screenText('Total: \u222E f dz = 0  (holomorphic inside keyhole)', viz.width/2, 22, viz.colors.teal, 13);
-                            }
+                            ctx.fillText('Corridor cancels \u2192 \u222E_outer = \u222E_inner', 12, viz.height - 12);
                         }
-
-                        VizEngine.createSlider(controls, 'Trace', 0, 1, 0, 0.005, function(v) {
-                            phase = v; draw();
-                        });
-                        VizEngine.createButton(controls, 'Animate', function() {
-                            if (animId) { cancelAnimationFrame(animId); animId = null; return; }
-                            phase = 0;
-                            var last = null;
-                            function step(ts) {
-                                if (last === null) last = ts;
-                                phase = Math.min(1, phase + (ts - last) / 4000);
-                                last = ts;
-                                draw();
-                                if (phase < 1) animId = requestAnimationFrame(step);
-                                else animId = null;
-                            }
-                            animId = requestAnimationFrame(step);
-                        });
-                        VizEngine.createButton(controls, 'Reset', function() {
-                            if (animId) { cancelAnimationFrame(animId); animId = null; }
-                            phase = 0; draw();
-                        });
                         draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-multiply-connected',
-                    title: 'Annulus: Outer Contour Minus Inner Contour',
-                    description: 'On an annulus, the full boundary is the outer circle minus the inner circle (consistently oriented). Their combined integral is zero; individually, they give the same value. Drag the sliders to change radii.',
+                    title: 'Multiply Connected Domain',
+                    description: 'A domain with multiple holes. The integral around the outer boundary equals the sum of integrals around each hole. Drag the holes to see how the domain changes.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 250, originY: 200 });
-                        var r1 = 0.8, r2 = 2.2;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420,
+                            scale: 45
+                        });
+
+                        // Holes as draggable points
+                        var hole1 = viz.addDraggable('h1', -1.5, 0.5, viz.colors.red, 8, function() { draw(); });
+                        var hole2 = viz.addDraggable('h2', 1.5, -0.5, viz.colors.red, 8, function() { draw(); });
+                        var hole3 = viz.addDraggable('h3', 0, 1.8, viz.colors.red, 8, function() { draw(); });
+
+                        var R_outer = 4;
+                        var r_hole = 0.6;
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
 
-                            // Fill annulus
+                            // Outer boundary (large circle)
+                            viz.drawCircle(0, 0, R_outer, null, viz.colors.blue, 2);
+
+                            // Draw direction arrow on outer circle
+                            var arrowAngle = Math.PI / 4;
+                            var ax = R_outer * Math.cos(arrowAngle);
+                            var ay = R_outer * Math.sin(arrowAngle);
+                            var asc = viz.toScreen(ax, ay);
+                            // tangent direction (CCW)
+                            var tx = -Math.sin(arrowAngle);
+                            var ty = Math.cos(arrowAngle);
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.beginPath();
+                            ctx.moveTo(asc[0] + tx * viz.scale * 0.2, asc[1] - ty * viz.scale * 0.2);
+                            ctx.lineTo(asc[0] + tx * viz.scale * 0.2 - 8 * tx + 6 * ty, asc[1] - ty * viz.scale * 0.2 + 8 * ty + 6 * tx);
+                            ctx.lineTo(asc[0] + tx * viz.scale * 0.2 - 8 * tx - 6 * ty, asc[1] - ty * viz.scale * 0.2 + 8 * ty - 6 * tx);
+                            ctx.closePath();
+                            ctx.fill();
+
+                            // Shade analytic region
                             ctx.save();
                             ctx.beginPath();
-                            ctx.arc(viz.originX, viz.originY, r2 * viz.scale, 0, 2*Math.PI);
-                            ctx.arc(viz.originX, viz.originY, r1 * viz.scale, 0, 2*Math.PI, true);
-                            ctx.fillStyle = viz.colors.blue + '22';
-                            ctx.fill();
+                            // Outer circle
+                            var sc0 = viz.toScreen(0, 0);
+                            ctx.arc(sc0[0], sc0[1], R_outer * viz.scale, 0, Math.PI * 2);
+                            // Cut out holes
+                            var holes = [hole1, hole2, hole3];
+                            for (var h = 0; h < holes.length; h++) {
+                                var hsc = viz.toScreen(holes[h].x, holes[h].y);
+                                ctx.moveTo(hsc[0] + r_hole * viz.scale, hsc[1]);
+                                ctx.arc(hsc[0], hsc[1], r_hole * viz.scale, 0, Math.PI * 2, true);
+                            }
+                            ctx.fillStyle = viz.colors.blue + '11';
+                            ctx.fill('evenodd');
                             ctx.restore();
 
-                            // Outer circle
-                            viz.drawCircle(0, 0, r2, null, viz.colors.blue, 2.5);
-                            // Arrow on outer (CCW)
-                            viz.drawVector(r2*Math.cos(0.1), r2*Math.sin(0.1), r2*Math.cos(0.2), r2*Math.sin(0.2), viz.colors.blue, null, 2);
+                            // Draw holes with circles
+                            var holeColors = [viz.colors.orange, viz.colors.purple, viz.colors.yellow];
+                            var holes = [hole1, hole2, hole3];
+                            for (var h = 0; h < holes.length; h++) {
+                                viz.drawCircle(holes[h].x, holes[h].y, r_hole, viz.colors.red + '22', holeColors[h], 2);
+                                viz.drawPoint(holes[h].x, holes[h].y, viz.colors.red, 'z' + (h + 1), 5);
+                            }
 
-                            // Inner circle (drawn CW = shown as red, "subtracted")
-                            viz.drawCircle(0, 0, r1, null, viz.colors.red, 2.5);
-                            // Arrow on inner (CW = negative)
-                            viz.drawVector(r1*Math.cos(0.2), r1*Math.sin(0.2), r1*Math.cos(0.1), r1*Math.sin(0.1), viz.colors.red, null, 2);
+                            // Draggables
+                            viz.drawDraggables();
 
                             // Labels
-                            viz.drawText('C\u2082 (CCW, r=' + r2.toFixed(1) + ')', r2*0.6, r2*0.6+0.2, viz.colors.blue, 12);
-                            viz.drawText('C\u2081 (CW, r=' + r1.toFixed(1) + ')', r1*0.4, -r1*0.9, viz.colors.red, 12);
-
-                            // Hole label
-                            viz.drawText('hole', 0, 0, viz.colors.text, 11);
-
-                            // Equation box
-                            var bx = viz.width - 210, by = 30;
-                            ctx.fillStyle = '#1a1a40cc';
-                            ctx.fillRect(bx, by, 198, 90);
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth=1;
-                            ctx.strokeRect(bx, by, 198, 90);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline='top';
-                            ctx.fillText('\u222E_{C\u2082} f dz - \u222E_{C\u2081} f dz = 0', bx+10, by+10);
+                            viz.screenText('Multiply Connected Domain', viz.width / 2, 18, viz.colors.white, 14);
+                            ctx.font = '11px -apple-system,sans-serif';
                             ctx.fillStyle = viz.colors.teal;
-                            ctx.fillText('\u21D2 \u222E_{C\u2082} f dz = \u222E_{C\u2081} f dz', bx+10, by+32);
+                            ctx.textAlign = 'center';
+                            ctx.fillText('\u222E_outer f dz = \u222E_C\u2081 f dz + \u222E_C\u2082 f dz + \u222E_C\u2083 f dz', viz.width / 2, viz.height - 14);
                             ctx.fillStyle = viz.colors.text;
-                            ctx.fillText('(f holomorphic on annulus)', bx+10, by+54);
-                            ctx.fillStyle = viz.colors.yellow;
-                            ctx.fillText('\u222E_{C\u2082} dz/z = \u222E_{C\u2081} dz/z = 2\u03C0i', bx+10, by+74);
-
-                            viz.screenText('r\u2081 = ' + r1.toFixed(2) + '   r\u2082 = ' + r2.toFixed(2), viz.width/2, viz.height - 18, viz.colors.text, 12);
+                            ctx.fillText('Drag the singularities to rearrange the domain', viz.width / 2, viz.height - 32);
                         }
-
-                        VizEngine.createSlider(controls, 'r\u2081 (inner)', 0.2, 1.8, r1, 0.05, function(v) {
-                            r1 = Math.min(v, r2 - 0.2); draw();
-                        });
-                        VizEngine.createSlider(controls, 'r\u2082 (outer)', 0.5, 3.0, r2, 0.05, function(v) {
-                            r2 = Math.max(v, r1 + 0.2); draw();
-                        });
                         draw();
                         return viz;
                     }
@@ -989,210 +981,220 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Let \\(A = \\{z : 1 < |z| < 3\\}\\) and \\(f(z) = (z^2 + 1)/z\\). Compute \\(\\oint_{|z|=2} f(z)\\,dz\\) using the annular version of Cauchy\'s theorem.',
-                    hint: 'Deform to \\(|z| = \\varepsilon\\) for small \\(\\varepsilon\\). Then \\(f(z) = z + 1/z\\), and only \\(1/z\\) contributes.',
-                    solution: 'Write \\(f(z) = z + 1/z\\). By deformation, \\(\\oint_{|z|=2} f\\,dz = \\oint_{|z|=\\varepsilon} f\\,dz\\). Now \\(\\oint_{|z|=\\varepsilon} z\\,dz = 0\\) (holomorphic) and \\(\\oint_{|z|=\\varepsilon} \\frac{dz}{z} = 2\\pi i\\). So the answer is \\(2\\pi i\\).'
+                    question: 'Let \\(f(z) = \\frac{1}{(z-1)(z+1)}\\) and let \\(\\gamma\\) be the circle \\(|z| = 2\\). Use partial fractions and the keyhole/deformation argument to compute \\(\\oint_\\gamma f(z)\\,dz\\).',
+                    hint: 'Partial fractions: \\(\\frac{1}{(z-1)(z+1)} = \\frac{1}{2}\\left(\\frac{1}{z-1} - \\frac{1}{z+1}\\right)\\). Both singularities are inside \\(|z|=2\\).',
+                    solution: 'Partial fractions: \\(f(z) = \\frac{1}{2}\\left(\\frac{1}{z-1} - \\frac{1}{z+1}\\right)\\). Both \\(z = 1\\) and \\(z = -1\\) are inside \\(|z| = 2\\), and \\(\\gamma\\) winds once around each. So \\(\\oint_\\gamma f\\,dz = \\frac{1}{2}(2\\pi i) - \\frac{1}{2}(2\\pi i) = 0\\).'
                 },
                 {
-                    question: 'Explain why the keyhole contour is needed to compute \\(\\int_0^\\infty x^{a-1}/(1+x)\\,dx\\) for \\(0 < a < 1\\). What goes wrong if we try a semicircular contour instead?',
-                    hint: 'The integrand \\(x^{a-1}\\) for \\(x > 0\\) requires a branch cut. On a semicircular contour in the upper half-plane, the integrand \\((-x)^{a-1}\\) for \\(x < 0\\) does not simplify nicely relative to \\(x^{a-1}\\).',
-                    solution: 'The function \\(z^{a-1}\\) requires a branch cut — it is multivalued. The keyhole contour surrounds the branch cut on the positive real axis, so the two straight segments both involve \\(x^{a-1}\\) (with a known phase difference \\(e^{2\\pi i(a-1)}\\) between upper and lower edges). A semicircle would involve \\(z^{a-1}\\) on the negative real axis, which equals \\(e^{i\\pi(a-1)} x^{a-1}\\), giving a different integral that does not simplify the original integral as cleanly.'
+                    question: 'Let \\(\\gamma\\) be the circle \\(|z| = 2\\) and \\(C\\) be the circle \\(|z - 1| = 1/2\\). Show that \\(\\oint_\\gamma \\frac{e^z}{z-1}\\,dz = \\oint_C \\frac{e^z}{z-1}\\,dz\\).',
+                    hint: 'The only singularity of \\(e^z/(z-1)\\) is at \\(z=1\\), which is inside both \\(\\gamma\\) and \\(C\\). Are \\(\\gamma\\) and \\(C\\) homotopic in \\(\\mathbb{C} \\setminus \\{1\\}\\)?',
+                    solution: 'The function \\(e^z/(z-1)\\) is analytic on \\(\\mathbb{C} \\setminus \\{1\\}\\). Both \\(\\gamma\\) and \\(C\\) wind once around \\(z = 1\\) in this domain, so they are homotopic in \\(\\mathbb{C} \\setminus \\{1\\}\\). By the deformation theorem, the integrals are equal.'
+                },
+                {
+                    question: 'Compute \\(\\oint_{|z|=3} \\frac{z}{(z-1)(z-2)}\\,dz\\) using partial fractions and the multiply connected domain theorem.',
+                    hint: 'Partial fractions: \\(\\frac{z}{(z-1)(z-2)} = \\frac{-1}{z-1} + \\frac{2}{z-2}\\). Both poles are inside \\(|z|=3\\).',
+                    solution: 'Partial fractions: \\(\\frac{z}{(z-1)(z-2)} = \\frac{-1}{z-1} + \\frac{2}{z-2}\\). Both poles \\(z=1\\) and \\(z=2\\) are inside \\(|z|=3\\). By the multiply connected domain theorem, \\(\\oint_{|z|=3} f\\,dz = \\oint_{C_1} f\\,dz + \\oint_{C_2} f\\,dz\\) where \\(C_j\\) are small circles around each pole. \\(\\oint_{C_1} \\frac{-1}{z-1}dz = -2\\pi i\\) and \\(\\oint_{C_2} \\frac{2}{z-2}dz = 4\\pi i\\). Total: \\(2\\pi i\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 6: Cauchy's Integral Formula
+        // SECTION 6: The Winding Number and Bridge to Cauchy's Formula
         // ================================================================
         {
             id: 'sec-bridge',
-            title: "Cauchy's Integral Formula",
+            title: 'Winding Numbers & What Comes Next',
             content: `
-<h2>Cauchy's Integral Formula: The Bridge to Everything</h2>
+<h2>The Winding Number</h2>
 
-<p>Cauchy's theorem says integrals over closed curves vanish for holomorphic functions. Cauchy's integral formula does something more startling: it <em>recovers the value of f at any interior point</em> from its values on the boundary.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 5.10 (Cauchy's Integral Formula)</div>
+<div class="env-block intuition">
+    <div class="env-title">Counting Wraps</div>
     <div class="env-body">
-        <p>Let \\(U\\) be a simply connected open set, \\(f : U \\to \\mathbb{C}\\) holomorphic, and \\(\\gamma\\) a positively oriented (counterclockwise) simple closed curve in \\(U\\). For any \\(z_0\\) inside \\(\\gamma\\),</p>
-        \\[f(z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{z - z_0}\\,dz.\\]
+        <p>How many times does a closed curve \\(\\gamma\\) wind around a point \\(z_0\\)? This is the <strong>winding number</strong> (or index) of \\(\\gamma\\) with respect to \\(z_0\\). It is a topological invariant that controls the value of contour integrals: the integral \\(\\oint_\\gamma \\frac{dz}{z - z_0}\\) is exactly \\(2\\pi i\\) times the winding number.</p>
     </div>
 </div>
 
-<h3>Proof</h3>
-<p>The function \\(g(z) = f(z)/(z - z_0)\\) has a singularity at \\(z_0\\). Write</p>
-\\[g(z) = \\frac{f(z) - f(z_0)}{z - z_0} + \\frac{f(z_0)}{z - z_0}.\\]
-<p>The first term is holomorphic at \\(z_0\\) (the apparent singularity is removable, since \\(f\\) is differentiable there and \\((f(z)-f(z_0))/(z-z_0) \\to f'(z_0)\\)). By Cauchy's theorem, its integral over \\(\\gamma\\) is zero. For the second term, deform \\(\\gamma\\) to a small circle \\(C_\\varepsilon\\) of radius \\(\\varepsilon\\) around \\(z_0\\):</p>
-\\[\\oint_\\gamma \\frac{f(z_0)}{z - z_0}\\,dz = f(z_0) \\oint_{C_\\varepsilon} \\frac{dz}{z-z_0} = f(z_0) \\cdot 2\\pi i.\\]
-<p>Dividing by \\(2\\pi i\\) gives the formula. \\(\\blacksquare\\)</p>
-
-<h3>Higher-Order Derivatives</h3>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 5.11 (Cauchy's Integral Formula for Derivatives)</div>
+<div class="env-block definition">
+    <div class="env-title">Definition (Winding Number)</div>
     <div class="env-body">
-        <p>Under the same hypotheses, \\(f\\) is infinitely differentiable and</p>
-        \\[f^{(n)}(z_0) = \\frac{n!}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{(z - z_0)^{n+1}}\\,dz, \\quad n = 0, 1, 2, \\ldots\\]
-    </div>
-</div>
-
-<p><strong>Proof sketch.</strong> Differentiate the integral formula under the integral sign with respect to \\(z_0\\). Justification (dominated convergence or direct estimation) shows this is valid. \\(\\blacksquare\\)</p>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary 5.12 (Holomorphic \\(\\Rightarrow\\) Analytic)</div>
-    <div class="env-body">
-        <p>Every holomorphic function is <strong>analytic</strong>: it equals its Taylor series in a neighborhood of every point. In particular, a function that is once complex-differentiable is automatically infinitely differentiable — a phenomenon with no real-variable analogue.</p>
+        <p>Let \\(\\gamma\\) be a closed contour and \\(z_0 \\notin \\gamma\\). The <strong>winding number</strong> (or index) of \\(\\gamma\\) around \\(z_0\\) is</p>
+        \\[n(\\gamma, z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{dz}{z - z_0}.\\]
+        <p>This is always an integer.</p>
     </div>
 </div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 5.13 (Cauchy's Estimate)</div>
+    <div class="env-title">Theorem 5.7 (Winding Number is an Integer)</div>
     <div class="env-body">
-        <p>If \\(f\\) is holomorphic on \\(|z - z_0| < R\\) with \\(|f(z)| \\leq M\\) there, then</p>
-        \\[|f^{(n)}(z_0)| \\leq \\frac{n! M}{R^n}.\\]
+        <p>For any closed contour \\(\\gamma\\) and any \\(z_0 \\notin \\gamma\\), the winding number \\(n(\\gamma, z_0)\\) is an integer. Moreover:</p>
+        <ul>
+            <li>\\(n(\\gamma, z_0) = 0\\) if \\(z_0\\) is in the unbounded component of \\(\\mathbb{C} \\setminus \\gamma\\).</li>
+            <li>\\(n(\\gamma, z_0)\\) is constant on each connected component of \\(\\mathbb{C} \\setminus \\gamma\\).</li>
+        </ul>
     </div>
 </div>
 
-<p><strong>Proof.</strong> Apply the integral formula on the circle \\(|z - z_0| = r < R\\): \\(|f^{(n)}(z_0)| \\leq \\frac{n!}{2\\pi} \\cdot \\frac{M}{r^n} \\cdot 2\\pi r = n!M/r^n\\). Letting \\(r \\to R\\) gives the estimate. \\(\\blacksquare\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof Sketch</div>
+    <div class="env-body">
+        <p>Define \\(g(t) = \\exp\\!\\left(-\\int_0^t \\frac{\\gamma'(s)}{\\gamma(s) - z_0}\\,ds\\right) \\cdot (\\gamma(t) - z_0)\\). One checks that \\(g'(t) = 0\\), so \\(g\\) is constant. Since \\(\\gamma(0) = \\gamma(1)\\) (closed curve), we get \\(\\exp\\!\\left(-\\int_0^1 \\frac{\\gamma'(s)}{\\gamma(s) - z_0}\\,ds\\right) = 1\\), which means the integral is \\(2\\pi i k\\) for some integer \\(k\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Example: A Quick Integral</div>
+    <div class="env-title">Examples of Winding Numbers</div>
     <div class="env-body">
-        <p>Compute \\(\\oint_{|z|=2} \\frac{\\sin z}{z^3}\\,dz\\).</p>
-        <p>Here \\(f(z) = \\sin z\\), \\(z_0 = 0\\), \\(n = 2\\). By the formula:</p>
-        \\[\\oint_{|z|=2} \\frac{\\sin z}{z^3}\\,dz = \\frac{2\\pi i}{2!} f''(0) = \\pi i \\cdot (-\\sin 0) = 0.\\]
-        <p>Alternatively: \\(f''(z) = -\\sin z\\), \\(f''(0) = 0\\).</p>
+        <ul>
+            <li>The circle \\(|z| = 1\\) traversed counterclockwise has winding number \\(+1\\) around the origin, \\(0\\) around any point \\(|z_0| > 1\\).</li>
+            <li>The same circle traversed clockwise has winding number \\(-1\\) around the origin.</li>
+            <li>A figure-eight curve that crosses itself can have winding number 0 around a point enclosed by both loops, if the two loops wind in opposite directions.</li>
+        </ul>
     </div>
 </div>
+
+<h3>Cauchy's Theorem, General Version</h3>
+
+<p>Using winding numbers, we can state the most general version of Cauchy's theorem for finitely many singularities.</p>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 5.8 (Cauchy's Theorem, General Form)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be analytic on a domain \\(D\\), and let \\(\\gamma\\) be a closed contour in \\(D\\) that is null-homotopic in \\(D\\). Then</p>
+        \\[\\oint_\\gamma f(z)\\,dz = 0.\\]
+    </div>
+</div>
+
+<h3>Bridge to Cauchy's Integral Formula</h3>
+
+<p>Cauchy's theorem tells us <em>when</em> an integral vanishes. The next chapter asks: what is the integral when it does <em>not</em> vanish? The answer is <strong>Cauchy's integral formula</strong>:</p>
+
+\\[f(z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{z - z_0}\\,dz,\\]
+
+<p>where \\(\\gamma\\) winds once around \\(z_0\\). This extraordinary formula says that the values of an analytic function on a curve completely determine its values inside. It is the gateway to the rest of complex analysis: Taylor series, Liouville's theorem, the maximum modulus principle, and ultimately the residue theorem.</p>
+
+<div class="env-block remark">
+    <div class="env-title">Looking Ahead</div>
+    <div class="env-body">
+        <p>The logical chain so far: analyticity (Chapter 2) \\(\\Rightarrow\\) Goursat's lemma \\(\\Rightarrow\\) Cauchy's theorem \\(\\Rightarrow\\) existence of antiderivatives \\(\\Rightarrow\\) Cauchy's integral formula (Chapter 6) \\(\\Rightarrow\\) infinite differentiability, Taylor series, and everything else. Cauchy's theorem is the keystone: without it, the entire edifice collapses.</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-index"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-index',
-                    title: 'Winding Number: Drag a Point',
-                    description: 'Drag the red point z₀. The winding number n(γ, z₀) = (1/2πi)∮ dz/(z−z₀) counts how many times the contour winds around z₀. Points inside the loop have winding number 1; outside have 0.',
+                    title: 'Winding Number Explorer',
+                    description: 'Drag the point \\(z_0\\) (green) around the plane. The winding number of the fixed curve around \\(z_0\\) is computed and displayed. The curve is a trefoil-like shape that creates regions with different winding numbers.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 250, originY: 200 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420,
+                            scale: 50
+                        });
 
-                        // Contour: figure-8-like or simple closed curve
-                        // We offer two curves: simple circle and figure-eight
-                        var curveMode = 'circle';
-
-                        function contourPts(mode, N) {
-                            var pts = [];
-                            for (var k = 0; k <= N; k++) {
-                                var s = k / N;
-                                var a = 2 * Math.PI * s;
-                                var x, y;
-                                if (mode === 'circle') {
-                                    x = 1.8 * Math.cos(a);
-                                    y = 1.8 * Math.sin(a);
-                                } else if (mode === 'star') {
-                                    var r = 1.5 + 0.7 * Math.cos(5 * a);
-                                    x = r * Math.cos(a); y = r * Math.sin(a);
-                                } else {
-                                    // figure-8: two loops
-                                    x = Math.sin(a) * 1.5;
-                                    y = Math.sin(2 * a) * 0.9;
-                                }
-                                pts.push([x, y]);
-                            }
-                            return pts;
+                        // A trefoil-like curve that creates regions with winding numbers 0, 1, 2
+                        function curvePoint(t) {
+                            var theta = 2 * Math.PI * t;
+                            var r = 2 + Math.cos(3 * theta);
+                            return [r * Math.cos(theta), r * Math.sin(theta)];
                         }
 
-                        function windingNumber(pts, px, py) {
-                            // Shoelace-based winding number
-                            var total = 0;
-                            var N = pts.length - 1;
-                            for (var k = 0; k < N; k++) {
-                                var dx1 = pts[k][0] - px, dy1 = pts[k][1] - py;
-                                var dx2 = pts[k+1][0] - px, dy2 = pts[k+1][1] - py;
-                                var angle = Math.atan2(dx1*dy2 - dy1*dx2, dx1*dx2 + dy1*dy2);
-                                total += angle;
+                        // Compute winding number numerically
+                        function windingNumber(px, py, steps) {
+                            var totalAngle = 0;
+                            steps = steps || 1000;
+                            for (var i = 0; i < steps; i++) {
+                                var p0 = curvePoint(i / steps);
+                                var p1 = curvePoint((i + 1) / steps);
+                                var a0 = Math.atan2(p0[1] - py, p0[0] - px);
+                                var a1 = Math.atan2(p1[1] - py, p1[0] - px);
+                                var da = a1 - a0;
+                                // Normalize to [-pi, pi]
+                                while (da > Math.PI) da -= 2 * Math.PI;
+                                while (da < -Math.PI) da += 2 * Math.PI;
+                                totalAngle += da;
                             }
-                            return Math.round(total / (2 * Math.PI));
+                            return Math.round(totalAngle / (2 * Math.PI));
                         }
 
-                        var draggable = viz.addDraggable('z0', 0.5, 0.3, viz.colors.red, 8, function() { viz.stopAnimation(); draw(); });
+                        var probe = viz.addDraggable('z0', 0.5, 0.5, viz.colors.green, 8, function() { draw(); });
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
-                            var pts = contourPts(curveMode, 300);
-                            var N = 300;
 
-                            // Fill interior regions
-                            ctx.save();
-                            ctx.beginPath();
-                            for (var k = 0; k <= N; k++) {
-                                var sc = viz.toScreen(pts[k][0], pts[k][1]);
-                                k===0 ? ctx.moveTo(sc[0],sc[1]) : ctx.lineTo(sc[0],sc[1]);
+                            // Color regions by winding number (approximate with a grid)
+                            var step = 0.25;
+                            for (var x = -5; x <= 5; x += step) {
+                                for (var y = -4; y <= 4; y += step) {
+                                    var w = windingNumber(x + step / 2, y + step / 2, 500);
+                                    if (w === 0) continue;
+                                    var sc = viz.toScreen(x, y + step);
+                                    var sc2 = viz.toScreen(x + step, y);
+                                    var color;
+                                    if (w === 1) color = viz.colors.blue + '22';
+                                    else if (w === 2) color = viz.colors.purple + '33';
+                                    else if (w === -1) color = viz.colors.orange + '22';
+                                    else color = viz.colors.yellow + '22';
+                                    ctx.fillStyle = color;
+                                    ctx.fillRect(sc[0], sc[1], sc2[0] - sc[0], sc2[1] - sc[1]);
+                                }
                             }
-                            ctx.closePath();
-                            ctx.fillStyle = viz.colors.blue + '22';
-                            ctx.fill();
-                            ctx.restore();
 
-                            // Draw contour
-                            ctx.strokeStyle = viz.colors.blue;
+                            // Draw curve
+                            ctx.strokeStyle = viz.colors.teal;
                             ctx.lineWidth = 2.5;
                             ctx.beginPath();
-                            for (var k2 = 0; k2 <= N; k2++) {
-                                var sc2 = viz.toScreen(pts[k2][0], pts[k2][1]);
-                                k2===0 ? ctx.moveTo(sc2[0],sc2[1]) : ctx.lineTo(sc2[0],sc2[1]);
+                            for (var i = 0; i <= 500; i++) {
+                                var p = curvePoint(i / 500);
+                                var sc = viz.toScreen(p[0], p[1]);
+                                i === 0 ? ctx.moveTo(sc[0], sc[1]) : ctx.lineTo(sc[0], sc[1]);
                             }
+                            ctx.closePath();
                             ctx.stroke();
 
-                            // Arrow showing orientation
-                            var pa = pts[Math.floor(N*0.15)], pb = pts[Math.floor(N*0.16)];
-                            viz.drawVector(pa[0], pa[1], pb[0], pb[1], viz.colors.blue, null, 2);
+                            // Direction arrows along curve
+                            for (var a = 0; a < 3; a++) {
+                                var at = (a + 0.5) / 3;
+                                var pa = curvePoint(at);
+                                var pb = curvePoint(at + 0.005);
+                                var dx = pb[0] - pa[0];
+                                var dy = pb[1] - pa[1];
+                                var sca = viz.toScreen(pa[0], pa[1]);
+                                var ang = Math.atan2(-dy * viz.scale, dx * viz.scale);
+                                ctx.fillStyle = viz.colors.teal;
+                                ctx.beginPath();
+                                ctx.moveTo(sca[0] + 8 * Math.cos(ang), sca[1] + 8 * Math.sin(ang));
+                                ctx.lineTo(sca[0] + 8 * Math.cos(ang + 2.5), sca[1] + 8 * Math.sin(ang + 2.5));
+                                ctx.lineTo(sca[0] + 8 * Math.cos(ang - 2.5), sca[1] + 8 * Math.sin(ang - 2.5));
+                                ctx.closePath();
+                                ctx.fill();
+                            }
 
-                            // Draggable point z0
+                            // Draggable probe point
                             viz.drawDraggables();
 
-                            // Compute winding number
-                            var w = windingNumber(pts, draggable.x, draggable.y);
+                            // Compute and display winding number
+                            var w = windingNumber(probe.x, probe.y);
+                            viz.screenText('n(\u03B3, z\u2080) = ' + w, viz.width / 2, 20, viz.colors.white, 18);
 
-                            // Draw line from z0 to a point on contour (to show "winding" visually)
-                            var angPt = pts[Math.floor(N * 0.07)];
-                            ctx.strokeStyle = viz.colors.red + '44';
-                            ctx.lineWidth = 1;
-                            ctx.setLineDash([3,3]);
-                            var [sx0, sy0] = viz.toScreen(draggable.x, draggable.y);
-                            var [sxp, syp] = viz.toScreen(angPt[0], angPt[1]);
-                            ctx.beginPath(); ctx.moveTo(sx0, sy0); ctx.lineTo(sxp, syp); ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            // Info box
-                            var bx = viz.width - 205, by = 30;
-                            ctx.fillStyle = '#1a1a40ee';
-                            ctx.fillRect(bx, by, 192, 100);
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth=1;
-                            ctx.strokeRect(bx, by, 192, 100);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline='top';
-                            ctx.fillText('z\u2080 = (' + draggable.x.toFixed(2) + ', ' + draggable.y.toFixed(2) + 'i)', bx+10, by+10);
-                            ctx.fillStyle = w !== 0 ? viz.colors.orange : viz.colors.text;
-                            ctx.font = 'bold 14px -apple-system,sans-serif';
-                            ctx.fillText('n(\u03B3, z\u2080) = ' + w, bx+10, by+32);
-                            ctx.fillStyle = viz.colors.text;
+                            // Legend
                             ctx.font = '11px -apple-system,sans-serif';
-                            ctx.fillText('= (1/2\u03C0i) \u222E d\u03B6/(\u03B6\u2212z\u2080)', bx+10, by+54);
-                            ctx.fillStyle = w === 1 ? viz.colors.teal : (w === 0 ? viz.colors.text : viz.colors.red);
-                            ctx.fillText(w === 0 ? 'z\u2080 is outside \u03B3' : 'z\u2080 is inside \u03B3', bx+10, by+74);
-
-                            viz.screenText('Drag the red point \u2022 Curve: ' + curveMode, viz.width/2, viz.height - 18, viz.colors.text, 12);
+                            ctx.textAlign = 'left';
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.fillText('n = 1', 12, viz.height - 44);
+                            ctx.fillStyle = viz.colors.purple;
+                            ctx.fillText('n = 2', 12, viz.height - 28);
+                            ctx.fillStyle = viz.colors.text;
+                            ctx.fillText('n = 0 (outside)', 12, viz.height - 12);
+                            ctx.fillStyle = viz.colors.green;
+                            ctx.textAlign = 'right';
+                            ctx.fillText('Drag z\u2080 to explore', viz.width - 12, viz.height - 12);
                         }
-
-                        VizEngine.createButton(controls, 'Circle', function() { curveMode = 'circle'; draw(); });
-                        VizEngine.createButton(controls, 'Star', function() { curveMode = 'star'; draw(); });
-                        VizEngine.createButton(controls, 'Figure-8', function() { curveMode = 'fig8'; draw(); });
-
-                        viz.animate(function() { draw(); viz.stopAnimation(); });
                         draw();
                         return viz;
                     }
@@ -1200,22 +1202,21 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Compute \\(\\oint_{|z|=3} \\frac{e^z}{(z-1)^2}\\,dz\\).',
-                    hint: 'Apply the integral formula for the first derivative: \\(f^{(1)}(z_0) = \\frac{1!}{2\\pi i}\\oint \\frac{f(z)}{(z-z_0)^2}\\,dz\\) with \\(f(z) = e^z\\), \\(z_0 = 1\\).',
-                    solution: '\\(f(z) = e^z\\), \\(z_0 = 1\\), \\(n = 1\\). The formula gives \\(\\oint_{|z|=3} \\frac{e^z}{(z-1)^2}\\,dz = 2\\pi i \\cdot f\'(1) = 2\\pi i e^1 = 2\\pi i e\\).'
+                    question: 'Compute the winding number of the circle \\(|z - 3| = 1\\) (counterclockwise) around (a) \\(z_0 = 3\\), (b) \\(z_0 = 0\\), (c) \\(z_0 = 3 + 2i\\).',
+                    hint: 'The winding number is \\(+1\\) for points inside the circle, and \\(0\\) for points outside.',
+                    solution: '(a) \\(z_0 = 3\\) is the center of the circle, so \\(n = 1\\). (b) \\(z_0 = 0\\) is outside the circle (distance 3 > radius 1), so \\(n = 0\\). (c) \\(z_0 = 3 + 2i\\) is outside (distance 2 > 1), so \\(n = 0\\).'
                 },
                 {
-                    question: 'Use Cauchy\'s integral formula to prove: if \\(f\\) is holomorphic on the disk \\(|z| < R\\) and continuous on \\(|z| \\leq R\\), then \\(f(0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(Re^{i\\theta})\\,d\\theta\\). This is the Mean Value Property.',
-                    hint: 'Apply Cauchy\'s integral formula with \\(\\gamma = \\{|z|=R\\}\\) and \\(z_0 = 0\\). Parametrize \\(z = Re^{i\\theta}\\).',
-                    solution: 'By Cauchy\'s formula: \\(f(0) = \\frac{1}{2\\pi i}\\oint_{|z|=R} \\frac{f(z)}{z}\\,dz\\). Parametrize \\(z = Re^{i\\theta}\\), \\(dz = iRe^{i\\theta}d\\theta\\):\n\\[f(0) = \\frac{1}{2\\pi i}\\int_0^{2\\pi} \\frac{f(Re^{i\\theta})}{Re^{i\\theta}} \\cdot iRe^{i\\theta}\\,d\\theta = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(Re^{i\\theta})\\,d\\theta.\\]'
+                    question: 'Let \\(\\gamma(t) = e^{2\\pi i n t}\\) for \\(t \\in [0, 1]\\) and \\(n \\in \\mathbb{Z}\\). What is the winding number of \\(\\gamma\\) around the origin?',
+                    hint: 'Compute \\(\\frac{1}{2\\pi i}\\oint_\\gamma \\frac{dz}{z}\\) directly.',
+                    solution: '\\(\\gamma(t) = e^{2\\pi i n t}\\), so \\(\\gamma\'(t) = 2\\pi i n \\, e^{2\\pi i n t}\\). Then \\(\\frac{1}{2\\pi i}\\int_0^1 \\frac{2\\pi i n \\, e^{2\\pi i n t}}{e^{2\\pi i n t}}\\,dt = \\frac{1}{2\\pi i}\\int_0^1 2\\pi i n \\,dt = n\\). The winding number is \\(n\\): the curve wraps around the origin \\(n\\) times (counterclockwise if \\(n > 0\\), clockwise if \\(n < 0\\)).'
                 },
                 {
-                    question: 'Derive Liouville\'s theorem from Cauchy\'s estimate: if \\(f\\) is holomorphic and bounded on all of \\(\\mathbb{C}\\), then \\(f\\) is constant.',
-                    hint: 'Apply Cauchy\'s estimate for \\(n=1\\) on a disk of radius \\(R\\), and let \\(R \\to \\infty\\).',
-                    solution: 'Suppose \\(|f(z)| \\leq M\\) for all \\(z\\). Fix any \\(z_0 \\in \\mathbb{C}\\). Cauchy\'s estimate on the disk \\(|z - z_0| < R\\) gives \\(|f\'(z_0)| \\leq M/R\\). As \\(R \\to \\infty\\), \\(|f\'(z_0)| \\to 0\\). Since \\(z_0\\) was arbitrary, \\(f\' \\equiv 0\\), so \\(f\\) is constant.'
+                    question: 'Show that the winding number \\(n(\\gamma, z_0)\\) is constant as \\(z_0\\) varies continuously in a connected component of \\(\\mathbb{C} \\setminus \\gamma\\).',
+                    hint: 'The function \\(z_0 \\mapsto n(\\gamma, z_0)\\) is continuous (why?) and integer-valued.',
+                    solution: 'The integral \\(\\frac{1}{2\\pi i}\\oint_\\gamma \\frac{dz}{z - z_0}\\) depends continuously on \\(z_0\\) (for \\(z_0 \\notin \\gamma\\), the integrand depends continuously on \\(z_0\\), and the contour is compact, so we can differentiate under the integral sign). But \\(n(\\gamma, z_0)\\) is always an integer. A continuous integer-valued function on a connected set must be constant.'
                 }
             ]
         }
-
-    ] // end sections
-}); // end chapter push
+    ]
+});
