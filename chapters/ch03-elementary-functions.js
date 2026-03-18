@@ -10,38 +10,47 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'Familiar Functions, Unfamiliar Behavior',
+            title: 'Why Elementary Functions Change',
             content: `
-<h2>Familiar Functions, Unfamiliar Behavior</h2>
+<h2>Why Elementary Functions Change</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Surprise</div>
+    <div class="env-title">A Familiar Landscape, Rearranged</div>
     <div class="env-body">
-        <p>You know \\(e^x\\), \\(\\ln x\\), \\(\\sin x\\) as real functions. They seem tame: \\(|\\sin x| \\le 1\\), \\(\\ln x\\) is only defined for \\(x > 0\\), \\(e^x > 0\\) always. Pass to the complex plane and every one of these "facts" breaks. \\(\\sin z\\) is unbounded. \\(\\ln z\\) takes infinitely many values. \\(e^z = 0\\) has no solution, yet \\(e^z\\) hits every other complex number infinitely often.</p>
+        <p>You already know \\(e^x\\), \\(\\ln x\\), \\(\\sin x\\), and \\(\\cos x\\). In real analysis these are tidy, well-separated creatures: the exponential is always positive and monotonically increasing; the logarithm is defined only for \\(x > 0\\); sine and cosine oscillate between \\(-1\\) and \\(1\\). Moving to the complex plane upends every one of these properties.</p>
     </div>
 </div>
 
-<p>The elementary functions of complex analysis are not exotic constructions. They are the <em>same</em> functions you already know, extended by the single rule that is forced on us by power series:</p>
+<p>The source of the upheaval is a single identity that ties together the exponential and trigonometric functions:</p>
 
 \\[
-e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\infty} \\frac{(-1)^n z^{2n+1}}{(2n+1)!}, \\quad \\cos z = \\sum_{n=0}^{\\infty} \\frac{(-1)^n z^{2n}}{(2n)!}.
+e^{i\\theta} = \\cos\\theta + i\\sin\\theta.
 \\]
 
-<p>These series converge absolutely for every \\(z \\in \\mathbb{C}\\), so the extension is completely determined. The surprise is not in the definition — it is in what these extended functions do. Two phenomena dominate this chapter:</p>
+<p>This is Euler's formula, which we met briefly in Chapter 0. In this chapter we take it seriously as a <em>definition</em> and follow its consequences:</p>
 
+<ul>
+    <li><strong>The exponential \\(e^z\\)</strong> becomes periodic (with period \\(2\\pi i\\)), so it is no longer injective. It maps horizontal strips onto the punctured plane.</li>
+    <li><strong>The logarithm \\(\\log z\\)</strong> must "undo" a periodic function, so it becomes multi-valued. Choosing a single-valued branch forces a branch cut, and the natural domain is a Riemann surface.</li>
+    <li><strong>Complex powers \\(z^\\alpha\\)</strong> are defined via \\(e^{\\alpha \\log z}\\) and inherit the multi-valuedness of the logarithm.</li>
+    <li><strong>Trigonometric functions</strong> are no longer bounded: \\(\\cos(iy) = \\cosh y \\to \\infty\\) as \\(y \\to \\infty\\). They connect directly to the hyperbolic functions.</li>
+</ul>
+
+<p>We will build each of these from the exponential, using Euler's formula as the central link. The theme is: <em>extending real functions to the complex plane reveals hidden structure, but at the cost of single-valuedness</em>.</p>
+
+<h3>What We Need from Earlier Chapters</h3>
+
+<p>We assume familiarity with:</p>
 <ol>
-    <li><strong>Multi-valuedness.</strong> The logarithm and complex powers are not single-valued functions on \\(\\mathbb{C} \\setminus \\{0\\}\\). To get single-valued functions we must cut the plane and choose a branch.</li>
-    <li><strong>Loss of familiar bounds.</strong> Boundedness, positivity, and periodicity in the real sense are replaced by richer complex-analytic structure: periodicity in \\(\\mathbb{C}\\), domain coloring patterns, and zeros that move into the complex plane.</li>
+    <li>The polar form \\(z = re^{i\\theta}\\) and the argument \\(\\arg z\\) (Chapter 0).</li>
+    <li>The Cauchy-Riemann equations and analyticity (Chapter 2).</li>
+    <li>Domain coloring as a tool for visualizing complex functions (Chapter 1).</li>
 </ol>
 
-<h3>Road Map</h3>
-
-<p>We proceed in logical order: exponential first (single-valued, no cuts needed), then logarithm (multi-valued, introduces branch cuts), then powers (combine exponential and logarithm), then trigonometric and hyperbolic functions (reduce to exponential), and finally inverse trigonometric functions (reduce to logarithm).</p>
-
 <div class="env-block remark">
-    <div class="env-title">Graduate Perspective</div>
+    <div class="env-title">Historical Note</div>
     <div class="env-body">
-        <p>The branch-cut gymnastics of this chapter are not an obstacle to get past — they are the content. Every multi-valued function in complex analysis is eventually tamed by choosing a branch; the skill of choosing the right branch for a given contour integral or residue computation is one of the most important in the subject.</p>
+        <p>Euler published the formula \\(e^{i\\theta} = \\cos\\theta + i\\sin\\theta\\) in 1748 in the <em>Introductio in analysin infinitorum</em>, though Roger Cotes had stated a related result in 1714. The systematic study of the complex logarithm and its branches was carried out by Bernoulli, Euler, and later Riemann, whose surface concept (1851 dissertation) finally resolved the multi-valuedness problem geometrically.</p>
     </div>
 </div>
 `,
@@ -61,55 +70,55 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
 <div class="env-block definition">
     <div class="env-title">Definition 3.1 (Complex Exponential)</div>
     <div class="env-body">
-        <p>For \\(z = x + iy \\in \\mathbb{C}\\), define</p>
-        \\[e^z = e^x(\\cos y + i \\sin y).\\]
-        <p>Equivalently, \\(e^z = \\sum_{n=0}^{\\infty} z^n / n!\\), which converges absolutely for all \\(z\\).</p>
+        <p>For \\(z = x + iy\\), we define</p>
+        \\[
+        e^z = e^x(\\cos y + i\\sin y).
+        \\]
+        <p>Equivalently, \\(e^z = e^x e^{iy}\\), where \\(e^{iy}\\) is given by Euler's formula.</p>
     </div>
 </div>
 
-<p>The key formula \\(e^z = e^x(\\cos y + i \\sin y)\\) splits the exponential cleanly: the <em>real part</em> \\(x\\) controls the modulus \\(|e^z| = e^x\\), and the <em>imaginary part</em> \\(y\\) controls the argument \\(\\arg(e^z) = y\\).</p>
-
-<h3>Euler's Formula</h3>
-
-<p>Setting \\(x = 0\\) gives the most beautiful formula in mathematics:</p>
-
-\\[e^{iy} = \\cos y + i \\sin y.\\]
-
-<p>This is Euler's formula. At \\(y = \\pi\\): \\(e^{i\\pi} + 1 = 0\\). More usefully, it means that the map \\(y \\mapsto e^{iy}\\) parametrizes the unit circle \\(|z| = 1\\) at unit angular speed.</p>
-
-<h3>Algebraic Properties</h3>
+<p>This definition is the <em>only</em> continuous extension of the real exponential that preserves the law \\(e^{z+w} = e^z e^w\\). Let us record the basic properties.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 3.1 (Exponential Properties)</div>
+    <div class="env-title">Theorem 3.1 (Properties of \\(e^z\\))</div>
     <div class="env-body">
         <ol>
-            <li>\\(e^{z+w} = e^z e^w\\) for all \\(z, w \\in \\mathbb{C}\\).</li>
-            <li>\\(|e^z| = e^{\\operatorname{Re}(z)}\\).</li>
-            <li>\\(\\overline{e^z} = e^{\\bar{z}}\\).</li>
-            <li>\\(e^z \\ne 0\\) for all \\(z \\in \\mathbb{C}\\).</li>
-            <li>\\(e^z = 1 \\iff z = 2\\pi i k\\) for some \\(k \\in \\mathbb{Z}\\).</li>
+            <li><strong>Analyticity:</strong> \\(e^z\\) is entire (analytic on all of \\(\\mathbb{C}\\)), and \\(\\frac{d}{dz}e^z = e^z\\).</li>
+            <li><strong>Non-vanishing:</strong> \\(e^z \\neq 0\\) for all \\(z \\in \\mathbb{C}\\).</li>
+            <li><strong>Modulus and argument:</strong> \\(|e^z| = e^x\\) and \\(\\arg(e^z) = y + 2\\pi k\\).</li>
+            <li><strong>Periodicity:</strong> \\(e^{z + 2\\pi i} = e^z\\) for all \\(z\\). The period is \\(2\\pi i\\).</li>
+            <li><strong>Mapping:</strong> The horizontal strip \\(\\{x + iy : -\\infty < x < \\infty,\\; \\alpha < y < \\alpha + 2\\pi\\}\\) maps bijectively onto \\(\\mathbb{C} \\setminus \\{0\\}\\).</li>
         </ol>
     </div>
 </div>
 
-<h3>Periodicity</h3>
+<div class="env-block proof">
+    <div class="env-title">Proof sketch</div>
+    <div class="env-body">
+        <p>Write \\(u = e^x \\cos y\\), \\(v = e^x \\sin y\\). Then \\(u_x = e^x \\cos y = v_y\\) and \\(u_y = -e^x \\sin y = -v_x\\), so the Cauchy-Riemann equations hold everywhere. The derivative is \\(u_x + iv_x = e^x\\cos y + ie^x\\sin y = e^z\\).</p>
+        <p>For non-vanishing: \\(|e^z| = e^x > 0\\).</p>
+        <p>For periodicity: \\(e^{z+2\\pi i} = e^x e^{i(y+2\\pi)} = e^x(\\cos(y+2\\pi) + i\\sin(y+2\\pi)) = e^x(\\cos y + i\\sin y) = e^z\\).</p>
+    </div>
+    <div class="qed">&#9646;</div>
+</div>
 
-<p>The complex exponential is <strong>periodic with period \\(2\\pi i\\)</strong>:</p>
-\\[e^{z + 2\\pi i} = e^z \\quad \\text{for all } z \\in \\mathbb{C}.\\]
+<div class="env-block example">
+    <div class="env-title">Example: Computing \\(e^z\\)</div>
+    <div class="env-body">
+        <p>Let \\(z = 1 + i\\pi/3\\). Then</p>
+        \\[
+        e^z = e^1\\bigl(\\cos\\tfrac{\\pi}{3} + i\\sin\\tfrac{\\pi}{3}\\bigr) = e\\bigl(\\tfrac{1}{2} + i\\tfrac{\\sqrt{3}}{2}\\bigr) = \\tfrac{e}{2} + i\\tfrac{e\\sqrt{3}}{2}.
+        \\]
+        <p>The modulus is \\(|e^z| = e \\approx 2.718\\) and the argument is \\(\\pi/3\\).</p>
+    </div>
+</div>
 
-<p>This is a purely complex-analytic phenomenon — the real exponential \\(e^x\\) has no period. The period \\(2\\pi i\\) is vertical: shifting \\(z\\) by \\(2\\pi i\\) (i.e., moving up by \\(2\\pi\\) in the imaginary direction) returns \\(e^z\\) to its original value.</p>
+<h3>The Mapping \\(w = e^z\\)</h3>
 
-<p>Consequence: to understand \\(e^z\\) on all of \\(\\mathbb{C}\\), it suffices to understand it on one <strong>fundamental domain</strong>, say the horizontal strip \\(S = \\{z : -\\pi < \\operatorname{Im}(z) \\le \\pi\\}\\). The exponential maps \\(S\\) bijectively onto \\(\\mathbb{C} \\setminus \\{0\\}\\).</p>
+<p>Since \\(|e^z| = e^x\\), vertical lines \\(x = c\\) map to circles \\(|w| = e^c\\). Since \\(\\arg(e^z) = y\\), horizontal lines \\(y = c\\) map to rays from the origin at angle \\(c\\). The rectangular grid in the \\(z\\)-plane becomes a polar grid in the \\(w\\)-plane.</p>
 
-<h3>Mapping Properties</h3>
-
-<p>Under \\(w = e^z\\):</p>
-<ul>
-    <li>Horizontal lines \\(\\operatorname{Im}(z) = c\\) map to rays \\(\\arg(w) = c\\).</li>
-    <li>Vertical lines \\(\\operatorname{Re}(z) = c\\) map to circles \\(|w| = e^c\\).</li>
-    <li>Vertical strips \\(\\{a < \\operatorname{Re}(z) < b\\}\\) map to annuli \\(\\{e^a < |w| < e^b\\}\\).</li>
-    <li>Horizontal strips \\(\\{c < \\operatorname{Im}(z) < d\\}\\) with \\(d - c < 2\\pi\\) map to angular sectors.</li>
-</ul>
+<p>Because \\(e^z\\) is \\(2\\pi i\\)-periodic, it is not injective on \\(\\mathbb{C}\\). Any horizontal strip of height \\(2\\pi\\) serves as a <em>fundamental domain</em>: inside such a strip, \\(e^z\\) is a bijection onto \\(\\mathbb{C} \\setminus \\{0\\}\\).</p>
 
 <div class="viz-placeholder" data-viz="viz-exp-domain-coloring"></div>
 `,
@@ -117,56 +126,81 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
                 {
                     id: 'viz-exp-domain-coloring',
                     title: 'Domain Coloring of e^z',
-                    description: 'Hue encodes argument, brightness encodes modulus. The vertical repetition of color bands shows the 2\u03C0i periodicity: the function repeats in vertical strips of height 2\u03C0. The horizontal strips map to the full plane minus the origin.',
+                    description: 'The left panel shows the identity map (the z-plane), and the right panel shows w = e^z. Notice how the horizontal strip of height 2pi covers the entire w-plane exactly once. Vertical lines map to circles, horizontal lines to rays.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 40 });
-
-                        var showGrid = true;
-                        VizEngine.createButton(controls, 'Toggle Grid Lines', function() {
-                            showGrid = !showGrid;
-                            draw();
-                        });
+                        var viz = new VizEngine(body, { width: 560, height: 280 });
 
                         function draw() {
-                            // Domain coloring of e^z
-                            var xR = [-4, 4], yR = [-4, 4];
-                            viz.drawDomainColoring(function(re, im) {
-                                // e^z = e^x*(cos y + i sin y)
-                                var ex = Math.exp(re);
-                                return [ex * Math.cos(im), ex * Math.sin(im)];
-                            }, xR, yR);
+                            viz.clear();
+                            var ctx = viz.ctx;
+                            var hw = Math.floor(viz.width / 2);
 
-                            if (showGrid) {
-                                var ctx = viz.ctx;
-                                // Draw horizontal period lines at y = n*pi
-                                ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-                                ctx.lineWidth = 1;
-                                ctx.setLineDash([5, 4]);
-                                for (var k = -2; k <= 2; k++) {
-                                    var yVal = k * Math.PI;
-                                    var sy = viz.originY - yVal * viz.scale;
-                                    if (sy < 0 || sy > viz.height) continue;
-                                    ctx.beginPath();
-                                    ctx.moveTo(0, sy);
-                                    ctx.lineTo(viz.width, sy);
-                                    ctx.stroke();
-                                    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-                                    ctx.font = '11px -apple-system,sans-serif';
-                                    ctx.textAlign = 'left';
-                                    ctx.textBaseline = 'bottom';
-                                    ctx.fillText(k === 0 ? 'y=0' : 'y=' + k + '\u03C0', 4, sy - 2);
+                            // Left panel: identity (z-plane)
+                            var imgL = ctx.createImageData(hw, viz.height);
+                            var dL = imgL.data;
+                            for (var py = 0; py < viz.height; py++) {
+                                for (var px = 0; px < hw; px++) {
+                                    var re = -4 + 8 * px / hw;
+                                    var im = 4 - 8 * py / viz.height;
+                                    var arg = Math.atan2(im, re);
+                                    var mag = Math.sqrt(re * re + im * im);
+                                    var hue = (arg / Math.PI + 1) / 2;
+                                    var light = 1 - 1 / (1 + mag * 0.3);
+                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
+                                    var idx = (py * hw + px) * 4;
+                                    dL[idx] = rgb[0]; dL[idx+1] = rgb[1]; dL[idx+2] = rgb[2]; dL[idx+3] = 255;
                                 }
-                                ctx.setLineDash([]);
                             }
+                            ctx.putImageData(imgL, 0, 0);
 
-                            // Axis labels
-                            viz.screenText('Re(z)', viz.width - 28, viz.originY - 14, '#aaa', 11);
-                            viz.screenText('Im(z)', viz.originX + 6, 14, '#aaa', 11);
+                            // Right panel: e^z
+                            var imgR = ctx.createImageData(hw, viz.height);
+                            var dR = imgR.data;
+                            for (var py2 = 0; py2 < viz.height; py2++) {
+                                for (var px2 = 0; px2 < hw; px2++) {
+                                    var re2 = -4 + 8 * px2 / hw;
+                                    var im2 = 4 - 8 * py2 / viz.height;
+                                    // e^z = e^x (cos y + i sin y)
+                                    var ex = Math.exp(re2);
+                                    var u = ex * Math.cos(im2);
+                                    var v = ex * Math.sin(im2);
+                                    var arg2 = Math.atan2(v, u);
+                                    var mag2 = Math.sqrt(u * u + v * v);
+                                    var hue2 = (arg2 / Math.PI + 1) / 2;
+                                    var light2 = 1 - 1 / (1 + mag2 * 0.3);
+                                    var rgb2 = VizEngine.hslToRgb(hue2, 0.8, light2);
+                                    var idx2 = (py2 * hw + px2) * 4;
+                                    dR[idx2] = rgb2[0]; dR[idx2+1] = rgb2[1]; dR[idx2+2] = rgb2[2]; dR[idx2+3] = 255;
+                                }
+                            }
+                            ctx.putImageData(imgR, hw, 0);
 
-                            // Period annotation
-                            viz.screenText('Period: 2\u03C0i (vertical)', viz.width / 2, viz.height - 10, 'rgba(255,255,255,0.6)', 11);
+                            // Divider
+                            ctx.strokeStyle = '#ffffff44';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath(); ctx.moveTo(hw, 0); ctx.lineTo(hw, viz.height); ctx.stroke();
+
+                            // Labels
+                            ctx.fillStyle = '#ffffffcc';
+                            ctx.font = 'bold 14px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('z-plane (identity)', hw / 2, 18);
+                            ctx.fillText('w = e^z', hw + hw / 2, 18);
+
+                            // Mark 2pi strip on left
+                            var stripTop = viz.height / 2 - viz.height * Math.PI / 8;
+                            var stripBot = viz.height / 2 + viz.height * Math.PI / 8;
+                            ctx.strokeStyle = '#ffffff88';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 3]);
+                            ctx.beginPath(); ctx.moveTo(0, stripTop); ctx.lineTo(hw, stripTop); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(0, stripBot); ctx.lineTo(hw, stripBot); ctx.stroke();
+                            ctx.setLineDash([]);
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('y = pi', 4, stripTop - 4);
+                            ctx.fillText('y = -pi', 4, stripBot + 12);
                         }
-
                         draw();
                         return viz;
                     }
@@ -174,14 +208,14 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             ],
             exercises: [
                 {
-                    question: 'Find all \\(z \\in \\mathbb{C}\\) satisfying \\(e^z = 1 + i\\).',
-                    hint: 'Write \\(1 + i\\) in polar form. Then match \\(|e^z| = e^{\\operatorname{Re}(z)}\\) and \\(\\arg(e^z) = \\operatorname{Im}(z)\\).',
-                    solution: '\\(|1+i| = \\sqrt{2}\\) so \\(\\operatorname{Re}(z) = \\ln\\sqrt{2} = \\frac{1}{2}\\ln 2\\). Also \\(\\arg(1+i) = \\pi/4 + 2\\pi k\\) so \\(\\operatorname{Im}(z) = \\pi/4 + 2\\pi k\\), \\(k \\in \\mathbb{Z}\\). Thus \\(z = \\frac{\\ln 2}{2} + i\\left(\\frac{\\pi}{4} + 2\\pi k\\right)\\), \\(k \\in \\mathbb{Z}\\).'
+                    question: 'Find all \\(z \\in \\mathbb{C}\\) such that \\(e^z = -1\\).',
+                    hint: 'Write \\(-1 = e^0 \\cdot e^{i\\pi}\\). What values of \\(x + iy\\) give \\(e^x = 1\\) and \\(y = \\pi + 2\\pi k\\)?',
+                    solution: 'We need \\(e^x = 1\\) and \\(y = \\pi + 2k\\pi\\), so \\(x = 0\\). The solutions are \\(z = i(2k+1)\\pi\\) for \\(k \\in \\mathbb{Z}\\).'
                 },
                 {
-                    question: 'Show that \\(e^z\\) maps the vertical strip \\(\\{z : 0 < \\operatorname{Re}(z) < 1\\}\\) onto the annulus \\(\\{w : 1 < |w| < e\\}\\).',
-                    hint: 'Use the fact that \\(|e^z| = e^{\\operatorname{Re}(z)}\\).',
-                    solution: 'For \\(z\\) in the strip, \\(0 < \\operatorname{Re}(z) < 1\\), so \\(e^0 < e^{\\operatorname{Re}(z)} < e^1\\), i.e., \\(1 < |e^z| < e\\). Every modulus value in \\((1, e)\\) and every argument is attained (take \\(\\operatorname{Im}(z)\\) to be any value), so the image is exactly the open annulus \\(\\{w : 1 < |w| < e\\}\\).'
+                    question: 'Show that \\(e^z\\) is not injective on \\(\\mathbb{C}\\), but is injective on any horizontal strip of height less than \\(2\\pi\\).',
+                    hint: 'If \\(e^{z_1} = e^{z_2}\\), what can you say about \\(z_1 - z_2\\)?',
+                    solution: '\\(e^{z_1} = e^{z_2}\\) iff \\(e^{z_1 - z_2} = 1\\) iff \\(z_1 - z_2 = 2k\\pi i\\) for some \\(k \\in \\mathbb{Z}\\). So \\(e^z\\) is injective iff \\(z_1, z_2\\) in the strip means \\(|y_1 - y_2| < 2\\pi\\), which forces \\(k = 0\\).'
                 }
             ]
         },
@@ -195,52 +229,67 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             content: `
 <h2>The Complex Logarithm</h2>
 
-<p>We want \\(\\log z\\) to be an inverse of \\(e^z\\). Since \\(e^z\\) is \\(2\\pi i\\)-periodic, inverting it forces multi-valuedness.</p>
+<div class="env-block intuition">
+    <div class="env-title">Inverting a Periodic Function</div>
+    <div class="env-body">
+        <p>The real logarithm is the inverse of the real exponential, and the real exponential is injective, so \\(\\ln x\\) is single-valued. But the complex exponential is periodic with period \\(2\\pi i\\), so its "inverse" is necessarily multi-valued: if \\(e^w = z\\), then \\(e^{w + 2k\\pi i} = z\\) for every integer \\(k\\). The complex logarithm must account for all these values.</p>
+    </div>
+</div>
 
 <div class="env-block definition">
     <div class="env-title">Definition 3.2 (Complex Logarithm)</div>
     <div class="env-body">
-        <p>For \\(z \\ne 0\\), define the <em>multi-valued logarithm</em>:</p>
-        \\[\\log z = \\ln|z| + i\\arg(z)\\]
-        <p>where \\(\\arg(z)\\) ranges over all values \\(\\theta + 2\\pi k\\), \\(k \\in \\mathbb{Z}\\), for any argument \\(\\theta\\) of \\(z\\). The result is a set of values, not a single number.</p>
+        <p>For \\(z \\neq 0\\), the <strong>complex logarithm</strong> is the multi-valued function</p>
+        \\[
+        \\log z = \\ln|z| + i\\arg z = \\ln|z| + i(\\theta + 2k\\pi), \\quad k \\in \\mathbb{Z},
+        \\]
+        <p>where \\(\\theta\\) is any particular value of \\(\\arg z\\).</p>
     </div>
 </div>
 
-<h3>Why Multi-Valued?</h3>
+<p>Each integer \\(k\\) gives a different <em>branch</em> of the logarithm. The values differ by integer multiples of \\(2\\pi i\\), arranged in a discrete vertical lattice in the \\(w\\)-plane.</p>
 
-<p>Walk a small circle around the origin. As \\(z\\) returns to its starting value, \\(\\arg(z)\\) has increased by \\(2\\pi\\). So \\(\\log z\\) has shifted by \\(2\\pi i\\). Any attempt to define \\(\\log z\\) as a continuous single-valued function near \\(0\\) fails.</p>
-
-<p>More precisely: there is no continuous function \\(f : U \\to \\mathbb{C}\\) on any neighborhood \\(U\\) of \\(0\\) satisfying \\(e^{f(z)} = z\\). This is because \\(0\\) is a <em>branch point</em> of \\(\\log z\\).</p>
-
-<h3>Principal Branch</h3>
+<h3>The Principal Branch</h3>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 3.3 (Principal Branch)</div>
+    <div class="env-title">Definition 3.3 (Principal Logarithm)</div>
     <div class="env-body">
-        <p>The <em>principal branch</em> of the logarithm is</p>
-        \\[\\operatorname{Log} z = \\ln|z| + i\\operatorname{Arg}(z),\\]
-        <p>where \\(\\operatorname{Arg}(z) \\in (-\\pi, \\pi]\\) is the principal argument. This defines a single-valued analytic function on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\).</p>
+        <p>The <strong>principal value</strong> of the logarithm is</p>
+        \\[
+        \\operatorname{Log} z = \\ln|z| + i\\operatorname{Arg} z,
+        \\]
+        <p>where \\(\\operatorname{Arg} z \\in (-\\pi, \\pi]\\) is the principal argument. This is analytic on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\), the complex plane with the non-positive real axis removed.</p>
     </div>
 </div>
 
-<p>The set \\((-\\infty, 0]\\) is called the <strong>branch cut</strong>. Crossing it produces a jump of \\(2\\pi i\\) in the value of \\(\\operatorname{Log}\\).</p>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 3.2 (Properties of Log)</div>
+    <div class="env-body">
+        <ol>
+            <li>\\(\\operatorname{Log} z\\) is analytic on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\) with derivative \\(\\frac{d}{dz}\\operatorname{Log} z = \\frac{1}{z}\\).</li>
+            <li>\\(e^{\\operatorname{Log} z} = z\\) for all \\(z \\neq 0\\).</li>
+            <li>\\(\\operatorname{Log}(e^z) = z\\) only when \\(\\operatorname{Im}(z) \\in (-\\pi, \\pi]\\).</li>
+            <li>\\(\\operatorname{Log}(z_1 z_2) = \\operatorname{Log} z_1 + \\operatorname{Log} z_2\\) may fail when arguments add past the branch cut.</li>
+        </ol>
+    </div>
+</div>
+
+<h3>Branch Cuts and Continuity</h3>
+
+<p>The branch cut \\((-\\infty, 0]\\) is where \\(\\operatorname{Log}\\) is discontinuous. Approaching the negative real axis from above gives \\(\\operatorname{Arg} z \\to \\pi\\); from below gives \\(\\operatorname{Arg} z \\to -\\pi\\). The jump is \\(2\\pi i\\).</p>
+
+<p>There is nothing sacred about this particular cut. We can place the cut along any ray from the origin and define a branch of \\(\\log\\) that is analytic on the complement. The standard choice \\((-\\infty, 0]\\) is merely conventional.</p>
 
 <div class="env-block example">
-    <div class="env-title">Example 3.1</div>
+    <div class="env-title">Example: Multi-valuedness in Action</div>
     <div class="env-body">
-        <ul>
-            <li>\\(\\operatorname{Log}(1) = 0\\)</li>
-            <li>\\(\\operatorname{Log}(-1) = i\\pi\\)</li>
-            <li>\\(\\operatorname{Log}(i) = i\\pi/2\\)</li>
-            <li>\\(\\operatorname{Log}(-i) = -i\\pi/2\\)</li>
-            <li>\\(\\log(-1) = i\\pi(2k+1)\\), \\(k \\in \\mathbb{Z}\\) (all values)</li>
-        </ul>
+        <p>Consider \\(\\log(-1)\\). We have \\(|-1| = 1\\) and \\(\\arg(-1) = \\pi + 2k\\pi\\), so</p>
+        \\[
+        \\log(-1) = i(2k+1)\\pi, \\quad k \\in \\mathbb{Z}.
+        \\]
+        <p>The principal value is \\(\\operatorname{Log}(-1) = i\\pi\\), recovering Euler's identity \\(e^{i\\pi} = -1\\).</p>
     </div>
 </div>
-
-<h3>Other Branches</h3>
-
-<p>Any ray from the origin can serve as a branch cut. If we require \\(\\arg(z) \\in (\\alpha, \\alpha + 2\\pi]\\) for some \\(\\alpha\\), we get a branch \\(\\log_\\alpha z\\) that is analytic on \\(\\mathbb{C}\\) minus the ray at angle \\(\\alpha\\). The principal branch corresponds to \\(\\alpha = -\\pi\\).</p>
 
 <div class="viz-placeholder" data-viz="viz-log-branches"></div>
 <div class="viz-placeholder" data-viz="viz-log-riemann-surface"></div>
@@ -248,225 +297,199 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             visualizations: [
                 {
                     id: 'viz-log-branches',
-                    title: 'Domain Coloring of Log z — Branch Cut',
-                    description: 'The discontinuity (color jump) along the negative real axis is the branch cut of the principal logarithm. Drag the slider to rotate the branch cut to any angle. The analytic function is continuous everywhere except on that ray.',
+                    title: 'Branches of log z',
+                    description: 'Drag the point z around the origin. As z crosses the branch cut (shown as a red ray), the value of Log z jumps by 2pi i. Use the slider to rotate the branch cut.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 60 });
+                        var viz = new VizEngine(body, { width: 560, height: 380, scale: 60 });
 
-                        var cutAngle = Math.PI; // angle of branch cut in radians
-                        VizEngine.createSlider(controls, 'Cut angle (\u03B1)', -Math.PI, Math.PI, cutAngle, 0.05, function(v) {
-                            cutAngle = v;
-                            draw();
+                        var cutAngle = Math.PI; // branch cut angle (default: negative real axis)
+                        VizEngine.createSlider(controls, 'Cut angle', -3.14, 3.14, cutAngle, 0.1, function(v) {
+                            cutAngle = parseFloat(v);
                         });
 
-                        function draw() {
-                            var xR = [-3, 3], yR = [-3, 3];
-                            viz.drawDomainColoring(function(re, im) {
-                                if (re === 0 && im === 0) return [0, 0];
-                                // Log z with branch cut at cutAngle
-                                // arg in (cutAngle - 2pi, cutAngle]
-                                var theta = Math.atan2(im, re);
-                                // adjust theta so it falls in (cutAngle - 2pi, cutAngle]
-                                while (theta > cutAngle) theta -= 2 * Math.PI;
-                                while (theta <= cutAngle - 2 * Math.PI) theta += 2 * Math.PI;
-                                var logR = 0.5 * Math.log(re * re + im * im);
-                                return [logR, theta];
-                            }, xR, yR);
+                        var zDrag = viz.addDraggable('z', 1.5, 1, viz.colors.blue, 8);
 
-                            // Draw branch cut ray
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = 'rgba(255,80,80,0.9)';
-                            ctx.lineWidth = 2;
-                            ctx.setLineDash([6, 3]);
-                            ctx.beginPath();
-                            ctx.moveTo(viz.originX, viz.originY);
-                            // ray direction
-                            var dx = Math.cos(cutAngle + Math.PI); // opposite of cut direction
-                            var dy = -Math.sin(cutAngle + Math.PI);
-                            var ext = Math.max(viz.width, viz.height);
-                            ctx.lineTo(viz.originX + dx * ext, viz.originY + dy * ext);
-                            ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            // Label
-                            var labelAngle = cutAngle + Math.PI;
-                            var lx = viz.originX + Math.cos(labelAngle) * 110;
-                            var ly = viz.originY - Math.sin(labelAngle) * 110;
-                            ctx.fillStyle = 'rgba(255,120,120,0.95)';
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('branch cut', lx, ly);
-
-                            // Mark origin
-                            ctx.fillStyle = '#fff';
-                            ctx.beginPath();
-                            ctx.arc(viz.originX, viz.originY, 4, 0, Math.PI * 2);
-                            ctx.fill();
-                            ctx.fillStyle = '#aaa';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('branch point (0)', viz.originX + 7, viz.originY - 6);
+                        function branchArg(x, y, cutAng) {
+                            // Argument in [cutAng, cutAng + 2pi)
+                            var a = Math.atan2(y, x);
+                            while (a < cutAng) a += 2 * Math.PI;
+                            while (a >= cutAng + 2 * Math.PI) a -= 2 * Math.PI;
+                            return a;
                         }
 
-                        draw();
+                        function drawFrame() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+                            var ctx = viz.ctx;
+
+                            // Draw branch cut ray
+                            var rayLen = 12;
+                            var rx = Math.cos(cutAngle), ry = Math.sin(cutAngle);
+                            var sx0 = viz.originX, sy0 = viz.originY;
+                            ctx.strokeStyle = viz.colors.red;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            ctx.moveTo(sx0, sy0);
+                            ctx.lineTo(sx0 + rx * rayLen * viz.scale, sy0 - ry * rayLen * viz.scale);
+                            ctx.stroke();
+
+                            // Branch cut label
+                            ctx.fillStyle = viz.colors.red;
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            var lx = sx0 + rx * 3 * viz.scale;
+                            var ly = sy0 - ry * 3 * viz.scale;
+                            ctx.fillText('branch cut', lx, ly - 10);
+
+                            // Compute log z for each branch k = -1, 0, 1
+                            var zx = zDrag.x, zy = zDrag.y;
+                            var r = Math.sqrt(zx * zx + zy * zy);
+                            if (r < 0.01) r = 0.01;
+                            var theta = branchArg(zx, zy, cutAngle - 2 * Math.PI);
+
+                            // Draw z point
+                            viz.drawPoint(zx, zy, viz.colors.blue, 'z', 6);
+
+                            // Show branches
+                            var infoY = 20;
+                            ctx.fillStyle = viz.colors.white;
+                            ctx.font = '13px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('z = ' + zx.toFixed(2) + ' + ' + zy.toFixed(2) + 'i', 10, infoY);
+                            ctx.fillText('|z| = ' + r.toFixed(3), 10, infoY + 18);
+
+                            var branchColors = [viz.colors.teal, viz.colors.orange, viz.colors.purple];
+                            var labels = ['k = -1', 'k = 0 (principal)', 'k = 1'];
+                            for (var k = -1; k <= 1; k++) {
+                                var logRe = Math.log(r);
+                                var logIm = theta + 2 * k * Math.PI;
+                                var col = branchColors[k + 1];
+                                ctx.fillStyle = col;
+                                ctx.fillText(labels[k+1] + ': log z = ' + logRe.toFixed(3) + ' + ' + logIm.toFixed(3) + 'i', 10, infoY + 40 + (k + 1) * 18);
+                            }
+
+                            viz.drawDraggables();
+                        }
+
+                        viz.animate(function() { drawFrame(); });
                         return viz;
                     }
                 },
                 {
                     id: 'viz-log-riemann-surface',
                     title: 'Riemann Surface of log z (Stacked Sheets)',
-                    description: 'Each horizontal band represents one branch of log z. Going around the origin once moves you to the next sheet (shift by 2\u03C0i). The animated red dot traces a circle in the z-plane; its image in log z spirals upward through the sheets.',
+                    description: 'The Riemann surface of log z is an infinite helicoid. Here we show three sheets (k = -1, 0, 1) stacked vertically. Each sheet covers one full 2pi of argument. Points on different sheets with the same projection correspond to different branches.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 1 });
+                        var viz = new VizEngine(body, { width: 560, height: 380, originX: 0, originY: 0, scale: 1 });
 
-                        var animating = false;
-                        var t = 0;
-                        var animId = null;
-                        var showN = 4; // number of sheets
-
-                        VizEngine.createSlider(controls, 'Sheets', 2, 7, showN, 1, function(v) {
-                            showN = Math.round(v);
-                            if (!animating) draw(t);
+                        var rotAngle = 0.4;
+                        VizEngine.createSlider(controls, 'Rotate view', -1.5, 1.5, rotAngle, 0.05, function(v) {
+                            rotAngle = parseFloat(v);
+                            draw();
                         });
 
-                        var btn = VizEngine.createButton(controls, 'Animate Spiral', function() {
-                            animating = !animating;
-                            btn.textContent = animating ? 'Pause' : 'Animate Spiral';
-                            if (animating) {
-                                var last = null;
-                                function frame(ts) {
-                                    if (!last) last = ts;
-                                    t += (ts - last) * 0.0005;
-                                    last = ts;
-                                    draw(t);
-                                    if (animating) animId = requestAnimationFrame(frame);
-                                }
-                                animId = requestAnimationFrame(frame);
-                            } else {
-                                if (animId) cancelAnimationFrame(animId);
-                            }
-                        });
+                        var sheetColors = ['#3fb9a066', '#58a6ff66', '#bc8cff66'];
+                        var sheetEdge = ['#3fb9a0', '#58a6ff', '#bc8cff'];
 
-                        function draw(time) {
-                            viz.clear();
-                            var ctx = viz.ctx;
-                            var W = viz.width, H = viz.height;
-                            var sheetH = (H - 60) / showN;
-                            var sheetW = W - 80;
-                            var leftMargin = 50;
-
-                            // Sheet colors
-                            var sheetColors = ['#1a1a5a', '#1a3a5a', '#1a5a4a', '#3a5a1a', '#5a4a1a', '#5a1a3a', '#4a1a5a'];
-
-                            for (var k = 0; k < showN; k++) {
-                                var sy = 30 + k * sheetH;
-                                // Background
-                                ctx.fillStyle = sheetColors[k % sheetColors.length];
-                                ctx.fillRect(leftMargin, sy, sheetW, sheetH - 4);
-                                ctx.strokeStyle = '#4a6a9a';
-                                ctx.lineWidth = 1;
-                                ctx.strokeRect(leftMargin, sy, sheetW, sheetH - 4);
-
-                                // Label
-                                ctx.fillStyle = '#8ab4f8';
-                                ctx.font = '11px -apple-system,sans-serif';
-                                ctx.textAlign = 'right';
-                                ctx.textBaseline = 'middle';
-                                var branchLabel = k === 0 ? 'k=0 (principal)' : 'k=' + k;
-                                ctx.fillText(branchLabel, leftMargin - 4, sy + sheetH / 2 - 2);
-
-                                // Im axis label
-                                var imLow = (-1 + 2 * k) * Math.PI;
-                                var imHigh = (1 + 2 * k) * Math.PI;
-                                ctx.fillStyle = '#666';
-                                ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'left';
-                                ctx.fillText('Im=' + ((-1 + 2*k) >= 0 ? '' : '') + ((-1+2*k)*1).toFixed(1) + '\u03C0', leftMargin + 2, sy + 10);
-                                ctx.fillText('Im=' + ((1 + 2*k)).toFixed(0) + '\u03C0', leftMargin + 2, sy + sheetH - 8);
-
-                                // Real axis label range
-                                ctx.textAlign = 'center';
-                                ctx.fillStyle = '#555';
-                                ctx.fillText('Re(log z)', leftMargin + sheetW / 2, sy + sheetH - 8);
-                            }
-
-                            // Animate the path of log z as z circles the origin
-                            var angle = time * 2 * Math.PI; // total angle traversed
-                            // For each angle in [0, angle], plot log(e^{i*theta}) = i*theta
-                            // In our stacked-sheet display: Re(log(e^{i*theta})) = 0 (|z|=1)
-                            // Im(log) = theta  (unbounded)
-                            // Map Im to sheet + vertical position within sheet
-                            // Sheet k covers Im in [(2k-1)pi, (2k+1)pi]
-                            // But we start from k=0: Im in (-pi, pi], k=0, etc.
-
-                            var totalAngle = Math.min(angle, showN * 2 * Math.PI - 0.01);
-                            var steps = Math.max(2, Math.floor(totalAngle / (2 * Math.PI) * 120));
-                            var prevPx = null, prevPy = null;
-
-                            for (var s = 0; s <= steps; s++) {
-                                var theta = (s / steps) * totalAngle;
-                                var imVal = theta; // Im(log z) = theta for |z|=1
-                                var reVal = 0; // Re(log z) = 0
-
-                                // Which sheet?
-                                var sheetIdx = Math.floor(imVal / (2 * Math.PI));
-                                if (sheetIdx >= showN) sheetIdx = showN - 1;
-                                var fracWithin = (imVal - sheetIdx * 2 * Math.PI) / (2 * Math.PI);
-
-                                var sy = 30 + sheetIdx * sheetH;
-                                // Re: map 0 to center of sheet width
-                                var px = leftMargin + sheetW / 2 + (reVal / 3) * sheetW;
-                                var py = sy + (1 - fracWithin) * (sheetH - 4);
-
-                                // Color gradient based on sheet
-                                ctx.strokeStyle = ['#58a6ff', '#3fb9a0', '#f0883e', '#bc8cff', '#f85149', '#d29922', '#f778ba'][sheetIdx % 7];
-                                ctx.lineWidth = 2;
-
-                                if (prevPx !== null && sheetIdx === prevSheet) {
-                                    ctx.beginPath();
-                                    ctx.moveTo(prevPx, prevPy);
-                                    ctx.lineTo(px, py);
-                                    ctx.stroke();
-                                }
-                                prevPx = px; prevPy = py;
-                                var prevSheet = sheetIdx;
-                            }
-
-                            // Current position dot
-                            if (totalAngle > 0) {
-                                var thetaEnd = totalAngle;
-                                var sheetFinal = Math.min(Math.floor(thetaEnd / (2 * Math.PI)), showN - 1);
-                                var fracFinal = (thetaEnd - sheetFinal * 2 * Math.PI) / (2 * Math.PI);
-                                var syF = 30 + sheetFinal * sheetH;
-                                var pxF = leftMargin + sheetW / 2;
-                                var pyF = syF + (1 - fracFinal) * (sheetH - 4);
-                                ctx.fillStyle = '#f85149';
-                                ctx.beginPath();
-                                ctx.arc(pxF, pyF, 6, 0, Math.PI * 2);
-                                ctx.fill();
-                            }
-
-                            // Title
-                            ctx.fillStyle = '#c9d1d9';
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('Sheets of log z  (|z|=1, tracing the unit circle)', W / 2, 16);
+                        function project3D(x, y, z) {
+                            // Simple oblique projection with rotation
+                            var cosA = Math.cos(rotAngle), sinA = Math.sin(rotAngle);
+                            var px = x * cosA - y * sinA;
+                            var py = -x * sinA * 0.4 - y * cosA * 0.4 + z;
+                            return [280 + px * 60, 300 - py * 40];
                         }
 
-                        draw(0);
+                        function draw() {
+                            viz.clear();
+                            var ctx = viz.ctx;
+
+                            viz.screenText('Riemann Surface of log z', viz.width / 2, 18, viz.colors.white, 15);
+
+                            // Draw three sheets from bottom to top
+                            for (var k = -1; k <= 1; k++) {
+                                var sheetIdx = k + 1;
+                                var zOff = k * 2.5;
+
+                                // Draw sheet as a grid of radial lines and circles
+                                ctx.strokeStyle = sheetEdge[sheetIdx];
+                                ctx.lineWidth = 0.8;
+
+                                // Radial lines
+                                var nRays = 24;
+                                for (var j = 0; j < nRays; j++) {
+                                    var angle = (j / nRays) * 2 * Math.PI;
+                                    ctx.beginPath();
+                                    for (var rr = 0.3; rr <= 3; rr += 0.15) {
+                                        var xx = rr * Math.cos(angle);
+                                        var yy = rr * Math.sin(angle);
+                                        // Height on helicoidal surface: proportional to angle + 2pi*k
+                                        var hh = zOff + angle / (2 * Math.PI) * 2.5;
+                                        var sp = project3D(xx, yy, hh);
+                                        if (rr < 0.35) ctx.moveTo(sp[0], sp[1]);
+                                        else ctx.lineTo(sp[0], sp[1]);
+                                    }
+                                    ctx.stroke();
+                                }
+
+                                // Concentric circles at fixed radii
+                                var radii = [0.5, 1.0, 1.5, 2.0, 2.5];
+                                for (var ri = 0; ri < radii.length; ri++) {
+                                    var rad = radii[ri];
+                                    ctx.strokeStyle = sheetColors[sheetIdx];
+                                    ctx.lineWidth = 1;
+                                    ctx.beginPath();
+                                    for (var t = 0; t <= 64; t++) {
+                                        var ang = (t / 64) * 2 * Math.PI;
+                                        var xc = rad * Math.cos(ang);
+                                        var yc = rad * Math.sin(ang);
+                                        var hc = zOff + ang / (2 * Math.PI) * 2.5;
+                                        var sc = project3D(xc, yc, hc);
+                                        if (t === 0) ctx.moveTo(sc[0], sc[1]);
+                                        else ctx.lineTo(sc[0], sc[1]);
+                                    }
+                                    ctx.stroke();
+                                }
+
+                                // Label
+                                var lp = project3D(-3.5, 0, zOff + 1.25);
+                                ctx.fillStyle = sheetEdge[sheetIdx];
+                                ctx.font = '12px -apple-system,sans-serif';
+                                ctx.textAlign = 'right';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('k = ' + k, lp[0], lp[1]);
+                            }
+
+                            // Draw central axis
+                            var axBot = project3D(0, 0, -4);
+                            var axTop = project3D(0, 0, 6);
+                            ctx.strokeStyle = viz.colors.red + '88';
+                            ctx.lineWidth = 1.5;
+                            ctx.setLineDash([3, 3]);
+                            ctx.beginPath(); ctx.moveTo(axBot[0], axBot[1]); ctx.lineTo(axTop[0], axTop[1]); ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            ctx.fillStyle = viz.colors.text;
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('origin (branch point)', axTop[0], axTop[1] - 8);
+                        }
+
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Compute \\(\\operatorname{Log}(-1)\\), \\(\\operatorname{Log}(i)\\), and \\(\\operatorname{Log}(-i)\\). Then find all values of \\(\\log(-1)\\).',
-                    hint: 'Use \\(\\operatorname{Log}(z) = \\ln|z| + i\\operatorname{Arg}(z)\\) with \\(\\operatorname{Arg} \\in (-\\pi, \\pi]\\).',
-                    solution: '\\(\\operatorname{Log}(-1) = \\ln 1 + i\\pi = i\\pi\\). \\(\\operatorname{Log}(i) = 0 + i\\pi/2 = i\\pi/2\\). \\(\\operatorname{Log}(-i) = 0 - i\\pi/2 = -i\\pi/2\\). All values of \\(\\log(-1)\\): since \\(\\arg(-1) = \\pi + 2\\pi k\\), we get \\(\\log(-1) = i\\pi(2k+1)\\), \\(k \\in \\mathbb{Z}\\).'
+                    question: 'Compute all values of \\(\\log(1+i)\\).',
+                    hint: 'First find \\(|1+i|\\) and \\(\\arg(1+i)\\).',
+                    solution: '\\(|1+i| = \\sqrt{2}\\), \\(\\arg(1+i) = \\pi/4 + 2k\\pi\\). So \\(\\log(1+i) = \\frac{1}{2}\\ln 2 + i\\bigl(\\frac{\\pi}{4} + 2k\\pi\\bigr)\\), \\(k \\in \\mathbb{Z}\\). The principal value is \\(\\operatorname{Log}(1+i) = \\frac{1}{2}\\ln 2 + i\\frac{\\pi}{4}\\).'
                 },
                 {
-                    question: 'Show that \\(\\operatorname{Log}(z_1 z_2) = \\operatorname{Log}(z_1) + \\operatorname{Log}(z_2)\\) is NOT always true for the principal branch. Give a counterexample.',
-                    hint: 'Try \\(z_1 = z_2 = e^{i(3\\pi/4)}\\). What is \\(\\operatorname{Arg}(z_1 z_2)\\)?',
-                    solution: 'Take \\(z_1 = z_2 = e^{3\\pi i/4}\\), so \\(|z_j|=1\\), \\(\\operatorname{Arg}(z_j) = 3\\pi/4\\). Then \\(z_1 z_2 = e^{3\\pi i/2}\\) and \\(\\operatorname{Arg}(z_1 z_2) = \\operatorname{Arg}(e^{3\\pi i/2}) = -\\pi/2\\) (since we reduce to \\((-\\pi,\\pi]\\)). Thus \\(\\operatorname{Log}(z_1 z_2) = -i\\pi/2\\), while \\(\\operatorname{Log}(z_1)+\\operatorname{Log}(z_2) = 3\\pi i/4 + 3\\pi i/4 = 3\\pi i/2\\). These differ by \\(2\\pi i\\).'
+                    question: 'Find \\(z_1, z_2\\) such that \\(\\operatorname{Log}(z_1 z_2) \\neq \\operatorname{Log} z_1 + \\operatorname{Log} z_2\\).',
+                    hint: 'Try \\(z_1 = z_2 = -1 + i\\epsilon\\) for small \\(\\epsilon > 0\\), or more directly, \\(z_1 = z_2 = e^{i \\cdot 3\\pi/4}\\).',
+                    solution: 'Let \\(z_1 = z_2 = e^{i3\\pi/4}\\). Then \\(\\operatorname{Log} z_1 = i3\\pi/4\\) and \\(\\operatorname{Log} z_1 + \\operatorname{Log} z_2 = i3\\pi/2\\). But \\(z_1 z_2 = e^{i3\\pi/2} = e^{-i\\pi/2}\\), so \\(\\operatorname{Log}(z_1 z_2) = -i\\pi/2 \\neq i3\\pi/2\\). The discrepancy is \\(2\\pi i\\).'
                 }
             ]
         },
@@ -478,111 +501,135 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             id: 'sec-power',
             title: 'Complex Powers',
             content: `
-<h2>Complex Powers</h2>
-
-<p>Having defined \\(\\log z\\), we can now define \\(z^\\alpha\\) for any \\(\\alpha \\in \\mathbb{C}\\).</p>
+<h2>Complex Powers \\(z^\\alpha\\)</h2>
 
 <div class="env-block definition">
     <div class="env-title">Definition 3.4 (Complex Power)</div>
     <div class="env-body">
-        <p>For \\(z \\ne 0\\) and \\(\\alpha \\in \\mathbb{C}\\), the <em>multi-valued power</em> is</p>
-        \\[z^\\alpha = e^{\\alpha \\log z}.\\]
-        <p>The <em>principal value</em> is</p>
-        \\[\\operatorname{pv}(z^\\alpha) = e^{\\alpha \\operatorname{Log} z}.\\]
+        <p>For \\(z \\neq 0\\) and \\(\\alpha \\in \\mathbb{C}\\), we define</p>
+        \\[
+        z^\\alpha = e^{\\alpha \\log z}.
+        \\]
+        <p>Since \\(\\log z\\) is multi-valued, \\(z^\\alpha\\) is in general multi-valued. Its values are</p>
+        \\[
+        z^\\alpha = e^{\\alpha(\\ln|z| + i\\arg z)} = e^{\\alpha(\\ln|z| + i\\theta + 2k\\pi i\\alpha)}, \\quad k \\in \\mathbb{Z}.
+        \\]
     </div>
 </div>
 
-<p>This definition reduces powers to the exponential and logarithm. The multi-valuedness of \\(z^\\alpha\\) is inherited from \\(\\log z\\):</p>
-\\[z^\\alpha = e^{\\alpha(\\operatorname{Log} z + 2\\pi i k)} = e^{\\alpha \\operatorname{Log} z} \\cdot e^{2\\pi i k \\alpha}, \\quad k \\in \\mathbb{Z}.\\]
+<h3>Special Cases</h3>
 
-<p>How many distinct values does \\(z^\\alpha\\) take?</p>
-<ul>
-    <li>If \\(\\alpha = p/q\\) (rational, in lowest terms): exactly \\(q\\) distinct values (\\(q\\)-th roots of \\(z^p\\)).</li>
-    <li>If \\(\\alpha\\) is irrational: infinitely many distinct values.</li>
-    <li>If \\(\\alpha\\) is an integer: only one value (consistent with the usual integer power).</li>
-</ul>
-
-<h3>Examples</h3>
-
-<div class="env-block example">
-    <div class="env-title">Example 3.2 (i^i)</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 3.3 (Number of Values of \\(z^\\alpha\\))</div>
     <div class="env-body">
-        <p>The principal value of \\(i^i\\):</p>
-        \\[i^i = e^{i \\operatorname{Log}(i)} = e^{i \\cdot i\\pi/2} = e^{-\\pi/2} \\approx 0.2079.\\]
-        <p>Remarkably, \\(i^i\\) is a real number (for the principal value)! All values: \\(e^{-\\pi/2 - 2\\pi k}\\), \\(k \\in \\mathbb{Z}\\).</p>
+        <ol>
+            <li>If \\(\\alpha = n \\in \\mathbb{Z}\\), then \\(z^n\\) is single-valued (the factors \\(e^{2k\\pi i n}\\) all equal 1).</li>
+            <li>If \\(\\alpha = p/q\\) is rational (in lowest terms, \\(q > 0\\)), then \\(z^{p/q}\\) has exactly \\(q\\) distinct values, equally spaced on a circle of radius \\(|z|^{p/q}\\).</li>
+            <li>If \\(\\alpha\\) is irrational or non-real, then \\(z^\\alpha\\) has infinitely many values.</li>
+        </ol>
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example 3.3 (Square root)</div>
+    <div class="env-title">Example: \\(i^i\\)</div>
     <div class="env-body">
-        <p>\\(z^{1/2} = e^{\\frac{1}{2}\\log z}\\) has two values: \\(e^{\\frac{1}{2}\\operatorname{Log} z}\\) and \\(-e^{\\frac{1}{2}\\operatorname{Log} z}\\). These are exactly the two square roots of \\(z\\).</p>
+        <p>We have \\(i = e^{i\\pi/2}\\), so \\(\\log i = i(\\pi/2 + 2k\\pi)\\). Then</p>
+        \\[
+        i^i = e^{i \\log i} = e^{i \\cdot i(\\pi/2 + 2k\\pi)} = e^{-(\\pi/2 + 2k\\pi)}.
+        \\]
+        <p>All values are <em>real</em>. The principal value (\\(k = 0\\)) is \\(e^{-\\pi/2} \\approx 0.2079\\).</p>
     </div>
 </div>
 
-<h3>Branch Cuts for Powers</h3>
+<h3>The Principal Power</h3>
 
-<p>The principal value \\(z^\\alpha = e^{\\alpha \\operatorname{Log} z}\\) inherits the branch cut of \\(\\operatorname{Log}\\): it is analytic on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\).</p>
-
-<p>For \\(\\alpha \\notin \\mathbb{Z}\\), the function \\(z \\mapsto z^\\alpha\\) has a branch point at \\(0\\) and \\(\\infty\\). Choosing different branch cuts changes the function's behavior.</p>
+<p>Using the principal logarithm, the <strong>principal value</strong> of \\(z^\\alpha\\) is</p>
+\\[
+z^\\alpha_{\\text{pv}} = e^{\\alpha \\operatorname{Log} z}.
+\\]
+<p>This is analytic on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\) with derivative</p>
+\\[
+\\frac{d}{dz}z^\\alpha = \\alpha z^{\\alpha - 1}
+\\]
+<p>(the familiar power rule, now valid for complex \\(\\alpha\\)).</p>
 
 <div class="viz-placeholder" data-viz="viz-complex-power"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-complex-power',
-                    title: 'Domain Coloring of z^\u03B1',
-                    description: 'Vary \u03B1 with the slider. For integer values, z^\u03B1 is single-valued (no branch cut). For non-integer values, a branch cut appears on the negative real axis. Notice how the color pattern wraps \u03B1 times around the origin for real \u03B1.',
+                    title: 'Domain Coloring of z^alpha',
+                    description: 'Adjust the exponent alpha (real part) to see how the domain coloring of z^alpha changes. For alpha = 1/2 you see the square root (2 sheets); for alpha = 1/3, the cube root (3 sheets); for irrational alpha, infinitely many.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 60 });
-                        var alpha = 1.5;
+                        var viz = new VizEngine(body, { width: 560, height: 340 });
 
-                        VizEngine.createSlider(controls, '\u03B1', 0.25, 3.0, alpha, 0.25, function(v) {
-                            alpha = v;
-                            draw();
+                        var alphaRe = 0.5;
+                        var alphaIm = 0;
+                        VizEngine.createSlider(controls, 'Re(alpha)', -2, 3, alphaRe, 0.1, function(v) {
+                            alphaRe = parseFloat(v); draw();
+                        });
+                        VizEngine.createSlider(controls, 'Im(alpha)', -2, 2, alphaIm, 0.1, function(v) {
+                            alphaIm = parseFloat(v); draw();
                         });
 
                         function draw() {
-                            var xR = [-3, 3], yR = [-3, 3];
-                            viz.drawDomainColoring(function(re, im) {
-                                if (re === 0 && im === 0) return [0, 0];
-                                // z^alpha = e^(alpha * Log z)
-                                var logR = 0.5 * Math.log(re * re + im * im);
-                                var theta = Math.atan2(im, re); // in (-pi, pi]
-                                // Log z = logR + i*theta
-                                // alpha * Log z = alpha*logR + i*alpha*theta
-                                var newR = alpha * logR;
-                                var newTheta = alpha * theta;
-                                // e^(newR + i*newTheta)
-                                var mag = Math.exp(newR);
-                                return [mag * Math.cos(newTheta), mag * Math.sin(newTheta)];
-                            }, xR, yR);
+                            var ctx = viz.ctx;
+                            var pw = viz.width, ph = viz.height;
+                            var imgData = ctx.createImageData(pw, ph);
+                            var data = imgData.data;
 
-                            // Mark branch cut on negative real axis if non-integer
-                            var isInt = Math.abs(alpha - Math.round(alpha)) < 0.01;
-                            if (!isInt) {
-                                var ctx = viz.ctx;
-                                ctx.strokeStyle = 'rgba(255,80,80,0.85)';
-                                ctx.lineWidth = 2;
-                                ctx.setLineDash([5, 4]);
-                                ctx.beginPath();
-                                ctx.moveTo(viz.originX, viz.originY);
-                                ctx.lineTo(0, viz.originY);
-                                ctx.stroke();
-                                ctx.setLineDash([]);
-                                ctx.fillStyle = 'rgba(255,120,120,0.9)';
-                                ctx.font = '11px -apple-system,sans-serif';
-                                ctx.textAlign = 'center';
-                                ctx.fillText('branch cut', viz.originX / 2, viz.originY - 8);
+                            for (var py = 0; py < ph; py++) {
+                                for (var px = 0; px < pw; px++) {
+                                    var re = -3 + 6 * px / pw;
+                                    var im = 3 - 6 * py / ph;
+                                    var r = Math.sqrt(re * re + im * im);
+                                    if (r < 1e-10) {
+                                        var idx = (py * pw + px) * 4;
+                                        data[idx] = 0; data[idx+1] = 0; data[idx+2] = 0; data[idx+3] = 255;
+                                        continue;
+                                    }
+                                    var theta = Math.atan2(im, re);
+                                    // z^alpha = exp(alpha * log z)
+                                    // alpha * log z = (aR + i*aI) * (ln r + i*theta)
+                                    //   = (aR*ln r - aI*theta) + i*(aI*ln r + aR*theta)
+                                    var logR = Math.log(r);
+                                    var wRe = alphaRe * logR - alphaIm * theta;
+                                    var wIm = alphaIm * logR + alphaRe * theta;
+                                    var eR = Math.exp(wRe);
+                                    var u = eR * Math.cos(wIm);
+                                    var v = eR * Math.sin(wIm);
+                                    var arg = Math.atan2(v, u);
+                                    var mag = Math.sqrt(u * u + v * v);
+                                    var hue = (arg / Math.PI + 1) / 2;
+                                    var light = 1 - 1 / (1 + mag * 0.3);
+                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
+                                    var idx2 = (py * pw + px) * 4;
+                                    data[idx2] = rgb[0]; data[idx2+1] = rgb[1]; data[idx2+2] = rgb[2]; data[idx2+3] = 255;
+                                }
                             }
+                            ctx.putImageData(imgData, 0, 0);
 
-                            // Title
-                            viz.screenText(
-                                'z^' + alpha.toFixed(2) + (isInt ? '  (integer: single-valued)' : '  (non-integer: branch cut on (-\u221E,0])'),
-                                viz.width / 2, viz.height - 10, 'rgba(255,255,255,0.65)', 11
-                            );
+                            // Label
+                            ctx.fillStyle = '#ffffffcc';
+                            ctx.font = 'bold 14px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            var label = 'z^(' + alphaRe.toFixed(1);
+                            if (alphaIm !== 0) label += (alphaIm >= 0 ? ' + ' : ' - ') + Math.abs(alphaIm).toFixed(1) + 'i';
+                            label += ')';
+                            ctx.fillText(label, pw / 2, 18);
+
+                            // Mark branch cut
+                            ctx.strokeStyle = viz.colors.red + 'aa';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.moveTo(pw / 2, ph / 2);
+                            ctx.lineTo(0, ph / 2);
+                            ctx.stroke();
+                            ctx.fillStyle = viz.colors.red;
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('branch cut', 4, ph / 2 - 6);
                         }
-
                         draw();
                         return viz;
                     }
@@ -590,69 +637,76 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             ],
             exercises: [
                 {
-                    question: 'Compute the principal value of \\(i^i\\) and verify it is real.',
-                    hint: 'Use \\(\\operatorname{Log}(i) = i\\pi/2\\), then \\(i^i = e^{i \\cdot i\\pi/2} = e^{-\\pi/2}\\).',
-                    solution: '\\(\\operatorname{Log}(i) = i\\pi/2\\) (since \\(|i|=1\\) and \\(\\operatorname{Arg}(i)=\\pi/2\\)). So \\(i^i = e^{i \\cdot (i\\pi/2)} = e^{-\\pi/2} \\approx 0.2079\\). This is real and positive. All values are \\(e^{-\\pi/2 - 2\\pi k}\\), \\(k \\in \\mathbb{Z}\\) — all real and positive.'
-                },
-                {
-                    question: 'Find all values of \\((1+i)^{1/3}\\) (the three cube roots of \\(1+i\\)).',
-                    hint: 'Write \\(1+i = \\sqrt{2}\\, e^{i\\pi/4}\\). The three cube roots have modulus \\(2^{1/6}\\) and arguments \\(\\pi/12 + 2\\pi k/3\\) for \\(k=0,1,2\\).',
-                    solution: '\\(1+i = \\sqrt{2}\\,e^{i\\pi/4}\\). Using \\(z^{1/3} = e^{\\frac{1}{3}\\log z}\\) with all branches: \\(\\log(1+i) = \\frac{1}{2}\\ln 2 + i(\\pi/4 + 2\\pi k)\\). So \\((1+i)^{1/3} = 2^{1/6}\\exp(i(\\pi/12 + 2\\pi k/3))\\) for \\(k=0,1,2\\). Three distinct values with modulus \\(2^{1/6}\\approx 1.122\\) and arguments \\(\\pi/12\\), \\(3\\pi/4\\), \\(17\\pi/12\\).'
+                    question: 'Find all values of \\((-1)^{1/3}\\). Which is the principal value?',
+                    hint: 'Use \\(\\log(-1) = i(2k+1)\\pi\\) and compute \\(e^{\\frac{1}{3}\\log(-1)}\\).',
+                    solution: 'The three values are \\(e^{i(2k+1)\\pi/3}\\) for \\(k = 0, 1, 2\\) (or equivalently \\(k = -1, 0, 1\\)). These are \\(e^{i\\pi/3} = \\frac{1}{2} + i\\frac{\\sqrt{3}}{2}\\), \\(e^{i\\pi} = -1\\), and \\(e^{i5\\pi/3} = \\frac{1}{2} - i\\frac{\\sqrt{3}}{2}\\). The principal value uses \\(\\operatorname{Arg}(-1) = \\pi\\), giving \\(e^{i\\pi/3} = \\frac{1}{2} + i\\frac{\\sqrt{3}}{2}\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Trigonometric & Hyperbolic Functions
+        // SECTION 5: Complex Trigonometric Functions
         // ================================================================
         {
             id: 'sec-trig',
-            title: 'Trigonometric & Hyperbolic Functions',
+            title: 'Complex Trigonometric Functions',
             content: `
-<h2>Trigonometric and Hyperbolic Functions</h2>
-
-<p>With the complex exponential in hand, the complex trigonometric functions are defined by exact analogy with Euler's formula:</p>
+<h2>Complex Trigonometric Functions</h2>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 3.5 (Complex Trig)</div>
+    <div class="env-title">Definition 3.5 (Complex Sine and Cosine)</div>
     <div class="env-body">
-        \\[\\cos z = \\frac{e^{iz} + e^{-iz}}{2}, \\quad \\sin z = \\frac{e^{iz} - e^{-iz}}{2i}.\\]
+        <p>For \\(z \\in \\mathbb{C}\\), we define</p>
+        \\[
+        \\cos z = \\frac{e^{iz} + e^{-iz}}{2}, \\qquad \\sin z = \\frac{e^{iz} - e^{-iz}}{2i}.
+        \\]
+        <p>These agree with the real cosine and sine when \\(z \\in \\mathbb{R}\\).</p>
     </div>
 </div>
 
-<p>These are entire functions (analytic everywhere). The familiar identities all hold: \\(\\sin^2 z + \\cos^2 z = 1\\), \\(\\sin(z + w) = \\sin z \\cos w + \\cos z \\sin w\\), etc.</p>
-
-<h3>Zeros</h3>
+<p>All the familiar trigonometric identities carry over: \\(\\sin^2 z + \\cos^2 z = 1\\), the addition formulas, double-angle formulas, etc. The proofs are purely algebraic manipulations of exponentials.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 3.2 (Zeros of sin and cos)</div>
+    <div class="env-title">Theorem 3.4 (Properties of Complex Trig Functions)</div>
     <div class="env-body">
-        <p>\\(\\sin z = 0 \\iff z = n\\pi\\), \\(n \\in \\mathbb{Z}\\).</p>
-        <p>\\(\\cos z = 0 \\iff z = \\frac{\\pi}{2} + n\\pi\\), \\(n \\in \\mathbb{Z}\\).</p>
-        <p>In both cases, the zeros are <em>real</em> and simple.</p>
+        <ol>
+            <li><strong>Analyticity:</strong> \\(\\sin z\\) and \\(\\cos z\\) are entire, with \\((\\sin z)' = \\cos z\\) and \\((\\cos z)' = -\\sin z\\).</li>
+            <li><strong>Zeros:</strong> \\(\\sin z = 0\\) iff \\(z = n\\pi\\), and \\(\\cos z = 0\\) iff \\(z = (n + \\tfrac{1}{2})\\pi\\), for \\(n \\in \\mathbb{Z}\\). These are the same zeros as in the real case.</li>
+            <li><strong>Unboundedness:</strong> Unlike the real case, \\(|\\sin z|\\) and \\(|\\cos z|\\) are unbounded. On the imaginary axis, \\(\\sin(iy) = i\\sinh y\\) and \\(\\cos(iy) = \\cosh y\\), both of which grow exponentially.</li>
+            <li><strong>Periodicity:</strong> \\(\\sin(z + 2\\pi) = \\sin z\\) and \\(\\cos(z + 2\\pi) = \\cos z\\).</li>
+        </ol>
     </div>
 </div>
 
-<h3>Unboundedness</h3>
-
-<p>Unlike the real case, \\(\\sin z\\) and \\(\\cos z\\) are <strong>unbounded</strong> on \\(\\mathbb{C}\\). To see this, take \\(z = iy\\) (purely imaginary):</p>
-\\[\\sin(iy) = \\frac{e^{i(iy)} - e^{-i(iy)}}{2i} = \\frac{e^{-y} - e^{y}}{2i} = i\\sinh y.\\]
-
-<p>So \\(|\\sin(iy)| = |\\sinh y| \\to \\infty\\) as \\(|y| \\to \\infty\\). This is inevitable by Liouville's theorem: a bounded entire function must be constant.</p>
-
-<h3>Hyperbolic Functions</h3>
+<h3>Connection to Hyperbolic Functions</h3>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 3.6 (Hyperbolic)</div>
+    <div class="env-title">Definition 3.6 (Hyperbolic Functions)</div>
     <div class="env-body">
-        \\[\\cosh z = \\frac{e^z + e^{-z}}{2}, \\quad \\sinh z = \\frac{e^z - e^{-z}}{2}.\\]
+        \\[
+        \\cosh z = \\frac{e^z + e^{-z}}{2}, \\qquad \\sinh z = \\frac{e^z - e^{-z}}{2}.
+        \\]
     </div>
 </div>
 
-<p>The key connection between circular and hyperbolic functions is:</p>
-\\[\\cos(iz) = \\cosh z, \\quad \\sin(iz) = i\\sinh z.\\]
+<p>The connection between trigonometric and hyperbolic functions is immediate from the definitions:</p>
 
-<p>This means the trigonometric and hyperbolic functions are related by a \\(90^\\circ\\) rotation in the argument. In the complex plane they are the same family of functions, viewed from different angles.</p>
+\\[
+\\cos(iz) = \\cosh z, \\quad \\sin(iz) = i\\sinh z, \\quad \\cosh(iz) = \\cos z, \\quad \\sinh(iz) = i\\sin z.
+\\]
+
+<p>In the complex plane, trigonometric and hyperbolic functions are the <em>same</em> function evaluated at rotated arguments. There is no fundamental distinction between them; the real-variable separation into "circular" and "hyperbolic" is an artifact of restricting to \\(\\mathbb{R}\\).</p>
+
+<div class="env-block example">
+    <div class="env-title">Example: \\(\\sin(1 + 2i)\\)</div>
+    <div class="env-body">
+        <p>Using the addition formula \\(\\sin(x + iy) = \\sin x \\cosh y + i \\cos x \\sinh y\\):</p>
+        \\[
+        \\sin(1 + 2i) = \\sin 1 \\cdot \\cosh 2 + i \\cos 1 \\cdot \\sinh 2 \\approx 3.166 + 1.960i.
+        \\]
+        <p>The modulus is \\(|\\sin(1 + 2i)| \\approx 3.73\\), which exceeds 1, illustrating unboundedness.</p>
+    </div>
+</div>
 
 <div class="viz-placeholder" data-viz="viz-sin-domain-coloring"></div>
 <div class="viz-placeholder" data-viz="viz-cosh-sinh"></div>
@@ -660,119 +714,108 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             visualizations: [
                 {
                     id: 'viz-sin-domain-coloring',
-                    title: 'Domain Coloring of sin(z)',
-                    description: 'Zeros of sin(z) appear as black points at z = n\u03C0 on the real axis. The color pattern grows intense near the imaginary axis showing that |sin(z)| is large there — confirming unboundedness. Compare to the bounded real sin function.',
+                    title: 'Domain Coloring of sin z',
+                    description: 'The zeros of sin z at z = n*pi appear as dark spots on the real axis. Away from the real axis, the magnitude grows exponentially, shown by the brightening colors.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 45 });
-
-                        var showZeros = true;
-                        VizEngine.createButton(controls, 'Toggle Zero Markers', function() {
-                            showZeros = !showZeros;
-                            draw();
-                        });
+                        var viz = new VizEngine(body, { width: 560, height: 340 });
 
                         function draw() {
-                            var xR = [-5, 5], yR = [-4, 4];
-                            viz.drawDomainColoring(function(re, im) {
-                                // sin z = (e^{iz} - e^{-iz}) / 2i
-                                // iz = -im + i*re, so e^{iz} = e^{-im}*(cos(re)+i*sin(re))
-                                var eiz_re = Math.exp(-im) * Math.cos(re);
-                                var eiz_im = Math.exp(-im) * Math.sin(re);
-                                var emiz_re = Math.exp(im) * Math.cos(re);
-                                var emiz_im = -Math.exp(im) * Math.sin(re);
-                                // (e^iz - e^{-iz}) / 2i: divide by 2i = multiply by -i/2
-                                var diff_re = eiz_re - emiz_re;
-                                var diff_im = eiz_im - emiz_im;
-                                // divide by 2i: (a+bi)/(2i) = b/2 - ai/2
-                                return [diff_im / 2, -diff_re / 2];
-                            }, xR, yR);
+                            var ctx = viz.ctx;
+                            var pw = viz.width, ph = viz.height;
+                            var imgData = ctx.createImageData(pw, ph);
+                            var data = imgData.data;
+                            var xMin = -4 * Math.PI, xMax = 4 * Math.PI;
+                            var yMin = -3, yMax = 3;
 
-                            if (showZeros) {
-                                var ctx = viz.ctx;
-                                for (var n = -5; n <= 5; n++) {
-                                    var zeroX = n * Math.PI;
-                                    var sx = viz.originX + zeroX * viz.scale;
-                                    if (sx < 0 || sx > viz.width) continue;
-                                    ctx.fillStyle = '#ffffff';
-                                    ctx.beginPath();
-                                    ctx.arc(sx, viz.originY, 5, 0, Math.PI * 2);
-                                    ctx.fill();
-                                    ctx.fillStyle = '#000';
-                                    ctx.beginPath();
-                                    ctx.arc(sx, viz.originY, 3, 0, Math.PI * 2);
-                                    ctx.fill();
+                            for (var py = 0; py < ph; py++) {
+                                for (var px = 0; px < pw; px++) {
+                                    var re = xMin + (xMax - xMin) * px / pw;
+                                    var im = yMax - (yMax - yMin) * py / ph;
+                                    // sin(x+iy) = sin x cosh y + i cos x sinh y
+                                    var u = Math.sin(re) * Math.cosh(im);
+                                    var v = Math.cos(re) * Math.sinh(im);
+                                    var arg = Math.atan2(v, u);
+                                    var mag = Math.sqrt(u * u + v * v);
+                                    var hue = (arg / Math.PI + 1) / 2;
+                                    var light = 1 - 1 / (1 + mag * 0.3);
+                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
+                                    var idx = (py * pw + px) * 4;
+                                    data[idx] = rgb[0]; data[idx+1] = rgb[1]; data[idx+2] = rgb[2]; data[idx+3] = 255;
                                 }
-                                ctx.fillStyle = 'rgba(255,255,255,0.7)';
-                                ctx.font = '11px -apple-system,sans-serif';
-                                ctx.textAlign = 'center';
-                                ctx.fillText('Zeros at z = n\u03C0  (white circles)', viz.width / 2, viz.height - 10);
-                            } else {
-                                viz.screenText('sin(z)  [zeros hidden]', viz.width / 2, viz.height - 10, 'rgba(255,255,255,0.5)', 11);
                             }
-                        }
+                            ctx.putImageData(imgData, 0, 0);
 
+                            // Mark zeros
+                            ctx.fillStyle = '#ffffffaa';
+                            ctx.font = '10px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            for (var n = -4; n <= 4; n++) {
+                                var sx = (n * Math.PI - xMin) / (xMax - xMin) * pw;
+                                var sy = ph / 2;
+                                ctx.beginPath(); ctx.arc(sx, sy, 3, 0, Math.PI * 2); ctx.fill();
+                                if (n !== 0) ctx.fillText(n + 'pi', sx, sy + 14);
+                                else ctx.fillText('0', sx, sy + 14);
+                            }
+
+                            ctx.fillStyle = '#ffffffcc';
+                            ctx.font = 'bold 14px -apple-system,sans-serif';
+                            ctx.fillText('sin z', pw / 2, 18);
+                        }
                         draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-cosh-sinh',
-                    title: 'Domain Coloring: cosh(z) and sinh(z)',
-                    description: 'Toggle between cosh and sinh. Note the structural similarity to cos and sin under the substitution z \u2192 iz. Zeros of sinh(z) are at z = n\u03C0i (on the imaginary axis); zeros of cosh(z) are at z = (n+\u00BD)\u03C0i.',
+                    title: 'Domain Coloring: cosh z and sinh z',
+                    description: 'Toggle between cosh z and sinh z. Notice the zeros of sinh z at z = n*pi*i on the imaginary axis, and cosh z has zeros at z = (n + 1/2)*pi*i.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 45 });
-                        var mode = 'cosh';
+                        var viz = new VizEngine(body, { width: 560, height: 340 });
+                        var showCosh = true;
 
-                        VizEngine.createButton(controls, 'Toggle cosh/sinh', function() {
-                            mode = mode === 'cosh' ? 'sinh' : 'cosh';
+                        VizEngine.createButton(controls, 'Toggle cosh / sinh', function() {
+                            showCosh = !showCosh;
                             draw();
                         });
 
                         function draw() {
-                            var xR = [-4, 4], yR = [-4, 4];
-                            viz.drawDomainColoring(function(re, im) {
-                                // cosh z = (e^z + e^{-z})/2, sinh z = (e^z - e^{-z})/2
-                                var ez_re = Math.exp(re) * Math.cos(im);
-                                var ez_im = Math.exp(re) * Math.sin(im);
-                                var emz_re = Math.exp(-re) * Math.cos(-im);
-                                var emz_im = Math.exp(-re) * Math.sin(-im);
-                                if (mode === 'cosh') {
-                                    return [(ez_re + emz_re) / 2, (ez_im + emz_im) / 2];
-                                } else {
-                                    return [(ez_re - emz_re) / 2, (ez_im - emz_im) / 2];
-                                }
-                            }, xR, yR);
-
                             var ctx = viz.ctx;
-                            // Mark zeros
-                            var zeros = [];
-                            if (mode === 'sinh') {
-                                // zeros at n*pi*i
-                                for (var n = -3; n <= 3; n++) zeros.push([0, n * Math.PI]);
-                            } else {
-                                // zeros at (n+1/2)*pi*i
-                                for (var n = -3; n <= 3; n++) zeros.push([0, (n + 0.5) * Math.PI]);
+                            var pw = viz.width, ph = viz.height;
+                            var imgData = ctx.createImageData(pw, ph);
+                            var data = imgData.data;
+                            var xMin = -4, xMax = 4;
+                            var yMin = -4 * Math.PI, yMax = 4 * Math.PI;
+
+                            for (var py = 0; py < ph; py++) {
+                                for (var px = 0; px < pw; px++) {
+                                    var re = xMin + (xMax - xMin) * px / pw;
+                                    var im = yMax - (yMax - yMin) * py / ph;
+                                    var u, v;
+                                    if (showCosh) {
+                                        // cosh(x+iy) = cosh x cos y + i sinh x sin y
+                                        u = Math.cosh(re) * Math.cos(im);
+                                        v = Math.sinh(re) * Math.sin(im);
+                                    } else {
+                                        // sinh(x+iy) = sinh x cos y + i cosh x sin y
+                                        u = Math.sinh(re) * Math.cos(im);
+                                        v = Math.cosh(re) * Math.sin(im);
+                                    }
+                                    var arg = Math.atan2(v, u);
+                                    var mag = Math.sqrt(u * u + v * v);
+                                    var hue = (arg / Math.PI + 1) / 2;
+                                    var light = 1 - 1 / (1 + mag * 0.3);
+                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
+                                    var idx = (py * pw + px) * 4;
+                                    data[idx] = rgb[0]; data[idx+1] = rgb[1]; data[idx+2] = rgb[2]; data[idx+3] = 255;
+                                }
                             }
-                            zeros.forEach(function(z) {
-                                var sx = viz.originX + z[0] * viz.scale;
-                                var sy = viz.originY - z[1] * viz.scale;
-                                if (sx < 0 || sx > viz.width || sy < 0 || sy > viz.height) return;
-                                ctx.fillStyle = '#fff';
-                                ctx.beginPath();
-                                ctx.arc(sx, sy, 5, 0, Math.PI * 2);
-                                ctx.fill();
-                                ctx.fillStyle = '#000';
-                                ctx.beginPath();
-                                ctx.arc(sx, sy, 3, 0, Math.PI * 2);
-                                ctx.fill();
-                            });
+                            ctx.putImageData(imgData, 0, 0);
 
-                            viz.screenText(
-                                mode === 'cosh' ? 'cosh(z)  zeros at z=(n+\u00BD)\u03C0i' : 'sinh(z)  zeros at z=n\u03C0i',
-                                viz.width / 2, viz.height - 10, 'rgba(255,255,255,0.7)', 11
-                            );
+                            ctx.fillStyle = '#ffffffcc';
+                            ctx.font = 'bold 14px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(showCosh ? 'cosh z' : 'sinh z', pw / 2, 18);
                         }
-
                         draw();
                         return viz;
                     }
@@ -780,19 +823,14 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             ],
             exercises: [
                 {
-                    question: 'Find all zeros of \\(\\cos z\\) in \\(\\mathbb{C}\\) and verify there are no non-real zeros.',
-                    hint: 'Write \\(\\cos z = 0\\) as \\(e^{iz} + e^{-iz} = 0\\), i.e., \\(e^{2iz} = -1\\). Then take the logarithm.',
-                    solution: '\\(e^{2iz} = -1 = e^{i\\pi(2k+1)}\\). So \\(2iz = i\\pi(2k+1)\\), giving \\(z = \\pi(2k+1)/2 = \\pi/2 + k\\pi\\). These are all real, \\(k \\in \\mathbb{Z}\\). There are no non-real zeros.'
+                    question: 'Show that \\(|\\sin z|^2 = \\sin^2 x + \\sinh^2 y\\) for \\(z = x + iy\\).',
+                    hint: 'Use \\(\\sin z = \\sin x \\cosh y + i \\cos x \\sinh y\\) and compute the modulus squared.',
+                    solution: '\\(|\\sin z|^2 = \\sin^2 x \\cosh^2 y + \\cos^2 x \\sinh^2 y = \\sin^2 x(1 + \\sinh^2 y) + \\cos^2 x \\sinh^2 y = \\sin^2 x + \\sinh^2 y(\\sin^2 x + \\cos^2 x) = \\sin^2 x + \\sinh^2 y\\).'
                 },
                 {
-                    question: 'Show that \\(|\\sin z|\\) can be arbitrarily large by computing \\(|\\sin(iy)|\\) explicitly.',
-                    hint: 'Use the definition \\(\\sin z = (e^{iz}-e^{-iz})/(2i)\\) and substitute \\(z=iy\\).',
-                    solution: '\\(\\sin(iy) = (e^{i(iy)} - e^{-i(iy)})/(2i) = (e^{-y} - e^y)/(2i) = i(e^y - e^{-y})/2 = i\\sinh y\\). So \\(|\\sin(iy)| = |\\sinh y| = (e^{|y|} - e^{-|y|})/2 \\to \\infty\\) as \\(|y| \\to \\infty\\). Hence \\(\\sin z\\) is unbounded on \\(\\mathbb{C}\\).'
-                },
-                {
-                    question: 'Verify the identity \\(\\cos(iz) = \\cosh z\\) using the definitions.',
-                    hint: 'Substitute \\(iz\\) into the definition \\(\\cos w = (e^{iw}+e^{-iw})/2\\) and simplify.',
-                    solution: '\\(\\cos(iz) = (e^{i(iz)}+e^{-i(iz)})/2 = (e^{-z}+e^z)/2 = \\cosh z\\). Similarly \\(\\sin(iz) = (e^{i(iz)}-e^{-i(iz)})/(2i) = (e^{-z}-e^z)/(2i) = (e^z-e^{-z})/2 \\cdot i/i^2$... more directly: \\((e^{-z}-e^z)/(2i) = i(e^z-e^{-z})/2 = i\\sinh z\\).'
+                    question: 'Find all solutions to \\(\\cos z = 2\\). (This has no real solutions, but does have complex ones.)',
+                    hint: 'Write \\(\\cos z = (e^{iz} + e^{-iz})/2 = 2\\) and let \\(w = e^{iz}\\). This gives a quadratic in \\(w\\).',
+                    solution: 'Setting \\(w = e^{iz}\\), we get \\(w + 1/w = 4\\), so \\(w^2 - 4w + 1 = 0\\), giving \\(w = 2 \\pm \\sqrt{3}\\). Then \\(iz = \\log w\\), so \\(z = -i\\log(2 \\pm \\sqrt{3}) = -i(\\ln(2 \\pm \\sqrt{3}) + 2k\\pi i) = 2k\\pi \\mp i\\ln(2 + \\sqrt{3})\\) for \\(k \\in \\mathbb{Z}\\). (Using \\(\\ln(2 - \\sqrt{3}) = -\\ln(2 + \\sqrt{3})\\).)'
                 }
             ]
         },
@@ -806,377 +844,259 @@ e^z = \\sum_{n=0}^{\\infty} \\frac{z^n}{n!}, \\quad \\sin z = \\sum_{n=0}^{\\inf
             content: `
 <h2>Inverse Trigonometric Functions</h2>
 
-<p>The inverse trig functions reduce to the logarithm, and therefore inherit its multi-valuedness.</p>
+<p>Since \\(\\cos z\\) and \\(\\sin z\\) are not injective on \\(\\mathbb{C}\\), their inverses are multi-valued, just like \\(\\log z\\). We derive closed-form expressions using the exponential.</p>
 
-<h3>Arcsin</h3>
-
-<p>We want \\(w = \\arcsin z\\) meaning \\(\\sin w = z\\). Using \\(\\sin w = (e^{iw}-e^{-iw})/(2i) = z\\), set \\(u = e^{iw}\\):</p>
-\\[u - u^{-1} = 2iz \\implies u^2 - 2iz u - 1 = 0 \\implies u = iz + (1-z^2)^{1/2}.\\]
-<p>Then \\(w = -i \\log u\\), so:</p>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 3.7 (Arcsin)</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 3.5 (Inverse Trig via Logarithms)</div>
     <div class="env-body">
-        \\[\\arcsin z = -i \\log\\bigl(iz + (1-z^2)^{1/2}\\bigr).\\]
+        <p>For \\(w \\in \\mathbb{C}\\):</p>
+        \\[
+        \\arcsin w = -i\\log\\bigl(iw + \\sqrt{1 - w^2}\\bigr),
+        \\]
+        \\[
+        \\arccos w = -i\\log\\bigl(w + \\sqrt{w^2 - 1}\\bigr),
+        \\]
+        \\[
+        \\arctan w = \\frac{1}{2i}\\log\\frac{1 + iw}{1 - iw}.
+        \\]
+        <p>Each is multi-valued because of the logarithm (and, for arcsin and arccos, the multi-valued square root).</p>
     </div>
 </div>
 
-<p>This is a multi-valued function: \\((1-z^2)^{1/2}\\) has two values, and \\(\\log\\) is multi-valued. The branch points of \\(\\arcsin z\\) occur at \\(z = \\pm 1\\) (where \\(1-z^2 = 0\\)) and \\(z = \\infty\\).</p>
-
-<h3>Arccos and Arctan</h3>
-
-<p>By similar derivations:</p>
-\\[\\arccos z = -i \\log\\bigl(z + i(1-z^2)^{1/2}\\bigr),\\]
-\\[\\arctan z = \\frac{i}{2} \\log\\frac{1-iz}{1+iz} = \\frac{i}{2}(\\log(1-iz) - \\log(1+iz)).\\]
-
-<p>For \\(\\arctan z\\), the branch points are at \\(z = \\pm i\\) (where \\(1 \\pm iz = 0\\)), which explains why the <em>real</em> function \\(\\arctan x\\) is smooth for all real \\(x\\) — the branch points \\(z = \\pm i\\) are off the real axis.</p>
-
-<div class="env-block remark">
-    <div class="env-title">Connection to Integrals</div>
+<div class="env-block proof">
+    <div class="env-title">Derivation of \\(\\arcsin\\)</div>
     <div class="env-body">
-        <p>These formulas anticipate a key theme of Chapter 4. The identity \\(\\frac{d}{dz}\\arctan z = \\frac{1}{1+z^2}\\) holds in \\(\\mathbb{C}\\). The branch points \\(\\pm i\\) of \\(\\arctan z\\) correspond exactly to the poles of \\(1/(1+z^2)\\). This connection between antiderivatives, poles, and branch points is the start of the residue calculus.</p>
+        <p>We want to solve \\(\\sin z = w\\), i.e., \\(\\frac{e^{iz} - e^{-iz}}{2i} = w\\). Let \\(\\zeta = e^{iz}\\). Then \\(\\zeta - 1/\\zeta = 2iw\\), so \\(\\zeta^2 - 2iw\\zeta - 1 = 0\\). By the quadratic formula,</p>
+        \\[
+        \\zeta = iw \\pm \\sqrt{1 - w^2}.
+        \\]
+        <p>Then \\(z = -i\\log \\zeta = -i\\log(iw + \\sqrt{1 - w^2})\\).</p>
     </div>
+    <div class="qed">&#9646;</div>
 </div>
 
-<div class="viz-placeholder" data-viz="viz-branch-cut-animation"></div>
-`,
-            visualizations: [
-                {
-                    id: 'viz-branch-cut-animation',
-                    title: 'Branch Cut Discontinuity: Tracing z Around the Origin',
-                    description: 'Left panel: a point z moves counterclockwise around the origin. Right panel: its image under Log(z) moves continuously — until z crosses the branch cut (negative real axis), where Log(z) jumps by 2\u03C0i. The discontinuity is not a flaw; it is the price of single-valuedness.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 360, scale: 1 });
-                        var angle = 0;
-                        var animating = false;
-                        var animId = null;
-                        var radius = 1.2;
-
-                        var btn = VizEngine.createButton(controls, 'Animate', function() {
-                            animating = !animating;
-                            btn.textContent = animating ? 'Pause' : 'Animate';
-                            if (animating) {
-                                var last = null;
-                                function frame(ts) {
-                                    if (!last) last = ts;
-                                    angle += (ts - last) * 0.0008;
-                                    last = ts;
-                                    draw();
-                                    if (animating) animId = requestAnimationFrame(frame);
-                                }
-                                animId = requestAnimationFrame(frame);
-                            } else {
-                                if (animId) cancelAnimationFrame(animId);
-                            }
-                        });
-
-                        VizEngine.createSlider(controls, 'Speed', 0.2, 3, 1, 0.1, function(v) {
-                            // speed applied in frame function via closure not ideal; reset instead
-                            // We'll just use a module-level speed
-                            window._ch03_speed = v;
-                        });
-                        window._ch03_speed = 1;
-
-                        function draw() {
-                            viz.clear();
-                            var ctx = viz.ctx;
-                            var W = viz.width, H = viz.height;
-
-                            // Two panels
-                            var lW = W / 2 - 10, rW = W / 2 - 10;
-                            var lX = 10, rX = W / 2 + 10;
-                            var panH = H - 30;
-                            var cx = lX + lW / 2;
-                            var cy = 20 + panH / 2;
-                            var scaleL = 70; // pixels per unit in z-plane
-
-                            // Panel backgrounds
-                            ctx.fillStyle = '#0e0e24';
-                            ctx.fillRect(lX, 20, lW, panH);
-                            ctx.fillRect(rX, 20, rW, panH);
-                            ctx.strokeStyle = '#2a2a5a';
-                            ctx.lineWidth = 1;
-                            ctx.strokeRect(lX, 20, lW, panH);
-                            ctx.strokeRect(rX, 20, rW, panH);
-
-                            // Panel titles
-                            ctx.fillStyle = '#8ab4f8';
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('z-plane', cx, 15);
-                            ctx.fillText('w = Log(z)', rX + rW / 2, 15);
-
-                            // Left panel: z-plane
-                            // Grid
-                            ctx.strokeStyle = '#1a1a38';
-                            ctx.lineWidth = 0.5;
-                            for (var x = -3; x <= 3; x++) {
-                                var sx = cx + x * scaleL;
-                                if (sx < lX || sx > lX + lW) continue;
-                                ctx.beginPath(); ctx.moveTo(sx, 20); ctx.lineTo(sx, 20 + panH); ctx.stroke();
-                            }
-                            for (var y = -2; y <= 2; y++) {
-                                var sy = cy - y * scaleL;
-                                if (sy < 20 || sy > 20 + panH) continue;
-                                ctx.beginPath(); ctx.moveTo(lX, sy); ctx.lineTo(lX + lW, sy); ctx.stroke();
-                            }
-                            // Axes
-                            ctx.strokeStyle = '#3a3a6a';
-                            ctx.lineWidth = 1.2;
-                            ctx.beginPath(); ctx.moveTo(lX, cy); ctx.lineTo(lX + lW, cy); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(cx, 20); ctx.lineTo(cx, 20 + panH); ctx.stroke();
-
-                            // Branch cut: negative real axis
-                            ctx.strokeStyle = 'rgba(255,80,80,0.85)';
-                            ctx.lineWidth = 2;
-                            ctx.setLineDash([5, 4]);
-                            ctx.beginPath();
-                            ctx.moveTo(cx, cy);
-                            ctx.lineTo(lX, cy);
-                            ctx.stroke();
-                            ctx.setLineDash([]);
-                            ctx.fillStyle = 'rgba(255,100,100,0.8)';
-                            ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('branch cut', cx - 50, cy - 6);
-
-                            // Circle path
-                            ctx.strokeStyle = 'rgba(100,180,255,0.4)';
-                            ctx.lineWidth = 1;
-                            ctx.beginPath();
-                            ctx.arc(cx, cy, radius * scaleL, 0, Math.PI * 2);
-                            ctx.stroke();
-
-                            // Current z
-                            var zAngle = angle % (2 * Math.PI);
-                            var zx = radius * Math.cos(zAngle);
-                            var zy = radius * Math.sin(zAngle);
-                            var zsx = cx + zx * scaleL;
-                            var zsy = cy - zy * scaleL;
-
-                            ctx.fillStyle = '#f85149';
-                            ctx.beginPath();
-                            ctx.arc(zsx, zsy, 6, 0, Math.PI * 2);
-                            ctx.fill();
-                            ctx.fillStyle = '#f8a1a0';
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('z', zsx + 8, zsy - 4);
-
-                            // Right panel: Log(z) path
-                            var rcx = rX + rW / 2;
-                            var rcy = 20 + panH / 2;
-                            var scaleR = 30;
-
-                            // Grid in w-plane
-                            ctx.strokeStyle = '#1a1a38';
-                            ctx.lineWidth = 0.5;
-                            for (var x = -4; x <= 4; x++) {
-                                var sx = rcx + x * scaleR;
-                                if (sx < rX || sx > rX + rW) continue;
-                                ctx.beginPath(); ctx.moveTo(sx, 20); ctx.lineTo(sx, 20 + panH); ctx.stroke();
-                            }
-                            for (var y = -5; y <= 5; y++) {
-                                var sy = rcy - y * scaleR;
-                                if (sy < 20 || sy > 20 + panH) continue;
-                                ctx.beginPath(); ctx.moveTo(rX, sy); ctx.lineTo(rX + rW, sy); ctx.stroke();
-                            }
-                            ctx.strokeStyle = '#3a3a6a';
-                            ctx.lineWidth = 1.2;
-                            ctx.beginPath(); ctx.moveTo(rX, rcy); ctx.lineTo(rX + rW, rcy); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(rcx, 20); ctx.lineTo(rcx, 20 + panH); ctx.stroke();
-
-                            // pi labels on right panel
-                            ctx.fillStyle = '#555';
-                            ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('\u03C0', rX + rW - 24, rcy - Math.PI * scaleR - 2);
-                            ctx.fillText('-\u03C0', rX + rW - 28, rcy + Math.PI * scaleR + 10);
-
-                            // Draw path of Log(z) as angle goes from 0 to current
-                            var steps = 300;
-                            var maxA = Math.min(angle, 2 * Math.PI - 0.001);
-                            ctx.strokeStyle = '#58a6ff';
-                            ctx.lineWidth = 2;
-                            ctx.beginPath();
-                            var started = false;
-                            for (var s = 0; s <= steps; s++) {
-                                var a = (s / steps) * maxA;
-                                var zxs = radius * Math.cos(a);
-                                var zys = radius * Math.sin(a);
-                                // Principal arg: atan2 gives (-pi, pi]
-                                var arg = Math.atan2(zys, zxs);
-                                var logR = Math.log(Math.sqrt(zxs * zxs + zys * zys));
-                                var pwx = rcx + logR * scaleR;
-                                var pwy = rcy - arg * scaleR;
-                                if (pwx < rX || pwx > rX + rW || pwy < 20 || pwy > 20 + panH) { started = false; continue; }
-                                if (!started) { ctx.moveTo(pwx, pwy); started = true; }
-                                else ctx.lineTo(pwx, pwy);
-                            }
-                            ctx.stroke();
-
-                            // Draw the discontinuity if angle >= pi
-                            if (angle >= Math.PI - 0.05) {
-                                // The jump: Log(z just above branch cut) -> Log(z just below)
-                                // At angle just below pi: Log ~ ln(r) + i*pi
-                                // At angle just above pi (= crossing to negative side): Log ~ ln(r) - i*pi
-                                var jumpX = rcx + Math.log(radius) * scaleR;
-                                var jumpYtop = rcy - Math.PI * scaleR;
-                                var jumpYbot = rcy + Math.PI * scaleR;
-                                ctx.strokeStyle = 'rgba(255,80,80,0.7)';
-                                ctx.lineWidth = 1.5;
-                                ctx.setLineDash([4, 3]);
-                                ctx.beginPath();
-                                ctx.moveTo(jumpX, jumpYtop);
-                                ctx.lineTo(jumpX, jumpYbot);
-                                ctx.stroke();
-                                ctx.setLineDash([]);
-                                ctx.fillStyle = 'rgba(255,120,120,0.9)';
-                                ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'center';
-                                ctx.fillText('jump: 2\u03C0i', jumpX + 18, (jumpYtop + jumpYbot) / 2);
-                            }
-
-                            // Current w = Log(z)
-                            var carg = Math.atan2(zy, zx);
-                            var clogR = Math.log(Math.sqrt(zx * zx + zy * zy));
-                            var cwx = rcx + clogR * scaleR;
-                            var cwy = rcy - carg * scaleR;
-                            ctx.fillStyle = '#f85149';
-                            ctx.beginPath();
-                            ctx.arc(cwx, cwy, 6, 0, Math.PI * 2);
-                            ctx.fill();
-                            ctx.fillStyle = '#f8a1a0';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('Log(z)', cwx + 8, cwy - 4);
-
-                            // Info
-                            ctx.fillStyle = '#aaa';
-                            ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('arg(z) = ' + (zAngle * 180 / Math.PI).toFixed(1) + '\u00B0', lX + 4, 20 + panH - 4);
-                            ctx.textAlign = 'right';
-                            ctx.fillText('Log(z) = ' + clogR.toFixed(2) + ' + ' + carg.toFixed(2) + 'i', rX + rW - 4, 20 + panH - 4);
-                        }
-
-                        draw();
-                        return viz;
-                    }
-                }
-            ],
-            exercises: [
-                {
-                    question: 'Verify the formula \\(\\arctan z = \\frac{i}{2}\\log\\frac{1-iz}{1+iz}\\) by differentiating both sides.',
-                    hint: 'Differentiate \\(\\frac{i}{2}\\log((1-iz)/(1+iz))\\) using the chain rule. You should get \\(1/(1+z^2)\\), which is the derivative of \\(\\arctan z\\).',
-                    solution: 'Let \\(f = \\frac{i}{2}(\\log(1-iz) - \\log(1+iz))\\). Then \\(f\' = \\frac{i}{2}\\left(\\frac{-i}{1-iz} - \\frac{i}{1+iz}\\right) = \\frac{i}{2} \\cdot \\frac{-i(1+iz) - i(1-iz)}{(1-iz)(1+iz)} = \\frac{i}{2} \\cdot \\frac{-2i}{1+z^2} = \\frac{1}{1+z^2}\\). This confirms the formula (up to an additive constant).'
-                },
-                {
-                    question: 'Where are the branch points of \\(\\arcsin z\\)? What happens to the function near \\(z = 1\\)?',
-                    hint: 'Branch points occur where \\(1 - z^2 = 0\\) (i.e., \\(z = \\pm 1\\)) and at the branch points of the logarithm in the formula.',
-                    solution: 'The branch points are at \\(z = \\pm 1\\) (zeros of \\(1-z^2\\)) and at \\(z = \\infty\\). Near \\(z = 1\\): write \\(z = 1 + \\epsilon\\), then \\(1-z^2 \\approx -2\\epsilon\\), so \\((1-z^2)^{1/2} \\approx i\\sqrt{2\\epsilon}\\). The function \\(\\arcsin z\\) has a branch-point singularity of type \\(\\sqrt{z-1}\\) (i.e., square-root type) at \\(z=1\\).'
-                }
-            ]
-        },
-
-        // ================================================================
-        // SECTION 7: Bridge to Integration
-        // ================================================================
-        {
-            id: 'sec-bridge',
-            title: 'Integration Awaits',
-            content: `
-<h2>Integration Awaits</h2>
-
-<p>We now have a full toolkit of complex elementary functions. The table below summarizes what we know:</p>
-
-<table style="width:100%;border-collapse:collapse;font-size:0.9rem;margin:1em 0;">
-  <thead>
-    <tr style="border-bottom:1px solid #30363d;">
-      <th style="text-align:left;padding:6px 10px;">Function</th>
-      <th style="text-align:left;padding:6px 10px;">Single-valued?</th>
-      <th style="text-align:left;padding:6px 10px;">Branch points</th>
-      <th style="text-align:left;padding:6px 10px;">Zeros</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:6px 10px;">\\(e^z\\)</td>
-      <td style="padding:6px 10px;">Yes</td>
-      <td style="padding:6px 10px;">None</td>
-      <td style="padding:6px 10px;">None</td>
-    </tr>
-    <tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:6px 10px;">\\(\\log z\\)</td>
-      <td style="padding:6px 10px;">No (after cut: yes)</td>
-      <td style="padding:6px 10px;">\\(0\\), \\(\\infty\\)</td>
-      <td style="padding:6px 10px;">\\(z=1\\)</td>
-    </tr>
-    <tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:6px 10px;">\\(z^\\alpha\\) (\\(\\alpha \\notin \\mathbb{Z}\\))</td>
-      <td style="padding:6px 10px;">No (after cut: yes)</td>
-      <td style="padding:6px 10px;">\\(0\\), \\(\\infty\\)</td>
-      <td style="padding:6px 10px;">\\(z=0\\) (if \\(\\operatorname{Re}\\alpha > 0\\))</td>
-    </tr>
-    <tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:6px 10px;">\\(\\sin z\\), \\(\\cos z\\)</td>
-      <td style="padding:6px 10px;">Yes (entire)</td>
-      <td style="padding:6px 10px;">None</td>
-      <td style="padding:6px 10px;">\\(n\\pi\\) or \\(\\frac{\\pi}{2}+n\\pi\\)</td>
-    </tr>
-    <tr style="border-bottom:1px solid #21262d;">
-      <td style="padding:6px 10px;">\\(\\arcsin z\\)</td>
-      <td style="padding:6px 10px;">No (after cut: yes)</td>
-      <td style="padding:6px 10px;">\\(\\pm 1\\), \\(\\infty\\)</td>
-      <td style="padding:6px 10px;">\\(z = n\\pi\\)</td>
-    </tr>
-    <tr>
-      <td style="padding:6px 10px;">\\(\\arctan z\\)</td>
-      <td style="padding:6px 10px;">No (after cut: yes)</td>
-      <td style="padding:6px 10px;">\\(\\pm i\\)</td>
-      <td style="padding:6px 10px;">\\(z = 0\\)</td>
-    </tr>
-  </tbody>
-</table>
-
-<h3>Three Themes That Lead into Chapter 4</h3>
-
-<p><strong>1. Antiderivatives and branch cuts.</strong> On the cut plane \\(\\mathbb{C} \\setminus (-\\infty, 0]\\), the function \\(1/z\\) has antiderivative \\(\\operatorname{Log} z\\). But on any domain that encircles the origin, \\(1/z\\) has no single-valued antiderivative. This is why:</p>
-\\[\\oint_{|z|=1} \\frac{1}{z}\\,dz = 2\\pi i \\ne 0.\\]
-
-<p><strong>2. Residues from poles.</strong> Every pole of a meromorphic function contributes a residue term to a contour integral. The poles of \\(1/(1+z^2)\\) at \\(z = \\pm i\\) compute \\(\\int_{-\\infty}^{\\infty} dx/(1+x^2) = \\pi\\) by the residue theorem.</p>
-
-<p><strong>3. Branch integrals.</strong> Integrals of functions with branch points (like \\(z^{-1/2}\\) or \\(\\log z\\)) require keyhole contours that wrap around the branch cut. The elementary functions of this chapter provide all the building blocks.</p>
-
-<div class="env-block intuition">
-    <div class="env-title">The Punchline</div>
+<div class="env-block example">
+    <div class="env-title">Example: \\(\\arcsin 2\\)</div>
     <div class="env-body">
-        <p>Complex analysis is, at its heart, about what happens when you integrate analytic functions. The structure of these elementary functions — their poles, zeros, branch points, and periods — determines everything about those integrals. Chapter 4 will show you how.</p>
+        <p>We compute \\(\\arcsin 2 = -i\\log(2i + \\sqrt{1 - 4}) = -i\\log(2i + i\\sqrt{3}) = -i\\log(i(2 + \\sqrt{3}))\\).</p>
+        <p>Now \\(\\log(i(2+\\sqrt{3})) = \\ln(2+\\sqrt{3}) + i(\\pi/2 + 2k\\pi)\\). So</p>
+        \\[
+        \\arcsin 2 = \\frac{\\pi}{2} + 2k\\pi + i\\ln(2 + \\sqrt{3}), \\quad k \\in \\mathbb{Z}.
+        \\]
+        <p>The real part matches the "expected" value \\(\\pi/2\\), and the imaginary part accounts for the fact that 2 lies outside \\([-1,1]\\).</p>
     </div>
 </div>
 
 <div class="env-block remark">
-    <div class="env-title">Looking Ahead</div>
+    <div class="env-title">Branch Cuts for Inverse Trig</div>
     <div class="env-body">
-        <ul>
-            <li><strong>Ch 4:</strong> Contour integrals and the fundamental theorem for analytic functions.</li>
-            <li><strong>Ch 5:</strong> Cauchy's theorem: integrals of analytic functions over closed curves vanish.</li>
-            <li><strong>Ch 6:</strong> Cauchy's integral formula: values of analytic functions encoded in boundary integrals.</li>
-            <li><strong>Ch 10:</strong> Laurent series, where the coefficient of \\(1/z\\) is exactly the residue.</li>
-        </ul>
+        <p>The principal value of \\(\\arcsin\\) is usually taken with a branch cut on \\((-\\infty, -1) \\cup (1, \\infty)\\) on the real axis. The principal value of \\(\\arctan\\) has branch cuts on \\((-i\\infty, -i] \\cup [i, i\\infty)\\) on the imaginary axis. These choices ensure continuity on the largest possible domain.</p>
     </div>
 </div>
 `,
             visualizations: [],
             exercises: [
                 {
-                    question: 'Using the formula \\(\\oint_{|z|=1} z^n\\,dz\\) for \\(n \\in \\mathbb{Z}\\), which value of \\(n\\) gives a nonzero integral, and what is its value? Why is this related to the logarithm?',
-                    hint: 'Parametrize \\(z = e^{i\\theta}\\), \\(\\theta \\in [0, 2\\pi)\\), and compute the integral directly for various \\(n\\).',
-                    solution: 'For \\(n \\ne -1\\): \\(z^n\\) has antiderivative \\(z^{n+1}/(n+1)\\), single-valued on \\(\\mathbb{C}\\setminus\\{0\\}\\), so the integral vanishes. For \\(n = -1\\): parametrize \\(z = e^{i\\theta}\\), \\(dz = ie^{i\\theta}d\\theta\\), integral \\(= \\int_0^{2\\pi} e^{-i\\theta} \\cdot ie^{i\\theta}d\\theta = i\\cdot 2\\pi = 2\\pi i\\). The nonzero result is exactly because \\(1/z\\) has no single-valued antiderivative — the antiderivative would be \\(\\log z\\), which gains \\(2\\pi i\\) after one full loop around \\(0\\).'
+                    question: 'Derive the formula for \\(\\arctan w\\) by solving \\(\\tan z = w\\) for \\(z\\).',
+                    hint: 'Write \\(\\tan z = \\frac{\\sin z}{\\cos z} = \\frac{e^{iz} - e^{-iz}}{i(e^{iz} + e^{-iz})} = w\\). Let \\(\\zeta = e^{2iz}\\) and solve for \\(\\zeta\\).',
+                    solution: 'From \\(\\frac{\\zeta - 1}{i(\\zeta + 1)} = w\\), we get \\(\\zeta - 1 = iw(\\zeta + 1)\\), so \\(\\zeta(1 - iw) = 1 + iw\\), giving \\(\\zeta = \\frac{1+iw}{1-iw}\\). Then \\(2iz = \\log \\zeta\\), so \\(z = \\frac{1}{2i}\\log\\frac{1+iw}{1-iw}\\).'
+                }
+            ]
+        },
+
+        // ================================================================
+        // SECTION 7: Branch Cuts and the Big Picture
+        // ================================================================
+        {
+            id: 'sec-bridge',
+            title: 'Branch Cuts and the Big Picture',
+            content: `
+<h2>Branch Cuts and the Big Picture</h2>
+
+<div class="env-block intuition">
+    <div class="env-title">The Recurring Theme</div>
+    <div class="env-body">
+        <p>Every multi-valued function in this chapter (\\(\\log z\\), \\(z^\\alpha\\), \\(\\arcsin z\\), \\(\\arctan z\\)) presents the same dilemma: the function is "naturally" defined on a Riemann surface, but for practical computation we work in \\(\\mathbb{C}\\) and must choose a branch. Each choice requires a branch cut, and each cut introduces a discontinuity that would not exist on the Riemann surface.</p>
+    </div>
+</div>
+
+<h3>Anatomy of a Branch Cut</h3>
+
+<p>A <strong>branch cut</strong> is a curve in \\(\\mathbb{C}\\) along which a multi-valued function has a discontinuity when restricted to a single branch. The endpoints of a branch cut are <strong>branch points</strong>, where the function genuinely cannot be made single-valued by any choice of branch.</p>
+
+<div class="env-block example">
+    <div class="env-title">Example: Branch Points of \\(\\sqrt{z}\\)</div>
+    <div class="env-body">
+        <p>The function \\(\\sqrt{z} = z^{1/2}\\) has two branch points: \\(z = 0\\) and \\(z = \\infty\\). If you walk around a small loop encircling the origin, the square root changes sign: \\(\\sqrt{re^{i(\\theta + 2\\pi)}} = -\\sqrt{re^{i\\theta}}\\). The standard branch cut connects 0 to \\(\\infty\\) along \\((-\\infty, 0]\\).</p>
+    </div>
+</div>
+
+<h3>Summary Table</h3>
+
+<table>
+<thead>
+<tr><th>Function</th><th>Domain</th><th>Branch points</th><th>Standard cut</th><th>Values</th></tr>
+</thead>
+<tbody>
+<tr><td>\\(e^z\\)</td><td>\\(\\mathbb{C}\\)</td><td>none</td><td>none</td><td>single-valued</td></tr>
+<tr><td>\\(\\log z\\)</td><td>\\(\\mathbb{C}\\setminus\\{0\\}\\)</td><td>\\(0, \\infty\\)</td><td>\\((-\\infty,0]\\)</td><td>infinitely many</td></tr>
+<tr><td>\\(z^{p/q}\\)</td><td>\\(\\mathbb{C}\\setminus\\{0\\}\\)</td><td>\\(0, \\infty\\)</td><td>\\((-\\infty,0]\\)</td><td>\\(q\\) values</td></tr>
+<tr><td>\\(z^\\alpha\\) (\\(\\alpha \\notin \\mathbb{Q}\\))</td><td>\\(\\mathbb{C}\\setminus\\{0\\}\\)</td><td>\\(0, \\infty\\)</td><td>\\((-\\infty,0]\\)</td><td>infinitely many</td></tr>
+<tr><td>\\(\\arcsin z\\)</td><td>\\(\\mathbb{C}\\)</td><td>\\(\\pm 1\\)</td><td>\\((-\\infty,-1)\\cup(1,\\infty)\\)</td><td>infinitely many</td></tr>
+<tr><td>\\(\\arctan z\\)</td><td>\\(\\mathbb{C}\\setminus\\{\\pm i\\}\\)</td><td>\\(\\pm i\\)</td><td>\\((-i\\infty,-i]\\cup[i,i\\infty)\\)</td><td>infinitely many</td></tr>
+</tbody>
+</table>
+
+<h3>Looking Ahead</h3>
+
+<p>Branch cuts will reappear when we integrate functions with branch points (Chapter 12: Applications of Residues). The keyhole contour and Hankel contour are tools specifically designed to work around branch cuts. Riemann surfaces will return in the context of analytic continuation (Chapter 18).</p>
+
+<p>The key lesson: multi-valuedness is not an obstacle; it is a feature of the complex world that encodes topological information (the fundamental group of the punctured plane). Choosing a branch is choosing a local trivialization of a covering space.</p>
+
+<div class="viz-placeholder" data-viz="viz-branch-cut-animation"></div>
+`,
+            visualizations: [
+                {
+                    id: 'viz-branch-cut-animation',
+                    title: 'Branch Cut Jump Animation',
+                    description: 'A point z traverses a circle around the origin. Watch how Log z (the principal branch of log z) jumps by 2pi i as z crosses the branch cut on the negative real axis. The real part (ln|z|) stays continuous; the imaginary part (Arg z) jumps.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380, scale: 50
+                        });
+
+                        var radius = 1.5;
+                        var speed = 1;
+                        var running = true;
+                        VizEngine.createSlider(controls, 'Radius', 0.5, 3, radius, 0.1, function(v) {
+                            radius = parseFloat(v);
+                        });
+                        VizEngine.createButton(controls, 'Pause / Resume', function() {
+                            running = !running;
+                        });
+
+                        // Trail of (angle, Im(Log z)) pairs
+                        var trail = [];
+
+                        viz.animate(function(t) {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+                            var ctx = viz.ctx;
+
+                            // Draw branch cut
+                            ctx.strokeStyle = viz.colors.red;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            ctx.moveTo(viz.originX, viz.originY);
+                            ctx.lineTo(0, viz.originY);
+                            ctx.stroke();
+
+                            ctx.fillStyle = viz.colors.red;
+                            ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('branch cut', 8, viz.originY - 8);
+
+                            // Draw circle path
+                            viz.drawCircle(0, 0, radius, null, viz.colors.text + '44', 1);
+
+                            // Current point
+                            var angle = running ? (t / 2000 * speed) % (2 * Math.PI) : 0;
+                            var zx = radius * Math.cos(angle);
+                            var zy = radius * Math.sin(angle);
+
+                            viz.drawPoint(zx, zy, viz.colors.blue, 'z', 7);
+
+                            // Log z values
+                            var logRe = Math.log(radius);
+                            var argZ = Math.atan2(zy, zx); // Arg z in (-pi, pi]
+                            var logIm = argZ;
+
+                            // Trail
+                            if (running) {
+                                trail.push({ angle: angle, logIm: logIm });
+                                if (trail.length > 600) trail.shift();
+                            }
+
+                            // Draw trail in right panel (small plot of Arg z vs angle)
+                            var plotL = viz.width * 0.55;
+                            var plotR = viz.width - 15;
+                            var plotT = 15;
+                            var plotB = 120;
+                            var plotW = plotR - plotL;
+                            var plotH = plotB - plotT;
+
+                            ctx.fillStyle = '#0c0c20cc';
+                            ctx.fillRect(plotL, plotT, plotW, plotH);
+                            ctx.strokeStyle = viz.colors.grid;
+                            ctx.lineWidth = 1;
+                            ctx.strokeRect(plotL, plotT, plotW, plotH);
+
+                            ctx.fillStyle = viz.colors.text;
+                            ctx.font = '10px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('Arg z vs angle', plotL + plotW / 2, plotT + 12);
+                            ctx.textAlign = 'left';
+                            ctx.fillText('pi', plotL + 2, plotT + 24);
+                            ctx.fillText('-pi', plotL + 2, plotB - 4);
+
+                            // Plot data
+                            ctx.strokeStyle = viz.colors.teal;
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            var started = false;
+                            for (var i = 0; i < trail.length; i++) {
+                                var tx = plotL + (trail[i].angle % (2 * Math.PI)) / (2 * Math.PI) * plotW;
+                                var ty = plotT + 20 + (1 - (trail[i].logIm + Math.PI) / (2 * Math.PI)) * (plotH - 30);
+                                if (!started) { ctx.moveTo(tx, ty); started = true; }
+                                else {
+                                    // Detect jump
+                                    if (i > 0 && Math.abs(trail[i].logIm - trail[i-1].logIm) > Math.PI) {
+                                        ctx.stroke();
+                                        ctx.beginPath();
+                                        ctx.moveTo(tx, ty);
+                                    } else {
+                                        ctx.lineTo(tx, ty);
+                                    }
+                                }
+                            }
+                            ctx.stroke();
+
+                            // Info panel
+                            var infoX = viz.width - 220;
+                            var infoY = 145;
+                            ctx.fillStyle = viz.colors.white;
+                            ctx.font = '13px -apple-system,sans-serif';
+                            ctx.textAlign = 'left';
+                            ctx.fillText('z = ' + zx.toFixed(3) + ' + ' + zy.toFixed(3) + 'i', infoX, infoY);
+                            ctx.fillStyle = viz.colors.teal;
+                            ctx.fillText('Log z = ' + logRe.toFixed(3) + ' + ' + logIm.toFixed(3) + 'i', infoX, infoY + 20);
+                            ctx.fillStyle = viz.colors.orange;
+                            ctx.fillText('Arg z = ' + argZ.toFixed(3) + ' rad', infoX, infoY + 40);
+
+                            // Jump indicator
+                            if (Math.abs(zy) < 0.15 && zx < 0) {
+                                ctx.fillStyle = viz.colors.red;
+                                ctx.font = 'bold 14px -apple-system,sans-serif';
+                                ctx.fillText('JUMP!', infoX, infoY + 65);
+                            }
+
+                            viz.drawDraggables();
+                        });
+                        return viz;
+                    }
+                }
+            ],
+            exercises: [
+                {
+                    question: 'Explain why \\(z = 0\\) is a branch point of \\(\\log z\\) but \\(z = 1\\) is not.',
+                    hint: 'Consider what happens when you traverse a small loop around each point and track the value of \\(\\log z\\).',
+                    solution: 'Traversing a loop around \\(z = 0\\), the argument changes by \\(2\\pi\\), so \\(\\log z\\) changes by \\(2\\pi i\\); it does not return to its starting value. For a loop around \\(z = 1\\) that does not enclose the origin, the argument returns to its starting value, so \\(\\log z\\) is single-valued near \\(z = 1\\). A branch point is a point where analytic continuation around a loop changes the branch.'
                 },
                 {
-                    question: 'The function \\(f(z) = \\tan z = \\sin z / \\cos z\\) is meromorphic. Locate all poles of \\(\\tan z\\) in the strip \\(|\\operatorname{Re}(z)| < 2\\pi\\) and determine their order.',
-                    hint: 'Poles of \\(\\tan z\\) are at zeros of \\(\\cos z\\). Check the order using \\(\\sin(\\pi/2 + k\\pi) \\ne 0\\).',
-                    solution: 'Zeros of \\(\\cos z\\) are at \\(z_k = \\pi/2 + k\\pi\\), \\(k \\in \\mathbb{Z}\\). In the strip \\(|\\operatorname{Re}(z)| < 2\\pi\\): \\(k = -2, -1, 0, 1\\), giving poles at \\(-3\\pi/2, -\\pi/2, \\pi/2, 3\\pi/2\\). Since \\((\\cos z)\' = -\\sin z\\) and \\(-\\sin(\\pi/2+k\\pi) = \\mp 1 \\ne 0\\), each zero of \\(\\cos z\\) is simple, so each pole of \\(\\tan z\\) is simple. Residue at each: \\(\\sin(z_k)/(-\\sin(z_k)) = -1\\).'
+                    question: 'Show that the Riemann surface of \\(z^{1/n}\\) (\\(n \\geq 2\\) integer) has \\(n\\) sheets, while the Riemann surface of \\(\\log z\\) has infinitely many.',
+                    hint: 'For \\(z^{1/n}\\), going around the origin \\(n\\) times returns to the original branch. For \\(\\log z\\), no finite number of loops returns to the original value.',
+                    solution: 'For \\(z^{1/n} = |z|^{1/n} e^{i(\\theta + 2k\\pi)/n}\\), there are exactly \\(n\\) distinct values (\\(k = 0, 1, \\ldots, n-1\\)). Going around the origin once changes the branch from \\(k\\) to \\(k+1 \\pmod{n}\\); after \\(n\\) loops we return to the start. The Riemann surface is an \\(n\\)-sheeted cover of \\(\\mathbb{C}^* = \\mathbb{C}\\setminus\\{0\\}\\). For \\(\\log z\\), the values \\(\\ln|z| + i(\\theta + 2k\\pi)\\) are all distinct for distinct \\(k \\in \\mathbb{Z}\\), so going around the origin never returns to the starting value. The Riemann surface is an infinite-sheeted (universal) cover of \\(\\mathbb{C}^*\\).'
                 }
             ]
         }
