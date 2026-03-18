@@ -6,53 +6,37 @@ window.CHAPTERS.push({
     subtitle: 'The Cauchy-Riemann equations and the magic of complex differentiability',
     sections: [
         // ================================================================
-        // SECTION 1: Complex Differentiability
+        // SECTION 1: Motivation
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'Complex Differentiability',
+            title: 'Why Analyticity Matters',
             content: `
-<h2>Complex Differentiability</h2>
+<h2>Why Analyticity Matters</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">Why This Is Different</div>
+    <div class="env-title">A Single Condition, Extraordinary Consequences</div>
     <div class="env-body">
-        <p>In real analysis, the derivative of \\(f: \\mathbb{R} \\to \\mathbb{R}\\) at \\(x_0\\) requires the limit of \\((f(x_0 + h) - f(x_0))/h\\) to exist as \\(h \\to 0\\) along the real line. There are only two directions: left and right. For a complex function \\(f: \\mathbb{C} \\to \\mathbb{C}\\), the point \\(z_0 + h\\) can approach \\(z_0\\) from <em>infinitely many directions</em> in the plane. Requiring the same limit from every direction is an enormously stronger constraint.</p>
+        <p>In real analysis, a function can be differentiable without being twice differentiable, or smooth without being analytic. Complex analysis is startlingly different. If a complex function \\(f\\) is differentiable at every point of an open set, then it is automatically infinitely differentiable, has a convergent power series expansion, satisfies the maximum modulus principle, and much more. One condition unlocks an entire hierarchy of regularity.</p>
+        <p>This chapter develops the machinery behind this phenomenon: the complex derivative, the Cauchy-Riemann equations, and their geometric and physical consequences.</p>
     </div>
 </div>
 
-<p>This extra rigidity is what makes complex analysis miraculous. A real function can be differentiable once but not twice (think of functions built from \\(|x|\\)). But a complex function that is differentiable even in a tiny open disk is automatically differentiable infinitely many times, representable by a convergent power series, and determined everywhere by its values on any convergent sequence of points. Being once complex-differentiable is enough to guarantee everything.</p>
+<p>Recall from Chapter 1 that we write \\(f(z) = u(x,y) + iv(x,y)\\) where \\(z = x + iy\\). A complex function is thus a pair of real-valued functions \\(u\\) and \\(v\\) of two real variables. But complex differentiability imposes a very specific coupling between \\(u\\) and \\(v\\) that goes far beyond what real differentiability requires.</p>
 
-<h3>The Contrast with Real Analysis</h3>
+<h3>Real vs. Complex Differentiability</h3>
 
-<p>Consider the function \\(f(x) = |x|\\) on \\(\\mathbb{R}\\). It is continuous everywhere but not differentiable at \\(x = 0\\). We can build smooth-looking functions with isolated points of non-differentiability. In complex analysis, this simply cannot happen: if \\(f\\) is complex-differentiable at every point of an open set, there are no "corner points" lurking anywhere.</p>
-
-<p>Another contrast: in real analysis, knowing \\(f(x)\\) on \\([0, 1]\\) tells us nothing about \\(f(x)\\) on \\([2, 3]\\) without extra assumptions. But a complex-differentiable function defined on any open connected set is completely determined by its values on any tiny open disk inside that set. This is the <em>identity theorem</em>, a consequence of the power series representation we will prove in Chapter 7.</p>
-
-<h3>The Program for This Chapter</h3>
-
-<p>We proceed in three steps. First, we define complex differentiability rigorously and explore what the limit condition means geometrically. Second, we derive the <strong>Cauchy-Riemann equations</strong>, the algebraic fingerprint of complex differentiability expressed in terms of the real and imaginary parts. Third, we study the class of functions satisfying these conditions everywhere on an open set, called <strong>analytic</strong> or <strong>holomorphic</strong> functions, and discover their geometric meaning (conformality) and their connection to harmonic functions.</p>
+<p>A real function \\(f: \\mathbb{R}^2 \\to \\mathbb{R}^2\\) is differentiable at a point if it can be locally approximated by a linear map, i.e., by any \\(2 \\times 2\\) matrix. That gives 4 free parameters. A complex-differentiable function must be locally approximated by multiplication by a complex number \\(f'(z_0)\\), which is a very special kind of linear map: a rotation composed with a scaling. That is only 2 free parameters. The constraint that eliminates two of the four degrees of freedom is precisely the Cauchy-Riemann equations.</p>
 
 <div class="env-block remark">
-    <div class="env-title">Terminology</div>
+    <div class="env-title">Historical Note</div>
     <div class="env-body">
-        <p>The terms <em>analytic</em>, <em>holomorphic</em>, and <em>regular</em> are used interchangeably in the literature. Ahlfors prefers "analytic"; Stein and Shakarchi prefer "holomorphic." We will use both. (The term "regular" appears more often in older British texts.) These terms all mean: complex differentiable at every point of some open set.</p>
+        <p>The equations we now call "Cauchy-Riemann" were discovered by d'Alembert (1752) in the context of fluid mechanics, rediscovered by Euler (1757), then systematically developed by Cauchy (1814) and Riemann (1851). Riemann's insight was especially profound: he recognized that these equations define a geometric structure on the plane, not just an algebraic constraint.</p>
     </div>
 </div>
 `,
             visualizations: [],
-            exercises: [
-                {
-                    question: 'Let \\(f: \\mathbb{R} \\to \\mathbb{R}\\) be given by \\(f(x) = x|x|\\). Show that \\(f\\) is differentiable at every point of \\(\\mathbb{R}\\) but \\(f\'\'(0)\\) does not exist. Explain why this behavior is impossible for an analytic complex function.',
-                    hint: 'Compute \\(f\'(x)\\) for \\(x > 0\\), \\(x < 0\\), and use the limit definition at \\(x = 0\\). For the second part, recall that analyticity implies infinite differentiability.',
-                    solution: 'For \\(x > 0\\): \\(f(x) = x^2\\), so \\(f\'(x) = 2x\\). For \\(x < 0\\): \\(f(x) = -x^2\\), so \\(f\'(x) = -2x\\). At \\(x=0\\): \\(\\lim_{h\\to 0} h|h|/h = \\lim_{h\\to 0} |h| = 0\\), so \\(f\'(0) = 0\\). Thus \\(f\'(x) = 2|x|\\), which is continuous but not differentiable at 0. For a complex analytic function, differentiability on an open set implies the function equals its Taylor series, hence is infinitely differentiable. A "first differentiable but not second" scenario is impossible.'
-                },
-                {
-                    question: 'Explain intuitively why the limit \\(\\lim_{h \\to 0} \\frac{f(z_0 + h) - f(z_0)}{h}\\) in \\(\\mathbb{C}\\) is more restrictive than the analogous limit in \\(\\mathbb{R}\\).',
-                    hint: 'In \\(\\mathbb{R}\\), \\(h \\to 0\\) means \\(h \\to 0^+\\) or \\(h \\to 0^-\\). In \\(\\mathbb{C}\\), describe the directions available.',
-                    solution: 'In \\(\\mathbb{R}\\), the limit needs to agree from only two directions. In \\(\\mathbb{C}\\), \\(h\\) can approach 0 along any curve: horizontally (\\(h = t\\)), vertically (\\(h = it\\)), diagonally, or along a spiral. The limit must be the same number regardless of path. This is why the Cauchy-Riemann equations (which express the agreement between horizontal and vertical approach) are necessary conditions.'
-                }
-            ]
+            exercises: []
         },
 
         // ================================================================
@@ -65,57 +49,50 @@ window.CHAPTERS.push({
 <h2>The Complex Derivative</h2>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 2.1 (Complex Derivative)</div>
+    <div class="env-title">Definition (Complex Derivative)</div>
     <div class="env-body">
-        <p>Let \\(f: U \\to \\mathbb{C}\\) where \\(U \\subseteq \\mathbb{C}\\) is open. The <strong>derivative of \\(f\\) at \\(z_0 \\in U\\)</strong> is</p>
-        \\[f'(z_0) = \\lim_{h \\to 0} \\frac{f(z_0 + h) - f(z_0)}{h}\\]
-        <p>provided this limit exists and is the same for every sequence \\(h_n \\to 0\\) with \\(h_n \\neq 0\\). If \\(f'(z_0)\\) exists, we say \\(f\\) is <strong>complex differentiable</strong> at \\(z_0\\).</p>
+        <p>Let \\(f\\) be defined in a neighborhood of \\(z_0 \\in \\mathbb{C}\\). The <strong>complex derivative</strong> of \\(f\\) at \\(z_0\\) is</p>
+        \\[f'(z_0) = \\lim_{\\Delta z \\to 0} \\frac{f(z_0 + \\Delta z) - f(z_0)}{\\Delta z},\\]
+        <p>provided this limit exists. Here \\(\\Delta z\\) is a <em>complex</em> increment, so the limit must be the same regardless of the direction from which \\(\\Delta z \\to 0\\) in the complex plane.</p>
     </div>
 </div>
 
-<p>The formal definition looks identical to the real case, but the division \\(1/h\\) is now complex division: if \\(h = a + bi\\) then \\(1/h = (a - bi)/(a^2 + b^2)\\). The result is a complex number, and the limit requires the ratio to converge to the same complex number regardless of how \\(h \\to 0\\) in the plane.</p>
-
-<h3>Basic Examples</h3>
-
-<div class="env-block example">
-    <div class="env-title">Example: \\(f(z) = z^2\\)</div>
+<div class="env-block intuition">
+    <div class="env-title">The Direction-Independence Constraint</div>
     <div class="env-body">
-        <p>\\[\\frac{(z_0 + h)^2 - z_0^2}{h} = \\frac{2z_0 h + h^2}{h} = 2z_0 + h \\to 2z_0\\]</p>
-        <p>as \\(h \\to 0\\), regardless of direction. So \\((z^2)' = 2z\\).</p>
+        <p>This is the crucial point. In real calculus, the limit \\(\\lim_{h \\to 0} [f(x_0+h) - f(x_0)]/h\\) only requires \\(h \\to 0\\) from left or right, two directions. In the complex plane, \\(\\Delta z\\) can approach 0 from any direction: along the real axis, the imaginary axis, spiraling in, or any path whatsoever. The limit must be the same for all of them.</p>
+        <p>This is an incredibly restrictive condition. Most "reasonable-looking" functions of two real variables fail it.</p>
     </div>
 </div>
 
-<div class="env-block example">
-    <div class="env-title">Example: \\(f(z) = \\bar{z}\\) (complex conjugate)</div>
-    <div class="env-body">
-        <p>Here \\(f(z_0 + h) = \\overline{z_0 + h} = \\bar{z}_0 + \\bar{h}\\), so</p>
-        \\[\\frac{f(z_0 + h) - f(z_0)}{h} = \\frac{\\bar{h}}{h}.\\]
-        <p>If \\(h = t \\in \\mathbb{R}\\), this ratio is \\(t/t = 1\\). If \\(h = it\\), this ratio is \\(-it/it = -1\\). The limit depends on the direction, so the derivative does not exist at any point. The conjugate function is <em>nowhere</em> complex differentiable.</p>
-    </div>
-</div>
+<p>Writing \\(f'(z_0) = a + ib\\), the derivative tells us that near \\(z_0\\), the function acts like</p>
+\\[f(z) \\approx f(z_0) + f'(z_0) \\cdot (z - z_0).\\]
 
-<h3>Geometric Meaning of \\(f'(z_0)\\)</h3>
+<p>Multiplication by \\(f'(z_0)\\) scales lengths by \\(|f'(z_0)|\\) and rotates by \\(\\arg f'(z_0)\\). The complex derivative, when it exists, gives a local "rotation + scaling" description of the map.</p>
 
-<p>Write \\(f'(z_0) = |f'(z_0)| e^{i\\theta}\\) in polar form. Near \\(z_0\\), the linear approximation gives</p>
-\\[f(z_0 + h) \\approx f(z_0) + f'(z_0) \\cdot h.\\]
-<p>Multiplication by \\(f'(z_0)\\) rotates \\(h\\) by angle \\(\\theta = \\arg(f'(z_0))\\) and scales its length by \\(|f'(z_0)|\\). Therefore:</p>
-<ul>
-    <li>\\(|f'(z_0)|\\) is the <strong>local scaling factor</strong> (how much \\(f\\) stretches lengths near \\(z_0\\))</li>
-    <li>\\(\\arg(f'(z_0))\\) is the <strong>local rotation angle</strong> (how much \\(f\\) rotates directions near \\(z_0\\))</li>
-</ul>
-<p>Crucially, this rotation and scaling is the <em>same in every direction</em> from \\(z_0\\). This directional uniformity is precisely the content of the Cauchy-Riemann equations.</p>
+<h3>Basic Differentiation Rules</h3>
+
+<p>The familiar rules from real calculus carry over verbatim to the complex setting, with identical proofs:</p>
 
 <div class="env-block theorem">
     <div class="env-title">Theorem 2.1 (Differentiation Rules)</div>
     <div class="env-body">
-        <p>The usual real-variable rules carry over verbatim to complex derivatives:</p>
-        <ul>
-            <li><strong>Power rule:</strong> \\((z^n)' = nz^{n-1}\\) for \\(n \\in \\mathbb{Z}\\)</li>
-            <li><strong>Sum rule:</strong> \\((f+g)' = f' + g'\\)</li>
-            <li><strong>Product rule:</strong> \\((fg)' = f'g + fg'\\)</li>
-            <li><strong>Chain rule:</strong> \\((f \\circ g)'(z) = f'(g(z)) \\cdot g'(z)\\)</li>
-        </ul>
-        <p>The proofs are identical to the real case, since they use only algebraic manipulations of the limit definition.</p>
+        <p>If \\(f\\) and \\(g\\) are complex differentiable at \\(z_0\\), then:</p>
+        <ol>
+            <li><strong>Sum:</strong> \\((f + g)'(z_0) = f'(z_0) + g'(z_0)\\)</li>
+            <li><strong>Product:</strong> \\((fg)'(z_0) = f'(z_0)g(z_0) + f(z_0)g'(z_0)\\)</li>
+            <li><strong>Quotient:</strong> \\(\\left(\\frac{f}{g}\\right)'(z_0) = \\frac{f'(z_0)g(z_0) - f(z_0)g'(z_0)}{g(z_0)^2}\\) when \\(g(z_0) \\neq 0\\)</li>
+            <li><strong>Chain rule:</strong> \\((f \\circ g)'(z_0) = f'(g(z_0)) \\cdot g'(z_0)\\)</li>
+        </ol>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: \\(f(z) = z^2\\)</div>
+    <div class="env-body">
+        <p>We compute directly:</p>
+        \\[f'(z_0) = \\lim_{\\Delta z \\to 0} \\frac{(z_0 + \\Delta z)^2 - z_0^2}{\\Delta z} = \\lim_{\\Delta z \\to 0} \\frac{2z_0 \\Delta z + (\\Delta z)^2}{\\Delta z} = 2z_0.\\]
+        <p>The limit exists and equals \\(2z_0\\), independently of the direction of \\(\\Delta z\\). So \\(f(z) = z^2\\) is complex differentiable everywhere, with \\(f'(z) = 2z\\).</p>
     </div>
 </div>
 
@@ -124,447 +101,398 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-complex-derivative',
-                    title: 'The Derivative as Local Rotation and Scaling',
-                    description: 'Drag z\u2080 in the domain (left). A small grid around z\u2080 is mapped by f to the image (right). The derivative f\'(z\u2080) tells you the rotation angle and scaling factor. Switch between f(z)=z\u00b2, f(z)=z\u00b3, and f(z)=e^z.',
+                    title: 'Complex Derivative: Local Rotation and Scaling',
+                    description: 'Drag the point z\u2080 to see how f(z) = z\u00B2 transforms a small grid near z\u2080. The derivative f\'(z\u2080) = 2z\u2080 determines the local rotation angle and scale factor. Notice the grid squares become (approximately) scaled, rotated copies of themselves.',
                     setup: function(body, controls) {
-                        var W = 580, H = 320;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/4, originY: H/2, scale: 50 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 50
+                        });
 
+                        var z0 = viz.addDraggable('z0', 1.2, 0.8, viz.colors.blue, 8);
+
+                        var funcChoice = 0; // 0 = z^2, 1 = z^3, 2 = e^z
                         var funcs = [
-                            {
-                                name: 'f(z) = z\u00b2',
-                                f: function(re, im) { return [re*re - im*im, 2*re*im]; },
-                                df: function(re, im) { return [2*re, 2*im]; }
-                            },
-                            {
-                                name: 'f(z) = z\u00b3',
-                                f: function(re, im) {
-                                    return [re*re*re - 3*re*im*im, 3*re*re*im - im*im*im];
-                                },
-                                df: function(re, im) {
-                                    return [3*(re*re - im*im), 6*re*im];
-                                }
-                            },
-                            {
-                                name: 'f(z) = e^z',
-                                f: function(re, im) {
-                                    var er = Math.exp(re);
-                                    return [er*Math.cos(im), er*Math.sin(im)];
-                                },
-                                df: function(re, im) {
-                                    var er = Math.exp(re);
-                                    return [er*Math.cos(im), er*Math.sin(im)];
-                                }
-                            }
+                            { label: 'z\u00B2', f: function(x,y) { return [x*x - y*y, 2*x*y]; }, df: function(x,y) { return [2*x, 2*y]; } },
+                            { label: 'z\u00B3', f: function(x,y) { return [x*x*x - 3*x*y*y, 3*x*x*y - y*y*y]; }, df: function(x,y) { return [3*(x*x - y*y), 6*x*y]; } },
+                            { label: 'e^z', f: function(x,y) { var ex = Math.exp(x); return [ex*Math.cos(y), ex*Math.sin(y)]; }, df: function(x,y) { var ex = Math.exp(x); return [ex*Math.cos(y), ex*Math.sin(y)]; } }
                         ];
 
-                        var fIdx = 0;
-                        var z0 = { x: 0.8, y: 0.5 };
-
-                        // Selector buttons
-                        var btnRow = document.createElement('div');
-                        btnRow.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
-                        funcs.forEach(function(fn, i) {
-                            var b = document.createElement('button');
-                            b.textContent = fn.name;
-                            b.style.cssText = 'padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#1a1a40;color:#c9d1d9;font-size:0.75rem;cursor:pointer;';
-                            b.addEventListener('click', function() {
-                                fIdx = i;
-                                btnRow.querySelectorAll('button').forEach(function(bb, ii) {
-                                    bb.style.background = ii === i ? '#3fb9a0' : '#1a1a40';
-                                    bb.style.color = ii === i ? '#0c0c20' : '#c9d1d9';
-                                });
-                                draw();
-                            });
-                            if (i === 0) { b.style.background = '#3fb9a0'; b.style.color = '#0c0c20'; }
-                            btnRow.appendChild(b);
-                        });
-                        controls.appendChild(btnRow);
-
-                        // Draggable point
-                        var drg = viz.addDraggable('z0', z0.x, z0.y, viz.colors.orange, 8, function(x, y) {
-                            z0.x = x; z0.y = y; draw();
-                        });
-
-                        var halfW = W / 2;
-
-                        function drawPanel(isRight) {
-                            var ctx = viz.ctx;
-                            ctx.save();
-                            if (isRight) ctx.translate(halfW, 0);
-                            // Background
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0, 0, halfW, H);
-                            // Divider
-                            if (!isRight) {
-                                ctx.strokeStyle = '#2a2a50';
-                                ctx.lineWidth = 1;
-                                ctx.beginPath(); ctx.moveTo(halfW - 1, 0); ctx.lineTo(halfW - 1, H); ctx.stroke();
-                            }
-                            ctx.restore();
-                        }
-
-                        function drawLocalGrid(ctx, cx, cy, scaleFactor, rotAngle, originSx, originSy, scale, color, label) {
-                            var gs = 0.25; // grid spacing in math units
-                            var steps = [-1, 0, 1];
-                            ctx.save();
-                            ctx.translate(originSx, originSy);
-
-                            // Draw transformed grid lines
-                            var cosA = Math.cos(rotAngle), sinA = Math.sin(rotAngle);
-                            var sf = scaleFactor * scale;
-
-                            ctx.strokeStyle = color + '60';
-                            ctx.lineWidth = 1;
-
-                            // Horizontal lines (constant im)
-                            for (var j = -1; j <= 1; j++) {
-                                ctx.beginPath();
-                                for (var ii = -20; ii <= 20; ii++) {
-                                    var lx = (ii * gs - cx) * scale;
-                                    var ly = -(j * gs - cy) * scale;
-                                    // transform by derivative: rotation + scaling
-                                    var tx = cosA * lx - sinA * ly;
-                                    var ty = sinA * lx + cosA * ly;
-                                    tx *= scaleFactor; ty *= scaleFactor;
-                                    if (ii === -20) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
-                                }
-                                ctx.stroke();
-                            }
-                            // Vertical lines (constant re)
-                            for (var i = -1; i <= 1; i++) {
-                                ctx.beginPath();
-                                for (var jj = -20; jj <= 20; jj++) {
-                                    var lx2 = (i * gs - cx) * scale;
-                                    var ly2 = -(jj * gs - cy) * scale;
-                                    var tx2 = cosA * lx2 - sinA * ly2;
-                                    var ty2 = sinA * lx2 + cosA * ly2;
-                                    tx2 *= scaleFactor; ty2 *= scaleFactor;
-                                    if (jj === -20) ctx.moveTo(tx2, ty2); else ctx.lineTo(tx2, ty2);
-                                }
-                                ctx.stroke();
-                            }
-
-                            // Draw center point
-                            ctx.fillStyle = color;
-                            ctx.beginPath(); ctx.arc(0, 0, 5, 0, Math.PI * 2); ctx.fill();
-
-                            // Label
-                            ctx.fillStyle = color;
-                            ctx.font = 'bold 12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-                            ctx.fillText(label, 8, -8);
-                            ctx.restore();
-                        }
+                        VizEngine.createButton(controls, 'z\u00B2', function() { funcChoice = 0; });
+                        VizEngine.createButton(controls, 'z\u00B3', function() { funcChoice = 1; });
+                        VizEngine.createButton(controls, 'e^z', function() { funcChoice = 2; });
 
                         function draw() {
+                            viz.clear();
                             var ctx = viz.ctx;
-                            ctx.clearRect(0, 0, W, H);
+                            var fc = funcs[funcChoice];
+                            var x0 = z0.x, y0 = z0.y;
+                            var eps = 0.4;
+                            var gridN = 6;
 
-                            // Left panel: domain
+                            // Draw input grid (left half)
+                            var halfW = viz.width / 2;
+                            var leftOx = halfW / 2;
+                            var rightOx = halfW + halfW / 2;
+                            var oy = viz.height / 2;
+                            var sc = viz.scale;
+
+                            // Left panel: input plane
                             ctx.save();
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0, 0, halfW, H);
-                            ctx.restore();
+                            ctx.beginPath();
+                            ctx.rect(0, 0, halfW, viz.height);
+                            ctx.clip();
 
-                            // Left panel grid and axes
-                            ctx.save();
-                            // draw grid in left half only
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-                            viz.drawGrid(1);
-                            viz.drawAxes();
-                            ctx.restore();
-
-                            // Panel labels
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText('Domain (z-plane)', halfW/2, 6);
-
-                            // Draw small grid around z0 in domain
-                            var [dsx, dsy] = viz.toScreen(z0.x, z0.y);
-                            drawLocalGrid(ctx, z0.x, z0.y, 1, 0, dsx, dsy, viz.scale, viz.colors.blue, 'z\u2080');
-
-                            // Draggable point
-                            viz.drawDraggables();
-
-                            // Compute f(z0) and f'(z0)
-                            var fn = funcs[fIdx];
-                            var [fre, fim] = fn.f(z0.x, z0.y);
-                            var [dre, dim] = fn.df(z0.x, z0.y);
-
-                            var mag = Math.sqrt(dre*dre + dim*dim);
-                            var ang = Math.atan2(dim, dre);
-
-                            // Right panel: image
-                            ctx.save();
-                            ctx.translate(halfW, 0);
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0, 0, halfW, H);
-
-                            // Right axes: centered at halfW/2, H/2
-                            var rox = halfW/2, roy = H/2;
-                            // grid
+                            // Grid
                             ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
-                            for (var gx = -5; gx <= 5; gx++) {
-                                var sx = rox + gx * viz.scale;
-                                ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, H); ctx.stroke();
+                            for (var gx = -10; gx <= 10; gx++) {
+                                var sx = leftOx + gx * sc;
+                                ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, viz.height); ctx.stroke();
                             }
-                            for (var gy = -5; gy <= 5; gy++) {
-                                var sy = roy - gy * viz.scale;
+                            for (var gy = -10; gy <= 10; gy++) {
+                                var sy = oy - gy * sc;
                                 ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(halfW, sy); ctx.stroke();
                             }
+                            // Axes
                             ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.moveTo(0, roy); ctx.lineTo(halfW, roy); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(rox, 0); ctx.lineTo(rox, H); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(halfW, oy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(leftOx, 0); ctx.lineTo(leftOx, viz.height); ctx.stroke();
 
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText('Image (w-plane)', halfW/2, 6);
+                            // Draw small grid around z0
+                            ctx.strokeStyle = viz.colors.teal; ctx.lineWidth = 1.5;
+                            for (var i = 0; i <= gridN; i++) {
+                                var t = -eps + 2 * eps * i / gridN;
+                                // horizontal lines
+                                ctx.beginPath();
+                                ctx.moveTo(leftOx + (x0 - eps) * sc, oy - (y0 + t) * sc);
+                                ctx.lineTo(leftOx + (x0 + eps) * sc, oy - (y0 + t) * sc);
+                                ctx.stroke();
+                                // vertical lines
+                                ctx.beginPath();
+                                ctx.moveTo(leftOx + (x0 + t) * sc, oy - (y0 - eps) * sc);
+                                ctx.lineTo(leftOx + (x0 + t) * sc, oy - (y0 + eps) * sc);
+                                ctx.stroke();
+                            }
 
-                            // Clamp image center to visible area
-                            var clampedFre = Math.max(-halfW/(2*viz.scale)+0.3, Math.min(halfW/(2*viz.scale)-0.3, fre));
-                            var clampedFim = Math.max(-(H)/(2*viz.scale)+0.3, Math.min((H)/(2*viz.scale)-0.3, fim));
-                            var isx = rox + clampedFre * viz.scale;
-                            var isy = roy - clampedFim * viz.scale;
+                            // z0 point
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.beginPath(); ctx.arc(leftOx + x0 * sc, oy - y0 * sc, 6, 0, Math.PI * 2); ctx.fill();
+                            ctx.fillStyle = viz.colors.white; ctx.font = '12px -apple-system,sans-serif';
+                            ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+                            ctx.fillText('z\u2080', leftOx + x0 * sc + 10, oy - y0 * sc - 5);
 
-                            drawLocalGrid(ctx, 0, 0, mag, ang, isx, isy, viz.scale, viz.colors.teal, 'f(z\u2080)');
-
+                            // Label
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center'; ctx.fillText('Input: z-plane', halfW / 2, 18);
                             ctx.restore();
 
-                            // Info panel
-                            var infoY = H - 38;
-                            ctx.fillStyle = '#12122a';
-                            ctx.fillRect(4, infoY, W - 8, 34);
-                            ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
-                            ctx.strokeRect(4, infoY, W - 8, 34);
+                            // Right panel: output plane
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.rect(halfW, 0, halfW, viz.height);
+                            ctx.clip();
 
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
+                            // Grid
+                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
+                            for (var gx2 = -10; gx2 <= 10; gx2++) {
+                                var sx2 = rightOx + gx2 * sc;
+                                ctx.beginPath(); ctx.moveTo(sx2, 0); ctx.lineTo(sx2, viz.height); ctx.stroke();
+                            }
+                            for (var gy2 = -10; gy2 <= 10; gy2++) {
+                                var sy2 = oy - gy2 * sc;
+                                ctx.beginPath(); ctx.moveTo(halfW, sy2); ctx.lineTo(viz.width, sy2); ctx.stroke();
+                            }
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
+                            ctx.beginPath(); ctx.moveTo(halfW, oy); ctx.lineTo(viz.width, oy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(rightOx, 0); ctx.lineTo(rightOx, viz.height); ctx.stroke();
+
+                            // Transform the grid through f
+                            var steps = 30;
+                            ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 1.5;
+                            for (var i2 = 0; i2 <= gridN; i2++) {
+                                var t2 = -eps + 2 * eps * i2 / gridN;
+                                // horizontal line: y = y0 + t2, x varies
+                                ctx.beginPath();
+                                for (var s = 0; s <= steps; s++) {
+                                    var xx = x0 - eps + 2 * eps * s / steps;
+                                    var yy = y0 + t2;
+                                    var w = fc.f(xx, yy);
+                                    var px = rightOx + w[0] * sc;
+                                    var py = oy - w[1] * sc;
+                                    s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                                }
+                                ctx.stroke();
+                                // vertical line: x = x0 + t2, y varies
+                                ctx.beginPath();
+                                for (var s2 = 0; s2 <= steps; s2++) {
+                                    var xx2 = x0 + t2;
+                                    var yy2 = y0 - eps + 2 * eps * s2 / steps;
+                                    var w2 = fc.f(xx2, yy2);
+                                    var px2 = rightOx + w2[0] * sc;
+                                    var py2 = oy - w2[1] * sc;
+                                    s2 === 0 ? ctx.moveTo(px2, py2) : ctx.lineTo(px2, py2);
+                                }
+                                ctx.stroke();
+                            }
+
+                            // f(z0) point
+                            var fz0 = fc.f(x0, y0);
+                            ctx.fillStyle = viz.colors.orange;
+                            ctx.beginPath(); ctx.arc(rightOx + fz0[0] * sc, oy - fz0[1] * sc, 6, 0, Math.PI * 2); ctx.fill();
+                            ctx.fillStyle = viz.colors.white; ctx.font = '12px -apple-system,sans-serif';
+                            ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
+                            ctx.fillText('f(z\u2080)', rightOx + fz0[0] * sc + 10, oy - fz0[1] * sc - 5);
+
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center'; ctx.fillText('Output: f(z) = ' + fc.label, halfW + halfW / 2, 18);
+                            ctx.restore();
+
+                            // Dividing line
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
+                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, viz.height); ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            // Info: derivative value
+                            var dfVal = fc.df(x0, y0);
+                            var mag = Math.sqrt(dfVal[0] * dfVal[0] + dfVal[1] * dfVal[1]);
+                            var ang = Math.atan2(dfVal[1], dfVal[0]) * 180 / Math.PI;
+                            ctx.fillStyle = viz.colors.white; ctx.font = '12px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
                             ctx.fillText(
-                                'z\u2080 = ' + z0.x.toFixed(2) + (z0.y >= 0 ? '+' : '') + z0.y.toFixed(2) + 'i' +
-                                '    f(z\u2080) = ' + fre.toFixed(2) + (fim >= 0 ? '+' : '') + fim.toFixed(2) + 'i' +
-                                '    |f\'| = ' + mag.toFixed(3) +
-                                '    arg(f\') = ' + (ang * 180 / Math.PI).toFixed(1) + '\u00b0',
-                                14, infoY + 17
+                                "f'(z\u2080) = " + dfVal[0].toFixed(2) + ' + ' + dfVal[1].toFixed(2) + 'i' +
+                                '    |f\'| = ' + mag.toFixed(2) + '    arg = ' + ang.toFixed(1) + '\u00B0',
+                                viz.width / 2, viz.height - 10
                             );
 
-                            // Divider
-                            ctx.strokeStyle = '#2a2a50'; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
+                            // Draggable overlay (use left panel coords)
+                            z0.x = Math.max(-3, Math.min(3, z0.x));
+                            z0.y = Math.max(-3, Math.min(3, z0.y));
+                            // Override toScreen for draggable rendering
+                            var origToScreen = viz.toScreen.bind(viz);
+                            viz.toScreen = function(x, y) { return [leftOx + x * sc, oy - y * sc]; };
+                            viz.drawDraggables();
+                            viz.toScreen = origToScreen;
                         }
 
-                        draw();
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Using the definition of the complex derivative, show that \\(f(z) = z^3\\) has derivative \\(f\'(z) = 3z^2\\).',
-                    hint: 'Expand \\((z + h)^3\\) and simplify the difference quotient, then take \\(h \\to 0\\).',
-                    solution: '\\(\\frac{(z+h)^3 - z^3}{h} = \\frac{3z^2h + 3zh^2 + h^3}{h} = 3z^2 + 3zh + h^2 \\to 3z^2\\) as \\(h \\to 0\\).'
+                    question: 'Using the limit definition, show that \\(f(z) = \\bar{z}\\) (complex conjugation) is not complex differentiable at any point.',
+                    hint: 'Compute the difference quotient \\(\\frac{\\overline{z_0 + \\Delta z} - \\bar{z}_0}{\\Delta z}\\). Try \\(\\Delta z = h\\) (real) and \\(\\Delta z = ih\\) (imaginary).',
+                    solution: 'We have \\(\\frac{\\overline{z_0 + \\Delta z} - \\bar{z}_0}{\\Delta z} = \\frac{\\overline{\\Delta z}}{\\Delta z}\\). If \\(\\Delta z = h \\in \\mathbb{R}\\), this equals \\(h/h = 1\\). If \\(\\Delta z = ih\\), this equals \\(-ih/(ih) = -1\\). The limits differ, so the derivative does not exist at any \\(z_0\\).'
                 },
                 {
-                    question: 'Show that \\(f(z) = \\text{Re}(z) = x\\) is nowhere complex differentiable.',
-                    hint: 'Approach along the real axis (\\(h = t \\in \\mathbb{R}\\)) and along the imaginary axis (\\(h = it\\)) and compare limits.',
-                    solution: 'Along \\(h = t\\): \\(\\frac{\\text{Re}(z+t) - \\text{Re}(z)}{t} = \\frac{t}{t} = 1\\). Along \\(h = it\\): \\(\\frac{\\text{Re}(z+it) - \\text{Re}(z)}{it} = \\frac{0}{it} = 0\\). The limits differ, so no derivative exists at any point.'
-                },
-                {
-                    question: 'If \\(f\'(z_0) = 3 + 4i\\), what is the local scaling factor and rotation angle of \\(f\\) near \\(z_0\\)?',
-                    hint: 'Convert \\(3 + 4i\\) to polar form.',
-                    solution: '\\(|f\'(z_0)| = \\sqrt{9 + 16} = 5\\). So \\(f\\) scales lengths by a factor of 5 near \\(z_0\\). The rotation angle is \\(\\arg(3 + 4i) = \\arctan(4/3) \\approx 53.13^\\circ\\).'
+                    question: 'Compute \\(f\'(z)\\) for \\(f(z) = z^3 - 2z + 1\\) using the differentiation rules.',
+                    hint: 'Apply the power rule and sum rule, just as in real calculus.',
+                    solution: '\\(f\'(z) = 3z^2 - 2\\). The same rules apply: \\(\\frac{d}{dz}z^n = nz^{n-1}\\), linearity of differentiation, and the derivative of a constant is zero.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: Cauchy-Riemann Equations
+        // SECTION 3: The Cauchy-Riemann Equations
         // ================================================================
         {
             id: 'sec-cauchy-riemann',
-            title: 'Cauchy-Riemann Equations',
+            title: 'The Cauchy-Riemann Equations',
             content: `
 <h2>The Cauchy-Riemann Equations</h2>
 
-<p>Every complex function \\(f: U \\to \\mathbb{C}\\) can be written as</p>
-\\[f(x + iy) = u(x, y) + i\\,v(x, y)\\]
-<p>where \\(u, v: U \\to \\mathbb{R}\\) are real-valued functions. If \\(f\\) is complex differentiable at \\(z_0 = x_0 + iy_0\\), we can compute the derivative by approaching along two specific directions and equating the results.</p>
+<div class="env-block intuition">
+    <div class="env-title">Deriving the Equations</div>
+    <div class="env-body">
+        <p>The key insight is simple: if the complex derivative exists, the limit must be the same regardless of direction. Let us approach \\(\\Delta z \\to 0\\) along two specific directions and see what equality of the limits forces.</p>
+    </div>
+</div>
 
-<h3>Derivation</h3>
+<p>Write \\(f = u + iv\\) and \\(z_0 = x_0 + iy_0\\). The difference quotient is</p>
+\\[\\frac{f(z_0 + \\Delta z) - f(z_0)}{\\Delta z} = \\frac{[u(x_0 + \\Delta x, y_0 + \\Delta y) - u(x_0, y_0)] + i[v(x_0 + \\Delta x, y_0 + \\Delta y) - v(x_0, y_0)]}{\\Delta x + i\\Delta y}.\\]
 
-<p><strong>Horizontal approach:</strong> Take \\(h = \\Delta x \\in \\mathbb{R}\\):</p>
-\\[f'(z_0) = \\lim_{\\Delta x \\to 0} \\frac{u(x_0+\\Delta x, y_0) - u(x_0,y_0)}{\\Delta x} + i\\frac{v(x_0+\\Delta x, y_0) - v(x_0,y_0)}{\\Delta x} = u_x + iv_x.\\]
+<p><strong>Approach 1: along the real axis</strong> (\\(\\Delta z = \\Delta x\\), \\(\\Delta y = 0\\)):</p>
+\\[f'(z_0) = \\frac{\\partial u}{\\partial x} + i\\frac{\\partial v}{\\partial x}.\\]
 
-<p><strong>Vertical approach:</strong> Take \\(h = i\\Delta y\\):</p>
-\\[f'(z_0) = \\lim_{\\Delta y \\to 0} \\frac{u(x_0, y_0+\\Delta y) - u(x_0,y_0)}{i\\,\\Delta y} + i\\frac{v(x_0, y_0+\\Delta y) - v(x_0,y_0)}{i\\,\\Delta y} = \\frac{u_y}{i} + v_y = -iu_y + v_y = v_y - iu_y.\\]
+<p><strong>Approach 2: along the imaginary axis</strong> (\\(\\Delta z = i\\Delta y\\), \\(\\Delta x = 0\\)):</p>
+\\[f'(z_0) = \\frac{1}{i}\\left(\\frac{\\partial u}{\\partial y} + i\\frac{\\partial v}{\\partial y}\\right) = \\frac{\\partial v}{\\partial y} - i\\frac{\\partial u}{\\partial y}.\\]
 
-<p>Since both expressions equal \\(f'(z_0)\\), equating real and imaginary parts gives:</p>
+<p>Equating real and imaginary parts of these two expressions:</p>
 
 <div class="env-block theorem">
     <div class="env-title">Theorem 2.2 (Cauchy-Riemann Equations)</div>
     <div class="env-body">
-        <p>If \\(f = u + iv\\) is complex differentiable at \\(z_0\\), then at \\(z_0\\):</p>
-        \\[u_x = v_y \\quad \\text{and} \\quad u_y = -v_x.\\]
-        <p>These are the <strong>Cauchy-Riemann equations</strong>. Moreover, when they hold,</p>
-        \\[f'(z_0) = u_x + iv_x = v_y - iu_y.\\]
+        <p>If \\(f(z) = u(x,y) + iv(x,y)\\) is complex differentiable at \\(z_0 = x_0 + iy_0\\), then the partial derivatives of \\(u\\) and \\(v\\) satisfy</p>
+        \\[\\frac{\\partial u}{\\partial x} = \\frac{\\partial v}{\\partial y}, \\qquad \\frac{\\partial u}{\\partial y} = -\\frac{\\partial v}{\\partial x}\\]
+        <p>at \\((x_0, y_0)\\). These are the <strong>Cauchy-Riemann equations</strong> (CR equations).</p>
     </div>
 </div>
 
-<h3>Sufficient Conditions</h3>
-
-<p>The CR equations are necessary for complex differentiability but not quite sufficient on their own. The additional hypothesis needed is that the partial derivatives be continuous.</p>
+<p>The converse also holds under a mild regularity condition:</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 2.3 (Sufficiency of CR Equations)</div>
+    <div class="env-title">Theorem 2.3 (Sufficient Condition)</div>
     <div class="env-body">
-        <p>Suppose \\(f = u + iv\\) is defined on an open set \\(U\\), and that \\(u, v\\) have continuous first partial derivatives on \\(U\\) satisfying the Cauchy-Riemann equations. Then \\(f\\) is complex differentiable at every point of \\(U\\).</p>
+        <p>If \\(u\\) and \\(v\\) have continuous first partial derivatives in a neighborhood of \\((x_0, y_0)\\) and satisfy the Cauchy-Riemann equations there, then \\(f = u + iv\\) is complex differentiable at \\(z_0\\), and</p>
+        \\[f'(z_0) = \\frac{\\partial u}{\\partial x}(x_0, y_0) + i\\frac{\\partial v}{\\partial x}(x_0, y_0).\\]
     </div>
 </div>
 
-<div class="env-block remark">
-    <div class="env-title">Why Continuity of Partials Matters</div>
+<div class="env-block example">
+    <div class="env-title">Example: Verifying CR for \\(f(z) = z^2\\)</div>
     <div class="env-body">
-        <p>A pathological real function can satisfy \\(u_x = v_y\\) and \\(u_y = -v_x\\) at a single point without being complex differentiable there (the partials exist but the function is not real-differentiable in the sense of \\(f(z_0 + h) = f(z_0) + Lh + o(|h|)\\)). Continuous partials guarantee real differentiability, and then the CR equations promote real differentiability to complex differentiability.</p>
+        <p>Write \\(f(z) = (x+iy)^2 = (x^2 - y^2) + i(2xy)\\), so \\(u = x^2 - y^2\\), \\(v = 2xy\\).</p>
+        <ul>
+            <li>\\(u_x = 2x = v_y\\) \\(\\checkmark\\)</li>
+            <li>\\(u_y = -2y = -v_x\\) \\(\\checkmark\\)</li>
+        </ul>
+        <p>The CR equations hold everywhere, confirming \\(f(z) = z^2\\) is complex differentiable on all of \\(\\mathbb{C}\\).</p>
     </div>
 </div>
 
-<h3>Example: Verifying CR for \\(e^z\\)</h3>
+<h3>The Jacobian Viewpoint</h3>
 
-<p>Write \\(e^z = e^{x+iy} = e^x \\cos y + i e^x \\sin y\\). So \\(u = e^x \\cos y\\), \\(v = e^x \\sin y\\).</p>
-\\[u_x = e^x \\cos y = v_y, \\qquad u_y = -e^x \\sin y = -v_x.\\]
-<p>The CR equations hold everywhere, and \\(f'(z) = u_x + iv_x = e^x \\cos y + i e^x \\sin y = e^z\\). So \\((e^z)' = e^z\\), exactly as expected from the Taylor series.</p>
+<p>The real-variable Jacobian of \\(f\\) viewed as a map \\(\\mathbb{R}^2 \\to \\mathbb{R}^2\\) is</p>
+\\[J_f = \\begin{pmatrix} u_x & u_y \\\\ v_x & v_y \\end{pmatrix}.\\]
+
+<p>The CR equations say this matrix has the special form</p>
+\\[J_f = \\begin{pmatrix} a & -b \\\\ b & a \\end{pmatrix} \\quad \\text{where } a = u_x, \\; b = v_x.\\]
+
+<p>This is exactly the matrix representing multiplication by the complex number \\(a + ib = f'(z_0)\\). It decomposes as \\(r \\begin{pmatrix} \\cos\\theta & -\\sin\\theta \\\\ \\sin\\theta & \\cos\\theta \\end{pmatrix}\\), a rotation by \\(\\theta = \\arg f'(z_0)\\) and scaling by \\(r = |f'(z_0)|\\). The Jacobian determinant is \\(a^2 + b^2 = |f'(z_0)|^2 \\geq 0\\), which is strictly positive whenever \\(f'(z_0) \\neq 0\\), so the map is orientation-preserving and locally invertible.</p>
 
 <div class="viz-placeholder" data-viz="viz-cauchy-riemann"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-cauchy-riemann',
-                    title: 'CR Equations for f(z) = z\u00b2',
-                    description: 'Left: heatmap of u = x\u00b2 \u2212 y\u00b2. Right: heatmap of v = 2xy. Drag the point to see u_x, v_y (which must be equal) and u_y, \u2212v_x (which must be equal) at that location. The CR equations hold everywhere.',
+                    title: 'Cauchy-Riemann Verification: Heatmaps of u and v',
+                    description: 'For f(z) = z\u00B2, view side-by-side heatmaps of u(x,y) = x\u00B2 - y\u00B2 and v(x,y) = 2xy. The CR equations u_x = v_y and u_y = -v_x can be verified by comparing the gradients at each point.',
                     setup: function(body, controls) {
-                        var W = 580, H = 300;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/4, originY: H/2, scale: 50 });
-
-                        var pt = { x: 0.7, y: 0.5 };
-                        viz.addDraggable('pt', pt.x, pt.y, viz.colors.orange, 8, function(x, y) {
-                            pt.x = x; pt.y = y; draw();
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 340,
+                            scale: 40
                         });
 
-                        var halfW = W / 2;
-                        var xRange = [-2, 2], yRange = [-1.5, 1.5];
+                        var showGrad = false;
+                        VizEngine.createButton(controls, 'Toggle Gradients', function() {
+                            showGrad = !showGrad;
+                            draw();
+                        });
+
+                        var funcIdx = 0;
+                        var funcDefs = [
+                            {
+                                label: 'z\u00B2',
+                                u: function(x,y) { return x*x - y*y; },
+                                v: function(x,y) { return 2*x*y; },
+                                ux: function(x,y) { return 2*x; },
+                                uy: function(x,y) { return -2*y; },
+                                vx: function(x,y) { return 2*y; },
+                                vy: function(x,y) { return 2*x; }
+                            },
+                            {
+                                label: 'e^z',
+                                u: function(x,y) { return Math.exp(x)*Math.cos(y); },
+                                v: function(x,y) { return Math.exp(x)*Math.sin(y); },
+                                ux: function(x,y) { return Math.exp(x)*Math.cos(y); },
+                                uy: function(x,y) { return -Math.exp(x)*Math.sin(y); },
+                                vx: function(x,y) { return Math.exp(x)*Math.sin(y); },
+                                vy: function(x,y) { return Math.exp(x)*Math.cos(y); }
+                            }
+                        ];
+
+                        VizEngine.createButton(controls, 'z\u00B2', function() { funcIdx = 0; draw(); });
+                        VizEngine.createButton(controls, 'e^z', function() { funcIdx = 1; draw(); });
 
                         function draw() {
+                            viz.clear();
                             var ctx = viz.ctx;
-                            ctx.clearRect(0, 0, W, H);
+                            var fd = funcDefs[funcIdx];
+                            var halfW = Math.floor(viz.width / 2) - 10;
+                            var range = [-3, 3];
 
-                            // Left heatmap: u = x^2 - y^2
-                            ctx.save();
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-                            viz.drawHeatmap(function(x, y) { return x*x - y*y; }, xRange, yRange, 'coolwarm');
-                            ctx.restore();
+                            // Draw u heatmap on left
+                            var imgU = ctx.createImageData(halfW, viz.height);
+                            var imgV = ctx.createImageData(halfW, viz.height);
 
-                            // Right heatmap: v = 2xy
-                            ctx.save();
-                            ctx.translate(halfW, 0);
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-
-                            // Manual heatmap for right panel with shifted coords
-                            var pw = viz.canvas.width / 2;
-                            var ph = viz.canvas.height;
-                            var dpr = window.devicePixelRatio || 1;
-                            var imgData = ctx.createImageData(Math.floor(halfW * dpr), Math.floor(H * dpr));
-                            var data = imgData.data;
-                            var vMin = Infinity, vMax = -Infinity;
-                            var vals = new Float64Array(Math.floor(halfW * dpr) * Math.floor(H * dpr));
-                            var iW = Math.floor(halfW * dpr), iH = Math.floor(H * dpr);
-                            for (var py = 0; py < iH; py++) {
-                                for (var px2 = 0; px2 < iW; px2++) {
-                                    var x2 = xRange[0] + (xRange[1] - xRange[0]) * px2 / iW;
-                                    var y2 = yRange[1] - (yRange[1] - yRange[0]) * py / iH;
-                                    var val = 2 * x2 * y2;
-                                    vals[py * iW + px2] = val;
-                                    if (isFinite(val)) { vMin = Math.min(vMin, val); vMax = Math.max(vMax, val); }
+                            // Find range
+                            var uMin = Infinity, uMax = -Infinity, vMin = Infinity, vMax = -Infinity;
+                            for (var py = 0; py < viz.height; py++) {
+                                for (var px = 0; px < halfW; px++) {
+                                    var x = range[0] + (range[1] - range[0]) * px / halfW;
+                                    var y = range[1] - (range[1] - range[0]) * py / viz.height;
+                                    var uv = fd.u(x, y);
+                                    var vv = fd.v(x, y);
+                                    if (isFinite(uv)) { uMin = Math.min(uMin, uv); uMax = Math.max(uMax, uv); }
+                                    if (isFinite(vv)) { vMin = Math.min(vMin, vv); vMax = Math.max(vMax, vv); }
                                 }
                             }
-                            var range2 = vMax - vMin || 1;
-                            for (var i = 0; i < iW * iH; i++) {
-                                var t = Math.max(0, Math.min(1, (vals[i] - vMin) / range2));
-                                var rgb = VizEngine.colormapSample(t, 'coolwarm');
-                                data[i*4] = rgb[0]; data[i*4+1] = rgb[1]; data[i*4+2] = rgb[2]; data[i*4+3] = 255;
+                            var uRange = uMax - uMin || 1;
+                            var vRange = vMax - vMin || 1;
+
+                            for (var py2 = 0; py2 < viz.height; py2++) {
+                                for (var px2 = 0; px2 < halfW; px2++) {
+                                    var x2 = range[0] + (range[1] - range[0]) * px2 / halfW;
+                                    var y2 = range[1] - (range[1] - range[0]) * py2 / viz.height;
+                                    var idx = (py2 * halfW + px2) * 4;
+
+                                    var tu = Math.max(0, Math.min(1, (fd.u(x2, y2) - uMin) / uRange));
+                                    var cu = VizEngine.colormapSample(tu, 'coolwarm');
+                                    imgU.data[idx] = cu[0]; imgU.data[idx+1] = cu[1]; imgU.data[idx+2] = cu[2]; imgU.data[idx+3] = 255;
+
+                                    var tv = Math.max(0, Math.min(1, (fd.v(x2, y2) - vMin) / vRange));
+                                    var cv = VizEngine.colormapSample(tv, 'viridis');
+                                    imgV.data[idx] = cv[0]; imgV.data[idx+1] = cv[1]; imgV.data[idx+2] = cv[2]; imgV.data[idx+3] = 255;
+                                }
                             }
-                            ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
-                            ctx.putImageData(imgData, Math.floor(halfW * dpr), 0);
-                            ctx.restore();
-                            ctx.restore();
 
-                            // Draw point on left panel
-                            var [sx, sy] = viz.toScreen(pt.x, pt.y);
-                            if (sx >= 0 && sx <= halfW) {
-                                ctx.fillStyle = viz.colors.orange;
-                                ctx.beginPath(); ctx.arc(sx, sy, 7, 0, Math.PI * 2); ctx.fill();
-                                ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
-                                ctx.beginPath(); ctx.arc(sx, sy, 7, 0, Math.PI * 2); ctx.stroke();
+                            ctx.putImageData(imgU, 0, 0);
+                            ctx.putImageData(imgV, halfW + 20, 0);
+
+                            // Labels
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 14px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('u(x,y)', halfW / 2, 18);
+                            ctx.fillText('v(x,y)', halfW + 20 + halfW / 2, 18);
+
+                            // Draw gradient arrows if toggled
+                            if (showGrad) {
+                                var arrowStep = 0.8;
+                                var arrowScale = 0.12;
+                                for (var ax = range[0] + 0.4; ax < range[1]; ax += arrowStep) {
+                                    for (var ay = range[0] + 0.4; ay < range[1]; ay += arrowStep) {
+                                        // u gradient on left
+                                        var gux = fd.ux(ax, ay) * arrowScale;
+                                        var guy = fd.uy(ax, ay) * arrowScale;
+                                        var spx = (ax - range[0]) / (range[1] - range[0]) * halfW;
+                                        var spy = (range[1] - ay) / (range[1] - range[0]) * viz.height;
+
+                                        ctx.strokeStyle = viz.colors.white; ctx.lineWidth = 1.5;
+                                        ctx.beginPath(); ctx.moveTo(spx, spy);
+                                        ctx.lineTo(spx + gux * halfW / (range[1] - range[0]), spy - guy * viz.height / (range[1] - range[0]));
+                                        ctx.stroke();
+
+                                        // v gradient on right
+                                        var gvx = fd.vx(ax, ay) * arrowScale;
+                                        var gvy = fd.vy(ax, ay) * arrowScale;
+                                        var spx2 = halfW + 20 + (ax - range[0]) / (range[1] - range[0]) * halfW;
+                                        var spy2 = (range[1] - ay) / (range[1] - range[0]) * viz.height;
+
+                                        ctx.strokeStyle = viz.colors.white; ctx.lineWidth = 1.5;
+                                        ctx.beginPath(); ctx.moveTo(spx2, spy2);
+                                        ctx.lineTo(spx2 + gvx * halfW / (range[1] - range[0]), spy2 - gvy * viz.height / (range[1] - range[0]));
+                                        ctx.stroke();
+                                    }
+                                }
                             }
 
-                            // Draw point on right panel (same math coords)
-                            var rx = halfW + (halfW/2) + (pt.x - (xRange[0]+xRange[1])/2) / (xRange[1]-xRange[0]) * halfW;
-                            var ry = H/2 - (pt.y / (yRange[1]-yRange[0]) * H);
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.beginPath(); ctx.arc(rx, ry, 7, 0, Math.PI * 2); ctx.fill();
-                            ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.arc(rx, ry, 7, 0, Math.PI * 2); ctx.stroke();
-
-                            // Panel labels
-                            ctx.fillStyle = '#000000aa';
-                            ctx.fillRect(halfW/2 - 80, 6, 160, 22);
-                            ctx.fillRect(halfW + halfW/2 - 80, 6, 160, 22);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = 'bold 12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                            ctx.fillText('u(x,y) = x\u00b2 \u2212 y\u00b2', halfW/2, 17);
-                            ctx.fillText('v(x,y) = 2xy', halfW + halfW/2, 17);
-
-                            // CR verification
-                            var x0 = pt.x, y0 = pt.y;
-                            var ux = 2*x0;      // u_x
-                            var uy = -2*y0;     // u_y
-                            var vx = 2*y0;      // v_x
-                            var vy = 2*x0;      // v_y
-                            var crOk1 = Math.abs(ux - vy) < 1e-10;
-                            var crOk2 = Math.abs(uy + vx) < 1e-10;
-
-                            var infoY = H - 44;
-                            ctx.fillStyle = '#12122a';
-                            ctx.fillRect(4, infoY, W - 8, 40);
-                            ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
-                            ctx.strokeRect(4, infoY, W - 8, 40);
-
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.fillText(
-                                'At z\u2080 = (' + x0.toFixed(2) + ', ' + y0.toFixed(2) + '):   ' +
-                                'u_x = ' + ux.toFixed(3) + ',  v_y = ' + vy.toFixed(3) +
-                                '  \u27a4 u_x = v_y: ' + (crOk1 ? '\u2713' : '\u2717') +
-                                '      u_y = ' + uy.toFixed(3) + ',  \u2212v_x = ' + (-vx).toFixed(3) +
-                                '  \u27a4 u_y = \u2212v_x: ' + (crOk2 ? '\u2713' : '\u2717'),
-                                14, infoY + 14
-                            );
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.fillText(
-                                'f\'(z\u2080) = u_x + iv_x = ' + ux.toFixed(3) + (vx >= 0 ? '+' : '') + vx.toFixed(3) + 'i' +
-                                '    (= 2z\u2080 = ' + (2*x0).toFixed(3) + (2*y0 >= 0 ? '+' : '') + (2*y0).toFixed(3) + 'i)',
-                                14, infoY + 30
-                            );
-
-                            // Divider
-                            ctx.strokeStyle = '#2a2a50'; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
+                            // CR verification text
+                            ctx.fillStyle = viz.colors.teal; ctx.font = '12px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('CR: u\u2093 = v\u1D67,  u\u1D67 = -v\u2093   \u2714', viz.width / 2, viz.height - 10);
                         }
-
                         draw();
                         return viz;
                     }
@@ -572,147 +500,151 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Verify the Cauchy-Riemann equations for \\(f(z) = e^z\\). Show that \\(f\'(z) = e^z\\).',
-                    hint: 'Write \\(e^z = e^x \\cos y + i e^x \\sin y\\). Compute all four partial derivatives.',
-                    solution: '\\(u = e^x \\cos y\\), \\(v = e^x \\sin y\\). Then \\(u_x = e^x \\cos y = v_y\\) and \\(u_y = -e^x \\sin y = -v_x\\). CR holds. \\(f\'(z) = u_x + iv_x = e^x \\cos y + ie^x \\sin y = e^z\\).'
+                    question: 'Verify the Cauchy-Riemann equations for \\(f(z) = e^z = e^x(\\cos y + i \\sin y)\\).',
+                    hint: 'Identify \\(u = e^x \\cos y\\) and \\(v = e^x \\sin y\\). Compute all four partial derivatives.',
+                    solution: '\\(u_x = e^x \\cos y\\), \\(v_y = e^x \\cos y\\), so \\(u_x = v_y\\). \\(u_y = -e^x \\sin y\\), \\(v_x = e^x \\sin y\\), so \\(u_y = -v_x\\). CR holds everywhere; \\(e^z\\) is entire.'
                 },
                 {
-                    question: 'Show that \\(f(z) = z^n\\) satisfies the CR equations and compute \\(f\'(z)\\) using the CR formula.',
-                    hint: 'Use the binomial expansion to write \\(u\\) and \\(v\\) for \\(z^n = (x+iy)^n\\), or use complex exponential: \\(z = re^{i\\theta}\\).',
-                    solution: 'The cleanest approach: the limit definition directly gives \\(f\'(z) = nz^{n-1}\\) (same algebra as real case). The CR equations then hold because \\(f\'(z) = u_x + iv_x = v_y - iu_y = nz^{n-1}\\).'
-                },
-                {
-                    question: 'Find all points where \\(f(z) = z \\text{Re}(z) = (x^2 + ixy)\\) is complex differentiable.',
-                    hint: 'Write \\(u = x^2\\), \\(v = xy\\). Apply the CR equations and find where both hold.',
-                    solution: '\\(u_x = 2x\\), \\(v_y = x\\). CR requires \\(2x = x\\), so \\(x = 0\\). \\(u_y = 0\\), \\(-v_x = -y\\). CR requires \\(0 = -y\\), so \\(y = 0\\). The function is complex differentiable only at \\(z = 0\\), so it is not analytic anywhere.'
+                    question: 'Show that \\(f(z) = |z|^2 = x^2 + y^2\\) satisfies the CR equations only at the origin.',
+                    hint: 'Here \\(u = x^2 + y^2\\) and \\(v = 0\\). Compute the partial derivatives and find where CR holds.',
+                    solution: '\\(u_x = 2x\\), \\(v_y = 0\\), so \\(u_x = v_y\\) requires \\(x = 0\\). \\(u_y = 2y\\), \\(v_x = 0\\), so \\(u_y = -v_x\\) requires \\(y = 0\\). Both hold only at \\((0,0)\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 4: Analytic Functions
+        // SECTION 4: Analytic (Holomorphic) Functions
         // ================================================================
         {
             id: 'sec-analytic',
             title: 'Analytic (Holomorphic) Functions',
             content: `
-<h2>Analytic Functions</h2>
+<h2>Analytic (Holomorphic) Functions</h2>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 2.2 (Analytic / Holomorphic)</div>
+    <div class="env-title">Definition (Holomorphic, Analytic, Entire)</div>
     <div class="env-body">
-        <p>A function \\(f: U \\to \\mathbb{C}\\) defined on an open set \\(U \\subseteq \\mathbb{C}\\) is called <strong>analytic</strong> (or <strong>holomorphic</strong>) on \\(U\\) if it is complex differentiable at every point of \\(U\\).</p>
-        <p>If \\(f\\) is analytic on all of \\(\\mathbb{C}\\), we call \\(f\\) an <strong>entire function</strong>.</p>
+        <p>Let \\(\\Omega \\subseteq \\mathbb{C}\\) be open.</p>
+        <ul>
+            <li>\\(f\\) is <strong>holomorphic</strong> (or <strong>analytic</strong>) on \\(\\Omega\\) if \\(f'(z)\\) exists for every \\(z \\in \\Omega\\).</li>
+            <li>\\(f\\) is <strong>holomorphic at \\(z_0\\)</strong> if it is holomorphic on some open disk containing \\(z_0\\).</li>
+            <li>\\(f\\) is <strong>entire</strong> if it is holomorphic on all of \\(\\mathbb{C}\\).</li>
+        </ul>
     </div>
 </div>
 
-<p>Examples of entire functions: polynomials \\(p(z)\\), \\(e^z\\), \\(\\sin z\\), \\(\\cos z\\). Rational functions are analytic away from their poles.</p>
-
-<h3>Non-Analytic vs. Non-Differentiable</h3>
-
-<p>A function can be differentiable at isolated points without being analytic. For instance, \\(f(z) = |z|^2 = x^2 + y^2\\) satisfies the CR equations only at \\(z = 0\\), so it is differentiable at the origin but not analytic (there is no open neighborhood of 0 where it is differentiable).</p>
-
-<h3>The Rigidity of Analytic Functions</h3>
-
-<p>Analyticity is far more rigid than real differentiability. The key results (proved in later chapters) are:</p>
-
-<ol>
-    <li><strong>Analyticity implies infinite differentiability:</strong> If \\(f\\) is analytic on \\(U\\), then \\(f', f'', f''', \\ldots\\) all exist and are analytic on \\(U\\).</li>
-    <li><strong>Analyticity implies power series representation:</strong> Around any \\(z_0 \\in U\\), \\(f(z) = \\sum_{n=0}^\\infty a_n (z - z_0)^n\\) with positive radius of convergence. (Thus "analytic" in the complex sense coincides with "analytic" as power series.)</li>
-    <li><strong>Identity theorem:</strong> If two analytic functions agree on a sequence of points with an accumulation point in \\(U\\), they agree everywhere on \\(U\\).</li>
-    <li><strong>Maximum modulus principle:</strong> If \\(|f|\\) attains its maximum at an interior point of \\(U\\), then \\(f\\) is constant.</li>
-</ol>
-
-<p>These results have no real analogues of comparable strength. A real function that equals a convergent power series on \\((0, 1)\\) need not equal any power series on \\((2, 3)\\).</p>
-
 <div class="env-block remark">
-    <div class="env-title">The \\(\\bar{\\partial}\\) Operator</div>
+    <div class="env-title">Terminology</div>
     <div class="env-body">
-        <p>Define the Wirtinger derivatives:</p>
-        \\[\\frac{\\partial}{\\partial z} = \\frac{1}{2}\\left(\\frac{\\partial}{\\partial x} - i\\frac{\\partial}{\\partial y}\\right), \\qquad \\frac{\\partial}{\\partial \\bar{z}} = \\frac{1}{2}\\left(\\frac{\\partial}{\\partial x} + i\\frac{\\partial}{\\partial y}\\right).\\]
-        <p>Then the CR equations \\(u_x = v_y\\) and \\(u_y = -v_x\\) are equivalent to \\(\\frac{\\partial f}{\\partial \\bar{z}} = 0\\). Analytic functions are precisely those with \\(\\bar{\\partial} f = 0\\). This is the starting point for several variable complex analysis and the theory of \\(\\bar{\\partial}\\)-equations.</p>
+        <p>The terms "holomorphic" and "analytic" are used interchangeably in complex analysis. Strictly, "analytic" means locally representable by a convergent power series, while "holomorphic" means complex differentiable on an open set. A deep theorem (proved later in the course) shows these two notions coincide. We will use both terms.</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Catalogue of Entire Functions</div>
+    <div class="env-body">
+        <p>The following functions are entire (holomorphic on all of \\(\\mathbb{C}\\)):</p>
+        <ul>
+            <li>Polynomials: \\(p(z) = a_nz^n + \\cdots + a_1z + a_0\\)</li>
+            <li>\\(e^z\\), \\(\\sin z\\), \\(\\cos z\\)</li>
+            <li>\\(\\sinh z\\), \\(\\cosh z\\)</li>
+        </ul>
+        <p>Rational functions \\(p(z)/q(z)\\) are holomorphic wherever \\(q(z) \\neq 0\\). The function \\(1/z\\) is holomorphic on \\(\\mathbb{C} \\setminus \\{0\\}\\).</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: \\(f(z) = |z|^2\\) is Nowhere Analytic</div>
+    <div class="env-body">
+        <p>We showed that \\(f(z) = |z|^2\\) satisfies CR only at the origin. But holomorphicity at a point requires the derivative to exist on an entire open set containing that point. Since \\(f\\) is not differentiable at any point other than the origin, there is no open set on which \\(f\\) is differentiable. Thus \\(f(z) = |z|^2\\) is nowhere analytic, even though it is differentiable at a single point.</p>
     </div>
 </div>
 
 <div class="viz-placeholder" data-viz="viz-not-analytic"></div>
+
+<h3>Why Analyticity is So Rigid</h3>
+
+<p>The remarkable consequence of complex differentiability is a cascade of regularity results (to be proved in subsequent chapters):</p>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 2.4 (Preview of Rigidity)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is holomorphic on an open set \\(\\Omega\\), then:</p>
+        <ol>
+            <li>\\(f\\) is infinitely differentiable on \\(\\Omega\\)</li>
+            <li>\\(f\\) has a convergent power series expansion around every point of \\(\\Omega\\)</li>
+            <li>\\(f\\) satisfies the Cauchy integral formula</li>
+            <li>\\(f\\) obeys the maximum modulus principle</li>
+            <li>If \\(f\\) is not identically zero, its zeros are isolated</li>
+        </ol>
+        <p>None of these hold for general real-differentiable functions \\(\\mathbb{R}^2 \\to \\mathbb{R}^2\\).</p>
+    </div>
+</div>
 `,
             visualizations: [
                 {
                     id: 'viz-not-analytic',
-                    title: 'Domain Coloring: Analytic vs. Non-Analytic',
-                    description: 'Left: domain coloring of f(z) = z\u00b2 (analytic). Right: f(z) = |z|\u00b2 = z\u00b7\u0305z (not analytic). Analytic functions have characteristic "swirling" hue patterns. |z|\u00b2 looks flat/radial \u2014 the coloring reveals that no interesting complex structure exists.',
+                    title: 'Why |z|\u00B2 Fails: CR Equations Away from the Origin',
+                    description: 'For f(z) = |z|\u00B2, u = x\u00B2 + y\u00B2 and v = 0. The CR "error" u_x - v_y = 2x and u_y + v_x = 2y is shown as a vector field. It vanishes only at the origin, confirming CR holds only there.',
                     setup: function(body, controls) {
-                        var W = 580, H = 300;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/2, originY: H/2, scale: 60 });
-                        var halfW = W / 2;
-                        var range = [-2, 2];
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 60
+                        });
 
                         function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
                             var ctx = viz.ctx;
-                            ctx.clearRect(0, 0, W, H);
 
-                            // Left: z^2 domain coloring
-                            ctx.save();
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-                            viz.drawDomainColoring(function(re, im) {
-                                return [re*re - im*im, 2*re*im];
-                            }, range, range);
-                            ctx.restore();
+                            // Draw CR error vector field
+                            var step = 0.5;
+                            var arrowLen = 18;
+                            for (var x = -4; x <= 4; x += step) {
+                                for (var y = -3; y <= 3; y += step) {
+                                    // CR errors: e1 = u_x - v_y = 2x, e2 = u_y + v_x = 2y
+                                    var e1 = 2 * x;
+                                    var e2 = 2 * y;
+                                    var mag = Math.sqrt(e1*e1 + e2*e2);
+                                    if (mag < 0.01) continue;
 
-                            // Right: |z|^2 = x^2 + y^2 (real-valued, so imaginary part = 0)
-                            // Draw manually for right half
-                            var dpr = window.devicePixelRatio || 1;
-                            var iW = Math.floor(halfW * dpr), iH = Math.floor(H * dpr);
-                            var imgData = ctx.createImageData(iW, iH);
-                            var data = imgData.data;
-                            for (var py = 0; py < iH; py++) {
-                                for (var px = 0; px < iW; px++) {
-                                    var re = range[0] + (range[1] - range[0]) * px / iW;
-                                    var im = range[1] - (range[1] - range[0]) * py / iH;
-                                    // f(z) = |z|^2 as complex function: u = x^2+y^2, v=0
-                                    var u = re*re + im*im;
-                                    var v = 0;
-                                    var arg = Math.atan2(v, u);
-                                    var mag = Math.sqrt(u*u + v*v);
-                                    var hue = (arg / Math.PI + 1) / 2;
-                                    var light = 1 - 1 / (1 + mag * 0.3);
-                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
-                                    var idx = (py * iW + px) * 4;
-                                    data[idx] = rgb[0]; data[idx+1] = rgb[1]; data[idx+2] = rgb[2]; data[idx+3] = 255;
+                                    var sc = arrowLen / Math.max(mag, 1);
+                                    var sx = viz.toScreen(x, y)[0];
+                                    var sy = viz.toScreen(x, y)[1];
+
+                                    // Color by magnitude
+                                    var t = Math.min(1, mag / 6);
+                                    var r = Math.round(248 * t + 100 * (1 - t));
+                                    var g = Math.round(81 * t + 150 * (1 - t));
+                                    var b = Math.round(73 * t + 200 * (1 - t));
+                                    ctx.strokeStyle = 'rgb(' + r + ',' + g + ',' + b + ')';
+                                    ctx.lineWidth = 1.5;
+                                    ctx.beginPath();
+                                    ctx.moveTo(sx, sy);
+                                    ctx.lineTo(sx + e1 * sc, sy - e2 * sc);
+                                    ctx.stroke();
+
+                                    // Arrowhead
+                                    var angle = Math.atan2(-e2, e1);
+                                    var tipX = sx + e1 * sc;
+                                    var tipY = sy - e2 * sc;
+                                    ctx.fillStyle = ctx.strokeStyle;
+                                    ctx.beginPath();
+                                    ctx.moveTo(tipX, tipY);
+                                    ctx.lineTo(tipX - 6*Math.cos(angle - 0.4), tipY + 6*Math.sin(angle - 0.4));
+                                    ctx.lineTo(tipX - 6*Math.cos(angle + 0.4), tipY + 6*Math.sin(angle + 0.4));
+                                    ctx.closePath(); ctx.fill();
                                 }
                             }
-                            ctx.save(); ctx.setTransform(1, 0, 0, 1, 0, 0);
-                            ctx.putImageData(imgData, Math.floor(halfW * dpr), 0);
-                            ctx.restore();
 
-                            // Labels
-                            ctx.fillStyle = '#000000aa';
-                            ctx.fillRect(halfW/2 - 60, 6, 120, 22);
-                            ctx.fillRect(halfW + halfW/2 - 60, 6, 120, 22);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = 'bold 12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                            ctx.fillText('f(z) = z\u00b2 (analytic)', halfW/2, 17);
-                            ctx.fillText('f(z) = |z|\u00b2 (not analytic)', halfW + halfW/2, 17);
+                            // Highlight origin
+                            viz.drawPoint(0, 0, viz.colors.green, 'CR holds!', 7);
 
-                            // Annotation
-                            ctx.fillStyle = '#0c0c20cc';
-                            ctx.fillRect(4, H - 34, W - 8, 30);
-                            ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
-                            ctx.strokeRect(4, H - 34, W - 8, 30);
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                            ctx.fillText(
-                                'Analytic: hue rotates n times around any loop encircling a zero (winding number = order). Non-analytic: hue is constant on circles (no winding).',
-                                W/2, H - 19
-                            );
-
-                            // Divider
-                            ctx.strokeStyle = '#2a2a50'; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
+                            // Title
+                            viz.screenText('CR Error for f(z) = |z|\u00B2', viz.width / 2, 18, viz.colors.white, 14);
+                            viz.screenText('Arrow = (u\u2093 - v\u1D67, u\u1D67 + v\u2093); vanishes only at origin', viz.width / 2, viz.height - 12, viz.colors.teal, 11);
                         }
-
                         draw();
                         return viz;
                     }
@@ -720,254 +652,204 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Determine where \\(f(z) = |z|^2\\) is complex differentiable, and explain why it is not analytic on any open set.',
-                    hint: 'Write \\(u = x^2 + y^2\\), \\(v = 0\\). Apply CR equations.',
-                    solution: '\\(u_x = 2x\\), \\(v_y = 0\\) requires \\(x = 0\\). \\(u_y = 2y\\), \\(-v_x = 0\\) requires \\(y = 0\\). Differentiable only at \\(z = 0\\). Any open set contains points other than the origin, so \\(f\\) is not analytic on any open set.'
+                    question: 'Determine where \\(f(z) = \\frac{z}{z^2 + 1}\\) is holomorphic.',
+                    hint: 'A rational function is holomorphic wherever the denominator is nonzero. Factor \\(z^2 + 1\\).',
+                    solution: '\\(z^2 + 1 = (z - i)(z + i) = 0\\) when \\(z = \\pm i\\). So \\(f\\) is holomorphic on \\(\\mathbb{C} \\setminus \\{i, -i\\}\\).'
                 },
                 {
-                    question: 'Show that the composition of two analytic functions is analytic, using the chain rule.',
-                    hint: 'If \\(f\\) is analytic on \\(U\\) and \\(g\\) is analytic on \\(V\\) with \\(f(U) \\subseteq V\\), apply the chain rule at each point.',
-                    solution: 'For any \\(z \\in U\\), \\((g \\circ f)\'(z) = g\'(f(z)) \\cdot f\'(z)\\) by the chain rule. Since \\(f\'(z)\\) and \\(g\'(f(z))\\) both exist, so does \\((g \\circ f)\'(z)\\). As \\(z\\) ranges over \\(U\\), \\(g \\circ f\\) is complex differentiable at every point, hence analytic.'
-                },
-                {
-                    question: 'Prove that if \\(f\\) is analytic on a connected open set \\(U\\) and \\(f\'(z) = 0\\) for all \\(z \\in U\\), then \\(f\\) is constant on \\(U\\).',
-                    hint: 'If \\(f\' = 0\\), what does that say about \\(u_x, u_y, v_x, v_y\\)? What does calculus say about functions with zero gradient?',
-                    solution: '\\(f\' = u_x + iv_x = 0\\) means \\(u_x = v_x = 0\\). By CR, \\(v_y = u_x = 0\\) and \\(u_y = -v_x = 0\\). So all partial derivatives of \\(u\\) and \\(v\\) vanish on \\(U\\). By real calculus (connectedness is needed), \\(u\\) and \\(v\\) are each constant on \\(U\\), hence \\(f = u + iv\\) is constant.'
+                    question: 'Show that \\(f(z) = \\text{Re}(z) = x\\) is not holomorphic anywhere.',
+                    hint: 'Compute \\(u\\) and \\(v\\) and check the CR equations.',
+                    solution: '\\(u = x, v = 0\\). Then \\(u_x = 1\\) but \\(v_y = 0\\), so \\(u_x \\neq v_y\\) everywhere. The CR equations never hold, so \\(f\\) is nowhere differentiable (and hence nowhere analytic).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Conformality
+        // SECTION 5: Conformal Mappings
         // ================================================================
         {
             id: 'sec-conformal',
-            title: 'Conformality',
+            title: 'Conformal Mappings',
             content: `
-<h2>Conformality: Analytic Functions Preserve Angles</h2>
-
-<p>We have seen that near \\(z_0\\), an analytic function \\(f\\) acts like multiplication by \\(f'(z_0)\\): rotation by \\(\\arg(f'(z_0))\\) and scaling by \\(|f'(z_0)|\\). Crucially, this rotation is the <em>same for every direction</em> from \\(z_0\\). This means that angles between curves are preserved.</p>
+<h2>Conformal Mappings</h2>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 2.3 (Conformal Map)</div>
+    <div class="env-title">Definition (Conformal Map)</div>
     <div class="env-body">
-        <p>A map \\(f: U \\to V\\) is <strong>conformal at \\(z_0\\)</strong> if it preserves angles between curves at \\(z_0\\): whenever two smooth curves \\(\\gamma_1, \\gamma_2\\) intersect at \\(z_0\\), the angle between their tangent vectors equals the angle between the tangent vectors of \\(f \\circ \\gamma_1\\) and \\(f \\circ \\gamma_2\\) at \\(f(z_0)\\).</p>
+        <p>A map \\(f: \\Omega \\to \\mathbb{C}\\) is <strong>conformal</strong> at \\(z_0\\) if it preserves the angle between any two smooth curves passing through \\(z_0\\), both in magnitude and orientation. Equivalently, \\(f\\) is conformal at \\(z_0\\) if and only if \\(f\\) is holomorphic at \\(z_0\\) and \\(f'(z_0) \\neq 0\\).</p>
+    </div>
+</div>
+
+<div class="env-block intuition">
+    <div class="env-title">Why Holomorphic + Nonzero Derivative = Conformal</div>
+    <div class="env-body">
+        <p>A holomorphic function acts locally like multiplication by \\(f'(z_0) = re^{i\\theta}\\). This rotates every direction by the same angle \\(\\theta\\) and scales by the same factor \\(r\\). Since every tangent vector is rotated by the same amount, the angle between any two curves is preserved. If \\(f'(z_0) = 0\\), the local behavior is degenerate (the map "collapses" directions), and angles are typically multiplied.</p>
     </div>
 </div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 2.4 (Analytic Implies Conformal)</div>
+    <div class="env-title">Theorem 2.5 (Conformality)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic at \\(z_0\\) and \\(f'(z_0) \\neq 0\\), then \\(f\\) is conformal at \\(z_0\\).</p>
+        <p>Let \\(f\\) be holomorphic at \\(z_0\\) with \\(f'(z_0) \\neq 0\\). Then \\(f\\) preserves angles at \\(z_0\\): if two smooth curves \\(\\gamma_1, \\gamma_2\\) cross at \\(z_0\\) with angle \\(\\alpha\\) between their tangent vectors, then \\(f \\circ \\gamma_1\\) and \\(f \\circ \\gamma_2\\) cross at \\(f(z_0)\\) with the same angle \\(\\alpha\\).</p>
     </div>
 </div>
 
-<p><strong>Proof sketch.</strong> Let \\(\\gamma(t)\\) be a smooth curve with \\(\\gamma(0) = z_0\\). Its tangent direction at \\(z_0\\) is \\(\\gamma'(0)\\). The image curve \\((f \\circ \\gamma)(t)\\) has tangent</p>
-\\[(f \\circ \\gamma)'(0) = f'(\\gamma(0)) \\cdot \\gamma'(0) = f'(z_0) \\cdot \\gamma'(0).\\]
-<p>This tangent is \\(\\gamma'(0)\\) rotated by \\(\\arg(f'(z_0))\\) and scaled by \\(|f'(z_0)|\\). Two curves \\(\\gamma_1, \\gamma_2\\) meeting at \\(z_0\\) have their tangents each rotated by the <em>same</em> angle \\(\\arg(f'(z_0))\\). Since both tangents rotate equally, the angle between them is unchanged. \\(\\square\\)</p>
-
-<h3>Where Conformality Fails</h3>
-
-<p>At a critical point \\(z_0\\) where \\(f'(z_0) = 0\\), angles are not preserved. If \\(f(z) - f(z_0) \\approx c(z - z_0)^k\\) with \\(c \\neq 0\\) and \\(k \\geq 2\\), then angles are multiplied by \\(k\\). For example, \\(f(z) = z^2\\) maps a \\(90°\\) angle at \\(z_0 = 0\\) to a \\(180°\\) angle.</p>
-
-<h3>Conformal Self-Maps of the Disk</h3>
-
-<p>The conformal self-maps (biholomorphisms) of the unit disk \\(\\mathbb{D} = \\{|z| < 1\\}\\) are the <strong>Mobius transformations</strong></p>
-\\[f(z) = e^{i\\theta} \\frac{z - a}{1 - \\bar{a} z}, \\quad a \\in \\mathbb{D}, \\theta \\in \\mathbb{R}.\\]
-<p>This is a three-real-parameter family. The <strong>Riemann mapping theorem</strong> (Chapter 12) asserts that every simply connected proper open subset of \\(\\mathbb{C}\\) is conformally equivalent to \\(\\mathbb{D}\\).</p>
+<div class="env-block example">
+    <div class="env-title">Example: \\(f(z) = z^2\\) at \\(z_0 = 1\\) vs. \\(z_0 = 0\\)</div>
+    <div class="env-body">
+        <p>At \\(z_0 = 1\\): \\(f'(1) = 2 \\neq 0\\), so \\(f\\) is conformal. Two curves crossing at right angles at \\(z = 1\\) map to curves crossing at right angles at \\(f(1) = 1\\).</p>
+        <p>At \\(z_0 = 0\\): \\(f'(0) = 0\\). Near the origin, \\(f(z) = z^2\\) doubles angles. Two curves crossing at angle \\(\\alpha\\) map to curves crossing at angle \\(2\\alpha\\). This is why the map is not conformal at the origin.</p>
+    </div>
+</div>
 
 <div class="viz-placeholder" data-viz="viz-conformality"></div>
+
+<h3>Applications of Conformality</h3>
+
+<p>Conformal maps are central to applied mathematics:</p>
+<ul>
+    <li><strong>Fluid dynamics:</strong> If \\(f\\) maps one region conformally onto another, solutions to Laplace's equation (fluid flow, electrostatics) in the image region pull back to solutions in the original region.</li>
+    <li><strong>Cartography:</strong> The Mercator projection is a conformal map; it distorts areas but preserves angles, which is why compass bearings appear as straight lines.</li>
+    <li><strong>Engineering:</strong> Conformal maps transform complex boundary shapes into simpler ones (e.g., circles), making boundary value problems tractable.</li>
+</ul>
 `,
             visualizations: [
                 {
                     id: 'viz-conformality',
-                    title: 'Angle Preservation Under Conformal Maps',
-                    description: 'A rectangular grid is mapped by f(z) = z\u00b2 (analytic, conformal away from 0) and g(z) = z\u00b7\u0305z (not analytic, non-conformal). Zoom into an intersection point. Left: right angles remain right angles. Right: angles are distorted. The critical point at z=0 is shown with a red dot \u2014 even z\u00b2 fails to be conformal there.',
+                    title: 'Conformal Mapping: Angle Preservation',
+                    description: 'A Cartesian grid is mapped through f(z) = z\u00B2. Where f\'(z) \u2260 0, grid lines remain orthogonal (angles preserved). At the origin where f\'(0) = 0, angles are doubled.',
                     setup: function(body, controls) {
-                        var W = 580, H = 320;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/4, originY: H/2, scale: 60 });
-                        var halfW = W / 2;
-
-                        var funcs = [
-                            {
-                                name: 'f(z) = z\u00b2 (conformal)',
-                                f: function(re, im) { return [re*re - im*im, 2*re*im]; }
-                            },
-                            {
-                                name: 'f(z) = |z|\u00b2 (non-conformal)',
-                                f: function(re, im) { return [re*re + im*im, 0]; }
-                            }
-                        ];
-                        var fIdx = 0;
-
-                        var btnRow = document.createElement('div');
-                        btnRow.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
-                        funcs.forEach(function(fn, i) {
-                            var b = document.createElement('button');
-                            b.textContent = fn.name;
-                            b.style.cssText = 'padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#1a1a40;color:#c9d1d9;font-size:0.75rem;cursor:pointer;';
-                            b.addEventListener('click', function() {
-                                fIdx = i;
-                                btnRow.querySelectorAll('button').forEach(function(bb, ii) {
-                                    bb.style.background = ii === i ? '#3fb9a0' : '#1a1a40';
-                                    bb.style.color = ii === i ? '#0c0c20' : '#c9d1d9';
-                                });
-                                draw();
-                            });
-                            if (i === 0) { b.style.background = '#3fb9a0'; b.style.color = '#0c0c20'; }
-                            btnRow.appendChild(b);
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 50
                         });
-                        controls.appendChild(btnRow);
 
-                        function mapCurve(curve, f) {
-                            return curve.map(function(p) { return f(p[0], p[1]); });
-                        }
+                        var funcChoice = 0;
+                        var funcList = [
+                            { label: 'z\u00B2', f: function(x,y) { return [x*x-y*y, 2*x*y]; } },
+                            { label: 'z\u00B3', f: function(x,y) { var x2=x*x,y2=y*y; return [x*x2-3*x*y2, 3*x2*y-y*y2]; } },
+                            { label: '1/z', f: function(x,y) { var d=x*x+y*y+1e-10; return [x/d, -y/d]; } },
+                            { label: 'e^z', f: function(x,y) { var ex=Math.exp(x); return [ex*Math.cos(y), ex*Math.sin(y)]; } }
+                        ];
 
-                        function drawMappedGrid(ctx, f, originX, originY, scale, color) {
-                            var lines = [];
-                            // Horizontal lines: y = const
-                            for (var yv = -2; yv <= 2; yv += 0.5) {
-                                var line = [];
-                                for (var xv = -2; xv <= 2; xv += 0.05) {
-                                    line.push([xv, yv]);
-                                }
-                                lines.push({ pts: line, type: 'h' });
-                            }
-                            // Vertical lines: x = const
-                            for (var xv2 = -2; xv2 <= 2; xv2 += 0.5) {
-                                var line2 = [];
-                                for (var yv2 = -2; yv2 <= 2; yv2 += 0.05) {
-                                    line2.push([xv2, yv2]);
-                                }
-                                lines.push({ pts: line2, type: 'v' });
-                            }
-
-                            lines.forEach(function(line) {
-                                var mapped = mapCurve(line.pts, f);
-                                ctx.strokeStyle = (line.type === 'h' ? viz.colors.blue : viz.colors.teal) + '99';
-                                ctx.lineWidth = 1;
-                                ctx.beginPath();
-                                var started = false;
-                                mapped.forEach(function(p) {
-                                    var sx = originX + p[0] * scale;
-                                    var sy = originY - p[1] * scale;
-                                    if (!isFinite(sx) || !isFinite(sy) || Math.abs(sx) > 2000 || Math.abs(sy) > 2000) {
-                                        started = false; return;
-                                    }
-                                    if (!started) { ctx.moveTo(sx, sy); started = true; }
-                                    else ctx.lineTo(sx, sy);
-                                });
-                                ctx.stroke();
-                            });
-                        }
+                        VizEngine.createButton(controls, 'z\u00B2', function() { funcChoice = 0; draw(); });
+                        VizEngine.createButton(controls, 'z\u00B3', function() { funcChoice = 1; draw(); });
+                        VizEngine.createButton(controls, '1/z', function() { funcChoice = 2; draw(); });
+                        VizEngine.createButton(controls, 'e^z', function() { funcChoice = 3; draw(); });
 
                         function draw() {
+                            viz.clear();
                             var ctx = viz.ctx;
-                            ctx.clearRect(0, 0, W, H);
+                            var fc = funcList[funcChoice];
+                            var halfW = viz.width / 2;
+                            var ox1 = halfW / 2, ox2 = halfW + halfW / 2;
+                            var oy = viz.height / 2;
+                            var sc = viz.scale;
 
-                            // Left: domain grid
+                            // Left panel: input grid
                             ctx.save();
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0, 0, halfW, H);
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-
-                            // Draw domain grid
-                            var dox = halfW/2, doy = H/2, dscale = 50;
-                            ctx.strokeStyle = viz.colors.grid + '80'; ctx.lineWidth = 0.5;
+                            ctx.beginPath(); ctx.rect(0, 0, halfW, viz.height); ctx.clip();
+                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
                             for (var gx = -5; gx <= 5; gx++) {
-                                var sx = dox + gx * dscale;
-                                ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, H); ctx.stroke();
+                                ctx.beginPath(); ctx.moveTo(ox1 + gx*sc, 0); ctx.lineTo(ox1 + gx*sc, viz.height); ctx.stroke();
                             }
                             for (var gy = -5; gy <= 5; gy++) {
-                                var sy = doy - gy * dscale;
-                                ctx.beginPath(); ctx.moveTo(0, sy); ctx.lineTo(halfW, sy); ctx.stroke();
+                                ctx.beginPath(); ctx.moveTo(0, oy - gy*sc); ctx.lineTo(halfW, oy - gy*sc); ctx.stroke();
                             }
                             ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.moveTo(0, doy); ctx.lineTo(halfW, doy); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(dox, 0); ctx.lineTo(dox, H); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(halfW, oy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ox1, 0); ctx.lineTo(ox1, viz.height); ctx.stroke();
 
-                            // Draw domain lines (colored)
-                            for (var yy = -2; yy <= 2; yy += 0.5) {
-                                ctx.strokeStyle = viz.colors.blue + '80'; ctx.lineWidth = 1;
+                            // Draw grid lines in color
+                            var gridRange = 2.5;
+                            var gridStep = 0.5;
+                            var steps = 40;
+
+                            // Horizontal lines (constant y)
+                            for (var cy = -gridRange; cy <= gridRange; cy += gridStep) {
+                                ctx.strokeStyle = viz.colors.teal; ctx.lineWidth = 1.2;
                                 ctx.beginPath();
-                                ctx.moveTo(dox - 2*dscale, doy - yy*dscale);
-                                ctx.lineTo(dox + 2*dscale, doy - yy*dscale);
+                                for (var s = 0; s <= steps; s++) {
+                                    var cx = -gridRange + 2*gridRange*s/steps;
+                                    var px = ox1 + cx*sc, py = oy - cy*sc;
+                                    s === 0 ? ctx.moveTo(px, py) : ctx.lineTo(px, py);
+                                }
                                 ctx.stroke();
                             }
-                            for (var xx = -2; xx <= 2; xx += 0.5) {
-                                ctx.strokeStyle = viz.colors.teal + '80'; ctx.lineWidth = 1;
+                            // Vertical lines (constant x)
+                            for (var cx2 = -gridRange; cx2 <= gridRange; cx2 += gridStep) {
+                                ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 1.2;
                                 ctx.beginPath();
-                                ctx.moveTo(dox + xx*dscale, doy - 2*dscale);
-                                ctx.lineTo(dox + xx*dscale, doy + 2*dscale);
+                                for (var s2 = 0; s2 <= steps; s2++) {
+                                    var cy2 = -gridRange + 2*gridRange*s2/steps;
+                                    var px2 = ox1 + cx2*sc, py2 = oy - cy2*sc;
+                                    s2 === 0 ? ctx.moveTo(px2, py2) : ctx.lineTo(px2, py2);
+                                }
                                 ctx.stroke();
                             }
 
-                            // Right-angle marker at (0.5, 0.5)
-                            var px = dox + 0.5*dscale, py = doy - 0.5*dscale;
-                            ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 1.5;
-                            ctx.strokeRect(px, py - 12, 12, 12);
-
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText('Domain (z-plane)', halfW/2, 6);
-
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center'; ctx.fillText('Input: z-plane', halfW/2, 18);
                             ctx.restore();
 
-                            // Right: image under current function
+                            // Right panel: transformed grid
                             ctx.save();
-                            ctx.translate(halfW, 0);
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0, 0, halfW, H);
-                            ctx.beginPath(); ctx.rect(0, 0, halfW, H); ctx.clip();
-
-                            var iox = halfW/2, ioy = H/2, iscale = 30;
-                            ctx.strokeStyle = viz.colors.grid + '80'; ctx.lineWidth = 0.5;
-                            for (var gx2 = -8; gx2 <= 8; gx2++) {
-                                var sx2 = iox + gx2 * iscale;
-                                ctx.beginPath(); ctx.moveTo(sx2, 0); ctx.lineTo(sx2, H); ctx.stroke();
+                            ctx.beginPath(); ctx.rect(halfW, 0, halfW, viz.height); ctx.clip();
+                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
+                            for (var gx2 = -5; gx2 <= 5; gx2++) {
+                                ctx.beginPath(); ctx.moveTo(ox2 + gx2*sc, 0); ctx.lineTo(ox2 + gx2*sc, viz.height); ctx.stroke();
                             }
-                            for (var gy2 = -8; gy2 <= 8; gy2++) {
-                                var sy2 = ioy - gy2 * iscale;
-                                ctx.beginPath(); ctx.moveTo(0, sy2); ctx.lineTo(halfW, sy2); ctx.stroke();
+                            for (var gy2 = -5; gy2 <= 5; gy2++) {
+                                ctx.beginPath(); ctx.moveTo(halfW, oy - gy2*sc); ctx.lineTo(viz.width, oy - gy2*sc); ctx.stroke();
                             }
                             ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.moveTo(0, ioy); ctx.lineTo(halfW, ioy); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(iox, 0); ctx.lineTo(iox, H); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(halfW, oy); ctx.lineTo(viz.width, oy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ox2, 0); ctx.lineTo(ox2, viz.height); ctx.stroke();
 
-                            drawMappedGrid(ctx, funcs[fIdx].f, iox, ioy, iscale, viz.colors.blue);
-
-                            // Mark critical point image
-                            if (fIdx === 0) {
-                                var [fpx, fpy] = funcs[fIdx].f(0.5, 0.5);
-                                var mappedX = iox + fpx * iscale;
-                                var mappedY = ioy - fpy * iscale;
-                                ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 1.5;
-                                // Approximate angle marker at mapped point
-                                ctx.fillStyle = viz.colors.orange + '60';
-                                ctx.beginPath(); ctx.arc(mappedX, mappedY, 8, 0, Math.PI * 2); ctx.fill();
+                            // Transformed horizontal lines
+                            for (var cy3 = -gridRange; cy3 <= gridRange; cy3 += gridStep) {
+                                ctx.strokeStyle = viz.colors.teal; ctx.lineWidth = 1.2;
+                                ctx.beginPath();
+                                var started = false;
+                                for (var s3 = 0; s3 <= steps; s3++) {
+                                    var cx3 = -gridRange + 2*gridRange*s3/steps;
+                                    var w = fc.f(cx3, cy3);
+                                    var px3 = ox2 + w[0]*sc, py3 = oy - w[1]*sc;
+                                    if (!isFinite(px3) || !isFinite(py3) || Math.abs(px3-ox2)>halfW || Math.abs(py3-oy)>viz.height) { started = false; continue; }
+                                    if (!started) { ctx.moveTo(px3, py3); started = true; } else { ctx.lineTo(px3, py3); }
+                                }
+                                ctx.stroke();
+                            }
+                            // Transformed vertical lines
+                            for (var cx4 = -gridRange; cx4 <= gridRange; cx4 += gridStep) {
+                                ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 1.2;
+                                ctx.beginPath();
+                                var started2 = false;
+                                for (var s4 = 0; s4 <= steps; s4++) {
+                                    var cy4 = -gridRange + 2*gridRange*s4/steps;
+                                    var w2 = fc.f(cx4, cy4);
+                                    var px4 = ox2 + w2[0]*sc, py4 = oy - w2[1]*sc;
+                                    if (!isFinite(px4) || !isFinite(py4) || Math.abs(px4-ox2)>halfW || Math.abs(py4-oy)>viz.height) { started2 = false; continue; }
+                                    if (!started2) { ctx.moveTo(px4, py4); started2 = true; } else { ctx.lineTo(px4, py4); }
+                                }
+                                ctx.stroke();
                             }
 
-                            // Critical point at z=0 in image
-                            ctx.fillStyle = viz.colors.red;
-                            ctx.beginPath(); ctx.arc(iox, ioy, 5, 0, Math.PI * 2); ctx.fill();
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'bottom';
-                            ctx.fillText('f(0)=0, f\'=0 here', iox + 7, ioy - 7);
-
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText('Image (w-plane) \u2014 ' + funcs[fIdx].name, halfW/2, 6);
-
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center'; ctx.fillText('Output: f(z) = ' + fc.label, halfW + halfW/2, 18);
                             ctx.restore();
 
                             // Divider
-                            ctx.strokeStyle = '#2a2a50'; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, H); ctx.stroke();
-                        }
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
+                            ctx.setLineDash([4,4]);
+                            ctx.beginPath(); ctx.moveTo(halfW, 0); ctx.lineTo(halfW, viz.height); ctx.stroke();
+                            ctx.setLineDash([]);
 
+                            // Note about conformality
+                            ctx.fillStyle = viz.colors.teal; ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('Grid lines remain orthogonal where f\'(z) \u2260 0 (conformal)', viz.width/2, viz.height - 10);
+                        }
                         draw();
                         return viz;
                     }
@@ -975,19 +857,14 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Show that the map \\(f(z) = z^2\\) doubles angles at the origin. That is, if two curves make angle \\(\\alpha\\) at \\(z_0 = 0\\), their images make angle \\(2\\alpha\\).',
-                    hint: 'Write curves as \\(\\gamma(t) = te^{i\\alpha_1}\\) and \\(\\delta(t) = te^{i\\alpha_2}\\). Compute \\(f \\circ \\gamma\\) and \\(f \\circ \\delta\\) and compare argument difference.',
-                    solution: '\\(f(te^{i\\alpha}) = t^2 e^{2i\\alpha}\\). The image curve has argument \\(2\\alpha\\). If two curves have arguments \\(\\alpha_1, \\alpha_2\\) at the origin, their images have arguments \\(2\\alpha_1, 2\\alpha_2\\). The angle between them: \\(2\\alpha_2 - 2\\alpha_1 = 2(\\alpha_2 - \\alpha_1)\\). So the angle is doubled. This is because \\(f\'(0) = 0\\) (critical point), so conformality fails.'
+                    question: 'At which points is \\(f(z) = z^3\\) not conformal? What happens to angles at those points?',
+                    hint: 'Find where \\(f\'(z) = 0\\). Then consider what \\(z^3\\) does to angles near that point.',
+                    solution: '\\(f\'(z) = 3z^2 = 0\\) only at \\(z = 0\\). Away from the origin, \\(f\\) is conformal. At \\(z = 0\\), angles are tripled: if two curves meet at angle \\(\\alpha\\), their images meet at angle \\(3\\alpha\\). This is because \\(z^3\\) maps \\(re^{i\\theta} \\mapsto r^3 e^{3i\\theta}\\).'
                 },
                 {
-                    question: 'Let \\(f(z) = \\sin z\\). Find all points where \\(f\\) is not conformal.',
-                    hint: 'Conformality fails exactly where \\(f\'(z) = 0\\). Compute \\(f\'\\) and find its zeros.',
-                    solution: '\\(f\'(z) = \\cos z\\). The zeros of \\(\\cos z\\) are at \\(z = \\pi/2 + n\\pi\\) for \\(n \\in \\mathbb{Z}\\). These are the points where \\(\\sin z\\) fails to be conformal. At all other points of \\(\\mathbb{C}\\), \\(\\sin z\\) is conformal.'
-                },
-                {
-                    question: 'Prove that the inverse of a conformal bijection \\(f: U \\to V\\) is also conformal.',
-                    hint: 'Use the chain rule applied to \\(f^{-1} \\circ f = \\text{id}\\). What must \\((f^{-1})\\'(f(z_0))\\) be?',
-                    solution: 'Differentiating \\(f^{-1}(f(z)) = z\\) gives \\((f^{-1})\'(f(z_0)) \\cdot f\'(z_0) = 1\\), so \\((f^{-1})\'(f(z_0)) = 1/f\'(z_0) \\neq 0\\). Thus \\(f^{-1}\\) is analytic with nonzero derivative at \\(f(z_0)\\), hence conformal at every point of \\(V\\).'
+                    question: 'Show that the M\\"obius transformation \\(f(z) = \\frac{az + b}{cz + d}\\) (with \\(ad - bc \\neq 0\\)) is conformal everywhere in its domain.',
+                    hint: 'Compute \\(f\'(z)\\) using the quotient rule and show it is never zero on the domain.',
+                    solution: 'By the quotient rule, \\(f\'(z) = \\frac{a(cz+d) - c(az+b)}{(cz+d)^2} = \\frac{ad - bc}{(cz+d)^2}\\). Since \\(ad - bc \\neq 0\\) and the denominator is nonzero on the domain \\(\\mathbb{C} \\setminus \\{-d/c\\}\\), we have \\(f\'(z) \\neq 0\\) everywhere in the domain.'
                 }
             ]
         },
@@ -997,319 +874,173 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-harmonic',
-            title: 'Harmonic Functions',
+            title: 'Harmonic Functions and Conjugates',
             content: `
 <h2>Harmonic Functions and Conjugates</h2>
 
-<p>The CR equations link \\(u\\) and \\(v\\) through first-order relationships. Differentiating again reveals a beautiful second-order consequence.</p>
-
-<h3>The Laplace Equation</h3>
+<div class="env-block definition">
+    <div class="env-title">Definition (Harmonic Function)</div>
+    <div class="env-body">
+        <p>A real-valued function \\(\\phi(x,y)\\) with continuous second partial derivatives is <strong>harmonic</strong> on a domain \\(D\\) if it satisfies <strong>Laplace's equation</strong>:</p>
+        \\[\\Delta \\phi = \\frac{\\partial^2 \\phi}{\\partial x^2} + \\frac{\\partial^2 \\phi}{\\partial y^2} = 0 \\quad \\text{on } D.\\]
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 2.5 (Harmonic Components)</div>
+    <div class="env-title">Theorem 2.6 (Holomorphic Implies Harmonic)</div>
     <div class="env-body">
-        <p>If \\(f = u + iv\\) is analytic on \\(U\\) (and twice continuously differentiable, which analyticity implies), then both \\(u\\) and \\(v\\) satisfy the <strong>Laplace equation</strong> on \\(U\\):</p>
-        \\[\\Delta u = u_{xx} + u_{yy} = 0 \\qquad \\text{and} \\qquad \\Delta v = v_{xx} + v_{yy} = 0.\\]
-        <p>Functions satisfying the Laplace equation are called <strong>harmonic</strong>.</p>
+        <p>If \\(f = u + iv\\) is holomorphic on an open set \\(\\Omega\\), then both \\(u\\) and \\(v\\) are harmonic on \\(\\Omega\\).</p>
     </div>
 </div>
 
-<p><strong>Proof.</strong> From the CR equations: \\(u_x = v_y\\) and \\(u_y = -v_x\\). Differentiating the first with respect to \\(x\\): \\(u_{xx} = v_{yx}\\). Differentiating the second with respect to \\(y\\): \\(u_{yy} = -v_{xy}\\). Since \\(v\\) has continuous second partials, \\(v_{xy} = v_{yx}\\), so \\(u_{xx} + u_{yy} = v_{yx} - v_{xy} = 0\\). The proof for \\(v\\) is analogous. \\(\\square\\)</p>
-
-<h3>Harmonic Conjugates</h3>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>By the Cauchy-Riemann equations: \\(u_x = v_y\\) and \\(u_y = -v_x\\). Differentiating the first with respect to \\(x\\) and the second with respect to \\(y\\):</p>
+        \\[u_{xx} = v_{yx}, \\quad u_{yy} = -v_{xy}.\\]
+        <p>Since the mixed partials are equal (\\(v_{xy} = v_{yx}\\) by continuity), adding gives</p>
+        \\[u_{xx} + u_{yy} = v_{yx} - v_{xy} = 0.\\]
+        <p>The proof for \\(v\\) is analogous.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 2.4 (Harmonic Conjugate)</div>
+    <div class="env-title">Definition (Harmonic Conjugate)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic on a simply connected domain \\(U\\), a <strong>harmonic conjugate</strong> of \\(u\\) is a harmonic function \\(v\\) on \\(U\\) such that \\(u + iv\\) is analytic on \\(U\\). The harmonic conjugate exists and is unique up to an additive constant.</p>
+        <p>If \\(u\\) is harmonic on a simply connected domain \\(D\\), a function \\(v\\) such that \\(f = u + iv\\) is holomorphic on \\(D\\) is called a <strong>harmonic conjugate</strong> of \\(u\\). The conjugate \\(v\\) is unique up to an additive constant.</p>
     </div>
 </div>
 
-<p>The level curves of \\(u\\) and its harmonic conjugate \\(v\\) are perpendicular. This follows immediately from conformality: the image of a horizontal line (constant \\(v\\) in the \\(w\\)-plane) and a vertical line (constant \\(u\\)) are perpendicular in the \\(w\\)-plane, and conformality preserves this perpendicularity in the \\(z\\)-plane.</p>
+<div class="env-block example">
+    <div class="env-title">Example: Finding a Harmonic Conjugate</div>
+    <div class="env-body">
+        <p>Let \\(u(x,y) = x^2 - y^2\\). Verify that \\(u\\) is harmonic: \\(u_{xx} = 2\\), \\(u_{yy} = -2\\), so \\(u_{xx} + u_{yy} = 0\\). \\(\\checkmark\\)</p>
+        <p>To find \\(v\\): from \\(v_y = u_x = 2x\\), integrate: \\(v = 2xy + g(x)\\). From \\(v_x = -u_y = 2y\\), so \\(2y + g'(x) = 2y\\), giving \\(g'(x) = 0\\), thus \\(g(x) = C\\). The conjugate is \\(v = 2xy + C\\).</p>
+        <p>The holomorphic function is \\(f = (x^2 - y^2) + i(2xy) = z^2\\), as expected.</p>
+    </div>
+</div>
 
-<h3>Example: Finding a Harmonic Conjugate</h3>
+<h3>Orthogonality of Level Curves</h3>
 
-<p>Given \\(u(x,y) = x^2 - y^2\\), find a harmonic conjugate \\(v\\).</p>
-
-<p>By CR: \\(v_y = u_x = 2x\\), so integrating in \\(y\\): \\(v = 2xy + g(x)\\) for some function \\(g\\). By CR: \\(v_x = u_y\\) requires \\(2y + g'(x) = -(-2y) = 2y\\), so \\(g'(x) = 0\\), hence \\(g\\) is constant. Thus \\(v = 2xy + C\\) (any constant \\(C\\)). This gives \\(f(z) = (x^2 - y^2) + i(2xy) = z^2\\), confirming our earlier calculations.</p>
-
-<h3>Applications</h3>
-
-<p>Harmonic functions appear throughout physics:</p>
-<ul>
-    <li><strong>Electrostatics:</strong> \\(u\\) is the electric potential, \\(v\\) is the stream function; level curves of \\(u\\) are equipotentials, level curves of \\(v\\) are field lines.</li>
-    <li><strong>Fluid dynamics:</strong> Steady, irrotational, incompressible flow has a complex potential \\(f = \\phi + i\\psi\\) where \\(\\phi\\) is velocity potential and \\(\\psi\\) is stream function.</li>
-    <li><strong>Heat conduction:</strong> \\(u\\) is the steady-state temperature distribution.</li>
-</ul>
+<p>A beautiful geometric fact: the level curves of \\(u\\) and its harmonic conjugate \\(v\\) are everywhere orthogonal (where the gradients are nonzero). This follows because</p>
+\\[\\nabla u = (u_x, u_y), \\qquad \\nabla v = (v_x, v_y) = (-u_y, u_x),\\]
+<p>by the CR equations. The dot product \\(\\nabla u \\cdot \\nabla v = u_x(-u_y) + u_y(u_x) = 0\\).</p>
 
 <div class="viz-placeholder" data-viz="viz-harmonic-conjugate"></div>
-<div class="viz-placeholder" data-viz="viz-streamlines"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-harmonic-conjugate',
-                    title: 'Harmonic Conjugate: Orthogonal Level Curves',
-                    description: 'Level curves of u (real part) and v (imaginary part) of an analytic function are always orthogonal. Drag the slider to animate through different functions. Verify: level curves of u and v are perpendicular at every intersection.',
+                    title: 'Harmonic Conjugates: Orthogonal Level Curves',
+                    description: 'Level curves of u (blue) and its harmonic conjugate v (orange) for f(z) = z\u00B2. The curves always meet at right angles, a consequence of the Cauchy-Riemann equations.',
                     setup: function(body, controls) {
-                        var W = 560, H = 350;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/2, originY: H/2, scale: 70 });
-
-                        var funcs = [
-                            { name: 'z\u00b2: u=x\u00b2\u2212y\u00b2, v=2xy', u: function(x,y){return x*x-y*y;}, v: function(x,y){return 2*x*y;} },
-                            { name: 'z\u00b3: u=x\u00b3\u22123xy\u00b2, v=3x\u00b2y\u2212y\u00b3', u: function(x,y){return x*x*x-3*x*y*y;}, v: function(x,y){return 3*x*x*y-y*y*y;} },
-                            { name: 'e^z: u=e^x\u00b7cos y, v=e^x\u00b7sin y', u: function(x,y){return Math.exp(x)*Math.cos(y);}, v: function(x,y){return Math.exp(x)*Math.sin(y);} }
-                        ];
-                        var fIdx = 0;
-
-                        var btnRow = document.createElement('div');
-                        btnRow.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;';
-                        funcs.forEach(function(fn, i) {
-                            var b = document.createElement('button');
-                            b.textContent = fn.name.split(':')[0];
-                            b.style.cssText = 'padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#1a1a40;color:#c9d1d9;font-size:0.75rem;cursor:pointer;';
-                            b.addEventListener('click', function() {
-                                fIdx = i;
-                                btnRow.querySelectorAll('button').forEach(function(bb, ii) {
-                                    bb.style.background = ii === i ? '#3fb9a0' : '#1a1a40';
-                                    bb.style.color = ii === i ? '#0c0c20' : '#c9d1d9';
-                                });
-                                draw();
-                            });
-                            if (i === 0) { b.style.background = '#3fb9a0'; b.style.color = '#0c0c20'; }
-                            btnRow.appendChild(b);
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 60
                         });
-                        controls.appendChild(btnRow);
 
-                        function drawContour(ctx, f, levels, color, xRange, yRange, N) {
-                            // Marching squares lite: draw contour lines
-                            N = N || 120;
-                            var dx = (xRange[1]-xRange[0])/N, dy = (yRange[1]-yRange[0])/N;
-                            ctx.strokeStyle = color; ctx.lineWidth = 1;
+                        var funcIdx = 0;
+                        var funcDefs = [
+                            { label: 'z\u00B2', u: function(x,y) { return x*x-y*y; }, v: function(x,y) { return 2*x*y; } },
+                            { label: 'z\u00B3', u: function(x,y) { return x*x*x-3*x*y*y; }, v: function(x,y) { return 3*x*x*y-y*y*y; } },
+                            { label: 'e^z', u: function(x,y) { return Math.exp(x)*Math.cos(y); }, v: function(x,y) { return Math.exp(x)*Math.sin(y); } }
+                        ];
 
-                            for (var i = 0; i < N; i++) {
-                                for (var j = 0; j < N; j++) {
-                                    var x0 = xRange[0] + i*dx, y0 = yRange[0] + j*dy;
-                                    var x1 = x0 + dx, y1 = y0 + dy;
-                                    var v00 = f(x0,y0), v10 = f(x1,y0), v01 = f(x0,y1), v11 = f(x1,y1);
+                        VizEngine.createButton(controls, 'z\u00B2', function() { funcIdx = 0; draw(); });
+                        VizEngine.createButton(controls, 'z\u00B3', function() { funcIdx = 1; draw(); });
+                        VizEngine.createButton(controls, 'e^z', function() { funcIdx = 2; draw(); });
 
-                                    levels.forEach(function(L) {
-                                        // Find crossings on each edge
-                                        var pts = [];
-                                        // bottom edge (y=y0)
-                                        if ((v00-L)*(v10-L) < 0) {
-                                            var t = (L-v00)/(v10-v00);
-                                            pts.push([x0+t*dx, y0]);
+                        function drawContours(func, color, numContours) {
+                            var ctx = viz.ctx;
+                            var xMin = -4, xMax = 4, yMin = -3, yMax = 3;
+                            var nx = 300, ny = 200;
+                            var dx = (xMax - xMin) / nx, dy = (yMax - yMin) / ny;
+
+                            // Sample values
+                            var vals = [];
+                            var vMin = Infinity, vMax = -Infinity;
+                            for (var j = 0; j <= ny; j++) {
+                                vals[j] = [];
+                                for (var i = 0; i <= nx; i++) {
+                                    var x = xMin + i * dx;
+                                    var y = yMin + j * dy;
+                                    var val = func(x, y);
+                                    vals[j][i] = val;
+                                    if (isFinite(val) && Math.abs(val) < 100) { vMin = Math.min(vMin, val); vMax = Math.max(vMax, val); }
+                                }
+                            }
+
+                            // Choose contour levels
+                            var levels = [];
+                            var range = vMax - vMin;
+                            for (var k = 0; k < numContours; k++) {
+                                levels.push(vMin + range * (k + 0.5) / numContours);
+                            }
+
+                            // Marching squares (simplified)
+                            ctx.strokeStyle = color;
+                            ctx.lineWidth = 1.2;
+                            for (var li = 0; li < levels.length; li++) {
+                                var level = levels[li];
+                                ctx.beginPath();
+                                for (var jj = 0; jj < ny; jj++) {
+                                    for (var ii = 0; ii < nx; ii++) {
+                                        var v00 = vals[jj][ii] - level;
+                                        var v10 = vals[jj][ii+1] - level;
+                                        var v01 = vals[jj+1][ii] - level;
+                                        var v11 = vals[jj+1][ii+1] - level;
+
+                                        var x0 = xMin + ii * dx, x1 = x0 + dx;
+                                        var y0 = yMin + jj * dy, y1 = y0 + dy;
+
+                                        // Find crossings on edges
+                                        var edges = [];
+                                        if (v00 * v10 < 0) edges.push([x0 + dx*(-v00)/(v10-v00), y0]);
+                                        if (v10 * v11 < 0) edges.push([x1, y0 + dy*(-v10)/(v11-v10)]);
+                                        if (v01 * v11 < 0) edges.push([x0 + dx*(-v01)/(v11-v01), y1]);
+                                        if (v00 * v01 < 0) edges.push([x0, y0 + dy*(-v00)/(v01-v00)]);
+
+                                        if (edges.length >= 2) {
+                                            var sp1 = viz.toScreen(edges[0][0], edges[0][1]);
+                                            var sp2 = viz.toScreen(edges[1][0], edges[1][1]);
+                                            ctx.moveTo(sp1[0], sp1[1]);
+                                            ctx.lineTo(sp2[0], sp2[1]);
+                                            if (edges.length === 4) {
+                                                var sp3 = viz.toScreen(edges[2][0], edges[2][1]);
+                                                var sp4 = viz.toScreen(edges[3][0], edges[3][1]);
+                                                ctx.moveTo(sp3[0], sp3[1]);
+                                                ctx.lineTo(sp4[0], sp4[1]);
+                                            }
                                         }
-                                        // top edge (y=y1)
-                                        if ((v01-L)*(v11-L) < 0) {
-                                            var t2 = (L-v01)/(v11-v01);
-                                            pts.push([x0+t2*dx, y1]);
-                                        }
-                                        // left edge (x=x0)
-                                        if ((v00-L)*(v01-L) < 0) {
-                                            var t3 = (L-v00)/(v01-v00);
-                                            pts.push([x0, y0+t3*dy]);
-                                        }
-                                        // right edge (x=x1)
-                                        if ((v10-L)*(v11-L) < 0) {
-                                            var t4 = (L-v10)/(v11-v10);
-                                            pts.push([x1, y0+t4*dy]);
-                                        }
-                                        if (pts.length >= 2) {
-                                            var [sx1, sy1] = viz.toScreen(pts[0][0], pts[0][1]);
-                                            var [sx2, sy2] = viz.toScreen(pts[1][0], pts[1][1]);
-                                            ctx.beginPath(); ctx.moveTo(sx1, sy1); ctx.lineTo(sx2, sy2); ctx.stroke();
-                                        }
-                                    });
-                                });
+                                    }
+                                }
+                                ctx.stroke();
                             }
                         }
 
                         function draw() {
-                            var ctx = viz.ctx;
                             viz.clear();
-                            viz.drawGrid(0.5);
+                            viz.drawGrid();
                             viz.drawAxes();
 
-                            var fn = funcs[fIdx];
-                            var xR = [-3, 3], yR = [-2.5, 2.5];
-                            var uLevels = [], vLevels = [];
-                            for (var k = -6; k <= 6; k += 0.5) {
-                                uLevels.push(k);
-                                vLevels.push(k);
-                            }
-
-                            drawContour(ctx, fn.u, uLevels, viz.colors.blue + 'cc', xR, yR, 150);
-                            drawContour(ctx, fn.v, vLevels, viz.colors.teal + 'cc', xR, yR, 150);
+                            var fd = funcDefs[funcIdx];
+                            drawContours(fd.u, viz.colors.blue, 15);
+                            drawContours(fd.v, viz.colors.orange, 15);
 
                             // Legend
-                            ctx.fillStyle = '#12122a';
-                            ctx.fillRect(W - 220, H - 54, 216, 50);
-                            ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
-                            ctx.strokeRect(W - 220, H - 54, 216, 50);
-
-                            ctx.strokeStyle = viz.colors.blue + 'cc'; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(W - 210, H - 36); ctx.lineTo(W - 190, H - 36); ctx.stroke();
-                            ctx.fillStyle = viz.colors.white; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            ctx.fillText('Level curves of u (Re f)', W - 186, H - 36);
-
-                            ctx.strokeStyle = viz.colors.teal + 'cc'; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(W - 210, H - 18); ctx.lineTo(W - 190, H - 18); ctx.stroke();
-                            ctx.fillText('Level curves of v (Im f)', W - 186, H - 18);
-
-                            // Title
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText(fn.name + '  \u2014 level curves are orthogonal', W/2, 8);
-                        }
-
-                        draw();
-                        return viz;
-                    }
-                },
-                {
-                    id: 'viz-streamlines',
-                    title: 'Streamlines and Equipotentials: The Fluid Dynamics Connection',
-                    description: 'Interpret f(z) as a complex velocity potential. The real part \u03c6 gives equipotential lines (where potential is constant); the imaginary part \u03c8 gives streamlines (paths fluid particles follow). These are always orthogonal. Choose a flow type.',
-                    setup: function(body, controls) {
-                        var W = 560, H = 360;
-                        var viz = new VizEngine(body, { width: W, height: H, originX: W/2, originY: H/2, scale: 60 });
-
-                        var flows = [
-                            {
-                                name: 'Uniform flow: f=z',
-                                phi: function(x,y){return x;},
-                                psi: function(x,y){return y;},
-                                vx: function(x,y){return 1;},
-                                vy: function(x,y){return 0;}
-                            },
-                            {
-                                name: 'Stagnation: f=z\u00b2',
-                                phi: function(x,y){return x*x-y*y;},
-                                psi: function(x,y){return 2*x*y;},
-                                vx: function(x,y){return 2*x;},
-                                vy: function(x,y){return -2*y;}
-                            },
-                            {
-                                name: 'Source at origin: f=log z',
-                                phi: function(x,y){return 0.5*Math.log(x*x+y*y+1e-9);},
-                                psi: function(x,y){return Math.atan2(y,x);},
-                                vx: function(x,y){var r2=x*x+y*y+1e-9;return x/r2;},
-                                vy: function(x,y){var r2=x*x+y*y+1e-9;return y/r2;}
-                            },
-                            {
-                                name: 'Vortex: f=\u2212i\u00b7log z',
-                                phi: function(x,y){return Math.atan2(y,x);},
-                                psi: function(x,y){return -0.5*Math.log(x*x+y*y+1e-9);},
-                                vx: function(x,y){var r2=x*x+y*y+1e-9;return -y/r2;},
-                                vy: function(x,y){var r2=x*x+y*y+1e-9;return x/r2;}
-                            }
-                        ];
-                        var fIdx = 0;
-
-                        var btnRow = document.createElement('div');
-                        btnRow.style.cssText = 'display:flex;gap:6px;margin-bottom:6px;flex-wrap:wrap;';
-                        flows.forEach(function(fl, i) {
-                            var b = document.createElement('button');
-                            b.textContent = fl.name;
-                            b.style.cssText = 'padding:3px 10px;border:1px solid #30363d;border-radius:4px;background:#1a1a40;color:#c9d1d9;font-size:0.75rem;cursor:pointer;';
-                            b.addEventListener('click', function() {
-                                fIdx = i;
-                                btnRow.querySelectorAll('button').forEach(function(bb, ii) {
-                                    bb.style.background = ii === i ? '#3fb9a0' : '#1a1a40';
-                                    bb.style.color = ii === i ? '#0c0c20' : '#c9d1d9';
-                                });
-                                draw();
-                            });
-                            if (i === 0) { b.style.background = '#3fb9a0'; b.style.color = '#0c0c20'; }
-                            btnRow.appendChild(b);
-                        });
-                        controls.appendChild(btnRow);
-
-                        function drawContour(ctx, f, levels, color, xRange, yRange, N) {
-                            N = N || 100;
-                            var dx = (xRange[1]-xRange[0])/N, dy = (yRange[1]-yRange[0])/N;
-                            ctx.strokeStyle = color; ctx.lineWidth = 1;
-                            for (var i = 0; i < N; i++) {
-                                for (var j = 0; j < N; j++) {
-                                    var x0 = xRange[0]+i*dx, y0 = yRange[0]+j*dy;
-                                    var x1 = x0+dx, y1 = y0+dy;
-                                    var v00 = f(x0,y0), v10 = f(x1,y0), v01 = f(x0,y1), v11 = f(x1,y1);
-                                    if (!isFinite(v00)||!isFinite(v10)||!isFinite(v01)||!isFinite(v11)) return;
-                                    levels.forEach(function(L) {
-                                        var pts = [];
-                                        if ((v00-L)*(v10-L)<0){var t=(L-v00)/(v10-v00);pts.push([x0+t*dx,y0]);}
-                                        if ((v01-L)*(v11-L)<0){var t2=(L-v01)/(v11-v01);pts.push([x0+t2*dx,y1]);}
-                                        if ((v00-L)*(v01-L)<0){var t3=(L-v00)/(v01-v00);pts.push([x0,y0+t3*dy]);}
-                                        if ((v10-L)*(v11-L)<0){var t4=(L-v10)/(v11-v10);pts.push([x1,y0+t4*dy]);}
-                                        if (pts.length>=2){
-                                            var [sx1,sy1]=viz.toScreen(pts[0][0],pts[0][1]);
-                                            var [sx2,sy2]=viz.toScreen(pts[1][0],pts[1][1]);
-                                            ctx.beginPath();ctx.moveTo(sx1,sy1);ctx.lineTo(sx2,sy2);ctx.stroke();
-                                        }
-                                    });
-                                }
-                            }
-                        }
-
-                        function draw() {
                             var ctx = viz.ctx;
-                            viz.clear();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
+                            ctx.fillStyle = viz.colors.blue; ctx.fillRect(20, 15, 14, 3);
+                            ctx.fillStyle = viz.colors.blue; ctx.font = '12px -apple-system,sans-serif';
+                            ctx.textAlign = 'left'; ctx.fillText('u = const', 38, 20);
 
-                            var fl = flows[fIdx];
-                            var xR = [-3.5, 3.5], yR = [-3, 3];
-                            var phiLevels = [], psiLevels = [];
-                            for (var k = -8; k <= 8; k += 0.4) {
-                                phiLevels.push(k);
-                                psiLevels.push(k);
-                            }
+                            ctx.fillStyle = viz.colors.orange; ctx.fillRect(20, 30, 14, 3);
+                            ctx.fillStyle = viz.colors.orange; ctx.fillText('v = const', 38, 35);
 
-                            drawContour(ctx, fl.phi, phiLevels, viz.colors.blue + 'aa', xR, yR, 160);
-                            drawContour(ctx, fl.psi, psiLevels, viz.colors.teal + 'cc', xR, yR, 160);
-
-                            // Draw velocity arrows at grid points
-                            ctx.strokeStyle = viz.colors.orange + 'cc';
-                            ctx.fillStyle = viz.colors.orange + 'cc';
-                            for (var ax = -3; ax <= 3; ax += 0.75) {
-                                for (var ay = -2.5; ay <= 2.5; ay += 0.75) {
-                                    var vx = fl.vx(ax, ay), vy = fl.vy(ax, ay);
-                                    var vlen = Math.sqrt(vx*vx + vy*vy);
-                                    if (!isFinite(vlen) || vlen < 0.001) continue;
-                                    var scale = 0.25 / Math.max(1, vlen);
-                                    viz.drawVector(ax, ay, ax + vx*scale, ay + vy*scale, viz.colors.orange + '99', null, 1);
-                                }
-                            }
-
-                            // Legend
-                            ctx.fillStyle = '#12122a';
-                            ctx.fillRect(W - 260, H - 70, 256, 66);
-                            ctx.strokeStyle = '#30363d'; ctx.lineWidth = 1;
-                            ctx.strokeRect(W - 260, H - 70, 256, 66);
-
-                            ctx.strokeStyle = viz.colors.blue + 'aa'; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(W-250, H-50); ctx.lineTo(W-230, H-50); ctx.stroke();
-                            ctx.fillStyle = viz.colors.white; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            ctx.fillText('Equipotentials (\u03c6 = const)', W-226, H-50);
-
-                            ctx.strokeStyle = viz.colors.teal + 'cc'; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(W-250, H-32); ctx.lineTo(W-230, H-32); ctx.stroke();
-                            ctx.fillText('Streamlines (\u03c8 = const)', W-226, H-32);
-
-                            ctx.strokeStyle = viz.colors.orange + 'cc'; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(W-250, H-14); ctx.lineTo(W-230, H-14); ctx.stroke();
-                            ctx.fillText('Velocity field', W-226, H-14);
-
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText(fl.name, W/2, 8);
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText('f(z) = ' + fd.label + ': harmonic conjugate level curves', viz.width/2, viz.height - 10);
                         }
-
                         draw();
                         return viz;
                     }
@@ -1317,99 +1048,239 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Find the harmonic conjugate of \\(u(x,y) = e^x \\cos y\\) and write down the analytic function \\(f = u + iv\\).',
-                    hint: 'Apply the CR equations: \\(v_y = u_x\\) and \\(v_x = -u_y\\). Integrate.',
-                    solution: '\\(u_x = e^x \\cos y\\), so \\(v_y = e^x \\cos y\\), giving \\(v = e^x \\sin y + g(x)\\). Then \\(v_x = e^x \\sin y + g\'(x) = -u_y = e^x \\sin y\\), so \\(g\'(x) = 0\\) and \\(g\\) is constant. Thus \\(v = e^x \\sin y + C\\) and \\(f(z) = e^z + iC\\).'
+                    question: 'Find the harmonic conjugate of \\(u(x,y) = e^x \\cos y\\).',
+                    hint: 'Use \\(v_y = u_x\\) to get \\(v\\) up to a function of \\(x\\), then use \\(v_x = -u_y\\) to determine that function.',
+                    solution: '\\(v_y = u_x = e^x \\cos y\\), so \\(v = e^x \\sin y + g(x)\\). Then \\(v_x = e^x \\sin y + g\'(x)\\). But \\(v_x = -u_y = e^x \\sin y\\), so \\(g\'(x) = 0\\) and \\(v = e^x \\sin y + C\\). The holomorphic function is \\(f = e^x \\cos y + ie^x \\sin y = e^z\\).'
                 },
                 {
-                    question: 'Show directly that \\(u(x,y) = \\ln(x^2 + y^2)^{1/2} = \\frac{1}{2}\\ln(x^2 + y^2)\\) is harmonic on \\(\\mathbb{C} \\setminus \\{0\\}\\).',
-                    hint: 'Compute \\(u_{xx}\\) and \\(u_{yy}\\) directly.',
-                    solution: '\\(u_x = x/(x^2+y^2)\\), \\(u_{xx} = (y^2-x^2)/(x^2+y^2)^2\\). By symmetry \\(u_{yy} = (x^2-y^2)/(x^2+y^2)^2\\). Thus \\(\\Delta u = u_{xx} + u_{yy} = 0\\). This \\(u\\) is the real part of \\(\\log z\\).'
-                },
-                {
-                    question: 'Prove the mean value property: if \\(u\\) is harmonic on a disk \\(D(z_0, R)\\), then \\(u(z_0)\\) equals the average of \\(u\\) over any circle \\(|z - z_0| = r < R\\). (Hint: use the fact that \\(u = \\text{Re}(f)\\) for analytic \\(f\\) and apply Cauchy\'s integral formula, previewed here.)',
-                    hint: 'Write \\(u = \\text{Re}(f)\\) where \\(f\\) is analytic. Apply the result \\(f(z_0) = \\frac{1}{2\\pi i} \\oint_{|z-z_0|=r} \\frac{f(z)}{z - z_0} dz\\) with \\(z = z_0 + re^{i\\theta}\\).',
-                    solution: 'On \\(|z - z_0| = r\\): \\(z = z_0 + re^{i\\theta}\\), \\(dz = ire^{i\\theta}d\\theta\\). Cauchy\'s formula gives \\(f(z_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(z_0 + re^{i\\theta})d\\theta\\). Taking real parts: \\(u(z_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(z_0 + re^{i\\theta})d\\theta\\), the mean value property.'
+                    question: 'Show that \\(\\phi(x,y) = \\ln(x^2 + y^2)\\) is harmonic on \\(\\mathbb{R}^2 \\setminus \\{0\\}\\). Find its harmonic conjugate.',
+                    hint: 'Compute \\(\\phi_{xx} + \\phi_{yy}\\) directly. For the conjugate, note that \\(\\ln|z|^2 = 2\\ln|z| = 2\\,\\text{Re}(\\log z)\\).',
+                    solution: '\\(\\phi_x = 2x/(x^2+y^2)\\), \\(\\phi_{xx} = (2(x^2+y^2) - 4x^2)/(x^2+y^2)^2 = 2(y^2-x^2)/(x^2+y^2)^2\\). Similarly \\(\\phi_{yy} = 2(x^2-y^2)/(x^2+y^2)^2\\). Sum is zero. The conjugate is \\(\\psi = 2\\arctan(y/x)\\), since \\(\\ln(x^2+y^2) + 2i\\arctan(y/x) = 2\\log z\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 7: Bridge to Elementary Transcendentals (Ch 3)
+        // SECTION 7: Bridge to Integration
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Elementary Transcendentals',
+            title: 'Bridge: From Derivatives to Integrals',
             content: `
-<h2>Bridge to Chapter 3: Elementary Transcendentals</h2>
+<h2>Bridge: From Derivatives to Integrals</h2>
 
-<p>We have now assembled the tools to study the fundamental transcendental functions of complex analysis. The Cauchy-Riemann equations tell us when functions are analytic; conformality tells us what they look like geometrically; harmonic components connect them to classical PDE theory. In Chapter 3, we apply this framework systematically to \\(e^z\\), \\(\\log z\\), \\(z^\\alpha\\), \\(\\sin z\\), and \\(\\cos z\\).</p>
-
-<h3>Preview: The Exponential Function</h3>
-
-<p>We have already verified that \\(e^z\\) is entire with \\((e^z)' = e^z\\). Its real and imaginary parts:</p>
-\\[e^z = e^x \\cos y + i e^x \\sin y\\]
-<p>make clear the periodicity: \\(e^{z + 2\\pi i} = e^z\\) for all \\(z\\). The map \\(z \\mapsto e^z\\) takes vertical strips of width \\(2\\pi\\) to the entire complex plane (minus the origin). This periodicity forces the logarithm to be multi-valued, the central complication of Chapter 3.</p>
-
-<h3>Preview: Trigonometric Functions</h3>
-
-<p>Euler's formula \\(e^{i\\theta} = \\cos\\theta + i\\sin\\theta\\) extends to complex arguments via</p>
-\\[\\cos z = \\frac{e^{iz} + e^{-iz}}{2}, \\qquad \\sin z = \\frac{e^{iz} - e^{-iz}}{2i}.\\]
-<p>These are entire functions. Unlike their real counterparts, \\(|\\sin z|\\) and \\(|\\cos z\\)|  are unbounded: \\(\\sin(iy) = i\\sinh y\\) grows like \\(e^y/2\\). The real "oscillates between \\(-1\\) and \\(1\\)" intuition completely breaks down in the complex plane.</p>
-
-<h3>What the CR Framework Gives Us</h3>
-
-<div class="env-block theorem">
-    <div class="env-title">Summary: The CR Toolkit</div>
+<div class="env-block intuition">
+    <div class="env-title">What Lies Ahead</div>
     <div class="env-body">
-        <ul>
-            <li><strong>Testing analyticity:</strong> Check \\(u_x = v_y\\) and \\(u_y = -v_x\\) with continuous partials.</li>
-            <li><strong>Computing derivatives:</strong> \\(f' = u_x + iv_x\\) (or \\(v_y - iu_y\\)).</li>
-            <li><strong>Conformality:</strong> Analytic functions with \\(f' \\neq 0\\) preserve angles.</li>
-            <li><strong>Harmonic functions:</strong> Real and imaginary parts of analytic functions solve \\(\\Delta u = 0\\).</li>
-            <li><strong>Finding conjugates:</strong> Integrate the CR equations to recover \\(v\\) from \\(u\\).</li>
-        </ul>
+        <p>We have established the fundamental local theory: what it means for a complex function to be differentiable, and the remarkable constraints this imposes through the Cauchy-Riemann equations. But the deepest consequences of analyticity emerge when we combine differentiation with <em>integration</em> along curves in the complex plane.</p>
     </div>
 </div>
+
+<p>Here is a preview of the connections that the next chapters will develop:</p>
+
+<h3>The Fluid-Flow Interpretation</h3>
+
+<p>If \\(f = u + iv\\) is holomorphic, interpret \\(\\vec{F} = (u, -v)\\) as a velocity field on \\(\\mathbb{R}^2\\). The CR equations say:</p>
+<ul>
+    <li>\\(u_x + (-v)_y = u_x - v_y = 0\\) (the flow is <strong>incompressible</strong>, i.e., divergence-free)</li>
+    <li>\\((-v)_x - u_y = -v_x - u_y = 0\\) (the flow is <strong>irrotational</strong>, i.e., curl-free)</li>
+</ul>
+
+<p>A flow that is both incompressible and irrotational is called a <strong>potential flow</strong>. The function \\(u\\) serves as the velocity potential and \\(v\\) as the stream function. The level curves of \\(v\\) (streamlines) and \\(u\\) (equipotential lines) form the orthogonal network we visualized earlier.</p>
+
+<div class="viz-placeholder" data-viz="viz-streamlines"></div>
+
+<h3>From CR to Cauchy's Theorem</h3>
+
+<p>The irrotational and incompressible conditions are exactly what Green's theorem needs to conclude that the integral of \\(f\\) around a closed curve is zero (Cauchy's theorem). This is the subject of the next chapter.</p>
+
+<h3>Looking Back</h3>
+
+<p>Let us summarize the logical chain we have built:</p>
 
 <div class="env-block remark">
-    <div class="env-title">What We Have Not Yet Proved</div>
+    <div class="env-title">Summary</div>
     <div class="env-body">
-        <p>We have asserted that analytic functions are infinitely differentiable and representable by power series, but not proved it. These are deep theorems requiring complex integration (Chapters 4-7). The CR equations and local geometry studied in this chapter are the gateway, but the true power of complex analysis will emerge only after we develop the integral machinery.</p>
+        <ol>
+            <li>The complex derivative requires direction-independence of the limit.</li>
+            <li>Direction-independence forces the Cauchy-Riemann equations: \\(u_x = v_y\\), \\(u_y = -v_x\\).</li>
+            <li>CR equations mean the Jacobian is a rotation-scaling matrix: conformality where \\(f' \\neq 0\\).</li>
+            <li>CR equations imply \\(u\\) and \\(v\\) are harmonic; their level curves are orthogonal.</li>
+            <li>The harmonic/CR structure connects to incompressible irrotational flow, setting the stage for complex integration.</li>
+        </ol>
+        <p>All of this extraordinary structure follows from a single requirement: that the complex derivative exists.</p>
     </div>
 </div>
-
-<h3>Chapter 3 Roadmap</h3>
-
-<ul>
-    <li><strong>\\(e^z\\):</strong> Full properties, periodicity, the map \\(\\mathbb{C} \\to \\mathbb{C}^*\\)</li>
-    <li><strong>\\(\\log z\\):</strong> Branches, branch cuts, Riemann surfaces (preview)</li>
-    <li><strong>\\(z^\\alpha\\) for \\(\\alpha \\in \\mathbb{C}\\):</strong> Defined via \\(z^\\alpha = e^{\\alpha \\log z}\\), branch choices</li>
-    <li><strong>\\(\\sin z, \\cos z\\):</strong> Complex extensions, growth, zeros</li>
-    <li><strong>\\(\\sinh z, \\cosh z\\):</strong> Hyperbolic functions and their relation to trigonometric</li>
-</ul>
 `,
-            visualizations: [],
+            visualizations: [
+                {
+                    id: 'viz-streamlines',
+                    title: 'Potential Flow: Streamlines and Equipotentials',
+                    description: 'For a holomorphic function f(z), the real part u gives equipotential lines and the imaginary part v gives streamlines of an incompressible, irrotational flow. The two families of curves are orthogonal.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 50
+                        });
+
+                        var flowIdx = 0;
+                        var flows = [
+                            {
+                                label: 'Uniform flow (f = z)',
+                                u: function(x,y) { return x; },
+                                v: function(x,y) { return y; },
+                                vx: function(x,y) { return 1; },
+                                vy: function(x,y) { return 0; }
+                            },
+                            {
+                                label: 'Source/sink (f = log z)',
+                                u: function(x,y) { return 0.5*Math.log(x*x+y*y+1e-10); },
+                                v: function(x,y) { return Math.atan2(y, x); },
+                                vx: function(x,y) { var d=x*x+y*y+1e-6; return x/d; },
+                                vy: function(x,y) { var d=x*x+y*y+1e-6; return y/d; }
+                            },
+                            {
+                                label: 'Dipole (f = 1/z)',
+                                u: function(x,y) { var d=x*x+y*y+1e-6; return x/d; },
+                                v: function(x,y) { var d=x*x+y*y+1e-6; return -y/d; },
+                                vx: function(x,y) { var d=x*x+y*y+1e-6; return (y*y-x*x)/(d*d); },
+                                vy: function(x,y) { var d=x*x+y*y+1e-6; return -2*x*y/(d*d); }
+                            },
+                            {
+                                label: 'Vortex (f = -i log z)',
+                                u: function(x,y) { return Math.atan2(y, x); },
+                                v: function(x,y) { return -0.5*Math.log(x*x+y*y+1e-10); },
+                                vx: function(x,y) { var d=x*x+y*y+1e-6; return -y/d; },
+                                vy: function(x,y) { var d=x*x+y*y+1e-6; return x/d; }
+                            }
+                        ];
+
+                        VizEngine.createButton(controls, 'Uniform', function() { flowIdx = 0; draw(); });
+                        VizEngine.createButton(controls, 'Source', function() { flowIdx = 1; draw(); });
+                        VizEngine.createButton(controls, 'Dipole', function() { flowIdx = 2; draw(); });
+                        VizEngine.createButton(controls, 'Vortex', function() { flowIdx = 3; draw(); });
+
+                        function drawContours(func, color, numContours) {
+                            var ctx = viz.ctx;
+                            var xMin = -4, xMax = 4, yMin = -3, yMax = 3;
+                            var nx = 250, ny = 180;
+                            var dx = (xMax - xMin) / nx, dy = (yMax - yMin) / ny;
+
+                            var vals = [];
+                            var vMin = Infinity, vMax = -Infinity;
+                            for (var j = 0; j <= ny; j++) {
+                                vals[j] = [];
+                                for (var i = 0; i <= nx; i++) {
+                                    var val = func(xMin + i * dx, yMin + j * dy);
+                                    vals[j][i] = val;
+                                    if (isFinite(val) && Math.abs(val) < 50) { vMin = Math.min(vMin, val); vMax = Math.max(vMax, val); }
+                                }
+                            }
+
+                            var levels = [];
+                            var range = vMax - vMin;
+                            if (range < 1e-6) return;
+                            for (var k = 0; k < numContours; k++) {
+                                levels.push(vMin + range * (k + 0.5) / numContours);
+                            }
+
+                            ctx.strokeStyle = color; ctx.lineWidth = 1;
+                            for (var li = 0; li < levels.length; li++) {
+                                var level = levels[li];
+                                ctx.beginPath();
+                                for (var jj = 0; jj < ny; jj++) {
+                                    for (var ii = 0; ii < nx; ii++) {
+                                        var v00 = vals[jj][ii] - level;
+                                        var v10 = vals[jj][ii+1] - level;
+                                        var v01 = vals[jj+1][ii] - level;
+                                        var v11 = vals[jj+1][ii+1] - level;
+
+                                        var x0 = xMin + ii * dx, x1 = x0 + dx;
+                                        var y0 = yMin + jj * dy, y1 = y0 + dy;
+
+                                        var edges = [];
+                                        if (v00 * v10 < 0) edges.push([x0 + dx*(-v00)/(v10-v00), y0]);
+                                        if (v10 * v11 < 0) edges.push([x1, y0 + dy*(-v10)/(v11-v10)]);
+                                        if (v01 * v11 < 0) edges.push([x0 + dx*(-v01)/(v11-v01), y1]);
+                                        if (v00 * v01 < 0) edges.push([x0, y0 + dy*(-v00)/(v01-v00)]);
+
+                                        if (edges.length >= 2) {
+                                            var sp1 = viz.toScreen(edges[0][0], edges[0][1]);
+                                            var sp2 = viz.toScreen(edges[1][0], edges[1][1]);
+                                            ctx.moveTo(sp1[0], sp1[1]);
+                                            ctx.lineTo(sp2[0], sp2[1]);
+                                            if (edges.length === 4) {
+                                                var sp3 = viz.toScreen(edges[2][0], edges[2][1]);
+                                                var sp4 = viz.toScreen(edges[3][0], edges[3][1]);
+                                                ctx.moveTo(sp3[0], sp3[1]);
+                                                ctx.lineTo(sp4[0], sp4[1]);
+                                            }
+                                        }
+                                    }
+                                }
+                                ctx.stroke();
+                            }
+                        }
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var fl = flows[flowIdx];
+
+                            // Draw equipotentials (u = const) in blue
+                            drawContours(fl.u, viz.colors.blue + 'aa', 12);
+                            // Draw streamlines (v = const) in orange
+                            drawContours(fl.v, viz.colors.orange + 'aa', 12);
+
+                            // Draw velocity arrows
+                            var ctx = viz.ctx;
+                            var step = 0.7;
+                            for (var ax = -3.5; ax <= 3.5; ax += step) {
+                                for (var ay = -2.8; ay <= 2.8; ay += step) {
+                                    var vxx = fl.vx(ax, ay);
+                                    var vyy = fl.vy(ax, ay);
+                                    var mag = Math.sqrt(vxx*vxx + vyy*vyy);
+                                    if (mag < 0.001 || mag > 20) continue;
+                                    var sc = Math.min(12, 8 / Math.sqrt(mag));
+                                    var sp = viz.toScreen(ax, ay);
+                                    ctx.strokeStyle = viz.colors.green + '88';
+                                    ctx.lineWidth = 1;
+                                    ctx.beginPath();
+                                    ctx.moveTo(sp[0], sp[1]);
+                                    ctx.lineTo(sp[0] + vxx*sc, sp[1] - vyy*sc);
+                                    ctx.stroke();
+                                }
+                            }
+
+                            // Legend
+                            ctx.fillStyle = viz.colors.blue; ctx.fillRect(15, 12, 14, 3);
+                            ctx.fillStyle = viz.colors.blue; ctx.font = '11px -apple-system,sans-serif';
+                            ctx.textAlign = 'left'; ctx.fillText('Equipotentials (u)', 33, 16);
+
+                            ctx.fillStyle = viz.colors.orange; ctx.fillRect(15, 27, 14, 3);
+                            ctx.fillStyle = viz.colors.orange; ctx.fillText('Streamlines (v)', 33, 31);
+
+                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 13px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.fillText(fl.label, viz.width/2, viz.height - 10);
+                        }
+                        draw();
+                        return viz;
+                    }
+                }
+            ],
             exercises: [
                 {
-                    question: 'Verify that \\(\\sin z = \\frac{e^{iz} - e^{-iz}}{2i}\\) defines an entire function and compute its derivative.',
-                    hint: 'Use the fact that \\(e^z\\) is entire and the rules for sums, scalar multiples, and compositions of analytic functions.',
-                    solution: '\\(e^{iz}\\) is the composition of \\(z \\mapsto iz\\) (analytic) with \\(e^z\\) (entire), hence entire. Similarly \\(e^{-iz}\\). Their difference and the division by the constant \\(2i\\) preserve analyticity. By the chain rule: \\(\\frac{d}{dz}\\sin z = \\frac{ie^{iz} + ie^{-iz}}{2i} = \\frac{e^{iz}+e^{-iz}}{2} = \\cos z\\).'
+                    question: 'For the potential flow with complex potential \\(f(z) = z + 1/z\\), find the velocity field and identify the stagnation points (where the velocity is zero).',
+                    hint: 'The velocity field is \\((u_x, -u_y)\\) or equivalently \\(\\overline{f\'(z)}\\). Set \\(f\'(z) = 0\\).',
+                    solution: '\\(f\'(z) = 1 - 1/z^2\\). Setting \\(f\'(z) = 0\\): \\(z^2 = 1\\), so \\(z = \\pm 1\\). These are the stagnation points. The flow represents potential flow around a cylinder (the unit circle maps to itself under this transformation).'
                 },
                 {
-                    question: 'Show that \\(e^z\\) is periodic with period \\(2\\pi i\\): \\(e^{z + 2\\pi i} = e^z\\) for all \\(z\\).',
-                    hint: 'Use the definition \\(e^z = e^x(\\cos y + i\\sin y)\\) and periodicity of \\(\\sin\\) and \\(\\cos\\).',
-                    solution: '\\(e^{z+2\\pi i} = e^{(x+iy)+2\\pi i} = e^x(\\cos(y+2\\pi) + i\\sin(y+2\\pi)) = e^x(\\cos y + i\\sin y) = e^z\\). The \\(2\\pi\\)-periodicity of real sine and cosine gives the \\(2\\pi i\\)-periodicity of \\(e^z\\).'
-                },
-                {
-                    question: 'Write \\(\\cos z\\) in terms of its real and imaginary parts \\(u(x,y) + iv(x,y)\\), and verify the Cauchy-Riemann equations.',
-                    hint: 'Use \\(\\cos z = \\cos(x+iy) = \\cos x \\cosh y - i \\sin x \\sinh y\\) (from the addition formula and \\(\\cos(iy) = \\cosh y\\), \\(\\sin(iy) = i\\sinh y\\)).',
-                    solution: '\\(u = \\cos x \\cosh y\\), \\(v = -\\sin x \\sinh y\\). Then \\(u_x = -\\sin x \\cosh y\\) and \\(v_y = -\\sin x \\cosh y\\): equal. \\(u_y = \\cos x \\sinh y\\) and \\(-v_x = \\sin x \\cdot (-\\cos x \\cdot 0) \\ldots\\) more carefully: \\(v_x = -\\cos x \\sinh y\\), so \\(-v_x = \\cos x \\sinh y = u_y\\). CR holds, confirming \\(\\cos z\\) is entire.'
-                },
-                {
-                    question: '(Preview) The logarithm \\(\\log z\\) is defined on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\) by \\(\\log z = \\ln|z| + i\\arg(z)\\) with \\(\\arg(z) \\in (-\\pi, \\pi)\\). Verify the Cauchy-Riemann equations in polar coordinates: if \\(u = \\ln r\\) and \\(v = \\theta\\), show \\(u_r = (1/r) v_\\theta\\) and \\(v_r = -(1/r) u_\\theta\\).',
-                    hint: 'The polar form of the CR equations for \\(f(re^{i\\theta}) = u(r,\\theta) + iv(r,\\theta)\\) is \\(u_r = v_\\theta / r\\) and \\(v_r = -u_\\theta / r\\).',
-                    solution: '\\(u = \\ln r\\): \\(u_r = 1/r\\), \\(u_\\theta = 0\\). \\(v = \\theta\\): \\(v_r = 0\\), \\(v_\\theta = 1\\). Check: \\(u_r = 1/r = v_\\theta/r = 1/r\\). Check: \\(v_r = 0 = -u_\\theta/r = 0\\). Both CR equations hold, confirming \\(\\log z\\) is analytic on its domain. The derivative is \\(f\'(z) = e^{-i\\theta}(u_r + iv_r) = e^{-i\\theta}(1/r) = 1/(re^{i\\theta}) = 1/z\\).'
+                    question: 'Verify directly that for \\(f(z) = z^2\\), the vector field \\(\\vec{F} = (u, -v)\\) is both divergence-free and curl-free.',
+                    hint: 'With \\(u = x^2 - y^2\\) and \\(v = 2xy\\), compute \\(\\nabla \\cdot \\vec{F}\\) and \\(\\nabla \\times \\vec{F}\\) (the 2D curl).',
+                    solution: '\\(\\vec{F} = (x^2-y^2, -2xy)\\). Divergence: \\(\\partial_x(x^2-y^2) + \\partial_y(-2xy) = 2x - 2x = 0\\). Curl (2D): \\(\\partial_x(-2xy) - \\partial_y(x^2-y^2) = -2y - (-2y) = 0\\). Both vanish, confirming the CR equations in disguise.'
                 }
             ]
         }
