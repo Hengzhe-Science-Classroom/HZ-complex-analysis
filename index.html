@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complex Analysis — Interactive</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <button id="sidebar-toggle" aria-label="Toggle sidebar">&#9776;</button>
+        <aside id="sidebar">
+            <div id="sidebar-header">
+                <h1>Complex Analysis</h1>
+                <p class="author">Ahlfors / Stein & Shakarchi / Conway</p>
+                <div id="progress-container">
+                    <div id="progress-bar"><div id="progress-fill"></div></div>
+                    <span id="progress-text">0%</span>
+                </div>
+            </div>
+            <div id="search-container">
+                <input type="text" id="search-input" placeholder="Search topics...">
+            </div>
+            <nav id="chapter-nav"></nav>
+            <div id="sidebar-footer"><p class="copyright-notice" style="font-size:0.7rem;color:#888;margin-top:12px;text-align:center;">&copy; 2026 Hengzhe Zhao &middot; AGPL-3.0 &amp; Commercial</p>
+                <button id="reset-progress">Reset Progress</button>
+            </div>
+        </aside>
+        <main id="main-content">
+            <div id="welcome-screen">
+                <div class="welcome-hero">
+                    <h1>Complex Analysis</h1>
+                    <h2>复分析 · Interactive</h2>
+                    <p class="welcome-description">
+                        From the geometry of the complex plane to conformal mappings, from Cauchy's integral
+                        formula to the residue theorem. See analysis come alive through domain coloring,
+                        animated contour integrals, and interactive conformal maps.
+                    </p>
+                </div>
+                <div class="roadmap">
+                    <h3>What You'll Explore</h3>
+                    <div class="roadmap-parts">
+                        <div class="roadmap-part">
+                            <h4>Part A: Complex Numbers &amp; Functions</h4>
+                            <ul>
+                                <li>Ch 0: The Complex Plane</li>
+                                <li>Ch 1: Complex Functions &amp; Mappings</li>
+                                <li>Ch 2: Analytic Functions</li>
+                                <li>Ch 3: Elementary Functions</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part B: Integration</h4>
+                            <ul>
+                                <li>Ch 4: Complex Integration</li>
+                                <li>Ch 5: Cauchy's Theorem</li>
+                                <li>Ch 6: Cauchy's Integral Formula</li>
+                                <li>Ch 7: Consequences of Cauchy's Formula</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part C: Series</h4>
+                            <ul>
+                                <li>Ch 8: Sequences &amp; Series</li>
+                                <li>Ch 9: Power Series</li>
+                                <li>Ch 10: Laurent Series &amp; Classification of Singularities</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part D: Residues</h4>
+                            <ul>
+                                <li>Ch 11: The Residue Theorem</li>
+                                <li>Ch 12: Applications of Residues</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part E: Conformal Mappings</h4>
+                            <ul>
+                                <li>Ch 13: Conformal Mappings</li>
+                                <li>Ch 14: M&ouml;bius Transformations</li>
+                                <li>Ch 15: The Riemann Mapping Theorem</li>
+                            </ul>
+                        </div>
+                        <div class="roadmap-part">
+                            <h4>Part F: Advanced Topics</h4>
+                            <ul>
+                                <li>Ch 16: Harmonic Functions</li>
+                                <li>Ch 17: Entire &amp; Meromorphic Functions</li>
+                                <li>Ch 18: Analytic Continuation</li>
+                                <li>Ch 19: Special Functions &amp; Applications</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <p class="welcome-start">Select a chapter from the sidebar to begin your journey into complex analysis!</p>
+            </div>
+            <div id="chapter-content" style="display:none;">
+                <div id="chapter-header">
+                    <div id="chapter-number-badge"></div>
+                    <h1 id="chapter-title"></h1>
+                    <p id="chapter-subtitle"></p>
+                </div>
+                <div id="section-tabs"></div>
+                <article id="section-content"></article>
+                <div id="exercises-panel" style="display:none;">
+                    <h3>Exercises</h3>
+                    <div id="exercises-list"></div>
+                </div>
+                <div id="chapter-nav-buttons">
+                    <button id="prev-btn" disabled>&larr; Previous</button>
+                    <span id="section-indicator"></span>
+                    <button id="next-btn">Next &rarr;</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+    <script src="viz-engine.js"></script>
+
+    <script>
+    window.CHAPTER_MANIFEST = [
+        {number:0,  id:'ch00', title:'The Complex Plane',                          file:'ch00-complex-plane'},
+        {number:1,  id:'ch01', title:'Complex Functions & Mappings',               file:'ch01-complex-functions'},
+        {number:2,  id:'ch02', title:'Analytic Functions',                         file:'ch02-analytic-functions'},
+        {number:3,  id:'ch03', title:'Elementary Functions',                       file:'ch03-elementary-functions'},
+        {number:4,  id:'ch04', title:'Complex Integration',                        file:'ch04-complex-integration'},
+        {number:5,  id:'ch05', title:'Cauchy\'s Theorem',                          file:'ch05-cauchy-theorem'},
+        {number:6,  id:'ch06', title:'Cauchy\'s Integral Formula',                 file:'ch06-cauchy-formula'},
+        {number:7,  id:'ch07', title:'Consequences of Cauchy\'s Formula',          file:'ch07-cauchy-consequences'},
+        {number:8,  id:'ch08', title:'Sequences & Series',                         file:'ch08-sequences-series'},
+        {number:9,  id:'ch09', title:'Power Series',                               file:'ch09-power-series'},
+        {number:10, id:'ch10', title:'Laurent Series & Singularities',             file:'ch10-laurent-series'},
+        {number:11, id:'ch11', title:'The Residue Theorem',                        file:'ch11-residue-theorem'},
+        {number:12, id:'ch12', title:'Applications of Residues',                   file:'ch12-residue-applications'},
+        {number:13, id:'ch13', title:'Conformal Mappings',                         file:'ch13-conformal-mappings'},
+        {number:14, id:'ch14', title:'Möbius Transformations',                     file:'ch14-mobius-transformations'},
+        {number:15, id:'ch15', title:'The Riemann Mapping Theorem',                file:'ch15-riemann-mapping'},
+        {number:16, id:'ch16', title:'Harmonic Functions',                         file:'ch16-harmonic-functions'},
+        {number:17, id:'ch17', title:'Entire & Meromorphic Functions',             file:'ch17-entire-meromorphic'},
+        {number:18, id:'ch18', title:'Analytic Continuation',                      file:'ch18-analytic-continuation'},
+        {number:19, id:'ch19', title:'Special Functions & Applications',           file:'ch19-special-functions'},
+    ];
+    </script>
+
+    <script src="app.js"></script>
+</body>
+</html>
