@@ -5,397 +5,404 @@ window.CHAPTERS.push({
     title: 'Complex Integration',
     subtitle: 'Integrating along curves in the complex plane',
     sections: [
-
         // ================================================================
-        // SECTION 1: Why Contour Integrals?
+        // SECTION 1: Motivation
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'Why Contour Integrals?',
+            title: 'Motivation',
             content: `
-<h2>Why Contour Integrals?</h2>
+<h2>Why Complex Integration?</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Core Shift</div>
+    <div class="env-title">From Real to Complex</div>
     <div class="env-body">
-        <p>In real analysis, you integrate a function over an <em>interval</em> \\([a, b]\\) on the number line. In complex analysis, you integrate over a <em>curve</em> in the plane. This is not a trivial generalization: it unleashes an entirely new set of tools, from residue calculus to Fourier inversion, that are unavailable on the real line alone.</p>
+        <p>In single-variable calculus, \\(\\int_a^b f(x)\\,dx\\) integrates along a line segment on \\(\\mathbb{R}\\). But in \\(\\mathbb{C}\\), between two points \\(z_0\\) and \\(z_1\\) there are infinitely many paths. The integral may depend on which path we choose. This dependence (or independence) on the path is the central drama of complex integration, and resolving it leads to the deepest theorems in analysis.</p>
     </div>
 </div>
 
-<p>Let us first recall the real situation. For a continuous function \\(f: [a,b] \\to \\mathbb{R}\\), the Riemann integral
-\\[\\int_a^b f(x)\\, dx\\]
-sums up infinitesimal contributions \\(f(x)\\, dx\\) as \\(x\\) moves from \\(a\\) to \\(b\\) along the <em>unique</em> path between two real numbers.</p>
+<p>Real integrals compute areas under curves. Complex integrals compute something subtler: they accumulate the values of a complex function \\(f(z)\\) weighted by the infinitesimal displacement \\(dz\\) along a curve \\(\\gamma\\). Since both \\(f(z)\\) and \\(dz\\) are complex numbers, the integral is itself a complex number. There is no "area under a curve" interpretation; instead, think of adding up tiny complex contributions as you trace along a path.</p>
 
-<p>In the complex plane \\(\\mathbb{C}\\), the situation is richer. Given two points \\(z_0\\) and \\(z_1\\), there are <strong>infinitely many curves</strong> connecting them. A contour integral integrates \\(f(z)\\, dz\\) along a chosen curve \\(\\gamma\\). The value may depend on which curve you pick &mdash; or it may not, depending on the function. This dependence (or independence) on path is one of the deepest facts in the subject.</p>
-
-<h3>What Makes This Powerful?</h3>
-
-<p>Contour integration unlocks several major tools:</p>
-<ul>
-    <li><strong>Cauchy's theorem</strong> (Ch. 5): if \\(f\\) is analytic inside a closed curve, the integral around it is zero.</li>
-    <li><strong>Cauchy's integral formula</strong>: the value of an analytic function at any interior point is determined by its values on the boundary.</li>
-    <li><strong>Residue theorem</strong>: complicated real integrals (including Fourier and Laplace transforms) become algebraic computations via singularities.</li>
-</ul>
-
-<div class="env-block remark">
-    <div class="env-title">A Taste of the Payoff</div>
-    <div class="env-body">
-        <p>The seemingly uncomputable real integral
-        \\[\\int_{-\\infty}^{\\infty} \\frac{dx}{1 + x^2} = \\pi\\]
-        follows immediately from contour integration in two lines, once you know the residue theorem. This chapter builds the foundation you need.</p>
-    </div>
-</div>
-
-<h3>The Plan</h3>
-
-<p>We proceed in logical order:</p>
+<p>Three facts make complex integration remarkable:</p>
 <ol>
-    <li>Define what a contour is (curves in \\(\\mathbb{C}\\)).</li>
-    <li>Define the integral \\(\\int_\\gamma f(z)\\,dz\\) and show how to compute it.</li>
-    <li>Establish key properties: linearity, reversal, and the ML inequality.</li>
-    <li>Study antiderivatives and path independence.</li>
-    <li>Work through the two key examples that underpin everything.</li>
-    <li>Preview Cauchy's theorem.</li>
+    <li><strong>Path dependence.</strong> For general functions, the value of the integral depends on the choice of curve. But for analytic functions on simply connected domains, it does not (Chapter 5).</li>
+    <li><strong>The integral of \\(1/z\\) around a closed loop enclosing the origin is \\(2\\pi i\\).</strong> This non-zero value is the seed from which the residue theorem grows.</li>
+    <li><strong>Cauchy's integral formula</strong> (Chapter 6) expresses the value of an analytic function at a point in terms of a contour integral, linking local values to global behavior.</li>
 </ol>
+
+<p>This chapter develops the mechanics: how to parameterize curves, how to define the integral, and what basic properties it satisfies. The payoff comes in subsequent chapters.</p>
+
+<h3>A Preview</h3>
+
+<p>Consider the function \\(f(z) = z^2\\). If we integrate along a straight line from \\(0\\) to \\(1+i\\), and also along a path that first goes to \\(1\\) then up to \\(1+i\\), we get the same answer: \\(\\frac{2}{3}(1+i)^3 / 3\\). For \\(f(z) = 1/z\\), the story changes. Along a closed curve around the origin, the integral is \\(2\\pi i\\), but along a closed curve that avoids the origin, it is \\(0\\). The singularity at \\(z=0\\) makes all the difference.</p>
+
+<div class="viz-placeholder" data-viz="viz-contour-integral"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-contour-integral',
-                    title: 'Contour Integration: Accumulation along a Curve',
-                    description: 'A point traces a contour \\(\\gamma\\) in the complex plane. At each position z, the function value f(z) is shown as an arrow. Watch the real and imaginary parts of the accumulated integral grow.',
+                    title: 'Contour Integration: Tracing a Path',
+                    description: 'A point traces a contour \\(\\gamma\\) in the complex plane. At each point, the arrow shows \\(f(z)\\). The running total (accumulator) displays the integral value as it builds up along the path.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 70, originX: 200, originY: 200 });
-
-                        var running = true;
-                        var tVal = 0;
-                        var speed = 0.4;
-                        var contourType = 0; // 0=circle, 1=line, 2=figure-eight
-
-                        VizEngine.createSlider(controls, 'Speed', 0.1, 1.5, speed, 0.1, function(v) { speed = v; });
-
-                        var btnLabel = ['Circle', 'Line Segment', 'Semicircle'];
-                        var typeBtn = VizEngine.createButton(controls, 'Contour: Circle', function() {
-                            contourType = (contourType + 1) % 3;
-                            typeBtn.textContent = 'Contour: ' + btnLabel[contourType];
-                            tVal = 0;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 400,
+                            scale: 60
                         });
 
-                        VizEngine.createButton(controls, 'Reset', function() { tVal = 0; });
+                        var t = 0;
+                        var speed = 0.3;
+                        var funcChoice = 0; // 0 = z^2, 1 = 1/z
 
-                        // Contours: return {z, dz_dt} at parameter t in [0,1]
-                        function getContour(type, t) {
-                            if (type === 0) { // unit circle
-                                var theta = 2 * Math.PI * t;
-                                return { re: Math.cos(theta), im: Math.sin(theta),
-                                         dre: -2*Math.PI*Math.sin(theta), dim: 2*Math.PI*Math.cos(theta) };
-                            } else if (type === 1) { // line from -1 to 1+i
-                                return { re: -1 + 2*t, im: t,
-                                         dre: 2, dim: 1 };
-                            } else { // semicircle from -1 to 1 via upper half
-                                var phi = Math.PI * t;
-                                return { re: Math.cos(phi), im: Math.sin(phi),
-                                         dre: -Math.PI*Math.sin(phi), dim: Math.PI*Math.cos(phi) };
+                        VizEngine.createSlider(controls, 'Speed', 0.1, 1.0, speed, 0.1, function(v) {
+                            speed = v;
+                        });
+
+                        var funcBtn = VizEngine.createButton(controls, 'f(z) = z\u00B2', function() {
+                            funcChoice = (funcChoice + 1) % 2;
+                            funcBtn.textContent = funcChoice === 0 ? 'f(z) = z\u00B2' : 'f(z) = 1/z';
+                            t = 0;
+                        });
+
+                        VizEngine.createButton(controls, 'Reset', function() { t = 0; });
+
+                        // Contour: unit circle
+                        function gamma(s) {
+                            var angle = 2 * Math.PI * s;
+                            return [Math.cos(angle), Math.sin(angle)];
+                        }
+                        function gammaPrime(s) {
+                            var angle = 2 * Math.PI * s;
+                            return [-2 * Math.PI * Math.sin(angle), 2 * Math.PI * Math.cos(angle)];
+                        }
+
+                        function f(x, y) {
+                            if (funcChoice === 0) {
+                                // z^2 = (x+iy)^2 = x^2-y^2 + 2xyi
+                                return [x * x - y * y, 2 * x * y];
+                            } else {
+                                // 1/z = conj(z)/|z|^2
+                                var r2 = x * x + y * y;
+                                if (r2 < 1e-10) return [0, 0];
+                                return [x / r2, -y / r2];
                             }
                         }
 
-                        // f(z) = z^2 (simple analytic function)
-                        function f(re, im) {
-                            return { re: re*re - im*im, im: 2*re*im };
-                        }
-
-                        // Numerically integrate up to parameter t0
-                        function integrate(type, t0, steps) {
-                            var dt = t0 / steps;
-                            var sumRe = 0, sumIm = 0;
-                            for (var k = 0; k < steps; k++) {
-                                var tc = (k + 0.5) * dt;
-                                var c = getContour(type, tc);
-                                var fv = f(c.re, c.im);
-                                // f(z) dz: (fRe + i fIm)(dRe + i dIm) dt
-                                sumRe += (fv.re * c.dre - fv.im * c.dim) * dt;
-                                sumIm += (fv.re * c.dim + fv.im * c.dre) * dt;
-                            }
-                            return { re: sumRe, im: sumIm };
-                        }
-
-                        var lastT = 0;
-                        viz.animate(function(timestamp) {
+                        viz.animate(function(time) {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
 
-                            // Axis labels
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
+                            var ctx = viz.ctx;
 
-                            tVal = (tVal + speed * 0.004) % 1;
-
-                            // Draw full contour faintly
-                            var nSteps = 120;
-                            viz.ctx.strokeStyle = viz.colors.grid;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            for (var k = 0; k <= nSteps; k++) {
-                                var c = getContour(contourType, k / nSteps);
-                                var sc = viz.toScreen(c.re, c.im);
-                                k === 0 ? viz.ctx.moveTo(sc[0], sc[1]) : viz.ctx.lineTo(sc[0], sc[1]);
+                            // Draw full contour
+                            ctx.strokeStyle = viz.colors.blue + '44';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 200; i++) {
+                                var s = i / 200;
+                                var pt = gamma(s);
+                                var scr = viz.toScreen(pt[0], pt[1]);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
                             }
-                            viz.ctx.stroke();
+                            ctx.stroke();
 
-                            // Draw traversed portion
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 2.5;
-                            viz.ctx.beginPath();
-                            var nTraced = Math.floor(tVal * nSteps);
-                            for (var k = 0; k <= nTraced; k++) {
-                                var c = getContour(contourType, k / nSteps);
-                                var sc = viz.toScreen(c.re, c.im);
-                                k === 0 ? viz.ctx.moveTo(sc[0], sc[1]) : viz.ctx.lineTo(sc[0], sc[1]);
+                            // Advance t
+                            t += speed * 0.004;
+                            if (t > 1) t = 0;
+
+                            // Draw traced portion
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            var steps = Math.floor(t * 200);
+                            for (var j = 0; j <= steps; j++) {
+                                var s2 = j / 200;
+                                var pt2 = gamma(s2);
+                                var scr2 = viz.toScreen(pt2[0], pt2[1]);
+                                j === 0 ? ctx.moveTo(scr2[0], scr2[1]) : ctx.lineTo(scr2[0], scr2[1]);
                             }
-                            viz.ctx.stroke();
+                            ctx.stroke();
 
                             // Current point
-                            var cur = getContour(contourType, tVal);
-                            viz.drawPoint(cur.re, cur.im, viz.colors.yellow, null, 6);
+                            var cur = gamma(t);
+                            viz.drawPoint(cur[0], cur[1], viz.colors.white, null, 6);
 
                             // f(z) arrow at current point
-                            var fv = f(cur.re, cur.im);
-                            var scale = 0.25;
-                            viz.drawVector(cur.re, cur.im, cur.re + fv.re * scale, cur.im + fv.im * scale, viz.colors.orange, 'f(z)', 2);
+                            var fv = f(cur[0], cur[1]);
+                            var arrowScale = 0.3;
+                            viz.drawVector(cur[0], cur[1],
+                                cur[0] + fv[0] * arrowScale,
+                                cur[1] + fv[1] * arrowScale,
+                                viz.colors.orange, 'f(z)');
 
-                            // Accumulated integral
-                            var intVal = integrate(contourType, tVal, 80);
+                            // Compute integral via Riemann sum
+                            var intRe = 0, intIm = 0;
+                            var N = Math.max(1, Math.floor(t * 500));
+                            var ds = t / N;
+                            for (var k = 0; k < N; k++) {
+                                var sk = k * ds;
+                                var gk = gamma(sk);
+                                var gpk = gammaPrime(sk);
+                                var fk = f(gk[0], gk[1]);
+                                // f(z) * gamma'(t) * dt
+                                // (a+bi)(c+di) = ac-bd + (ad+bc)i
+                                intRe += (fk[0] * gpk[0] - fk[1] * gpk[1]) * ds;
+                                intIm += (fk[0] * gpk[1] + fk[1] * gpk[0]) * ds;
+                            }
 
-                            // Readout panel on right
-                            var px = viz.width - 155, py = 30;
-                            viz.ctx.fillStyle = '#1a1a40cc';
-                            viz.ctx.fillRect(px - 8, py - 8, 160, 120);
-                            viz.screenText('Accumulated Integral', px + 72, py + 6, viz.colors.text, 11, 'center');
-                            viz.screenText('Re \u222b f dz', px + 8, py + 30, viz.colors.blue, 12, 'left');
-                            viz.screenText(intVal.re.toFixed(4), px + 100, py + 30, viz.colors.white, 12, 'right');
-                            viz.screenText('Im \u222b f dz', px + 8, py + 50, viz.colors.teal, 12, 'left');
-                            viz.screenText(intVal.im.toFixed(4), px + 100, py + 50, viz.colors.white, 12, 'right');
-                            viz.screenText('t = ' + tVal.toFixed(3), px + 8, py + 75, viz.colors.text, 11, 'left');
-                            viz.screenText('f(z) = z\u00B2', px + 8, py + 95, viz.colors.orange, 11, 'left');
+                            // Display accumulator
+                            var sign = intIm >= 0 ? '+' : '-';
+                            var label = '\\u222B = ' + intRe.toFixed(3) + ' ' + sign + ' ' + Math.abs(intIm).toFixed(3) + 'i';
+                            viz.screenText(label, viz.width - 10, 25, viz.colors.teal, 14, 'right');
+                            viz.screenText('t = ' + t.toFixed(2), viz.width - 10, 45, viz.colors.text, 12, 'right');
 
-                            // Label contour
-                            var labelC = getContour(contourType, 0.5);
-                            var contourNames = ['\u03b3: unit circle', '\u03b3: line segment', '\u03b3: semicircle'];
-                            viz.drawText(contourNames[contourType], labelC.re + 0.1, labelC.im + 0.2, viz.colors.blue, 12);
+                            // Labels
+                            viz.screenText('Re', viz.width - 10, viz.originY + 15, viz.colors.text, 11, 'right');
+                            viz.screenText('Im', viz.originX + 12, 10, viz.colors.text, 11, 'left');
 
-                            return viz;
+                            // Direction arrow on contour
+                            if (steps > 5) {
+                                var pt_a = gamma((steps - 3) / 200);
+                                var pt_b = gamma(steps / 200);
+                                var dx = pt_b[0] - pt_a[0], dy = pt_b[1] - pt_a[1];
+                                var len = Math.sqrt(dx * dx + dy * dy);
+                                if (len > 0.001) {
+                                    var sa = viz.toScreen(pt_b[0], pt_b[1]);
+                                    var ang = Math.atan2(-dy, dx); // screen coords
+                                    ctx.fillStyle = viz.colors.blue;
+                                    ctx.beginPath();
+                                    ctx.moveTo(sa[0] + 8 * Math.cos(-ang), sa[1] + 8 * Math.sin(-ang));
+                                    ctx.lineTo(sa[0] - 6 * Math.cos(-ang - 0.5), sa[1] - 6 * Math.sin(-ang - 0.5));
+                                    ctx.lineTo(sa[0] - 6 * Math.cos(-ang + 0.5), sa[1] - 6 * Math.sin(-ang + 0.5));
+                                    ctx.closePath();
+                                    ctx.fill();
+                                }
+                            }
                         });
                         return viz;
                     }
                 }
             ],
-            exercises: [
-                {
-                    question: 'Explain in your own words: why does integrating a complex function over a <em>curve</em> yield more information than integrating a real function over an interval?',
-                    hint: 'Think about what choices you have in each setting, and what happens when the function has singularities.',
-                    solution: 'Over a real interval, there is only one path from \\(a\\) to \\(b\\). In the complex plane, infinitely many curves connect two points. The integral can depend on which curve is chosen, especially when the function has singularities inside a closed loop. This path-dependence (or independence) encodes deep information about the analytic structure of the function.'
-                }
-            ]
+            exercises: []
         },
 
         // ================================================================
-        // SECTION 2: Contours and Curves
+        // SECTION 2: Contours and Parameterization
         // ================================================================
         {
             id: 'sec-contours',
-            title: 'Contours and Curves',
+            title: 'Contours',
             content: `
-<h2>Contours and Curves</h2>
+<h2>Contours and Parameterization</h2>
 
 <div class="env-block definition">
     <div class="env-title">Definition 4.1 (Smooth Curve)</div>
     <div class="env-body">
-        <p>A <strong>smooth curve</strong> in \\(\\mathbb{C}\\) is a function \\(z: [a, b] \\to \\mathbb{C}\\) of the form \\(z(t) = x(t) + iy(t)\\) where \\(x, y: [a, b] \\to \\mathbb{R}\\) are continuously differentiable and \\(z'(t) \\neq 0\\) for all \\(t \\in [a, b]\\). The curve is <strong>closed</strong> if \\(z(a) = z(b)\\), and <strong>simple</strong> (Jordan) if it does not cross itself.</p>
+        <p>A <strong>smooth curve</strong> (or smooth arc) in the complex plane is a function \\(\\gamma: [a,b] \\to \\mathbb{C}\\) such that:</p>
+        <ol>
+            <li>\\(\\gamma\\) is continuous on \\([a,b]\\),</li>
+            <li>\\(\\gamma'(t)\\) exists and is continuous on \\([a,b]\\),</li>
+            <li>\\(\\gamma'(t) \\neq 0\\) for all \\(t \\in [a,b]\\).</li>
+        </ol>
+        <p>The condition \\(\\gamma'(t) \\neq 0\\) ensures the curve has a well-defined tangent direction at every point (no cusps or stalling).</p>
     </div>
 </div>
 
-<p>The condition \\(z'(t) \\neq 0\\) ensures the curve has a well-defined tangent direction everywhere, so we can speak of the "direction of travel" at each point. It also prevents the parameterization from "stopping and restarting."</p>
+<p>We write \\(\\gamma(t) = x(t) + iy(t)\\), so \\(\\gamma'(t) = x'(t) + iy'(t)\\). The <strong>trace</strong> (or image) of \\(\\gamma\\) is the set \\(\\{\\gamma(t) : t \\in [a,b]\\} \\subset \\mathbb{C}\\).</p>
+
+<div class="env-block example">
+    <div class="env-title">Example: Common Parameterizations</div>
+    <div class="env-body">
+        <p><strong>Line segment</strong> from \\(z_0\\) to \\(z_1\\):</p>
+        \\[\\gamma(t) = (1-t)z_0 + tz_1, \\quad t \\in [0,1].\\]
+        <p>Then \\(\\gamma'(t) = z_1 - z_0\\), which is constant and nonzero (provided \\(z_0 \\neq z_1\\)).</p>
+
+        <p><strong>Circle</strong> of radius \\(R\\) centered at \\(z_0\\), traversed counterclockwise:</p>
+        \\[\\gamma(t) = z_0 + Re^{it}, \\quad t \\in [0, 2\\pi].\\]
+        <p>Then \\(\\gamma'(t) = iRe^{it}\\), which is never zero.</p>
+
+        <p><strong>Semicircular arc</strong> in the upper half-plane:</p>
+        \\[\\gamma(t) = Re^{it}, \\quad t \\in [0, \\pi].\\]
+    </div>
+</div>
 
 <div class="env-block definition">
     <div class="env-title">Definition 4.2 (Piecewise Smooth Curve / Contour)</div>
     <div class="env-body">
-        <p>A <strong>contour</strong> \\(\\gamma\\) is a curve that can be decomposed into finitely many smooth pieces \\(\\gamma_1, \\gamma_2, \\ldots, \\gamma_n\\) where the endpoint of each piece is the start of the next. We write \\(\\gamma = \\gamma_1 + \\gamma_2 + \\cdots + \\gamma_n\\).</p>
+        <p>A <strong>piecewise smooth curve</strong> (or <strong>contour</strong>) is a finite concatenation of smooth curves \\(\\gamma_1, \\gamma_2, \\ldots, \\gamma_n\\) where the endpoint of \\(\\gamma_k\\) equals the starting point of \\(\\gamma_{k+1}\\):</p>
+        \\[\\gamma = \\gamma_1 + \\gamma_2 + \\cdots + \\gamma_n.\\]
+        <p>A contour \\(\\gamma\\) is <strong>closed</strong> if \\(\\gamma(a) = \\gamma(b)\\), i.e., the starting and ending points coincide.</p>
+        <p>A contour is <strong>simple</strong> if it does not cross itself: \\(\\gamma(t_1) \\neq \\gamma(t_2)\\) for \\(t_1 \\neq t_2\\), except possibly \\(\\gamma(a) = \\gamma(b)\\) for a closed contour.</p>
     </div>
 </div>
 
-<p>Contours are the natural domain for integration because they allow corners (where the derivative changes direction) while remaining integrable.</p>
-
-<h3>The Role of Orientation</h3>
-
-<p>A curve carries an <strong>orientation</strong>: the direction it is traversed. If \\(\\gamma\\) goes from \\(z_0\\) to \\(z_1\\), then \\(-\\gamma\\) denotes the same set of points traversed in the opposite direction (from \\(z_1\\) to \\(z_0\\)). For closed curves, the standard orientation is <strong>counterclockwise</strong> (positive orientation), consistent with the boundary orientation of a simply connected domain.</p>
-
-<h3>Key Examples</h3>
-
-<div class="env-block example">
-    <div class="env-title">Example: Line Segment</div>
-    <div class="env-body">
-        <p>The line segment from \\(z_0\\) to \\(z_1\\) is parameterized by
-        \\[z(t) = (1 - t)z_0 + t z_1, \\quad t \\in [0, 1].\\]
-        Here \\(z'(t) = z_1 - z_0\\), which is constant and nonzero (assuming \\(z_0 \\neq z_1\\)).</p>
-    </div>
-</div>
-
-<div class="env-block example">
-    <div class="env-title">Example: Circle</div>
-    <div class="env-body">
-        <p>The circle of radius \\(r\\) centered at \\(z_0\\), traversed counterclockwise, is
-        \\[z(t) = z_0 + r e^{it} = z_0 + r\\cos t + ir\\sin t, \\quad t \\in [0, 2\\pi].\\]
-        Then \\(z'(t) = ire^{it}\\), which has modulus \\(r > 0\\) everywhere.</p>
-    </div>
-</div>
+<p>The standard example of a contour that is piecewise smooth but not smooth is a square path: each side is smooth, but the tangent direction jumps at the corners.</p>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 4.3 (Arc Length)</div>
+    <div class="env-title">Definition 4.3 (Length of a Contour)</div>
     <div class="env-body">
-        <p>The <strong>length</strong> of a smooth curve \\(z: [a,b] \\to \\mathbb{C}\\) is
-        \\[L(\\gamma) = \\int_a^b |z'(t)|\\, dt.\\]
-        For a circle of radius \\(r\\), \\(|z'(t)| = r\\) and \\(L = 2\\pi r\\), as expected.</p>
+        <p>The <strong>length</strong> of a smooth curve \\(\\gamma: [a,b] \\to \\mathbb{C}\\) is</p>
+        \\[L(\\gamma) = \\int_a^b |\\gamma'(t)|\\,dt.\\]
+        <p>For a piecewise smooth contour \\(\\gamma = \\gamma_1 + \\cdots + \\gamma_n\\), the length is \\(L(\\gamma) = L(\\gamma_1) + \\cdots + L(\\gamma_n)\\).</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Length of a Circle</div>
+    <div class="env-body">
+        <p>For the circle \\(\\gamma(t) = Re^{it}\\), \\(t \\in [0, 2\\pi]\\):</p>
+        \\[L(\\gamma) = \\int_0^{2\\pi} |iRe^{it}|\\,dt = \\int_0^{2\\pi} R\\,dt = 2\\pi R.\\]
     </div>
 </div>
 
 <div class="env-block remark">
-    <div class="env-title">Parameterization Independence</div>
+    <div class="env-title">Reparameterization</div>
     <div class="env-body">
-        <p>The integral \\(\\int_\\gamma f(z)\\,dz\\) (defined in the next section) does <em>not</em> depend on the choice of parameterization of \\(\\gamma\\), as long as the orientation is preserved. This is the complex analogue of the substitution rule for real integrals.</p>
+        <p>A curve can be parameterized in many ways. If \\(\\phi: [c,d] \\to [a,b]\\) is a smooth, strictly increasing bijection, then \\(\\tilde{\\gamma}(s) = \\gamma(\\phi(s))\\) traces the same set of points in the same direction. The contour integral (defined in the next section) is invariant under orientation-preserving reparameterization.</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-parameterization"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-parameterization',
-                    title: 'Parameterization of Contours',
-                    description: 'Select a contour type and watch z(t) trace it. The speed |z\'(t)| is shown as a color intensity: brighter means faster. The arc length accumulates on the right.',
+                    title: 'Curve Parameterization',
+                    description: 'See how different parameterizations trace the same curve. The parameter \\(t\\) runs from 0 to 1, and the point \\(\\gamma(t)\\) moves along the curve. The tangent vector \\(\\gamma\'(t)\\) is shown at the current position.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 70, originX: 200, originY: 200 });
-
-                        var contourType = 0;
-                        var tMax = 0;
-                        var animating = true;
-
-                        var names = ['Line Segment', 'Unit Circle', 'Semicircle'];
-                        var typeBtn = VizEngine.createButton(controls, 'Shape: ' + names[0], function() {
-                            contourType = (contourType + 1) % 3;
-                            typeBtn.textContent = 'Shape: ' + names[contourType];
-                            tMax = 0;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 55
                         });
-                        VizEngine.createButton(controls, 'Reset', function() { tMax = 0; });
 
-                        function getContour(type, t) {
-                            if (type === 0) { // line segment from -1 to 1+i
-                                return { re: -1 + 2*t, im: t, dre: 2, dim: 1 };
-                            } else if (type === 1) { // circle
-                                var theta = 2*Math.PI*t;
-                                return { re: Math.cos(theta), im: Math.sin(theta),
-                                         dre: -2*Math.PI*Math.sin(theta), dim: 2*Math.PI*Math.cos(theta) };
-                            } else { // semicircle upper
-                                var phi = Math.PI*t;
-                                return { re: Math.cos(phi), im: Math.sin(phi),
-                                         dre: -Math.PI*Math.sin(phi), dim: Math.PI*Math.cos(phi) };
+                        var curveType = 0; // 0=line, 1=circle, 2=square
+                        var tParam = 0.5;
+
+                        var curveBtn = VizEngine.createButton(controls, 'Line segment', function() {
+                            curveType = (curveType + 1) % 3;
+                            var names = ['Line segment', 'Circle', 'Square contour'];
+                            curveBtn.textContent = names[curveType];
+                            draw();
+                        });
+
+                        VizEngine.createSlider(controls, 't', 0, 1, tParam, 0.01, function(v) {
+                            tParam = v;
+                            draw();
+                        });
+
+                        function getPoint(t) {
+                            if (curveType === 0) {
+                                // line from -2-i to 2+i
+                                return [-2 + 4 * t, -1 + 2 * t];
+                            } else if (curveType === 1) {
+                                // circle radius 2
+                                var angle = 2 * Math.PI * t;
+                                return [2 * Math.cos(angle), 2 * Math.sin(angle)];
+                            } else {
+                                // square contour: 4 sides
+                                if (t < 0.25) {
+                                    var s = t / 0.25;
+                                    return [-2 + 4 * s, -2];
+                                } else if (t < 0.5) {
+                                    var s = (t - 0.25) / 0.25;
+                                    return [2, -2 + 4 * s];
+                                } else if (t < 0.75) {
+                                    var s = (t - 0.5) / 0.25;
+                                    return [2 - 4 * s, 2];
+                                } else {
+                                    var s = (t - 0.75) / 0.25;
+                                    return [-2, 2 - 4 * s];
+                                }
                             }
                         }
 
-                        function getTRange(type) { return 1.0; }
+                        function getTangent(t) {
+                            var dt = 0.001;
+                            var p1 = getPoint(Math.max(0, t - dt));
+                            var p2 = getPoint(Math.min(1 - 1e-9, t + dt));
+                            return [(p2[0] - p1[0]) / (2 * dt), (p2[1] - p1[1]) / (2 * dt)];
+                        }
 
-                        viz.animate(function(ts) {
+                        function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
 
-                            var tRange = getTRange(contourType);
-                            tMax = Math.min(tMax + 0.006, tRange);
+                            var ctx = viz.ctx;
 
-                            // Draw full contour faint
-                            viz.ctx.strokeStyle = viz.colors.grid;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            for (var k = 0; k <= 100; k++) {
-                                var c = getContour(contourType, k / 100 * tRange);
-                                var sc = viz.toScreen(c.re, c.im);
-                                k === 0 ? viz.ctx.moveTo(sc[0], sc[1]) : viz.ctx.lineTo(sc[0], sc[1]);
+                            // Draw full curve
+                            ctx.strokeStyle = viz.colors.blue + '55';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 300; i++) {
+                                var s = i / 300;
+                                var pt = getPoint(s);
+                                var scr = viz.toScreen(pt[0], pt[1]);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
                             }
-                            viz.ctx.stroke();
+                            ctx.stroke();
 
-                            // Draw traced portion with speed-colored segments
-                            var nDraw = 200;
-                            for (var k = 0; k < nDraw; k++) {
-                                var t1 = (k / nDraw) * tMax;
-                                var t2 = ((k + 1) / nDraw) * tMax;
-                                if (t2 > tMax) break;
-                                var c1 = getContour(contourType, t1);
-                                var c2 = getContour(contourType, t2);
-                                var speed = Math.sqrt(c1.dre*c1.dre + c1.dim*c1.dim);
-                                var maxSpeed = contourType === 0 ? 2.5 : contourType === 1 ? 7 : 3.5;
-                                var bright = Math.min(1, speed / maxSpeed);
-                                viz.ctx.strokeStyle = 'hsl(' + Math.round(180 + bright*60) + ',80%,' + Math.round(40 + bright*30) + '%)';
-                                viz.ctx.lineWidth = 2.5;
-                                viz.ctx.beginPath();
-                                var sc1 = viz.toScreen(c1.re, c1.im);
-                                var sc2 = viz.toScreen(c2.re, c2.im);
-                                viz.ctx.moveTo(sc1[0], sc1[1]);
-                                viz.ctx.lineTo(sc2[0], sc2[1]);
-                                viz.ctx.stroke();
+                            // Draw traced portion
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            var steps = Math.floor(tParam * 300);
+                            for (var j = 0; j <= steps; j++) {
+                                var s2 = j / 300;
+                                var pt2 = getPoint(s2);
+                                var scr2 = viz.toScreen(pt2[0], pt2[1]);
+                                j === 0 ? ctx.moveTo(scr2[0], scr2[1]) : ctx.lineTo(scr2[0], scr2[1]);
                             }
+                            ctx.stroke();
 
                             // Current point
-                            var cur = getContour(contourType, tMax);
-                            var tangMag = Math.sqrt(cur.dre*cur.dre + cur.dim*cur.dim);
-                            viz.drawPoint(cur.re, cur.im, viz.colors.yellow, 'z(t)', 6);
+                            var cur = getPoint(tParam);
+                            viz.drawPoint(cur[0], cur[1], viz.colors.white, '\u03B3(t)', 6);
 
-                            // Tangent arrow
-                            if (tangMag > 0.01) {
-                                var tScale = 0.25;
-                                viz.drawVector(cur.re, cur.im, cur.re + cur.dre/tangMag*tScale, cur.im + cur.dim/tangMag*tScale, viz.colors.orange, "z'", 2);
+                            // Tangent vector
+                            var tang = getTangent(tParam);
+                            var tlen = Math.sqrt(tang[0] * tang[0] + tang[1] * tang[1]);
+                            if (tlen > 0.01) {
+                                var sc = 0.15;
+                                viz.drawVector(cur[0], cur[1],
+                                    cur[0] + tang[0] * sc,
+                                    cur[1] + tang[1] * sc,
+                                    viz.colors.orange, "\u03B3'(t)");
                             }
 
-                            // Arc length
-                            var arcLen = 0;
-                            var nArc = 200;
-                            for (var k = 0; k < nArc; k++) {
-                                var tc = (k / nArc) * tMax;
-                                var c = getContour(contourType, tc);
-                                arcLen += Math.sqrt(c.dre*c.dre + c.dim*c.dim) * (tMax / nArc);
+                            // Start/end markers
+                            var start = getPoint(0);
+                            var end = getPoint(0.999);
+                            viz.drawPoint(start[0], start[1], viz.colors.green, 'start', 4);
+                            if (curveType !== 1) {
+                                viz.drawPoint(end[0], end[1], viz.colors.red, 'end', 4);
                             }
 
-                            // Info panel
-                            var px = viz.width - 165, py = 20;
-                            viz.ctx.fillStyle = '#1a1a40cc';
-                            viz.ctx.fillRect(px - 8, py - 8, 165, 115);
-                            viz.screenText('Current position', px + 72, py + 6, viz.colors.text, 11, 'center');
-                            viz.screenText('Re z(t) = ' + cur.re.toFixed(3), px + 8, py + 28, viz.colors.blue, 11, 'left');
-                            viz.screenText('Im z(t) = ' + cur.im.toFixed(3), px + 8, py + 46, viz.colors.teal, 11, 'left');
-                            viz.screenText("|z'(t)| = " + tangMag.toFixed(3), px + 8, py + 64, viz.colors.orange, 11, 'left');
-                            viz.screenText('Arc length = ' + arcLen.toFixed(3), px + 8, py + 82, viz.colors.green, 11, 'left');
-                            viz.screenText('t = ' + tMax.toFixed(3) + ' / ' + tRange.toFixed(1), px + 8, py + 100, viz.colors.text, 10, 'left');
-
-                            if (tMax >= tRange - 0.001) tMax = 0; // loop
-                        });
+                            // Info
+                            viz.screenText('\u03B3(t) = (' + cur[0].toFixed(2) + ', ' + cur[1].toFixed(2) + ')',
+                                viz.width / 2, viz.height - 15, viz.colors.white, 12);
+                        }
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Parameterize the line segment from \\(z_0 = 1 + i\\) to \\(z_1 = 3 - 2i\\). What is \\(z\'(t)\\)? What is the arc length?',
-                    hint: 'Use the standard linear parameterization \\(z(t) = (1-t)z_0 + tz_1\\) for \\(t \\in [0,1]\\).',
-                    solution: '\\(z(t) = (1+i)(1-t) + (3-2i)t = 1+i + (2-3i)t\\). So \\(z\'(t) = 2-3i\\). The arc length is \\(\\int_0^1 |z\'(t)|\\,dt = |2-3i| = \\sqrt{4+9} = \\sqrt{13}\\).'
+                    question: 'Parameterize the line segment from \\(1+i\\) to \\(3-2i\\). Compute its length.',
+                    hint: 'Use \\(\\gamma(t) = (1-t)(1+i) + t(3-2i)\\) for \\(t \\in [0,1]\\). The length is \\(|z_1 - z_0|\\).',
+                    solution: '\\(\\gamma(t) = (1+2t) + (1-3t)i\\), \\(t \\in [0,1]\\). Then \\(\\gamma\'(t) = 2 - 3i\\), so \\(L = \\int_0^1 |2-3i|\\,dt = \\sqrt{4+9} = \\sqrt{13}\\).'
                 },
                 {
-                    question: 'Write down a parameterization for the circle of radius 2 centered at \\(1 + i\\), traversed counterclockwise. Verify that \\(|z\'(t)|\\) equals the expected constant.',
-                    hint: 'Start from the standard circle parameterization and translate the center.',
-                    solution: '\\(z(t) = (1+i) + 2e^{it}\\) for \\(t \\in [0, 2\\pi]\\). Then \\(z\'(t) = 2ie^{it}\\), so \\(|z\'(t)| = 2\\). The arc length is \\(\\int_0^{2\\pi} 2\\,dt = 4\\pi\\), which is the circumference of a circle of radius 2, as expected.'
+                    question: 'Parameterize the upper semicircle of radius 3 centered at \\(1\\), traversed from \\(4\\) to \\(-2\\).',
+                    hint: 'The circle centered at 1 of radius 3 is \\(1 + 3e^{it}\\). The upper semicircle goes from angle \\(0\\) to angle \\(\\pi\\).',
+                    solution: '\\(\\gamma(t) = 1 + 3e^{it}\\), \\(t \\in [0, \\pi]\\). At \\(t=0\\), \\(\\gamma = 4\\); at \\(t=\\pi\\), \\(\\gamma = -2\\). Length: \\(\\int_0^{\\pi} 3\\,dt = 3\\pi\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: The Contour Integral
+        // SECTION 3: The Definition
         // ================================================================
         {
             id: 'sec-definition',
@@ -403,62 +410,63 @@ sums up infinitesimal contributions \\(f(x)\\, dx\\) as \\(x\\) moves from \\(a\
             content: `
 <h2>The Contour Integral</h2>
 
+<div class="env-block intuition">
+    <div class="env-title">Building Up the Integral</div>
+    <div class="env-body">
+        <p>Just as the real integral \\(\\int_a^b f(x)\\,dx\\) is a limit of Riemann sums \\(\\sum f(x_k)\\Delta x_k\\), the contour integral is a limit of sums \\(\\sum f(z_k)\\Delta z_k\\), where \\(\\Delta z_k = z_{k+1} - z_k\\) are complex increments along the curve. The key difference: \\(\\Delta z_k\\) is a complex number, so the sum involves both the magnitude and direction of each step.</p>
+    </div>
+</div>
+
 <div class="env-block definition">
     <div class="env-title">Definition 4.4 (Contour Integral)</div>
     <div class="env-body">
-        <p>Let \\(\\gamma: [a, b] \\to \\mathbb{C}\\) be a smooth contour and let \\(f\\) be continuous on \\(\\gamma\\). The <strong>contour integral</strong> of \\(f\\) along \\(\\gamma\\) is
-        \\[\\int_\\gamma f(z)\\, dz = \\int_a^b f(z(t))\\, z'(t)\\, dt.\\]
-        For a piecewise smooth contour \\(\\gamma = \\gamma_1 + \\cdots + \\gamma_n\\), the integral is the sum of the integrals over each smooth piece.</p>
+        <p>Let \\(\\gamma: [a,b] \\to \\mathbb{C}\\) be a smooth curve and let \\(f\\) be continuous on the trace of \\(\\gamma\\). The <strong>contour integral</strong> (or <strong>line integral</strong>) of \\(f\\) along \\(\\gamma\\) is</p>
+        \\[\\int_\\gamma f(z)\\,dz = \\int_a^b f(\\gamma(t))\\,\\gamma'(t)\\,dt.\\]
+        <p>For a piecewise smooth contour \\(\\gamma = \\gamma_1 + \\cdots + \\gamma_n\\):</p>
+        \\[\\int_\\gamma f(z)\\,dz = \\sum_{k=1}^n \\int_{\\gamma_k} f(z)\\,dz.\\]
     </div>
 </div>
 
-<p>This definition reduces the complex integral to an ordinary real integral. Since \\(f(z(t))\\) and \\(z'(t)\\) are both complex-valued functions of the real variable \\(t\\), the product \\(f(z(t))z'(t)\\) is complex-valued, and we integrate its real and imaginary parts separately.</p>
+<p>The formula \\(dz = \\gamma'(t)\\,dt\\) is the formal substitution: the complex differential \\(dz\\) along the curve equals \\(\\gamma'(t)\\,dt\\). The product \\(f(\\gamma(t))\\,\\gamma'(t)\\) is a complex-valued function of the real variable \\(t\\), so the integral on the right is an ordinary (Riemann) integral of real and imaginary parts:</p>
 
-<h3>Expanding the Definition</h3>
-
-<p>Write \\(f(z) = u(x,y) + iv(x,y)\\) and \\(dz = dx + i\\,dy\\). Then formally,
-\\[\\int_\\gamma f(z)\\,dz = \\int_\\gamma (u + iv)(dx + i\\,dy) = \\int_\\gamma (u\\,dx - v\\,dy) + i\\int_\\gamma (v\\,dx + u\\,dy).\\]
-This shows that one contour integral is equivalent to two real line integrals of the type studied in multivariable calculus.</p>
-
-<div class="env-block example">
-    <div class="env-title">Example 4.1: Integral of \\(f(z) = z\\) along a Line Segment</div>
-    <div class="env-body">
-        <p>Integrate \\(f(z) = z\\) along \\(\\gamma\\): the line segment from \\(0\\) to \\(1 + i\\).</p>
-        <p><strong>Parameterize:</strong> \\(z(t) = (1+i)t\\) for \\(t \\in [0,1]\\), so \\(z'(t) = 1+i\\).</p>
-        <p><strong>Compute:</strong>
-        \\[\\int_\\gamma z\\,dz = \\int_0^1 (1+i)t \\cdot (1+i)\\,dt = (1+i)^2 \\int_0^1 t\\,dt = 2i \\cdot \\frac{1}{2} = i.\\]</p>
-        <p><strong>Check by antiderivative:</strong> An antiderivative of \\(z\\) is \\(F(z) = z^2/2\\). The fundamental theorem (Section 4.5) gives \\(F(1+i) - F(0) = \\frac{(1+i)^2}{2} = \\frac{2i}{2} = i\\). \\(\\checkmark\\)</p>
-    </div>
-</div>
-
-<div class="env-block example">
-    <div class="env-title">Example 4.2: Integral of \\(\\bar{z}\\) along the Same Segment</div>
-    <div class="env-body">
-        <p>Now integrate \\(f(z) = \\bar{z}\\) along the same path.</p>
-        <p>\\(f(z(t)) = \\overline{(1+i)t} = (1-i)t\\), \\(z'(t) = 1+i\\).</p>
-        <p>\\[\\int_\\gamma \\bar{z}\\,dz = \\int_0^1 (1-i)t(1+i)\\,dt = \\int_0^1 2t\\,dt = 1.\\]</p>
-        <p>Note: \\(\\bar{z}\\) is not analytic, and indeed this result differs from what you would get along a different path from \\(0\\) to \\(1+i\\). Path independence fails.</p>
-    </div>
-</div>
+\\[\\int_a^b f(\\gamma(t))\\,\\gamma'(t)\\,dt = \\int_a^b \\operatorname{Re}[f(\\gamma(t))\\gamma'(t)]\\,dt + i\\int_a^b \\operatorname{Im}[f(\\gamma(t))\\gamma'(t)]\\,dt.\\]
 
 <div class="env-block theorem">
-    <div class="env-title">Proposition 4.5 (Existence)</div>
+    <div class="env-title">Theorem 4.1 (Parameterization Independence)</div>
     <div class="env-body">
-        <p>If \\(f\\) is continuous on a smooth contour \\(\\gamma\\), then \\(\\int_\\gamma f(z)\\,dz\\) exists.</p>
+        <p>The contour integral is invariant under orientation-preserving reparameterization. If \\(\\phi: [c,d] \\to [a,b]\\) is smooth, strictly increasing, and onto, then</p>
+        \\[\\int_{\\gamma \\circ \\phi} f(z)\\,dz = \\int_\\gamma f(z)\\,dz.\\]
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Integrating \\(f(z) = \\bar{z}\\) Along a Line</div>
+    <div class="env-body">
+        <p>Let \\(\\gamma(t) = t + it\\) for \\(t \\in [0,1]\\) (line from \\(0\\) to \\(1+i\\)). Then \\(\\gamma'(t) = 1+i\\) and \\(f(\\gamma(t)) = \\overline{t+it} = t - it\\).</p>
+        \\[\\int_\\gamma \\bar{z}\\,dz = \\int_0^1 (t-it)(1+i)\\,dt = \\int_0^1 (t-it+it-i^2t)\\,dt = \\int_0^1 (t + t)\\,dt = \\int_0^1 2t\\,dt = 1.\\]
+        <p>Note that \\(\\bar{z}\\) is not analytic, yet we can still compute the integral along any specified contour.</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Integrating \\(f(z) = z^2\\) Along the Unit Circle</div>
+    <div class="env-body">
+        <p>Let \\(\\gamma(t) = e^{it}\\), \\(t \\in [0, 2\\pi]\\). Then \\(\\gamma'(t) = ie^{it}\\) and \\(f(\\gamma(t)) = e^{2it}\\).</p>
+        \\[\\int_\\gamma z^2\\,dz = \\int_0^{2\\pi} e^{2it} \\cdot ie^{it}\\,dt = i\\int_0^{2\\pi} e^{3it}\\,dt = i \\left[\\frac{e^{3it}}{3i}\\right]_0^{2\\pi} = \\frac{1}{3}(e^{6\\pi i} - 1) = 0.\\]
     </div>
 </div>
 `,
             visualizations: [],
             exercises: [
                 {
-                    question: 'Compute \\(\\int_\\gamma z^2\\,dz\\) where \\(\\gamma\\) is the line segment from \\(0\\) to \\(2i\\).',
-                    hint: 'Parameterize as \\(z(t) = 2it\\) for \\(t \\in [0,1]\\), so \\(z\'(t) = 2i\\).',
-                    solution: '\\(z(t) = 2it\\), \\(z\'(t) = 2i\\). Then \\(z(t)^2 = -4t^2\\). So \\(\\int_0^1 (-4t^2)(2i)\\,dt = -8i\\int_0^1 t^2\\,dt = -8i/3\\).'
+                    question: 'Compute \\(\\int_\\gamma z\\,dz\\) where \\(\\gamma(t) = t + it^2\\) for \\(t \\in [0,1]\\).',
+                    hint: 'Use the definition: \\(\\gamma\'(t) = 1 + 2it\\) and \\(f(\\gamma(t)) = t + it^2\\). Expand the product and integrate real and imaginary parts.',
+                    solution: '\\(\\int_0^1 (t+it^2)(1+2it)\\,dt = \\int_0^1 [(t - 2t^3) + i(t^2 + 2t^2)]\\,dt = \\int_0^1 (t-2t^3)\\,dt + i\\int_0^1 3t^2\\,dt = (\\frac{1}{2} - \\frac{1}{2}) + i \\cdot 1 = i\\).'
                 },
                 {
-                    question: 'Compute \\(\\int_\\gamma \\text{Re}(z)\\,dz\\) where \\(\\gamma\\) is the unit circle traversed counterclockwise.',
-                    hint: 'Use \\(z(t) = e^{it}\\) so \\(\\text{Re}(z(t)) = \\cos t\\) and \\(z\'(t) = ie^{it}\\).',
-                    solution: '\\(\\int_0^{2\\pi} \\cos(t) \\cdot ie^{it}\\,dt = i\\int_0^{2\\pi}\\cos(t)(\\cos t + i\\sin t)\\,dt = i\\int_0^{2\\pi}\\cos^2 t\\,dt + i^2\\int_0^{2\\pi}\\cos t\\sin t\\,dt = i\\pi - 0 = i\\pi\\).'
+                    question: 'Compute \\(\\int_\\gamma \\text{Re}(z)\\,dz\\) along the line segment from \\(0\\) to \\(1+i\\).',
+                    hint: 'Parameterize: \\(\\gamma(t) = t(1+i)\\), so \\(\\text{Re}(\\gamma(t)) = t\\) and \\(\\gamma\'(t) = 1+i\\).',
+                    solution: '\\(\\int_0^1 t(1+i)\\,dt = (1+i)\\frac{1}{2} = \\frac{1}{2} + \\frac{i}{2}\\).'
                 }
             ]
         },
@@ -472,177 +480,212 @@ This shows that one contour integral is equivalent to two real line integrals of
             content: `
 <h2>Properties of Contour Integrals</h2>
 
-<p>Contour integrals share the basic algebraic properties of real integrals, plus two properties that are special to the complex setting.</p>
+<p>The contour integral inherits many properties from the ordinary Riemann integral.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 4.6 (Basic Properties)</div>
+    <div class="env-title">Theorem 4.2 (Linearity)</div>
     <div class="env-body">
-        <p>Let \\(f, g\\) be continuous on a contour \\(\\gamma\\), and let \\(c \\in \\mathbb{C}\\). Then:</p>
-        <ol>
-            <li><strong>Linearity:</strong> \\(\\displaystyle\\int_\\gamma (cf + g)\\,dz = c\\int_\\gamma f\\,dz + \\int_\\gamma g\\,dz.\\)</li>
-            <li><strong>Reversal:</strong> \\(\\displaystyle\\int_{-\\gamma} f\\,dz = -\\int_\\gamma f\\,dz.\\)</li>
-            <li><strong>Concatenation:</strong> \\(\\displaystyle\\int_{\\gamma_1 + \\gamma_2} f\\,dz = \\int_{\\gamma_1} f\\,dz + \\int_{\\gamma_2} f\\,dz.\\)</li>
-        </ol>
+        <p>For functions \\(f, g\\) continuous on the trace of \\(\\gamma\\) and constants \\(\\alpha, \\beta \\in \\mathbb{C}\\):</p>
+        \\[\\int_\\gamma [\\alpha f(z) + \\beta g(z)]\\,dz = \\alpha \\int_\\gamma f(z)\\,dz + \\beta \\int_\\gamma g(z)\\,dz.\\]
     </div>
 </div>
 
-<h3>The ML Inequality (Estimation Lemma)</h3>
-
-<p>The most important <em>estimate</em> for contour integrals is the ML inequality. It provides an upper bound without requiring explicit computation, and it is indispensable in convergence arguments and in proving Cauchy's theorem.</p>
-
 <div class="env-block theorem">
-    <div class="env-title">Theorem 4.7 (ML Inequality)</div>
+    <div class="env-title">Theorem 4.3 (Reversal of Orientation)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be continuous on a contour \\(\\gamma\\) of length \\(L\\). Suppose \\(|f(z)| \\leq M\\) for all \\(z\\) on \\(\\gamma\\). Then
-        \\[\\left|\\int_\\gamma f(z)\\,dz\\right| \\leq ML.\\]</p>
+        <p>Let \\(-\\gamma\\) denote the curve \\(\\gamma\\) traversed in the opposite direction. Then</p>
+        \\[\\int_{-\\gamma} f(z)\\,dz = -\\int_\\gamma f(z)\\,dz.\\]
     </div>
 </div>
 
-<p><em>Proof sketch.</em> From the definition,
-\\[\\left|\\int_\\gamma f(z)\\,dz\\right| = \\left|\\int_a^b f(z(t))z'(t)\\,dt\\right| \\leq \\int_a^b |f(z(t))||z'(t)|\\,dt \\leq M\\int_a^b |z'(t)|\\,dt = ML.\\]
-The first inequality uses the modulus inequality \\(|\\int h| \\leq \\int |h|\\) for complex-valued integrals. \\(\\square\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>If \\(\\gamma: [a,b] \\to \\mathbb{C}\\), then \\(-\\gamma\\) can be parameterized as \\(\\tilde{\\gamma}(t) = \\gamma(a + b - t)\\). We have \\(\\tilde{\\gamma}'(t) = -\\gamma'(a+b-t)\\), so</p>
+        \\[\\int_{-\\gamma} f(z)\\,dz = \\int_a^b f(\\gamma(a+b-t))(-\\gamma'(a+b-t))\\,dt = -\\int_a^b f(\\gamma(s))\\gamma'(s)\\,ds = -\\int_\\gamma f(z)\\,dz\\]
+        <p>where we substituted \\(s = a + b - t\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 4.4 (Concatenation)</div>
+    <div class="env-body">
+        <p>If \\(\\gamma = \\gamma_1 + \\gamma_2\\) (the endpoint of \\(\\gamma_1\\) is the starting point of \\(\\gamma_2\\)), then</p>
+        \\[\\int_\\gamma f(z)\\,dz = \\int_{\\gamma_1} f(z)\\,dz + \\int_{\\gamma_2} f(z)\\,dz.\\]
+    </div>
+</div>
+
+<h3>The ML Inequality</h3>
+
+<p>The most important estimation tool for contour integrals is the <strong>ML inequality</strong>. It bounds the modulus of an integral by the maximum of \\(|f|\\) times the length of the contour.</p>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 4.5 (ML Inequality)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is continuous on the trace of a contour \\(\\gamma\\) with length \\(L\\), and \\(|f(z)| \\leq M\\) for all \\(z\\) on \\(\\gamma\\), then</p>
+        \\[\\left|\\int_\\gamma f(z)\\,dz\\right| \\leq ML.\\]
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Using the standard inequality \\(|\\int_a^b g(t)\\,dt| \\leq \\int_a^b |g(t)|\\,dt\\) for complex-valued functions:</p>
+        \\[\\left|\\int_\\gamma f(z)\\,dz\\right| = \\left|\\int_a^b f(\\gamma(t))\\gamma'(t)\\,dt\\right| \\leq \\int_a^b |f(\\gamma(t))| \\cdot |\\gamma'(t)|\\,dt \\leq M \\int_a^b |\\gamma'(t)|\\,dt = ML.\\]
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Example 4.3: Using the ML Inequality</div>
+    <div class="env-title">Example: Bounding an Integral</div>
     <div class="env-body">
-        <p>Estimate \\(\\left|\\int_{\\gamma_R} \\frac{e^{iz}}{z}\\,dz\\right|\\) where \\(\\gamma_R\\) is the semicircle \\(|z| = R\\) in the upper half-plane.</p>
-        <p>On \\(\\gamma_R\\), \\(|z| = R\\), so \\(|f(z)| = |e^{iz}|/R\\). For \\(z = Re^{i\\theta}\\) with \\(\\theta \\in [0, \\pi]\\), \\(|e^{iz}| = e^{-R\\sin\\theta} \\leq 1\\). Thus \\(M = 1/R\\). The length is \\(L = \\pi R\\). So \\(\\left|\\int_{\\gamma_R}\\right| \\leq \\pi\\). A sharper estimate using Jordan's lemma gives the bound \\(\\to 0\\) as \\(R \\to \\infty\\).</p>
+        <p>Estimate \\(\\left|\\int_\\gamma \\frac{dz}{z^2+1}\\right|\\) where \\(\\gamma\\) is the upper semicircle of radius \\(R > 1\\).</p>
+        <p>On \\(\\gamma\\), \\(|z| = R\\), so \\(|z^2+1| \\geq |z|^2 - 1 = R^2 - 1\\). Thus \\(M = 1/(R^2 - 1)\\) and \\(L = \\pi R\\), giving</p>
+        \\[\\left|\\int_\\gamma \\frac{dz}{z^2+1}\\right| \\leq \\frac{\\pi R}{R^2 - 1} \\to 0 \\text{ as } R \\to \\infty.\\]
+        <p>This vanishing is exactly what makes the residue calculus for real improper integrals work (Chapter 12).</p>
     </div>
 </div>
 
-<div class="env-block remark">
-    <div class="env-title">Why ML Is Useful</div>
-    <div class="env-body">
-        <p>In applications, we often need to show that an integral over a large arc vanishes as the radius \\(R \\to \\infty\\). If \\(|f(z)| \\leq C/R^\\alpha\\) for some \\(\\alpha > 1\\) on \\(|z| = R\\), then \\(ML \\leq (C/R^\\alpha)(2\\pi R) = 2\\pi C/R^{\\alpha-1} \\to 0\\).</p>
-    </div>
-</div>
+<div class="viz-placeholder" data-viz="viz-ml-inequality"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-ml-inequality',
-                    title: 'ML Inequality: Bounding Integrals',
-                    description: 'The orange region shows M (maximum |f(z)| on the curve). The blue arc has length L. The product ML gives an upper bound for |integral|. Adjust the exponent n in f(z) = z^n to see how M and L interact.',
+                    title: 'The ML Inequality',
+                    description: 'The ML bound \\(ML\\) provides an upper estimate for \\(|\\int_\\gamma f(z)\\,dz|\\). Drag the radius \\(R\\) to see how the bound changes for \\(f(z) = 1/(z^2+1)\\) on a semicircular contour.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 65, originX: 200, originY: 220 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 40
+                        });
 
-                        var nExp = 1;
-                        var radius = 1.0;
-
-                        VizEngine.createSlider(controls, 'Exponent n', -2, 3, nExp, 1, function(v) { nExp = Math.round(v); });
-                        VizEngine.createSlider(controls, 'Radius r', 0.5, 2.0, radius, 0.1, function(v) { radius = v; });
+                        var R = 2.0;
+                        VizEngine.createSlider(controls, 'R', 1.2, 6, R, 0.1, function(v) {
+                            R = v;
+                            draw();
+                        });
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
 
-                            var L = Math.PI * radius; // semicircle length
-                            var M = 0;
-                            var nSamp = 200;
-                            var actualInt = { re: 0, im: 0 };
+                            var ctx = viz.ctx;
 
-                            // Compute M and the actual integral
-                            for (var k = 0; k <= nSamp; k++) {
-                                var theta = Math.PI * k / nSamp;
-                                var re = radius * Math.cos(theta);
-                                var im = radius * Math.sin(theta);
-                                var rn = Math.pow(radius, nExp);
-                                // |z^n| = r^n
-                                if (nExp !== 0 || radius > 0.01) {
-                                    var mag = (nExp === 0) ? 1 : Math.pow(radius, Math.abs(nExp));
-                                    if (nExp < 0) mag = 1 / Math.pow(radius, -nExp);
-                                    else mag = Math.pow(radius, nExp);
-                                    if (isFinite(mag)) M = Math.max(M, mag);
-                                }
+                            // Draw poles at +i and -i
+                            viz.drawPoint(0, 1, viz.colors.red, 'i', 5);
+                            viz.drawPoint(0, -1, viz.colors.red, '-i', 5);
+
+                            // Draw semicircular contour
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 2.5;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 100; i++) {
+                                var angle = Math.PI * i / 100;
+                                var x = R * Math.cos(angle);
+                                var y = R * Math.sin(angle);
+                                var scr = viz.toScreen(x, y);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
+                            }
+                            ctx.stroke();
+
+                            // Draw line segment on real axis
+                            viz.drawSegment(-R, 0, R, 0, viz.colors.blue, 2.5);
+
+                            // Arrow on semicircle
+                            var midAng = Math.PI / 2;
+                            var mx = R * Math.cos(midAng);
+                            var my = R * Math.sin(midAng);
+                            var ms = viz.toScreen(mx, my);
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.beginPath();
+                            ctx.moveTo(ms[0] - 7, ms[1] - 3);
+                            ctx.lineTo(ms[0] + 2, ms[1]);
+                            ctx.lineTo(ms[0] - 7, ms[1] + 3);
+                            ctx.closePath();
+                            ctx.fill();
+
+                            // Show |f(z)| on the contour via color intensity
+                            for (var j = 0; j <= 100; j++) {
+                                var ang = Math.PI * j / 100;
+                                var zx = R * Math.cos(ang);
+                                var zy = R * Math.sin(ang);
+                                var mag2 = (zx * zx - zy * zy + 1) * (zx * zx - zy * zy + 1) + (2 * zx * zy) * (2 * zx * zy);
+                                var fMag = 1 / Math.sqrt(mag2);
+                                var dotR = 2 + fMag * 8;
+                                var alpha = Math.min(1, fMag * 2);
+                                ctx.fillStyle = 'rgba(240,136,62,' + alpha.toFixed(2) + ')';
+                                var ds = viz.toScreen(zx, zy);
+                                ctx.beginPath();
+                                ctx.arc(ds[0], ds[1], dotR, 0, Math.PI * 2);
+                                ctx.fill();
                             }
 
-                            // Numerically integrate z^n dz over semicircle
-                            for (var k = 0; k < nSamp; k++) {
-                                var t1 = Math.PI * k / nSamp;
-                                var t2 = Math.PI * (k + 1) / nSamp;
-                                var tm = (t1 + t2) / 2;
-                                var re = radius * Math.cos(tm);
-                                var im = radius * Math.sin(tm);
-                                // z^n
-                                var r = radius;
-                                var angle = nExp * tm;
-                                var fn_re = Math.pow(r, nExp) * Math.cos(angle);
-                                var fn_im = Math.pow(r, nExp) * Math.sin(angle);
-                                if (!isFinite(fn_re) || !isFinite(fn_im)) continue;
-                                // dz = i*r*e^{it} dt
-                                var dz_re = -radius * Math.sin(tm) * (t2 - t1);
-                                var dz_im = radius * Math.cos(tm) * (t2 - t1);
-                                actualInt.re += fn_re * dz_re - fn_im * dz_im;
-                                actualInt.im += fn_re * dz_im + fn_im * dz_re;
+                            // Compute ML bound
+                            var M = 1 / (R * R - 1);
+                            var L = Math.PI * R;
+                            var ML = M * L;
+
+                            // Compute actual integral numerically (just semicircular part)
+                            var intRe = 0, intIm = 0;
+                            var N = 1000;
+                            for (var k = 0; k < N; k++) {
+                                var tk = Math.PI * k / N;
+                                var dt = Math.PI / N;
+                                var gx = R * Math.cos(tk);
+                                var gy = R * Math.sin(tk);
+                                var gpx = -R * Math.sin(tk);
+                                var gpy = R * Math.cos(tk);
+                                // 1/(z^2+1): z^2+1 = (gx^2-gy^2+1) + 2*gx*gy*i
+                                var denRe = gx * gx - gy * gy + 1;
+                                var denIm = 2 * gx * gy;
+                                var denMag2 = denRe * denRe + denIm * denIm;
+                                var fRe = denRe / denMag2;
+                                var fIm = -denIm / denMag2;
+                                // f * gamma'
+                                var prodRe = fRe * gpx - fIm * gpy;
+                                var prodIm = fRe * gpy + fIm * gpx;
+                                intRe += prodRe * dt;
+                                intIm += prodIm * dt;
                             }
+                            var actualMag = Math.sqrt(intRe * intRe + intIm * intIm);
 
-                            var bound = M * L;
-                            var actual = Math.sqrt(actualInt.re*actualInt.re + actualInt.im*actualInt.im);
+                            // Display info
+                            viz.screenText('M = 1/(R\u00B2-1) = ' + M.toFixed(3), 10, 20, viz.colors.orange, 12, 'left');
+                            viz.screenText('L = \u03C0R = ' + L.toFixed(2), 10, 38, viz.colors.blue, 12, 'left');
+                            viz.screenText('ML = ' + ML.toFixed(3), 10, 56, viz.colors.teal, 13, 'left');
+                            viz.screenText('|\u222B| = ' + actualMag.toFixed(3), 10, 74, viz.colors.white, 13, 'left');
+                            viz.screenText('Ratio |\u222B|/ML = ' + (actualMag / ML).toFixed(3), 10, 92, viz.colors.purple, 12, 'left');
 
-                            // Draw semicircle filled with M-shaded region
-                            viz.ctx.fillStyle = viz.colors.orange + '22';
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, radius * viz.scale, Math.PI, 0, false);
-                            var [sx0] = viz.toScreen(-radius, 0);
-                            var [sx1] = viz.toScreen(radius, 0);
-                            viz.ctx.lineTo(sx1, viz.originY);
-                            viz.ctx.lineTo(sx0, viz.originY);
-                            viz.ctx.closePath();
-                            viz.ctx.fill();
-
-                            // Draw semicircle
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 3;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, radius * viz.scale, Math.PI, 0, false);
-                            viz.ctx.stroke();
-
-                            // Draw diameter
-                            viz.drawSegment(-radius, 0, radius, 0, viz.colors.blue, 2, true);
-
-                            // Annotations
-                            viz.drawText('\u03b3 (semicircle)', 0, radius + 0.25, viz.colors.blue, 12);
-                            viz.drawText('L = \u03c0r = ' + L.toFixed(2), 0, -0.35, viz.colors.text, 11);
-
-                            // Info panel
-                            var px = viz.width - 200, py = 20;
-                            viz.ctx.fillStyle = '#1a1a40ee';
-                            viz.ctx.fillRect(px - 8, py - 8, 200, 150);
-                            viz.screenText('ML Inequality', px + 88, py + 8, viz.colors.white, 13, 'center');
-                            viz.screenText('f(z) = z\u207F, n = ' + nExp, px + 8, py + 30, viz.colors.text, 11, 'left');
-                            viz.screenText('r = ' + radius.toFixed(2), px + 8, py + 48, viz.colors.text, 11, 'left');
-                            viz.screenText('M = max|f| = ' + M.toFixed(3), px + 8, py + 66, viz.colors.orange, 11, 'left');
-                            viz.screenText('L = \u03c0r = ' + L.toFixed(3), px + 8, py + 84, viz.colors.blue, 11, 'left');
-                            viz.screenText('Bound ML = ' + bound.toFixed(3), px + 8, py + 102, viz.colors.yellow, 12, 'left');
-                            viz.screenText('|\u222b f dz| = ' + actual.toFixed(3), px + 8, py + 122, viz.colors.green, 12, 'left');
-                            var ratio = bound > 0.001 ? (actual / bound * 100).toFixed(1) : '0';
-                            viz.screenText('Tightness: ' + ratio + '%', px + 8, py + 140, viz.colors.text, 10, 'left');
+                            viz.screenText('R = ' + R.toFixed(1), viz.width - 10, 20, viz.colors.white, 13, 'right');
                         }
-
                         draw();
-                        document.addEventListener('input', draw); // React to slider changes
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Use the ML inequality to show that \\(\\left|\\int_\\gamma \\frac{1}{z^2+1}\\,dz\\right| \\leq \\frac{\\pi R}{R^2 - 1}\\) where \\(\\gamma\\) is the semicircle \\(|z| = R > 1\\) in the upper half-plane.',
-                    hint: 'On \\(|z| = R\\), use the reverse triangle inequality to bound \\(|z^2 + 1| \\geq |z|^2 - 1 = R^2 - 1\\). The length of the semicircle is \\(\\pi R\\).',
-                    solution: 'On \\(\\gamma\\), \\(|z^2 + 1| \\geq |z^2| - 1 = R^2 - 1 > 0\\). So \\(|f(z)| = |1/(z^2+1)| \\leq 1/(R^2-1) = M\\). The length \\(L = \\pi R\\). By ML: \\(|\\int_\\gamma f\\,dz| \\leq ML = \\pi R/(R^2-1)\\). As \\(R \\to \\infty\\), this \\(\\to 0\\).'
+                    question: 'Show that \\(\\left|\\int_\\gamma e^z\\,dz\\right| \\leq e^R \\cdot 2\\pi R\\) when \\(\\gamma\\) is the circle \\(|z| = R\\).',
+                    hint: 'On \\(|z| = R\\), write \\(z = x + iy\\) with \\(x^2 + y^2 = R^2\\). Then \\(|e^z| = e^x \\leq e^R\\).',
+                    solution: 'On \\(|z|=R\\), \\(|e^z| = e^{\\text{Re}(z)} \\leq e^R\\). The length of \\(\\gamma\\) is \\(2\\pi R\\). By the ML inequality, \\(|\\int_\\gamma e^z\\,dz| \\leq e^R \\cdot 2\\pi R\\).'
                 },
                 {
-                    question: 'If \\(\\gamma\\) is any contour from \\(0\\) to \\(1\\) of length \\(L\\), and \\(|f(z)| \\leq 5\\) on \\(\\gamma\\), what is the best upper bound on \\(|\\int_\\gamma f\\,dz|\\) that the ML inequality gives?',
-                    hint: 'Apply the theorem directly with \\(M = 5\\).',
-                    solution: 'By the ML inequality, \\(|\\int_\\gamma f\\,dz| \\leq M \\cdot L = 5L\\). The bound depends on the length of the specific contour; shorter contours give tighter bounds.'
+                    question: 'Prove that \\(\\int_{-\\gamma} f(z)\\,dz = -\\int_\\gamma f(z)\\,dz\\) directly from the definition, using the substitution \\(s = a + b - t\\).',
+                    hint: 'Parameterize \\(-\\gamma(t) = \\gamma(a+b-t)\\). Compute the derivative and substitute.',
+                    solution: 'Set \\(\\tilde{\\gamma}(t) = \\gamma(a+b-t)\\). Then \\(\\tilde{\\gamma}\'(t) = -\\gamma\'(a+b-t)\\). Substituting \\(s = a+b-t\\), \\(ds = -dt\\): \\(\\int_a^b f(\\gamma(a+b-t))(-\\gamma\'(a+b-t))\\,dt = -\\int_b^a f(\\gamma(s))\\gamma\'(s)(-ds) = -\\int_a^b f(\\gamma(s))\\gamma\'(s)\\,ds\\).'
+                },
+                {
+                    question: 'Estimate \\(\\left|\\int_\\gamma \\frac{z}{z^4+1}\\,dz\\right|\\) where \\(\\gamma\\) is the circle \\(|z| = 2\\).',
+                    hint: 'On \\(|z|=2\\): \\(|z|=2\\), \\(|z^4+1| \\geq |z|^4 - 1 = 15\\), so \\(|f(z)| \\leq 2/15\\). The length is \\(4\\pi\\).',
+                    solution: '\\(M = \\frac{|z|}{|z^4+1|} \\leq \\frac{2}{2^4 - 1} = \\frac{2}{15}\\). \\(L = 2\\pi \\cdot 2 = 4\\pi\\). ML bound: \\(\\frac{2}{15} \\cdot 4\\pi = \\frac{8\\pi}{15} \\approx 1.676\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Antiderivatives
+        // SECTION 5: Antiderivatives and Path Independence
         // ================================================================
         {
             id: 'sec-antiderivatives',
@@ -650,191 +693,187 @@ The first inequality uses the modulus inequality \\(|\\int h| \\leq \\int |h|\\)
             content: `
 <h2>Antiderivatives and Path Independence</h2>
 
-<p>For real integrals, the fundamental theorem of calculus says: if \\(F' = f\\), then \\(\\int_a^b f = F(b) - F(a)\\). A perfect analogue holds for complex integrals, with an important twist: it implies path independence.</p>
+<div class="env-block intuition">
+    <div class="env-title">The Complex Fundamental Theorem</div>
+    <div class="env-body">
+        <p>In single-variable calculus, if \\(F' = f\\) then \\(\\int_a^b f(x)\\,dx = F(b) - F(a)\\), independent of how you "travel" from \\(a\\) to \\(b\\) (there is only one way on the real line). In \\(\\mathbb{C}\\), the same is true if \\(f\\) has an antiderivative: the integral depends only on the endpoints, not on the path. This is path independence.</p>
+    </div>
+</div>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 4.8 (Antiderivative)</div>
+    <div class="env-title">Definition 4.5 (Antiderivative)</div>
     <div class="env-body">
-        <p>A function \\(F\\) is an <strong>antiderivative</strong> of \\(f\\) on a domain \\(D\\) if \\(F\\) is analytic on \\(D\\) and \\(F'(z) = f(z)\\) for all \\(z \\in D\\).</p>
+        <p>Let \\(f\\) be continuous on a domain \\(D \\subseteq \\mathbb{C}\\). A function \\(F\\) analytic on \\(D\\) is an <strong>antiderivative</strong> (or <strong>primitive</strong>) of \\(f\\) on \\(D\\) if \\(F'(z) = f(z)\\) for all \\(z \\in D\\).</p>
     </div>
 </div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 4.9 (Fundamental Theorem of Contour Integrals)</div>
+    <div class="env-title">Theorem 4.6 (Fundamental Theorem of Contour Integration)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be continuous on a domain \\(D\\) and suppose \\(F\\) is an antiderivative of \\(f\\) on \\(D\\). Then for any contour \\(\\gamma\\) in \\(D\\) from \\(z_0\\) to \\(z_1\\),
+        <p>If \\(f\\) is continuous on a domain \\(D\\) and has an antiderivative \\(F\\) on \\(D\\), then for any contour \\(\\gamma\\) in \\(D\\) from \\(z_0\\) to \\(z_1\\):</p>
         \\[\\int_\\gamma f(z)\\,dz = F(z_1) - F(z_0).\\]
-        In particular, the integral depends only on the endpoints, not on the path.</p>
+        <p>In particular:</p>
+        <ol>
+            <li>The integral is <strong>path-independent</strong>: it depends only on the endpoints.</li>
+            <li>If \\(\\gamma\\) is closed (\\(z_0 = z_1\\)), then \\(\\int_\\gamma f(z)\\,dz = 0\\).</li>
+        </ol>
     </div>
 </div>
 
-<p><em>Proof.</em> Let \\(\\gamma: [a,b] \\to D\\). By the chain rule, \\(\\frac{d}{dt}F(z(t)) = F'(z(t))z'(t) = f(z(t))z'(t)\\). Integrating both sides:
-\\[\\int_\\gamma f(z)\\,dz = \\int_a^b f(z(t))z'(t)\\,dt = \\int_a^b \\frac{d}{dt}F(z(t))\\,dt = F(z(b)) - F(z(a)) = F(z_1) - F(z_0). \\quad \\square\\]</p>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary 4.10</div>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
     <div class="env-body">
-        <p>If \\(f\\) has an antiderivative on \\(D\\), then \\(\\int_\\gamma f(z)\\,dz = 0\\) for every closed contour \\(\\gamma\\) in \\(D\\).</p>
+        <p>By the chain rule for complex derivatives:</p>
+        \\[\\frac{d}{dt}F(\\gamma(t)) = F'(\\gamma(t))\\gamma'(t) = f(\\gamma(t))\\gamma'(t).\\]
+        <p>Therefore</p>
+        \\[\\int_\\gamma f(z)\\,dz = \\int_a^b f(\\gamma(t))\\gamma'(t)\\,dt = \\int_a^b \\frac{d}{dt}F(\\gamma(t))\\,dt = F(\\gamma(b)) - F(\\gamma(a)) = F(z_1) - F(z_0).\\]
     </div>
+    <div class="qed">&marker;</div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example 4.4: Path Independence for \\(z^n\\)</div>
+    <div class="env-title">Example: Path Independence for \\(z^2\\)</div>
     <div class="env-body">
-        <p>For any integer \\(n \\neq -1\\), the function \\(f(z) = z^n\\) has antiderivative \\(F(z) = z^{n+1}/(n+1)\\) on \\(\\mathbb{C} \\setminus \\{0\\}\\) (and on all of \\(\\mathbb{C}\\) for \\(n \\geq 0\\)). So
-        \\[\\int_\\gamma z^n\\,dz = \\frac{z_1^{n+1}}{n+1} - \\frac{z_0^{n+1}}{n+1}\\]
-        for any path from \\(z_0\\) to \\(z_1\\). For a <em>closed</em> path (\\(z_0 = z_1\\)), the integral is zero.</p>
+        <p>Since \\(\\frac{d}{dz}\\frac{z^3}{3} = z^2\\), the function \\(f(z) = z^2\\) has antiderivative \\(F(z) = z^3/3\\) on all of \\(\\mathbb{C}\\). For any contour from \\(0\\) to \\(1+i\\):</p>
+        \\[\\int_\\gamma z^2\\,dz = \\frac{(1+i)^3}{3} = \\frac{1 + 3i + 3i^2 + i^3}{3} = \\frac{1 + 3i - 3 - i}{3} = \\frac{-2 + 2i}{3}.\\]
     </div>
 </div>
 
 <div class="env-block remark">
-    <div class="env-title">When Does \\(f\\) Have an Antiderivative?</div>
+    <div class="env-title">When Does an Antiderivative Exist?</div>
     <div class="env-body">
-        <p>Not every analytic function has an antiderivative on its domain. The function \\(f(z) = 1/z\\) is analytic on \\(\\mathbb{C} \\setminus \\{0\\}\\) but has no single-valued antiderivative there (its "antiderivative" \\(\\log z\\) is multi-valued). We will see in the next section that \\(\\int_{|z|=1} 1/z\\,dz = 2\\pi i \\neq 0\\), confirming that no antiderivative exists on this punctured domain.</p>
+        <p>The function \\(f(z) = 1/z\\) does <em>not</em> have an antiderivative on \\(\\mathbb{C} \\setminus \\{0\\}\\). The "natural" candidate \\(\\log z\\) is multi-valued. On any simply connected subdomain not containing the origin (e.g., \\(\\mathbb{C}\\) minus the negative real axis), a branch of \\(\\log z\\) serves as an antiderivative. But on the punctured plane, no single-valued antiderivative exists, which is why \\(\\oint_{|z|=1} \\frac{dz}{z} \\neq 0\\).</p>
+        <p>Cauchy's theorem (Chapter 5) will show that every analytic function on a simply connected domain has an antiderivative.</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-path-independence"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-path-independence',
-                    title: 'Path Independence vs. Path Dependence',
-                    description: 'Two paths connect A to B. For f(z) = z (analytic, has antiderivative), both paths give the same integral. For f(z) = 1/z around the origin, the paths can give different results. Toggle the function and drag the paths.',
+                    title: 'Path Independence',
+                    description: 'Compare integrals of \\(f(z) = z^2\\) along different paths from \\(0\\) to a target point. All paths give the same value because \\(z^2\\) has an antiderivative. Drag the target point to see the integral change.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 70, originX: 200, originY: 200 });
-
-                        var funcType = 0; // 0 = z^2, 1 = 1/z
-                        var funcNames = ['f(z) = z\u00B2 (analytic)', 'f(z) = 1/z (not analytic at 0)'];
-                        var funcBtn = VizEngine.createButton(controls, funcNames[0], function() {
-                            funcType = 1 - funcType;
-                            funcBtn.textContent = funcNames[funcType];
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 55
                         });
 
-                        // Points A and B
-                        var A = { re: -1.2, im: -0.8 };
-                        var B = { re: 1.2, im: 0.8 };
-
-                        // Path 1: straight line
-                        // Path 2: arc going around origin
-                        function getPath(which, t) {
-                            if (which === 0) { // straight line
-                                return { re: A.re + (B.re - A.re)*t, im: A.im + (B.im - A.im)*t,
-                                         dre: B.re - A.re, dim: B.im - A.im };
-                            } else { // arc: go from A to B via upper half
-                                // Parameterize as angle from A to B going through top
-                                var rA = Math.sqrt(A.re*A.re + A.im*A.im);
-                                var rB = Math.sqrt(B.re*B.re + B.im*B.im);
-                                var thetaA = Math.atan2(A.im, A.re);
-                                var thetaB = Math.atan2(B.im, B.re) + 2*Math.PI; // go counterclockwise
-                                var theta = thetaA + (thetaB - thetaA)*t;
-                                var r = rA + (rB - rA)*t;
-                                var dtheta = thetaB - thetaA;
-                                var dr = rB - rA;
-                                return { re: r*Math.cos(theta), im: r*Math.sin(theta),
-                                         dre: dr*Math.cos(theta) - r*dtheta*Math.sin(theta),
-                                         dim: dr*Math.sin(theta) + r*dtheta*Math.cos(theta) };
-                            }
-                        }
-
-                        function computeIntegral(pathIdx, fType) {
-                            var nSteps = 500;
-                            var re = 0, im = 0;
-                            for (var k = 0; k < nSteps; k++) {
-                                var t = (k + 0.5) / nSteps;
-                                var p = getPath(pathIdx, t);
-                                var dt = 1.0 / nSteps;
-                                var fr, fi;
-                                if (fType === 0) { // z^2
-                                    fr = p.re*p.re - p.im*p.im;
-                                    fi = 2*p.re*p.im;
-                                } else { // 1/z
-                                    var d = p.re*p.re + p.im*p.im;
-                                    if (d < 1e-10) continue;
-                                    fr = p.re/d; fi = -p.im/d;
-                                }
-                                re += (fr*p.dre - fi*p.dim)*dt;
-                                im += (fr*p.dim + fi*p.dre)*dt;
-                            }
-                            return { re, im };
-                        }
-
-                        function drawPath(which, color) {
-                            var nDraw = 100;
-                            viz.ctx.strokeStyle = color;
-                            viz.ctx.lineWidth = 2.5;
-                            viz.ctx.beginPath();
-                            for (var k = 0; k <= nDraw; k++) {
-                                var p = getPath(which, k/nDraw);
-                                var sc = viz.toScreen(p.re, p.im);
-                                k === 0 ? viz.ctx.moveTo(sc[0], sc[1]) : viz.ctx.lineTo(sc[0], sc[1]);
-                            }
-                            viz.ctx.stroke();
-                            // Arrowhead near midpoint
-                            var pm = getPath(which, 0.55);
-                            var pm2 = getPath(which, 0.56);
-                            viz.drawVector(pm.re, pm.im, pm2.re, pm2.im, color, null, 2);
-                        }
+                        var target = viz.addDraggable('target', 2, 1.5, viz.colors.teal, 8);
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
 
-                            // Origin marker (singularity for 1/z)
-                            if (funcType === 1) {
-                                viz.ctx.fillStyle = viz.colors.red + '33';
-                                viz.ctx.beginPath();
-                                viz.ctx.arc(viz.originX, viz.originY, 12, 0, Math.PI*2);
-                                viz.ctx.fill();
-                                viz.drawText('pole', 0, 0.3, viz.colors.red, 11);
+                            var ctx = viz.ctx;
+                            var tx = target.x, ty = target.y;
+
+                            // Path 1: straight line from 0 to target
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 2.5;
+                            ctx.beginPath();
+                            var s1 = viz.toScreen(0, 0);
+                            var s2 = viz.toScreen(tx, ty);
+                            ctx.moveTo(s1[0], s1[1]);
+                            ctx.lineTo(s2[0], s2[1]);
+                            ctx.stroke();
+
+                            // Path 2: go right then up
+                            ctx.strokeStyle = viz.colors.orange;
+                            ctx.lineWidth = 2.5;
+                            ctx.setLineDash([6, 4]);
+                            ctx.beginPath();
+                            ctx.moveTo(s1[0], s1[1]);
+                            var s3 = viz.toScreen(tx, 0);
+                            ctx.lineTo(s3[0], s3[1]);
+                            ctx.lineTo(s2[0], s2[1]);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            // Path 3: curved path
+                            ctx.strokeStyle = viz.colors.purple;
+                            ctx.lineWidth = 2;
+                            ctx.setLineDash([3, 3]);
+                            ctx.beginPath();
+                            for (var i = 0; i <= 100; i++) {
+                                var t = i / 100;
+                                var px = tx * t;
+                                var py = ty * t + 0.8 * Math.sin(Math.PI * t);
+                                var scr = viz.toScreen(px, py);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
+                            }
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            // Compute exact answer: (z1)^3/3 where z1 = tx + i*ty
+                            // (tx + i*ty)^3 = tx^3 - 3*tx*ty^2 + i*(3*tx^2*ty - ty^3)
+                            var re3 = tx * tx * tx - 3 * tx * ty * ty;
+                            var im3 = 3 * tx * tx * ty - ty * ty * ty;
+                            var intRe = re3 / 3;
+                            var intIm = im3 / 3;
+
+                            // Numerical integrals along each path
+                            function numericalIntegral(pathFn) {
+                                var sumRe = 0, sumIm = 0;
+                                var N = 500;
+                                for (var k = 0; k < N; k++) {
+                                    var t1 = k / N, t2 = (k + 1) / N;
+                                    var p1 = pathFn(t1), p2 = pathFn(t2);
+                                    var dzRe = p2[0] - p1[0], dzIm = p2[1] - p1[1];
+                                    var midx = (p1[0] + p2[0]) / 2, midy = (p1[1] + p2[1]) / 2;
+                                    // f(z) = z^2 = (x+iy)^2 = x^2-y^2 + 2xyi
+                                    var fRe = midx * midx - midy * midy;
+                                    var fIm = 2 * midx * midy;
+                                    sumRe += fRe * dzRe - fIm * dzIm;
+                                    sumIm += fRe * dzIm + fIm * dzRe;
+                                }
+                                return [sumRe, sumIm];
                             }
 
-                            drawPath(0, viz.colors.blue);
-                            drawPath(1, viz.colors.teal);
+                            var r1 = numericalIntegral(function(t) { return [tx * t, ty * t]; });
+                            var r2 = numericalIntegral(function(t) {
+                                if (t < 0.5) return [tx * 2 * t, 0];
+                                return [tx, ty * (2 * t - 1)];
+                            });
+                            var r3 = numericalIntegral(function(t) {
+                                return [tx * t, ty * t + 0.8 * Math.sin(Math.PI * t)];
+                            });
 
-                            viz.drawPoint(A.re, A.im, viz.colors.white, 'A', 6);
-                            viz.drawPoint(B.re, B.im, viz.colors.white, 'B', 6);
+                            // Markers
+                            viz.drawPoint(0, 0, viz.colors.green, '0', 5);
+                            viz.drawDraggables();
 
-                            var int0 = computeIntegral(0, funcType);
-                            var int1 = computeIntegral(1, funcType);
+                            // Display results
+                            var sign = intIm >= 0 ? '+' : '-';
+                            viz.screenText('F(z\u2081) - F(0) = z\u2081\u00B3/3 = ' + intRe.toFixed(2) + ' ' + sign + ' ' + Math.abs(intIm).toFixed(2) + 'i',
+                                viz.width / 2, 20, viz.colors.white, 13);
 
-                            var px = viz.width - 210, py = 20;
-                            viz.ctx.fillStyle = '#1a1a40ee';
-                            viz.ctx.fillRect(px - 8, py - 8, 210, 155);
-                            viz.screenText(funcNames[funcType], px + 95, py + 8, viz.colors.white, 11, 'center');
-
-                            viz.screenText('Path 1 (straight):', px + 8, py + 28, viz.colors.blue, 11, 'left');
-                            viz.screenText(int0.re.toFixed(4) + ' + ' + int0.im.toFixed(4) + 'i', px + 8, py + 46, viz.colors.blue, 11, 'left');
-
-                            viz.screenText('Path 2 (arc via top):', px + 8, py + 68, viz.colors.teal, 11, 'left');
-                            viz.screenText(int1.re.toFixed(4) + ' + ' + int1.im.toFixed(4) + 'i', px + 8, py + 86, viz.colors.teal, 11, 'left');
-
-                            var dRe = Math.abs(int0.re - int1.re);
-                            var dIm = Math.abs(int0.im - int1.im);
-                            var same = dRe < 0.01 && dIm < 0.01;
-                            viz.screenText('Difference:', px + 8, py + 108, viz.colors.text, 11, 'left');
-                            viz.screenText((int0.re - int1.re).toFixed(4) + ' + ' + (int0.im - int1.im).toFixed(4) + 'i', px + 8, py + 126, same ? viz.colors.green : viz.colors.red, 11, 'left');
-                            viz.screenText(same ? 'Path independent \u2713' : 'Path DEPENDENT \u2717', px + 105, py + 144, same ? viz.colors.green : viz.colors.red, 12, 'center');
+                            function fmtC(r) {
+                                var s = r[1] >= 0 ? '+' : '-';
+                                return r[0].toFixed(2) + s + Math.abs(r[1]).toFixed(2) + 'i';
+                            }
+                            viz.screenText('Path 1 (line): ' + fmtC(r1), 10, viz.height - 55, viz.colors.blue, 11, 'left');
+                            viz.screenText('Path 2 (L-shape): ' + fmtC(r2), 10, viz.height - 38, viz.colors.orange, 11, 'left');
+                            viz.screenText('Path 3 (curve): ' + fmtC(r3), 10, viz.height - 21, viz.colors.purple, 11, 'left');
                         }
 
-                        draw();
-                        // Redraw on button click (handled by button event already calling draw via funcBtn closure)
-                        funcBtn.addEventListener('click', draw);
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Compute \\(\\int_\\gamma z^3\\,dz\\) where \\(\\gamma\\) is any contour from \\(i\\) to \\(2-i\\). Explain why the path does not matter.',
-                    hint: 'Find an antiderivative \\(F(z) = z^4/4\\) and apply the fundamental theorem.',
-                    solution: '\\(F(z) = z^4/4\\). At the endpoints: \\(F(2-i) = (2-i)^4/4\\). Note \\((2-i)^2 = 3-4i\\), \\((2-i)^4 = (3-4i)^2 = -7-24i\\). So \\(F(2-i) = (-7-24i)/4\\). And \\(F(i) = i^4/4 = 1/4\\). The integral is \\((-7-24i)/4 - 1/4 = (-8-24i)/4 = -2 - 6i\\). The path does not matter because \\(z^3\\) is entire (analytic everywhere) with antiderivative \\(z^4/4\\).'
+                    question: 'Compute \\(\\int_\\gamma z^3\\,dz\\) along any path from \\(-1\\) to \\(1+2i\\).',
+                    hint: 'An antiderivative of \\(z^3\\) is \\(z^4/4\\).',
+                    solution: '\\(\\int_\\gamma z^3\\,dz = \\frac{(1+2i)^4}{4} - \\frac{(-1)^4}{4}\\). Now \\((1+2i)^2 = -3+4i\\), so \\((1+2i)^4 = (-3+4i)^2 = 9 - 24i - 16 = -7 - 24i\\). Answer: \\(\\frac{-7-24i}{4} - \\frac{1}{4} = -2 - 6i\\).'
                 },
                 {
-                    question: 'Show that \\(\\int_\\gamma \\cos(z)\\,dz = 0\\) for any closed contour \\(\\gamma\\).',
-                    hint: 'Find an antiderivative and apply the corollary.',
-                    solution: '\\(\\cos(z)\\) has antiderivative \\(F(z) = \\sin(z)\\) on all of \\(\\mathbb{C}\\) (since \\(\\sin\'(z) = \\cos(z)\\) in the complex sense). By the corollary to Theorem 4.9, any integral of \\(\\cos(z)\\) over a closed path equals \\(F(z_0) - F(z_0) = 0\\).'
+                    question: 'Explain why \\(f(z) = \\bar{z}\\) cannot have an antiderivative on any open set.',
+                    hint: 'If \\(F\'(z) = \\bar{z}\\), then \\(F\\) would be analytic and \\(\\bar{z}\\) would be analytic. But \\(\\bar{z}\\) fails the Cauchy-Riemann equations.',
+                    solution: 'If \\(F\'(z) = \\bar{z}\\) with \\(F\\) analytic, then \\(\\bar{z}\\) would be analytic. But \\(\\bar{z} = x - iy\\) has \\(u = x, v = -y\\), so \\(u_x = 1 \\neq v_y = -1\\). The Cauchy-Riemann equations fail, so \\(\\bar{z}\\) is not analytic and cannot be the derivative of an analytic function.'
                 }
             ]
         },
@@ -846,228 +885,291 @@ The first inequality uses the modulus inequality \\(|\\int h| \\leq \\int |h|\\)
             id: 'sec-examples',
             title: 'Key Examples',
             content: `
-<h2>Key Examples: \\(z^n\\) and \\(1/z\\)</h2>
+<h2>Key Examples</h2>
 
-<p>Two families of integrals are the cornerstone of complex analysis. They determine the behavior of all Laurent series and residue computations.</p>
+<p>Two integrals are fundamental to everything that follows in complex analysis. They concern the functions \\(z^n\\) and \\(1/z\\) integrated around circles.</p>
 
-<h3>Integral of \\(z^n\\) Around a Circle</h3>
+<h3>The Integral of \\(z^n\\) Around a Circle</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 4.11</div>
+    <div class="env-title">Theorem 4.7</div>
     <div class="env-body">
-        <p>Let \\(\\gamma\\) be any simple closed counterclockwise contour surrounding the origin. Then
-        \\[\\oint_\\gamma z^n\\,dz = \\begin{cases} 0 & \\text{if } n \\neq -1, \\\\ 2\\pi i & \\text{if } n = -1, \\end{cases}\\]
-        for all integers \\(n\\).</p>
+        <p>Let \\(\\gamma\\) be the circle \\(|z - z_0| = R\\) traversed counterclockwise, and let \\(n\\) be an integer. Then</p>
+        \\[\\oint_\\gamma (z - z_0)^n\\,dz = \\begin{cases} 2\\pi i & \\text{if } n = -1, \\\\ 0 & \\text{if } n \\neq -1. \\end{cases}\\]
     </div>
 </div>
 
-<p><em>Proof for the circle \\(|z| = r\\).</em> Parameterize \\(z(t) = re^{it}\\) for \\(t \\in [0, 2\\pi]\\), so \\(dz = ire^{it}\\,dt\\).</p>
-
-<p><strong>Case \\(n \\neq -1\\):</strong>
-\\[\\oint_{|z|=r} z^n\\,dz = \\int_0^{2\\pi} r^n e^{int} \\cdot ire^{it}\\,dt = ir^{n+1}\\int_0^{2\\pi} e^{i(n+1)t}\\,dt.\\]
-For \\(n \\neq -1\\) we have \\(n+1 \\neq 0\\), so \\(\\int_0^{2\\pi} e^{i(n+1)t}\\,dt = \\left[\\frac{e^{i(n+1)t}}{i(n+1)}\\right]_0^{2\\pi} = 0\\) (since \\(e^{i(n+1)2\\pi} = 1\\)).</p>
-
-<p><strong>Case \\(n = -1\\):</strong>
-\\[\\oint_{|z|=r} \\frac{1}{z}\\,dz = \\int_0^{2\\pi} \\frac{1}{re^{it}} \\cdot ire^{it}\\,dt = \\int_0^{2\\pi} i\\,dt = 2\\pi i. \\quad \\square\\]</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Parameterize: \\(\\gamma(t) = z_0 + Re^{it}\\), \\(t \\in [0, 2\\pi]\\). Then \\(\\gamma'(t) = iRe^{it}\\) and \\((\\gamma(t) - z_0)^n = R^n e^{int}\\).</p>
+        \\[\\oint_\\gamma (z-z_0)^n\\,dz = \\int_0^{2\\pi} R^n e^{int} \\cdot iR e^{it}\\,dt = iR^{n+1} \\int_0^{2\\pi} e^{i(n+1)t}\\,dt.\\]
+        <p><strong>Case \\(n \\neq -1\\):</strong></p>
+        \\[\\int_0^{2\\pi} e^{i(n+1)t}\\,dt = \\left[\\frac{e^{i(n+1)t}}{i(n+1)}\\right]_0^{2\\pi} = \\frac{e^{2\\pi i(n+1)} - 1}{i(n+1)} = 0\\]
+        <p>since \\(e^{2\\pi i(n+1)} = 1\\) for any integer \\(n+1 \\neq 0\\).</p>
+        <p><strong>Case \\(n = -1\\):</strong></p>
+        \\[\\int_0^{2\\pi} e^{i \\cdot 0 \\cdot t}\\,dt = \\int_0^{2\\pi} 1\\,dt = 2\\pi.\\]
+        <p>So the integral equals \\(iR^0 \\cdot 2\\pi = 2\\pi i\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">Why \\(n = -1\\) Is Special</div>
+    <div class="env-title">Why \\(n = -1\\) is Special</div>
     <div class="env-body">
-        <p>For \\(n \\neq -1\\), \\(z^n\\) has an antiderivative \\(z^{n+1}/(n+1)\\) on the punctured plane, so any closed integral vanishes. For \\(n = -1\\), the "antiderivative" is \\(\\log z\\), which is multi-valued: each time we loop counterclockwise around the origin, \\(\\log z\\) increases by \\(2\\pi i\\). This is the topological obstruction that makes \\(1/z\\) special.</p>
+        <p>For \\(n \\neq -1\\), the function \\((z - z_0)^n\\) has an antiderivative \\(\\frac{(z-z_0)^{n+1}}{n+1}\\), so the integral around any closed curve is zero. For \\(n = -1\\), the "antiderivative" would be \\(\\log(z - z_0)\\), which is multi-valued. The integral measures the failure of \\(\\log\\) to be single-valued: going once around \\(z_0\\), the argument increases by \\(2\\pi\\), contributing \\(2\\pi i\\).</p>
     </div>
 </div>
 
-<h3>Why This Controls Everything</h3>
+<h3>The Winding Number</h3>
 
-<p>For any function with a Laurent series \\(f(z) = \\sum_{n=-\\infty}^{\\infty} a_n (z - z_0)^n\\), integrating term by term around a small circle centered at \\(z_0\\):
-\\[\\oint_{|z-z_0|=r} f(z)\\,dz = \\sum_n a_n \\oint (z-z_0)^n\\,dz = a_{-1} \\cdot 2\\pi i.\\]
-Only the \\(n = -1\\) term survives. This is the <strong>residue</strong> \\(a_{-1}\\), and computing contour integrals reduces to finding residues.</p>
+<p>For a closed curve \\(\\gamma\\) not passing through a point \\(z_0\\), the quantity</p>
+\\[n(\\gamma, z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{dz}{z - z_0}\\]
+<p>is always an integer, called the <strong>winding number</strong> of \\(\\gamma\\) about \\(z_0\\). It counts how many times \\(\\gamma\\) winds around \\(z_0\\) counterclockwise. The result \\(2\\pi i\\) for the unit circle corresponds to winding number \\(1\\).</p>
+
+<div class="viz-placeholder" data-viz="viz-1-over-z"></div>
+<div class="viz-placeholder" data-viz="viz-z-to-n"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-1-over-z',
-                    title: 'Integral of 1/z: Always 2\u03c0i',
-                    description: 'Animate the integration of 1/z around circles of any radius centered at 0. The accumulated imaginary part always reaches 2\u03c0 after one full loop, regardless of radius.',
+                    title: 'Integrating 1/z Around the Origin',
+                    description: 'The integral of \\(1/z\\) around any closed contour enclosing the origin equals \\(2\\pi i\\), regardless of the shape. Watch the integral accumulate as the point traces different contours.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 65, originX: 200, originY: 210 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 55
+                        });
 
-                        var radius = 1.0;
-                        var tVal = 0;
-                        VizEngine.createSlider(controls, 'Radius r', 0.3, 2.5, radius, 0.1, function(v) { radius = v; tVal = 0; });
-                        VizEngine.createButton(controls, 'Reset', function() { tVal = 0; });
+                        var t = 0;
+                        var shapeIdx = 0;
+                        var shapes = ['Circle', 'Ellipse', 'Square'];
 
-                        viz.animate(function(ts) {
-                            viz.clear();
-                            viz.drawGrid(1);
-                            viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
+                        var shapeBtn = VizEngine.createButton(controls, 'Circle', function() {
+                            shapeIdx = (shapeIdx + 1) % 3;
+                            shapeBtn.textContent = shapes[shapeIdx];
+                            t = 0;
+                        });
 
-                            tVal = (tVal + 0.005) % 1.0;
-                            var theta = 2 * Math.PI * tVal;
+                        VizEngine.createButton(controls, 'Reset', function() { t = 0; });
 
-                            // Full circle (faint)
-                            viz.ctx.strokeStyle = viz.colors.grid;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, radius * viz.scale, 0, Math.PI * 2);
-                            viz.ctx.stroke();
-
-                            // Traversed arc
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 3;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, radius * viz.scale, -Math.PI/2, -Math.PI/2 + theta, false);
-                            viz.ctx.stroke();
-
-                            // Starting point
-                            viz.drawPoint(0, radius, viz.colors.green, 'start', 5);
-
-                            // Current point z(t)
-                            var curRe = radius * Math.cos(theta - Math.PI/2);
-                            var curIm = radius * Math.sin(theta - Math.PI/2);
-                            viz.drawPoint(curRe, curIm, viz.colors.yellow, 'z(t)', 6);
-
-                            // f(z) = 1/z arrow
-                            var d = curRe*curRe + curIm*curIm;
-                            var fRe = curRe/d, fIm = -curIm/d;
-                            viz.drawVector(curRe, curIm, curRe + fRe*0.3, curIm + fIm*0.3, viz.colors.orange, '1/z', 2);
-
-                            // Numerical accumulated integral
-                            var nSteps = 300;
-                            var accRe = 0, accIm = 0;
-                            var tCur = tVal;
-                            for (var k = 0; k < nSteps; k++) {
-                                var t = (k + 0.5) / nSteps * tCur;
-                                var th = 2 * Math.PI * t - Math.PI/2;
-                                var zRe = radius * Math.cos(th);
-                                var zIm = radius * Math.sin(th);
-                                var denom = zRe*zRe + zIm*zIm;
-                                var invRe = zRe/denom, invIm = -zIm/denom;
-                                // dz = i*r*e^{it} dt; angle relative to start
-                                var dTheta = 2*Math.PI*tCur/nSteps;
-                                var dzRe = -radius * Math.sin(th) * dTheta;
-                                var dzIm = radius * Math.cos(th) * dTheta;
-                                accRe += invRe*dzRe - invIm*dzIm;
-                                accIm += invRe*dzIm + invIm*dzRe;
-                            }
-
-                            // Progress arc in small diagram at right
-                            var px = viz.width - 160, py = 30;
-                            viz.ctx.fillStyle = '#1a1a40ee';
-                            viz.ctx.fillRect(px - 8, py - 8, 160, 175);
-                            viz.screenText('\u222b 1/z dz progress', px + 72, py + 8, viz.colors.white, 11, 'center');
-                            viz.screenText('t = ' + (tVal * 100).toFixed(1) + '% of loop', px + 8, py + 28, viz.colors.text, 10, 'left');
-                            viz.screenText('r = ' + radius.toFixed(2) + ' (any!)', px + 8, py + 46, viz.colors.text, 10, 'left');
-
-                            viz.screenText('Re \u222b = ' + accRe.toFixed(4), px + 8, py + 68, viz.colors.blue, 11, 'left');
-                            viz.screenText('Im \u222b = ' + accIm.toFixed(4), px + 8, py + 88, viz.colors.teal, 11, 'left');
-
-                            var target = 2 * Math.PI * tVal;
-                            viz.screenText('Expected Im: ' + target.toFixed(4), px + 8, py + 108, viz.colors.text, 10, 'left');
-
-                            if (tVal > 0.98) {
-                                viz.screenText('RESULT: 2\u03c0i', px + 72, py + 135, viz.colors.green, 14, 'center');
-                                viz.screenText('= ' + (2*Math.PI).toFixed(5) + ' i', px + 72, py + 155, viz.colors.green, 12, 'center');
+                        function getContourPoint(s) {
+                            var angle = 2 * Math.PI * s;
+                            if (shapeIdx === 0) {
+                                return [1.5 * Math.cos(angle), 1.5 * Math.sin(angle)];
+                            } else if (shapeIdx === 1) {
+                                return [2.5 * Math.cos(angle), 1.2 * Math.sin(angle)];
                             } else {
-                                viz.screenText('Final: 2\u03c0i \u2248 ' + (2*Math.PI).toFixed(3) + 'i', px + 72, py + 140, viz.colors.yellow, 11, 'center');
+                                // Square
+                                var side = s * 4;
+                                if (side < 1) return [-2 + 4 * side, -2];
+                                else if (side < 2) return [2, -2 + 4 * (side - 1)];
+                                else if (side < 3) return [2 - 4 * (side - 2), 2];
+                                else return [-2, 2 - 4 * (side - 3)];
                             }
+                        }
+
+                        viz.animate(function(time) {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var ctx = viz.ctx;
+
+                            // Mark origin
+                            viz.drawPoint(0, 0, viz.colors.red, '0', 5);
+
+                            // Draw full contour
+                            ctx.strokeStyle = viz.colors.blue + '44';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 400; i++) {
+                                var s = i / 400;
+                                var pt = getContourPoint(s);
+                                var scr = viz.toScreen(pt[0], pt[1]);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
+                            }
+                            ctx.closePath();
+                            ctx.stroke();
+
+                            // Advance
+                            t += 0.003;
+                            if (t > 1) t = 0;
+
+                            // Draw traced portion
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            var steps = Math.floor(t * 400);
+                            for (var j = 0; j <= steps; j++) {
+                                var s2 = j / 400;
+                                var pt2 = getContourPoint(s2);
+                                var scr2 = viz.toScreen(pt2[0], pt2[1]);
+                                j === 0 ? ctx.moveTo(scr2[0], scr2[1]) : ctx.lineTo(scr2[0], scr2[1]);
+                            }
+                            ctx.stroke();
+
+                            // Current point
+                            var cur = getContourPoint(t);
+                            viz.drawPoint(cur[0], cur[1], viz.colors.white, null, 6);
+
+                            // Compute integral numerically
+                            var intRe = 0, intIm = 0;
+                            var N = Math.max(1, Math.floor(t * 1000));
+                            var ds = t / N;
+                            for (var k = 0; k < N; k++) {
+                                var sk = k * ds;
+                                var sk1 = (k + 1) * ds;
+                                var gk = getContourPoint(sk);
+                                var gk1 = getContourPoint(sk1);
+                                var dzRe = gk1[0] - gk[0];
+                                var dzIm = gk1[1] - gk[1];
+                                var mx = (gk[0] + gk1[0]) / 2;
+                                var my = (gk[1] + gk1[1]) / 2;
+                                // 1/z = conj(z)/|z|^2
+                                var r2 = mx * mx + my * my;
+                                if (r2 < 1e-10) continue;
+                                var fRe = mx / r2;
+                                var fIm = -my / r2;
+                                intRe += fRe * dzRe - fIm * dzIm;
+                                intIm += fRe * dzIm + fIm * dzRe;
+                            }
+
+                            // Display
+                            var sign = intIm >= 0 ? '+' : '-';
+                            viz.screenText('\u222B 1/z dz = ' + intRe.toFixed(3) + ' ' + sign + ' ' + Math.abs(intIm).toFixed(3) + 'i',
+                                viz.width / 2, 20, viz.colors.teal, 14);
+                            viz.screenText('2\u03C0i \u2248 0 + 6.283i', viz.width / 2, 40, viz.colors.text, 12);
+
+                            // Progress bar
+                            var barW = 200;
+                            var barX = (viz.width - barW) / 2;
+                            var barY = viz.height - 20;
+                            ctx.fillStyle = viz.colors.grid;
+                            ctx.fillRect(barX, barY, barW, 8);
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.fillRect(barX, barY, barW * t, 8);
                         });
                         return viz;
                     }
                 },
                 {
                     id: 'viz-z-to-n',
-                    title: 'Integral of z^n Around Unit Circle',
-                    description: 'Slide n (integer) and watch the integral of z^n around the unit circle. The result is 0 for all n except n = -1, where it equals 2\u03c0i.',
+                    title: 'Integral of \\((z-z_0)^n\\) Around a Circle',
+                    description: 'Use the slider to change \\(n\\). The integral is \\(2\\pi i\\) when \\(n = -1\\) and \\(0\\) for all other integer values of \\(n\\).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 65, originX: 200, originY: 210 });
-
-                        var nExp = 1;
-                        var tVal = 0;
-
-                        VizEngine.createSlider(controls, 'n', -4, 4, nExp, 1, function(v) {
-                            nExp = Math.round(v);
-                            tVal = 0;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 55
                         });
-                        VizEngine.createButton(controls, 'Reset', function() { tVal = 0; });
 
-                        viz.animate(function(ts) {
+                        var nVal = -1;
+                        var t = 0;
+
+                        VizEngine.createSlider(controls, 'n', -5, 5, nVal, 1, function(v) {
+                            nVal = Math.round(v);
+                            t = 0;
+                        });
+
+                        VizEngine.createButton(controls, 'Reset', function() { t = 0; });
+
+                        viz.animate(function(time) {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
 
-                            tVal = (tVal + 0.004) % 1.0;
-                            var theta = 2 * Math.PI * tVal;
+                            var ctx = viz.ctx;
+                            var R = 1.5;
 
-                            // Unit circle
-                            viz.ctx.strokeStyle = viz.colors.grid;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, viz.scale, 0, Math.PI * 2);
-                            viz.ctx.stroke();
+                            // Draw circle
+                            viz.drawCircle(0, 0, R, null, viz.colors.blue + '44', 2);
 
-                            // Traversed arc
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 3;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, viz.scale, 0, theta, false);
-                            viz.ctx.stroke();
+                            // Advance
+                            t += 0.003;
+                            if (t > 1) t = 0;
 
-                            // Current point z = e^{it}
-                            var zRe = Math.cos(theta);
-                            var zIm = Math.sin(theta);
-                            viz.drawPoint(zRe, zIm, viz.colors.yellow, null, 6);
+                            // Draw traced portion
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 3;
+                            ctx.beginPath();
+                            var steps = Math.floor(t * 300);
+                            for (var j = 0; j <= steps; j++) {
+                                var angle = 2 * Math.PI * j / 300;
+                                var x = R * Math.cos(angle);
+                                var y = R * Math.sin(angle);
+                                var scr = viz.toScreen(x, y);
+                                j === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
+                            }
+                            ctx.stroke();
 
-                            // f(z) = z^n value at current point
-                            var fRe, fIm;
-                            if (nExp >= 0) {
-                                fRe = Math.cos(nExp * theta);
-                                fIm = Math.sin(nExp * theta);
+                            // Current point
+                            var curAngle = 2 * Math.PI * t;
+                            var cx = R * Math.cos(curAngle);
+                            var cy = R * Math.sin(curAngle);
+                            viz.drawPoint(cx, cy, viz.colors.white, null, 5);
+
+                            // Mark center
+                            viz.drawPoint(0, 0, viz.colors.red, 'z\u2080', 4);
+
+                            // Show f(z) = z^n value as vector at current point
+                            // z = R*e^(it), z^n = R^n * e^(int)
+                            var fMag = Math.pow(R, nVal);
+                            var fAngle = nVal * curAngle;
+                            if (isFinite(fMag) && fMag < 100) {
+                                var sc = Math.min(0.3, 0.3 / Math.max(1, fMag));
+                                var fx = fMag * Math.cos(fAngle) * sc;
+                                var fy = fMag * Math.sin(fAngle) * sc;
+                                viz.drawVector(cx, cy, cx + fx, cy + fy, viz.colors.orange);
+                            }
+
+                            // Compute integral numerically
+                            var intRe = 0, intIm = 0;
+                            var N = Math.max(1, Math.floor(t * 1000));
+                            var ds = t / N;
+                            for (var k = 0; k < N; k++) {
+                                var a1 = 2 * Math.PI * k * ds;
+                                var a2 = 2 * Math.PI * (k + 1) * ds;
+                                var z1x = R * Math.cos(a1), z1y = R * Math.sin(a1);
+                                var z2x = R * Math.cos(a2), z2y = R * Math.sin(a2);
+                                var dzRe = z2x - z1x, dzIm = z2y - z1y;
+                                var mx = (z1x + z2x) / 2, my = (z1y + z2y) / 2;
+                                // z^n where z = mx + i*my
+                                var zr = mx, zi = my;
+                                var pr = 1, pi = 0;
+                                if (nVal >= 0) {
+                                    for (var m = 0; m < nVal; m++) {
+                                        var nr = pr * zr - pi * zi;
+                                        var ni = pr * zi + pi * zr;
+                                        pr = nr; pi = ni;
+                                    }
+                                } else {
+                                    // z^(-|n|) = 1/z^|n|
+                                    for (var m = 0; m < -nVal; m++) {
+                                        var nr = pr * zr - pi * zi;
+                                        var ni = pr * zi + pi * zr;
+                                        pr = nr; pi = ni;
+                                    }
+                                    var mag2 = pr * pr + pi * pi;
+                                    if (mag2 > 1e-20) { pr = pr / mag2; pi = -pi / mag2; }
+                                }
+                                intRe += pr * dzRe - pi * dzIm;
+                                intIm += pr * dzIm + pi * dzRe;
+                            }
+
+                            // Display
+                            var signI = intIm >= 0 ? '+' : '-';
+                            viz.screenText('n = ' + nVal, 10, 20, viz.colors.white, 16, 'left');
+                            viz.screenText('\u222B z\u207F dz = ' + intRe.toFixed(3) + ' ' + signI + ' ' + Math.abs(intIm).toFixed(3) + 'i',
+                                viz.width / 2, 20, viz.colors.teal, 14);
+
+                            var expected = (nVal === -1) ? '2\u03C0i \u2248 6.283i' : '0';
+                            viz.screenText('Expected: ' + expected, viz.width / 2, 40, viz.colors.text, 12);
+
+                            if (nVal === -1) {
+                                viz.screenText('n = -1: The special case!', viz.width / 2, viz.height - 15, viz.colors.orange, 13);
                             } else {
-                                fRe = Math.cos(nExp * theta);
-                                fIm = Math.sin(nExp * theta);
+                                viz.screenText('n \u2260 -1: Antiderivative exists, integral = 0', viz.width / 2, viz.height - 15, viz.colors.text, 12);
                             }
-                            viz.drawVector(zRe, zIm, zRe + fRe * 0.3, zIm + fIm * 0.3, viz.colors.orange, 'z\u207F', 2);
-
-                            // Accumulate integral numerically
-                            var nSteps = 500;
-                            var accRe = 0, accIm = 0;
-                            for (var k = 0; k < nSteps; k++) {
-                                var t = (k + 0.5) / nSteps * tVal;
-                                var th = 2 * Math.PI * t;
-                                var znRe = Math.cos(nExp * th);
-                                var znIm = Math.sin(nExp * th);
-                                var dTheta = 2 * Math.PI * tVal / nSteps;
-                                var dzRe = -Math.sin(th) * dTheta;
-                                var dzIm = Math.cos(th) * dTheta;
-                                accRe += znRe * dzRe - znIm * dzIm;
-                                accIm += znRe * dzIm + znIm * dzRe;
-                            }
-
-                            // Panel
-                            var px = viz.width - 175, py = 20;
-                            viz.ctx.fillStyle = '#1a1a40ee';
-                            viz.ctx.fillRect(px - 8, py - 8, 175, 185);
-                            viz.screenText('\u222b z\u207F dz on |z|=1', px + 78, py + 8, viz.colors.white, 12, 'center');
-                            viz.screenText('n = ' + nExp, px + 8, py + 30, viz.colors.yellow, 14, 'left');
-                            viz.screenText('Re \u222b = ' + accRe.toFixed(5), px + 8, py + 54, viz.colors.blue, 11, 'left');
-                            viz.screenText('Im \u222b = ' + accIm.toFixed(5), px + 8, py + 72, viz.colors.teal, 11, 'left');
-
-                            var done = tVal > 0.99;
-                            if (done) {
-                                var resRe = accRe, resIm = accIm;
-                                var isSpecial = nExp === -1;
-                                var resultStr = isSpecial ? 'Result: 2\u03c0i' : 'Result: 0';
-                                viz.screenText(resultStr, px + 78, py + 100, isSpecial ? viz.colors.green : viz.colors.teal, 14, 'center');
-                                viz.screenText(isSpecial ? '(only n=\u22121 survives!)' : '(antiderivative exists)', px + 78, py + 122, viz.colors.text, 10, 'center');
-                            }
-
-                            // Theoretical reminder
-                            viz.screenText('Theorem: \u222b\u1D67 z\u207F dz = 0 (n\u2260\u22121)', px + 78, py + 145, viz.colors.text, 10, 'center');
-                            viz.screenText('             = 2\u03c0i (n=\u22121)', px + 78, py + 163, viz.colors.text, 10, 'center');
                         });
                         return viz;
                     }
@@ -1075,19 +1177,14 @@ Only the \\(n = -1\\) term survives. This is the <strong>residue</strong> \\(a_{
             ],
             exercises: [
                 {
-                    question: 'Compute \\(\\oint_{|z|=2} z^{-3}\\,dz\\). Justify using both the formula and the antiderivative argument.',
-                    hint: 'Since \\(n = -3 \\neq -1\\), the theorem gives 0. For the antiderivative argument, note \\(z^{-3}\\) has antiderivative \\(z^{-2}/(-2)\\) away from the origin.',
-                    solution: 'By Theorem 4.11 with \\(n = -3\\), \\(\\oint z^{-3}\\,dz = 0\\). Alternatively, \\(F(z) = z^{-2}/(-2)\\) satisfies \\(F\'(z) = z^{-3}\\) on \\(\\mathbb{C}\\setminus\\{0\\}\\). For any closed contour not passing through 0, \\(\\oint F\'(z)\\,dz = F(z_0) - F(z_0) = 0\\).'
+                    question: 'Compute \\(\\oint_{|z|=2} \\frac{dz}{z}\\) and \\(\\oint_{|z|=2} \\frac{dz}{z^2}\\).',
+                    hint: 'These are the cases \\(n = -1\\) and \\(n = -2\\) of Theorem 4.7 (with \\(z_0 = 0\\)).',
+                    solution: 'By Theorem 4.7: \\(\\oint_{|z|=2} z^{-1}\\,dz = 2\\pi i\\) and \\(\\oint_{|z|=2} z^{-2}\\,dz = 0\\).'
                 },
                 {
-                    question: 'Compute \\(\\oint_{|z-1|=3} \\frac{1}{z}\\,dz\\). Note: the contour is centered at 1 with radius 3, so it encloses the origin.',
-                    hint: 'You can deform the contour to \\(|z|=1\\) without crossing any singularity (all of \\(1/z\\)\'s singularity is at 0, which is enclosed). The integral is invariant under this deformation.',
-                    solution: 'The only singularity of \\(1/z\\) is at \\(z = 0\\). Since \\(|1-0| = 1 < 3\\), the origin lies inside \\(|z-1|=3\\). By Cauchy\'s theorem (to be proved in Ch. 5), the integral over any simple closed counterclockwise curve enclosing 0 equals \\(2\\pi i\\).'
-                },
-                {
-                    question: 'What is \\(\\oint_{|z|=1} \\left(z^3 + \\frac{2}{z} - \\frac{5}{z^2}\\right) dz\\)?',
-                    hint: 'Use linearity and apply the formula for each term separately.',
-                    solution: 'By linearity and Theorem 4.11: \\(\\oint z^3\\,dz = 0\\) (\\(n=3\\)); \\(\\oint 2/z\\,dz = 2 \\cdot 2\\pi i = 4\\pi i\\) (\\(n=-1\\)); \\(\\oint -5/z^2\\,dz = -5 \\cdot 0 = 0\\) (\\(n=-2\\)). Total: \\(4\\pi i\\).'
+                    question: 'Compute \\(\\oint_{|z-1|=1} \\frac{dz}{z-1}\\).',
+                    hint: 'This is the case \\(n = -1\\) of Theorem 4.7 with \\(z_0 = 1\\) and \\(R = 1\\).',
+                    solution: 'Since the contour is the circle \\(|z-1| = 1\\) centered at \\(z_0 = 1\\), by Theorem 4.7 with \\(n = -1\\): \\(\\oint_{|z-1|=1} \\frac{dz}{z-1} = 2\\pi i\\).'
                 }
             ]
         },
@@ -1097,173 +1194,170 @@ Only the \\(n = -1\\) term survives. This is the <strong>residue</strong> \\(a_{
         // ================================================================
         {
             id: 'sec-bridge',
-            title: "Cauchy's Theorem",
+            title: 'Looking Ahead',
             content: `
-<h2>Bridge: Cauchy's Theorem</h2>
+<h2>Bridge to Cauchy's Theorem</h2>
 
-<p>We have now seen that:</p>
-<ul>
-    <li>For \\(f(z) = z^n\\) with \\(n \\neq -1\\), the integral around any closed curve is zero.</li>
-    <li>For \\(f(z) = 1/z\\), the integral around a curve enclosing the origin is \\(2\\pi i\\).</li>
-</ul>
+<p>This chapter has established the mechanics of complex integration: how to parameterize contours, compute integrals, estimate their size, and use antiderivatives. We now have two fundamental results to reflect on:</p>
 
-<p>The key distinction is whether \\(f\\) has an antiderivative on the relevant domain. Is there a more fundamental reason that analytic functions tend to have zero closed integrals?</p>
+<ol>
+    <li>If \\(f\\) has an antiderivative, then \\(\\oint_\\gamma f(z)\\,dz = 0\\) for every closed contour.</li>
+    <li>The function \\(1/z\\), which does not have a single-valued antiderivative on the punctured plane, gives \\(\\oint_{|z|=1} \\frac{dz}{z} = 2\\pi i\\).</li>
+</ol>
+
+<h3>What Comes Next</h3>
+
+<p>Cauchy's theorem (Chapter 5) is the grand generalization of observation (1). It says:</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Cauchy's Theorem (Preview)</div>
+    <div class="env-title">Preview: Cauchy's Theorem</div>
     <div class="env-body">
-        <p>Let \\(f\\) be analytic on a simply connected domain \\(D\\). Then for every closed contour \\(\\gamma\\) in \\(D\\),
-        \\[\\oint_\\gamma f(z)\\,dz = 0.\\]</p>
+        <p>If \\(f\\) is analytic on a simply connected domain \\(D\\), then for every closed contour \\(\\gamma\\) in \\(D\\):</p>
+        \\[\\oint_\\gamma f(z)\\,dz = 0.\\]
     </div>
 </div>
 
-<p>This is the central theorem of complex analysis, proved rigorously in Chapter 5. Let us see why it makes geometric sense.</p>
+<p>The key hypothesis is <strong>simply connected</strong>: the domain has no "holes." The punctured plane \\(\\mathbb{C} \\setminus \\{0\\}\\) is not simply connected (it has a hole at the origin), which is why \\(\\oint 1/z\\,dz \\neq 0\\).</p>
 
-<h3>Intuition via Green's Theorem</h3>
-
-<p>Recall that a contour integral can be written as two real line integrals:
-\\[\\oint_\\gamma f\\,dz = \\oint_\\gamma (u\\,dx - v\\,dy) + i\\oint_\\gamma (v\\,dx + u\\,dy).\\]
-By Green's theorem, these line integrals over a closed curve equal double integrals:
-\\[\\oint_\\gamma u\\,dx - v\\,dy = -\\iint_R \\left(\\frac{\\partial v}{\\partial x} + \\frac{\\partial u}{\\partial y}\\right)\\,dA, \\quad \\oint_\\gamma v\\,dx + u\\,dy = \\iint_R \\left(\\frac{\\partial u}{\\partial x} - \\frac{\\partial v}{\\partial y}\\right)\\,dA.\\]
-But analyticity means the Cauchy-Riemann equations hold: \\(u_x = v_y\\) and \\(u_y = -v_x\\). Substituting, both integrands are identically zero! This is the crux.</p>
-
-<div class="env-block remark">
-    <div class="env-title">The Converse: Morera's Theorem</div>
-    <div class="env-body">
-        <p>Remarkably, the converse is also true (Morera's theorem): if \\(f\\) is continuous on a domain \\(D\\) and \\(\\int_\\gamma f\\,dz = 0\\) for every closed triangle in \\(D\\), then \\(f\\) is analytic on \\(D\\). The vanishing of closed integrals is equivalent to analyticity.</p>
-    </div>
-</div>
+<p>From Cauchy's theorem flows Cauchy's integral formula (Chapter 6): the remarkable fact that the value of an analytic function at any interior point is completely determined by its values on the boundary. This leads to:</p>
+<ul>
+    <li>Analytic functions are infinitely differentiable</li>
+    <li>Liouville's theorem: bounded entire functions are constant</li>
+    <li>The fundamental theorem of algebra</li>
+    <li>Power series representations (Taylor and Laurent)</li>
+    <li>The residue theorem and its applications to definite integrals</li>
+</ul>
 
 <h3>Contour Deformation</h3>
 
-<p>A powerful consequence of Cauchy's theorem is that we can <em>deform contours</em>. If \\(f\\) is analytic in the region between two contours \\(\\gamma_1\\) and \\(\\gamma_2\\) with the same endpoints (or both closed), then
-\\[\\int_{\\gamma_1} f\\,dz = \\int_{\\gamma_2} f\\,dz.\\]
-This allows us to replace a complicated path with a simple one (like a circle), as long as we do not cross a singularity in the process.</p>
+<p>One of the most powerful ideas in complex analysis is <strong>contour deformation</strong>: if \\(f\\) is analytic in a region between two contours, then the integrals along the two contours are equal. Intuitively, you can "push" the contour continuously without changing the integral, as long as you do not cross a singularity.</p>
 
 <div class="env-block example">
-    <div class="env-title">Example 4.5: Deformation in Practice</div>
+    <div class="env-title">Example: Deforming Around a Singularity</div>
     <div class="env-body">
-        <p>To compute \\(\\oint_{|z-3|=5} \\frac{1}{z}\\,dz\\) (a large circle centered at 3), note that \\(1/z\\) is analytic everywhere except \\(z = 0\\), which lies inside the contour (since \\(|0 - 3| = 3 < 5\\)). We can deform to the small circle \\(|z| = 1\\) without crossing the singularity:
-        \\[\\oint_{|z-3|=5} \\frac{1}{z}\\,dz = \\oint_{|z|=1} \\frac{1}{z}\\,dz = 2\\pi i.\\]</p>
+        <p>Consider \\(f(z) = 1/z\\) and a large circle \\(|z| = R\\) around the origin. We can deform this to any other simple closed curve around the origin, and the integral remains \\(2\\pi i\\). The integral "sees" only the topology: does the curve wind around the singularity or not?</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-deformation"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-deformation',
                     title: 'Contour Deformation',
-                    description: 'Watch a contour morph continuously. If f is analytic inside the region swept, the integral stays the same. A singularity at the origin blocks deformation: crossing it changes the integral.',
+                    description: 'Watch a contour smoothly deform while the integral of \\(1/z\\) stays constant at \\(2\\pi i\\). The integral only changes when the contour crosses a singularity.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 65, originX: 200, originY: 210 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 45
+                        });
 
                         var morphT = 0;
-                        var hasSing = false;
-                        var animating = true;
+                        var autoMorph = true;
 
-                        VizEngine.createButton(controls, 'Toggle Singularity at 0', function() { hasSing = !hasSing; morphT = 0; });
-                        VizEngine.createButton(controls, 'Reset', function() { morphT = 0; });
+                        VizEngine.createSlider(controls, 'Deform', 0, 1, 0, 0.01, function(v) {
+                            morphT = v;
+                            autoMorph = false;
+                        });
 
-                        // Two contours: gamma1 = circle radius 0.6, gamma2 = circle radius 1.8
-                        // We morph between them
-                        function getRadius(t) { return 0.6 + 1.2 * t; }
+                        VizEngine.createButton(controls, 'Animate', function() {
+                            autoMorph = true;
+                            morphT = 0;
+                        });
 
-                        function computeCircleIntegral(r, fType) {
-                            var nSteps = 400;
-                            var accRe = 0, accIm = 0;
-                            for (var k = 0; k < nSteps; k++) {
-                                var theta = 2 * Math.PI * (k + 0.5) / nSteps;
-                                var zRe = r * Math.cos(theta);
-                                var zIm = r * Math.sin(theta);
-                                var dTheta = 2 * Math.PI / nSteps;
-                                var dzRe = -r * Math.sin(theta) * dTheta;
-                                var dzIm = r * Math.cos(theta) * dTheta;
-                                var fRe, fIm;
-                                if (!fType) { // analytic: f(z) = z
-                                    fRe = zRe; fIm = zIm;
-                                } else { // 1/z
-                                    var d = zRe*zRe + zIm*zIm;
-                                    fRe = zRe/d; fIm = -zIm/d;
-                                }
-                                accRe += fRe*dzRe - fIm*dzIm;
-                                accIm += fRe*dzIm + fIm*dzRe;
-                            }
-                            return { re: accRe, im: accIm };
+                        function circlePoint(angle, r) {
+                            return [r * Math.cos(angle), r * Math.sin(angle)];
                         }
 
-                        viz.animate(function(ts) {
+                        // Shape 1: circle radius 1.5
+                        // Shape 2: wobbly shape radius ~2
+                        // Shape 3: ellipse
+                        function getContourPoint(s, morph) {
+                            var angle = 2 * Math.PI * s;
+                            // Circle
+                            var cx = 1.5 * Math.cos(angle);
+                            var cy = 1.5 * Math.sin(angle);
+                            // Wobbly
+                            var wr = 1.5 + 0.8 * Math.sin(3 * angle) + 0.4 * Math.cos(5 * angle);
+                            var wx = wr * Math.cos(angle);
+                            var wy = wr * Math.sin(angle);
+
+                            return [
+                                cx + morph * (wx - cx),
+                                cy + morph * (wy - cy)
+                            ];
+                        }
+
+                        viz.animate(function(time) {
                             viz.clear();
-                            viz.drawGrid(1);
+                            viz.drawGrid();
                             viz.drawAxes();
-                            viz.screenText('Re', viz.width - 18, viz.originY + 14, viz.colors.text, 11);
-                            viz.screenText('Im', viz.originX + 10, 12, viz.colors.text, 11);
 
-                            morphT = (morphT + 0.004) % 1.0;
+                            var ctx = viz.ctx;
 
-                            var r1 = 0.6, r2 = 1.8;
-                            var rCur = r1 + (r2 - r1) * morphT;
-
-                            // Draw swept region (shaded)
-                            viz.ctx.fillStyle = viz.colors.teal + '15';
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, r2 * viz.scale, 0, Math.PI * 2);
-                            viz.ctx.arc(viz.originX, viz.originY, r1 * viz.scale, 0, Math.PI * 2, true);
-                            viz.ctx.fill();
-
-                            // Draw starting contour (faint)
-                            viz.ctx.strokeStyle = viz.colors.blue + '44';
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, r1 * viz.scale, 0, Math.PI * 2);
-                            viz.ctx.stroke();
-
-                            // Draw ending contour (faint)
-                            viz.ctx.strokeStyle = viz.colors.teal + '44';
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, r2 * viz.scale, 0, Math.PI * 2);
-                            viz.ctx.stroke();
-
-                            // Draw current (morphed) contour
-                            viz.ctx.strokeStyle = viz.colors.yellow;
-                            viz.ctx.lineWidth = 3;
-                            viz.ctx.beginPath();
-                            viz.ctx.arc(viz.originX, viz.originY, rCur * viz.scale, 0, Math.PI * 2);
-                            viz.ctx.stroke();
-
-                            // Singularity at origin
-                            if (hasSing) {
-                                viz.ctx.fillStyle = viz.colors.red + '66';
-                                viz.ctx.beginPath();
-                                viz.ctx.arc(viz.originX, viz.originY, 10, 0, Math.PI * 2);
-                                viz.ctx.fill();
-                                viz.drawText('\u00d7', 0, 0, viz.colors.red, 18);
-                                viz.drawText('pole', 0.35, 0.2, viz.colors.red, 11);
+                            if (autoMorph) {
+                                morphT = 0.5 + 0.5 * Math.sin(time * 0.001);
                             }
 
-                            var int1 = computeCircleIntegral(r1, hasSing);
-                            var int2 = computeCircleIntegral(r2, hasSing);
-                            var intCur = computeCircleIntegral(rCur, hasSing);
+                            // Mark origin
+                            viz.drawPoint(0, 0, viz.colors.red, '0', 5);
 
-                            var px = viz.width - 195, py = 20;
-                            viz.ctx.fillStyle = '#1a1a40ee';
-                            viz.ctx.fillRect(px - 8, py - 8, 195, 200);
+                            // Draw contour
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 2.5;
+                            ctx.beginPath();
+                            for (var i = 0; i <= 300; i++) {
+                                var s = i / 300;
+                                var pt = getContourPoint(s, morphT);
+                                var scr = viz.toScreen(pt[0], pt[1]);
+                                i === 0 ? ctx.moveTo(scr[0], scr[1]) : ctx.lineTo(scr[0], scr[1]);
+                            }
+                            ctx.closePath();
+                            ctx.stroke();
 
-                            var fname = hasSing ? 'f(z) = 1/z' : 'f(z) = z';
-                            viz.screenText(fname, px + 88, py + 8, viz.colors.white, 12, 'center');
-                            viz.screenText('Contour r = ' + rCur.toFixed(2), px + 88, py + 28, viz.colors.yellow, 11, 'center');
+                            // Fill interior lightly
+                            ctx.fillStyle = viz.colors.blue + '11';
+                            ctx.fill();
 
-                            viz.screenText('r = ' + r1.toFixed(1) + ' (start):', px + 8, py + 52, viz.colors.blue, 10, 'left');
-                            viz.screenText(int1.re.toFixed(3) + '+' + int1.im.toFixed(3) + 'i', px + 8, py + 68, viz.colors.blue, 10, 'left');
+                            // Direction arrow at top
+                            var topPt = getContourPoint(0.25, morphT);
+                            var topPt2 = getContourPoint(0.255, morphT);
+                            var dx = topPt2[0] - topPt[0], dy = topPt2[1] - topPt[1];
+                            var sa = viz.toScreen(topPt[0], topPt[1]);
+                            var ang = Math.atan2(-dy, dx);
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.beginPath();
+                            ctx.moveTo(sa[0] + 8 * Math.cos(-ang), sa[1] + 8 * Math.sin(-ang));
+                            ctx.lineTo(sa[0] - 6 * Math.cos(-ang - 0.5), sa[1] - 6 * Math.sin(-ang - 0.5));
+                            ctx.lineTo(sa[0] - 6 * Math.cos(-ang + 0.5), sa[1] - 6 * Math.sin(-ang + 0.5));
+                            ctx.closePath();
+                            ctx.fill();
 
-                            viz.screenText('r = ' + r2.toFixed(1) + ' (end):', px + 8, py + 90, viz.colors.teal, 10, 'left');
-                            viz.screenText(int2.re.toFixed(3) + '+' + int2.im.toFixed(3) + 'i', px + 8, py + 106, viz.colors.teal, 10, 'left');
+                            // Compute integral numerically
+                            var intRe = 0, intIm = 0;
+                            var N = 1000;
+                            for (var k = 0; k < N; k++) {
+                                var s1 = k / N, s2 = (k + 1) / N;
+                                var p1 = getContourPoint(s1, morphT);
+                                var p2 = getContourPoint(s2, morphT);
+                                var dzRe = p2[0] - p1[0], dzIm = p2[1] - p1[1];
+                                var mx = (p1[0] + p2[0]) / 2;
+                                var my = (p1[1] + p2[1]) / 2;
+                                var r2 = mx * mx + my * my;
+                                if (r2 < 1e-10) continue;
+                                var fRe = mx / r2, fIm = -my / r2;
+                                intRe += fRe * dzRe - fIm * dzIm;
+                                intIm += fRe * dzIm + fIm * dzRe;
+                            }
 
-                            viz.screenText('Current:', px + 8, py + 128, viz.colors.yellow, 10, 'left');
-                            viz.screenText(intCur.re.toFixed(3) + '+' + intCur.im.toFixed(3) + 'i', px + 8, py + 144, viz.colors.yellow, 10, 'left');
+                            // Display
+                            viz.screenText('\u222E 1/z dz = ' + intRe.toFixed(3) + ' + ' + intIm.toFixed(3) + 'i',
+                                viz.width / 2, 20, viz.colors.teal, 14);
+                            viz.screenText('Always 2\u03C0i \u2248 6.283i as long as contour encloses 0',
+                                viz.width / 2, 40, viz.colors.text, 11);
 
-                            var diff = Math.sqrt((int1.re - int2.re)**2 + (int1.im - int2.im)**2);
-                            var invariant = diff < 0.05;
-                            viz.screenText(invariant ? 'Integral invariant \u2713' : 'Integral changes \u2717', px + 88, py + 172, invariant ? viz.colors.green : viz.colors.red, 12, 'center');
+                            viz.screenText('Deformation: ' + (morphT * 100).toFixed(0) + '%',
+                                viz.width - 10, viz.height - 15, viz.colors.text, 11, 'right');
                         });
                         return viz;
                     }
@@ -1271,27 +1365,21 @@ This allows us to replace a complicated path with a simple one (like a circle), 
             ],
             exercises: [
                 {
-                    question: 'Compute \\(\\oint_{|z-2|=3} \\frac{1}{z}\\,dz\\). Does the contour enclose the singularity at the origin?',
-                    hint: 'Check whether \\(|0 - 2| < 3\\). If yes, deform to the circle \\(|z|=1\\).',
-                    solution: 'Since \\(|0 - 2| = 2 < 3\\), the origin is inside the contour \\(|z-2|=3\\). By contour deformation (the singularity at 0 is inside, and \\(1/z\\) is analytic in the annular region), the integral equals \\(\\oint_{|z|=1} 1/z\\,dz = 2\\pi i\\).'
+                    question: 'Let \\(\\gamma\\) be a simple closed contour enclosing both \\(0\\) and \\(1\\). Find \\(\\oint_\\gamma \\left(\\frac{1}{z} + \\frac{1}{z-1}\\right)\\,dz\\).',
+                    hint: 'Use linearity and the fact that each term integrates to \\(2\\pi i\\) around a contour enclosing its singularity.',
+                    solution: 'By linearity, \\(\\oint_\\gamma \\frac{dz}{z} + \\oint_\\gamma \\frac{dz}{z-1} = 2\\pi i + 2\\pi i = 4\\pi i\\).'
                 },
                 {
-                    question: 'Let \\(\\gamma_1\\) be the straight line from \\(-1\\) to \\(1\\) and \\(\\gamma_2\\) be the semicircle from \\(-1\\) to \\(1\\) through the upper half-plane. Compute \\(\\int_{\\gamma_1} z^2\\,dz\\) and \\(\\int_{\\gamma_2} z^2\\,dz\\). Are they equal? Why?',
-                    hint: 'Use the antiderivative \\(F(z) = z^3/3\\). Since \\(z^2\\) is entire, path independence holds.',
-                    solution: 'Both equal \\(F(1) - F(-1) = 1/3 - (-1/3) = 2/3\\). Since \\(z^2\\) is analytic everywhere (entire) with antiderivative \\(z^3/3\\), path independence holds and both paths give the same result. This is a direct application of the fundamental theorem of contour integrals.'
+                    question: 'Why does \\(\\oint_{|z|=2} \\frac{dz}{z-5} = 0\\)?',
+                    hint: 'Where is the singularity relative to the contour? Does \\(1/(z-5)\\) have an antiderivative on the region enclosed by \\(|z|=2\\)?',
+                    solution: 'The singularity of \\(1/(z-5)\\) is at \\(z = 5\\), which lies outside \\(|z| = 2\\). On the disk \\(|z| < 3\\), \\(1/(z-5)\\) is analytic, so it has an antiderivative there (a branch of \\(\\log(z-5)\\) is single-valued since the disk is simply connected and does not contain 5). By the fundamental theorem, the closed contour integral is 0.'
                 },
                 {
-                    question: 'Use Cauchy\'s theorem to explain why \\(\\oint_{|z|=1} e^z\\,dz = 0\\) without computing the integral directly.',
-                    hint: 'Is \\(e^z\\) analytic? What does Cauchy\'s theorem say about the integral of an analytic function over a closed curve in a simply connected domain?',
-                    solution: '\\(e^z\\) is entire (analytic on all of \\(\\mathbb{C}\\)). The closed disk \\(|z| \\leq 1\\) is a simply connected domain. By Cauchy\'s theorem, the integral of any analytic function over any closed contour in a simply connected domain is zero. Therefore \\(\\oint_{|z|=1} e^z\\,dz = 0\\) without any computation.'
-                },
-                {
-                    question: 'A contour \\(\\gamma\\) consists of: (i) the segment from \\(0\\) to \\(1\\), (ii) the segment from \\(1\\) to \\(1+i\\), (iii) the segment from \\(1+i\\) to \\(i\\), and (iv) the segment from \\(i\\) to \\(0\\) (a unit square). Compute \\(\\oint_\\gamma z^2\\,dz\\).',
-                    hint: 'This is a closed contour. Does \\(z^2\\) have an antiderivative?',
-                    solution: 'Since \\(z^2\\) is entire with antiderivative \\(F(z) = z^3/3\\), the integral over any closed contour is \\(F(z_0) - F(z_0) = 0\\). Alternatively, by Cauchy\'s theorem applied to the square. Result: \\(0\\).'
+                    question: 'Explain intuitively why contour deformation preserves the integral of an analytic function.',
+                    hint: 'Think of Green\'s theorem / Stokes\' theorem. The integral over the boundary of a region where \\(f\\) is analytic is zero.',
+                    solution: 'If \\(f\\) is analytic between two contours \\(\\gamma_1\\) and \\(\\gamma_2\\), then the integral over the boundary of the region between them is 0 (by Cauchy\'s theorem applied to this annular region). The boundary consists of \\(\\gamma_2\\) (positive) and \\(-\\gamma_1\\) (negative), so \\(\\int_{\\gamma_2} f\\,dz - \\int_{\\gamma_1} f\\,dz = 0\\), i.e., the integrals are equal.'
                 }
             ]
         }
-
-    ] // end sections
-}); // end chapter push
+    ]
+});
