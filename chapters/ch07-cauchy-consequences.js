@@ -2,52 +2,82 @@ window.CHAPTERS = window.CHAPTERS || [];
 window.CHAPTERS.push({
     id: 'ch07',
     number: 7,
-    title: 'Consequences of Cauchy\'s Formula',
+    title: "Consequences of Cauchy's Formula",
     subtitle: 'Liouville, Morera, and the rigidity of analytic functions',
     sections: [
         // ================================================================
-        // SECTION 1: Motivation
+        // SECTION 1: Motivation — Why Cauchy's Formula Has Teeth
         // ================================================================
         {
             id: 'sec-motivation',
             title: 'Motivation',
             content: `
-<h2>Motivation</h2>
+<h2>Why Cauchy's Formula Has Teeth</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">What Cauchy's Formula Really Tells Us</div>
+    <div class="env-title">The Rigidity of Analyticity</div>
     <div class="env-body">
-        <p>Cauchy's integral formula says: if \\(f\\) is analytic inside and on a simple closed contour \\(C\\), then for any \\(z_0\\) inside \\(C\\),</p>
-        \\[
-        f(z_0) = \\frac{1}{2\\pi i} \\oint_C \\frac{f(z)}{z - z_0} \\, dz.
-        \\]
-        <p>This is extraordinary. The value of \\(f\\) at an interior point is <em>completely determined</em> by its values on the boundary. There is no freedom: knowing \\(f\\) on \\(C\\) pins down \\(f\\) everywhere inside.</p>
-        <p>This chapter harvests the consequences of that rigidity. We prove that bounded entire functions must be constant (Liouville), that every polynomial has a root in \\(\\mathbb{C}\\) (the Fundamental Theorem of Algebra), that the converse of Cauchy's theorem holds (Morera), and that the zeros of an analytic function cannot accumulate (the Identity Theorem). Each result is a facet of the same underlying rigidity.</p>
+        <p>In real analysis, knowing a smooth function on an interval tells you essentially nothing about its behavior elsewhere. A \\(C^\\infty\\) bump function can be identically zero outside any given interval while being nontrivial inside. Complex analysis is completely different. If \\(f\\) is analytic on a connected open set and you know \\(f\\) on <em>any</em> arc, any tiny open disk, or even just a sequence of points with a limit point, then you know \\(f\\) everywhere.</p>
+        <p>This chapter explores the consequences of Cauchy's integral formula that enforce this extraordinary rigidity.</p>
     </div>
 </div>
 
-<p>In real analysis, you can write down a smooth function that is bounded, non-constant, and defined on all of \\(\\mathbb{R}\\). For instance, \\(\\sin(x)\\) or \\(e^{-x^2}\\). Nothing prevents this. In complex analysis, the analogous statement is <em>false</em>: a bounded entire function must be constant. This is Liouville's theorem, and it is the first dramatic sign that analyticity is an extraordinarily rigid condition.</p>
+<p>Recall Cauchy's integral formula from Chapter 6: if \\(f\\) is analytic inside and on a simple closed contour \\(\\gamma\\), then for every \\(z\\) inside \\(\\gamma\\),</p>
 
-<p>The word <strong>rigid</strong> appears throughout this chapter. It means: analytic functions have far less freedom than you might expect. Once you fix an analytic function on any open set, or even on any sequence of points with a limit point, the function is determined everywhere in its domain of analyticity. This is the content of the Identity Theorem.</p>
+\\[
+f(z) = \\frac{1}{2\\pi i}\\oint_\\gamma \\frac{f(\\zeta)}{\\zeta - z}\\,d\\zeta.
+\\]
 
-<h3>A Map of This Chapter</h3>
+<p>This single identity implies a cascade of deep results:</p>
 
-<ul>
-    <li><strong>Liouville's Theorem</strong>: Bounded + entire implies constant. The proof uses Cauchy's estimate on the derivative.</li>
-    <li><strong>Fundamental Theorem of Algebra</strong>: Every non-constant polynomial has a root in \\(\\mathbb{C}\\). This follows from Liouville by contradiction.</li>
-    <li><strong>Morera's Theorem</strong>: The converse of Cauchy's theorem. If \\(\\oint_T f = 0\\) for every triangle \\(T\\) in a domain, then \\(f\\) is analytic.</li>
-    <li><strong>Schwarz Lemma</strong>: An analytic map of the unit disk fixing the origin satisfies \\(|f(z)| \\le |z|\\) and \\(|f'(0)| \\le 1\\).</li>
-    <li><strong>Identity Theorem</strong>: If two analytic functions agree on a set with a limit point, they are identical on their common domain.</li>
-</ul>
+<ol>
+    <li><strong>Liouville's theorem:</strong> bounded entire functions are constant.</li>
+    <li><strong>The Fundamental Theorem of Algebra:</strong> every non-constant polynomial has a root.</li>
+    <li><strong>Morera's theorem:</strong> the converse of Cauchy's theorem; vanishing contour integrals imply analyticity.</li>
+    <li><strong>The Schwarz lemma:</strong> a quantitative bound on how much analytic maps can "stretch" the unit disk.</li>
+    <li><strong>The identity theorem:</strong> two analytic functions that agree on a set with a limit point are identical.</li>
+    <li><strong>The open mapping theorem:</strong> non-constant analytic maps send open sets to open sets.</li>
+</ol>
+
+<p>Each result follows from Cauchy's formula, sometimes in just a few lines. The proofs are beautiful precisely because the integral formula does so much work.</p>
+
+<h3>Cauchy's Inequality</h3>
+
+<p>Before proceeding, we record a crucial estimate that Cauchy's formula yields. It will be the engine behind Liouville's theorem.</p>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.1 (Cauchy's Inequality)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be analytic inside and on \\(|z - z_0| = R\\). Then for all \\(n \\geq 0\\),</p>
+        \\[
+        |f^{(n)}(z_0)| \\leq \\frac{n!\\,M}{R^n},
+        \\]
+        <p>where \\(M = \\max_{|z - z_0| = R} |f(z)|\\).</p>
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>From Cauchy's formula for derivatives,</p>
+        \\[
+        f^{(n)}(z_0) = \\frac{n!}{2\\pi i}\\oint_{|\\zeta - z_0|=R} \\frac{f(\\zeta)}{(\\zeta - z_0)^{n+1}}\\,d\\zeta.
+        \\]
+        <p>By the ML-inequality (the length of the circle is \\(2\\pi R\\) and \\(|\\zeta - z_0|^{n+1} = R^{n+1}\\) on the circle):</p>
+        \\[
+        |f^{(n)}(z_0)| \\leq \\frac{n!}{2\\pi} \\cdot \\frac{M}{R^{n+1}} \\cdot 2\\pi R = \\frac{n! \\, M}{R^n}.
+        \\]
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">Historical Note</div>
+    <div class="env-title">What Lies Ahead</div>
     <div class="env-body">
-        <p>Joseph Liouville stated his theorem in 1844, though Cauchy had the tools to prove it earlier. The Fundamental Theorem of Algebra was first proved rigorously by Gauss in his 1799 doctoral dissertation (using topological arguments); the short proof via Liouville's theorem came later and is now the standard textbook proof. Elwin Bruno Christoffel and Hermann Amandus Schwarz developed the Schwarz lemma in the 1860s–1870s in the context of conformal mapping.</p>
+        <p>Notice that Cauchy's inequality says the derivatives of \\(f\\) are controlled by the <em>maximum of \\(|f|\\)</em> on a surrounding circle. Larger circles give tighter bounds (for bounded functions). This is the exact mechanism that makes Liouville's theorem work.</p>
     </div>
 </div>
 `,
-            visualizations: [],
             exercises: []
         },
 
@@ -60,149 +90,98 @@ window.CHAPTERS.push({
             content: `
 <h2>Liouville's Theorem</h2>
 
-<div class="env-block theorem">
-    <div class="env-title">Theorem (Liouville, 1844)</div>
+<div class="env-block intuition">
+    <div class="env-title">The Key Idea</div>
     <div class="env-body">
-        <p>If \\(f\\) is entire (analytic on all of \\(\\mathbb{C}\\)) and bounded (there exists \\(M < \\infty\\) such that \\(|f(z)| \\le M\\) for all \\(z \\in \\mathbb{C}\\)), then \\(f\\) is constant.</p>
+        <p>If \\(f\\) is entire (analytic on all of \\(\\mathbb{C}\\)) and bounded, then Cauchy's inequality says \\(|f'(z_0)| \\leq M/R\\) for every \\(R > 0\\). Letting \\(R \\to \\infty\\) forces \\(f'(z_0) = 0\\) at every point. A function with zero derivative everywhere is constant.</p>
     </div>
 </div>
 
-<h3>Proof via Cauchy's Estimate</h3>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.2 (Liouville's Theorem)</div>
+    <div class="env-body">
+        <p>Every bounded entire function is constant.</p>
+    </div>
+</div>
 
-<p>The key tool is <strong>Cauchy's estimate for derivatives</strong>. If \\(f\\) is analytic inside and on the circle \\(|z - z_0| = R\\), and \\(|f(z)| \\le M\\) on that circle, then Cauchy's integral formula for \\(f'\\) gives</p>
-
-\\[
-f'(z_0) = \\frac{1}{2\\pi i} \\oint_{|z-z_0|=R} \\frac{f(z)}{(z - z_0)^2} \\, dz.
-\\]
-
-<p>Taking absolute values and using the ML-inequality (length \\(= 2\\pi R\\), integrand \\(\\le M/R^2\\)):</p>
-
-\\[
-|f'(z_0)| \\le \\frac{1}{2\\pi} \\cdot \\frac{M}{R^2} \\cdot 2\\pi R = \\frac{M}{R}.
-\\]
-
-<p>Now apply this to Liouville's hypothesis. Since \\(f\\) is entire, this estimate holds for <em>every</em> \\(R > 0\\). Letting \\(R \\to \\infty\\):</p>
-
-\\[
-|f'(z_0)| \\le \\frac{M}{R} \\to 0.
-\\]
-
-<p>Therefore \\(f'(z_0) = 0\\). Since \\(z_0\\) was arbitrary, \\(f' \\equiv 0\\) on \\(\\mathbb{C}\\). A function with identically zero derivative on a connected open set is constant. \\(\\square\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be entire with \\(|f(z)| \\leq M\\) for all \\(z \\in \\mathbb{C}\\). Fix any \\(z_0 \\in \\mathbb{C}\\). For every \\(R > 0\\), \\(f\\) is analytic inside \\(|z - z_0| = R\\), so Cauchy's inequality with \\(n = 1\\) gives</p>
+        \\[
+        |f'(z_0)| \\leq \\frac{M}{R}.
+        \\]
+        <p>Since \\(R\\) is arbitrary, let \\(R \\to \\infty\\) to get \\(|f'(z_0)| = 0\\), i.e., \\(f'(z_0) = 0\\). This holds for every \\(z_0\\), so \\(f\\) is constant.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">What Makes the Proof Work</div>
+    <div class="env-title">Sharpness</div>
     <div class="env-body">
-        <p>The crucial step is that we can take \\(R \\to \\infty\\) because \\(f\\) is entire: there is no obstruction, no singularity, no boundary. The circle of radius \\(R\\) is always available. In real analysis, the analogous estimate on \\(f'\\) requires evaluating \\(f\\) far away, but boundedness and smoothness alone do not force \\(f' = 0\\).</p>
-        <p>The same argument gives a more general statement: if \\(f\\) is entire and \\(|f(z)| \\le C(1 + |z|^n)\\) for some \\(n \\ge 0\\), then \\(f\\) is a polynomial of degree at most \\(n\\).</p>
+        <p>Liouville's theorem is sharp: \\(f(z) = e^z\\) is entire but unbounded (it is unbounded along the positive real axis). Removing either hypothesis (entire or bounded) breaks the conclusion.</p>
     </div>
 </div>
 
-<h3>Cauchy's Estimate (General)</h3>
+<h3>A Generalization</h3>
 
-<p>More generally, differentiating Cauchy's formula \\(n\\) times gives</p>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.3 (Generalized Liouville)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is entire and \\(|f(z)| \\leq C|z|^k\\) for some constant \\(C\\) and non-negative integer \\(k\\), for all \\(|z|\\) sufficiently large, then \\(f\\) is a polynomial of degree at most \\(k\\).</p>
+    </div>
+</div>
 
-\\[
-f^{(n)}(z_0) = \\frac{n!}{2\\pi i} \\oint_{|z - z_0| = R} \\frac{f(z)}{(z - z_0)^{n+1}} \\, dz,
-\\]
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Apply Cauchy's inequality with \\(n = k + 1\\) and \\(z_0 = 0\\). On \\(|z| = R\\) (for large \\(R\\)), \\(M \\leq C R^k\\), so</p>
+        \\[
+        |f^{(k+1)}(0)| \\leq \\frac{(k+1)!\\,C R^k}{R^{k+1}} = \\frac{(k+1)!\\,C}{R} \\to 0.
+        \\]
+        <p>Hence \\(f^{(k+1)}(0) = 0\\). But the same argument at any center \\(z_0\\) (using \\(|f(z)| \\leq C'|z|^k \\leq C''R^k\\) on a large enough circle about \\(z_0\\)) shows \\(f^{(k+1)} \\equiv 0\\), so \\(f\\) is a polynomial of degree \\(\\leq k\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-and the ML-inequality yields</p>
-
-\\[
-\\boxed{|f^{(n)}(z_0)| \\le \\frac{n! \\, M_R}{R^n}}
-\\]
-
-<p>where \\(M_R = \\max_{|z-z_0|=R} |f(z)|\\). This estimate is called <strong>Cauchy's inequality</strong> or <strong>Cauchy's estimate</strong>.</p>
+<div class="viz-placeholder" data-viz="viz-liouville-demo"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-liouville-demo',
-                    title: 'The Liouville Impossibility',
-                    description: 'Try to construct a bounded, non-constant entire function. Whatever you attempt, the Cauchy estimate forces the derivative to zero as the circle radius grows. Use the sliders to explore.',
+                    title: "Liouville's Theorem: Bounded Entire Functions",
+                    description: 'Domain coloring of entire functions. Bounded ones (like constants) have uniform color; unbounded ones (like exp, polynomials) show the color spinning through all hues. Toggle between examples to see the contrast.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 580, height: 400, scale: 60, originX: 290, originY: 200 });
-
-                        var R = 2.0;
-                        var fnIdx = 0;
-                        var fns = [
-                            { name: 'sin(z) (unbounded on C)', f: function(re, im) {
-                                // sin(z) = sin(x)cosh(y) + i cos(x)sinh(y)
-                                return [Math.sin(re) * Math.cosh(im), Math.cos(re) * Math.sinh(im)];
-                            }, bounded: false },
-                            { name: 'e^z (unbounded)', f: function(re, im) {
-                                var r = Math.exp(re);
-                                return [r * Math.cos(im), r * Math.sin(im)];
-                            }, bounded: false },
-                            { name: 'z^2 (unbounded)', f: function(re, im) {
-                                return [re*re - im*im, 2*re*im];
-                            }, bounded: false },
-                            { name: '1/(1+z^2) (has poles)', f: function(re, im) {
-                                var dre = 1 + re*re - im*im, dim = 2*re*im;
-                                var d2 = dre*dre + dim*dim;
-                                if (d2 < 1e-10) return [0, 0];
-                                return [dre/d2, -dim/d2];
-                            }, bounded: false }
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 40
+                        });
+                        var funcIdx = 0;
+                        var funcs = [
+                            { name: 'f(z) = 3 (constant, bounded)', fn: function(re, im) { return [3, 0]; } },
+                            { name: 'f(z) = e^z (entire, unbounded)', fn: function(re, im) { var r = Math.exp(re); return [r * Math.cos(im), r * Math.sin(im)]; } },
+                            { name: 'f(z) = z^2 (entire, unbounded)', fn: function(re, im) { return [re*re - im*im, 2*re*im]; } },
+                            { name: 'f(z) = sin(z) (entire, unbounded)', fn: function(re, im) { return [Math.sin(re)*Math.cosh(im), Math.cos(re)*Math.sinh(im)]; } },
+                            { name: 'f(z) = 2i (constant, bounded)', fn: function(re, im) { return [0, 2]; } }
                         ];
 
-                        var selectEl = document.createElement('select');
-                        selectEl.style.cssText = 'background:#1a1a40;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:3px 8px;font-size:0.78rem;margin-right:8px;';
-                        fns.forEach(function(fn, i) {
-                            var opt = document.createElement('option');
-                            opt.value = i; opt.textContent = fn.name;
-                            selectEl.appendChild(opt);
+                        VizEngine.createButton(controls, 'Next function', function() {
+                            funcIdx = (funcIdx + 1) % funcs.length;
+                            draw();
                         });
-                        selectEl.addEventListener('change', function() { fnIdx = parseInt(selectEl.value); draw(); });
-                        controls.appendChild(selectEl);
-
-                        VizEngine.createSlider(controls, 'Radius R', 0.2, 5.0, R, 0.1, function(v) { R = v; draw(); });
-
-                        function maxOnCircle(fn, cx, cy, r, nPts) {
-                            var m = 0;
-                            for (var k = 0; k < nPts; k++) {
-                                var th = 2 * Math.PI * k / nPts;
-                                var zre = cx + r * Math.cos(th), zim = cy + r * Math.sin(th);
-                                var fw = fn.f(zre, zim);
-                                m = Math.max(m, Math.sqrt(fw[0]*fw[0] + fw[1]*fw[1]));
-                            }
-                            return m;
-                        }
 
                         function draw() {
-                            viz.clear();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
-
-                            var fn = fns[fnIdx];
-                            var z0re = 0, z0im = 0;
-                            var M_R = maxOnCircle(fn, z0re, z0im, R, 200);
-                            var cauchy_bound = M_R / R;
-
-                            // Draw the circle
-                            viz.drawCircle(z0re, z0im, R, null, viz.colors.blue, 2);
-                            viz.drawPoint(z0re, z0im, viz.colors.orange, 'z\u2080', 5);
-
-                            // Show max |f| on circle as dots
+                            var f = funcs[funcIdx];
+                            viz.drawDomainColoring(f.fn, [-5, 5], [-3.5, 3.5]);
                             var ctx = viz.ctx;
-                            for (var k = 0; k < 120; k++) {
-                                var th = 2 * Math.PI * k / 120;
-                                var zre = z0re + R * Math.cos(th), zim = z0im + R * Math.sin(th);
-                                var fw = fn.f(zre, zim);
-                                var mag = Math.sqrt(fw[0]*fw[0] + fw[1]*fw[1]);
-                                var brightness = Math.min(1, mag / (M_R + 0.01));
-                                var sc = viz.toScreen(zre, zim);
-                                ctx.fillStyle = 'rgba(' + Math.round(88*brightness) + ',' + Math.round(166*brightness) + ',' + Math.round(255*brightness) + ',0.7)';
-                                ctx.beginPath(); ctx.arc(sc[0], sc[1], 3, 0, Math.PI*2); ctx.fill();
-                            }
-
-                            // Info panel
-                            var px = 14, py = 14;
-                            ctx.fillStyle = '#0c0c2099'; ctx.fillRect(px-4, py-4, 300, 90);
-                            viz.screenText('f(z) = ' + fn.name, px + 148, py + 8, viz.colors.white, 12, 'center');
-                            viz.screenText('R = ' + R.toFixed(2), px + 148, py + 26, viz.colors.teal, 12, 'center');
-                            viz.screenText('M\u1D3F = max|f| on circle = ' + M_R.toFixed(3), px + 148, py + 44, viz.colors.yellow, 12, 'center');
-                            viz.screenText("|f'(0)| \u2264 M\u1D3F/R = " + cauchy_bound.toFixed(3), px + 148, py + 62, viz.colors.orange, 12, 'center');
-
-                            var msg = fn.bounded ? 'Bounded entire \u21D2 constant (Liouville!)' : 'M\u1D3F grows with R \u21D2 not bounded entire';
-                            viz.screenText(msg, viz.width/2, viz.height - 16, fn.bounded ? viz.colors.green : viz.colors.red, 12, 'center');
+                            ctx.fillStyle = 'rgba(12,12,32,0.7)';
+                            ctx.fillRect(0, 0, viz.width, 30);
+                            viz.screenText(f.name, viz.width / 2, 16, viz.colors.white, 13);
+                            var bounded = (funcIdx === 0 || funcIdx === 4);
+                            viz.screenText(
+                                bounded ? 'Bounded: uniform magnitude => constant by Liouville' : 'Unbounded: Liouville does not apply',
+                                viz.width / 2, viz.height - 12, bounded ? viz.colors.green : viz.colors.orange, 11
+                            );
                         }
                         draw();
                         return viz;
@@ -211,141 +190,117 @@ and the ML-inequality yields</p>
             ],
             exercises: [
                 {
-                    question: 'Use Cauchy\'s estimate to show: if \\(f\\) is entire and \\(|f(z)| \\le A|z| + B\\) for all \\(z\\), then \\(f\\) is a polynomial of degree at most 1 (i.e., \\(f(z) = az + b\\)).',
-                    hint: 'Apply Cauchy\'s estimate to \\(f\'\'(z_0)\\) with a circle of radius \\(R\\), estimate the maximum of \\(|f|\\) on that circle using the given bound, then let \\(R \\to \\infty\\).',
-                    solution: 'On the circle \\(|z - z_0| = R\\), any point \\(z\\) satisfies \\(|z| \\le |z_0| + R\\), so \\(|f(z)| \\le A(|z_0|+R)+B\\). Cauchy\'s estimate gives \\(|f\'\'(z_0)| \\le 2!(A(|z_0|+R)+B)/R^2 \\to 0\\) as \\(R \\to \\infty\\). Hence \\(f\'\' \\equiv 0\\), meaning \\(f(z) = az + b\\).'
+                    question: 'Prove that if \\(f\\) is entire and \\(\\operatorname{Re}(f(z)) \\leq M\\) for all \\(z\\), then \\(f\\) is constant.',
+                    hint: 'Consider \\(g(z) = e^{f(z)}\\). What can you say about \\(|g(z)|\\)?',
+                    solution: 'Let \\(g(z) = e^{f(z)}\\). Then \\(g\\) is entire and \\(|g(z)| = e^{\\operatorname{Re}(f(z))} \\leq e^M\\). By Liouville, \\(g\\) is constant, so \\(f\\) is constant (since \\(e^w\\) is injective on any horizontal strip of width \\(< 2\\pi\\), and if \\(e^f\\) is constant then \\(f\\) must be constant).'
                 },
                 {
-                    question: 'Show that every analytic function satisfying \\(|f(z)| \\ge 1\\) for all \\(z \\in \\mathbb{C}\\) must be constant.',
-                    hint: 'Consider \\(g = 1/f\\). What can you say about \\(g\\)?',
-                    solution: 'Since \\(|f(z)| \\ge 1 > 0\\), \\(f\\) has no zeros, so \\(g = 1/f\\) is entire. Moreover \\(|g(z)| = 1/|f(z)| \\le 1\\), so \\(g\\) is bounded and entire. By Liouville, \\(g\\) is constant, hence so is \\(f = 1/g\\).'
+                    question: 'Let \\(f\\) be entire with \\(|f(z)| \\geq 1\\) for all \\(z\\). Show that \\(f\\) is constant.',
+                    hint: 'Consider \\(1/f(z)\\).',
+                    solution: '\\(g(z) = 1/f(z)\\) is entire (since \\(f\\) has no zeros, being at least 1 in modulus) and \\(|g(z)| \\leq 1\\). By Liouville, \\(g\\) is constant, hence \\(f\\) is constant.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: Fundamental Theorem of Algebra
+        // SECTION 3: The Fundamental Theorem of Algebra
         // ================================================================
         {
             id: 'sec-fta',
             title: 'Fundamental Theorem of Algebra',
             content: `
-<h2>Fundamental Theorem of Algebra</h2>
+<h2>The Fundamental Theorem of Algebra</h2>
 
-<div class="env-block theorem">
-    <div class="env-title">Theorem (Fundamental Theorem of Algebra)</div>
+<div class="env-block intuition">
+    <div class="env-title">Why Complex Analysis Proves an Algebra Theorem</div>
     <div class="env-body">
-        <p>Every non-constant polynomial \\(p(z) = a_n z^n + \\cdots + a_0\\) with \\(a_n \\ne 0\\), \\(n \\ge 1\\), and coefficients in \\(\\mathbb{C}\\) has at least one root in \\(\\mathbb{C}\\).</p>
+        <p>The Fundamental Theorem of Algebra (FTA) says every non-constant polynomial \\(p(z)\\) with complex coefficients has at least one root in \\(\\mathbb{C}\\). Despite its name, every known proof uses analysis in some form. Liouville's theorem gives one of the shortest and most elegant proofs.</p>
     </div>
 </div>
 
-<h3>Proof via Liouville's Theorem</h3>
-
-<p>Suppose for contradiction that \\(p(z) \\ne 0\\) for all \\(z \\in \\mathbb{C}\\). Then \\(f(z) = 1/p(z)\\) is entire (no poles anywhere).</p>
-
-<p><strong>Step 1: \\(f\\) is bounded.</strong> Since \\(|p(z)| \\to \\infty\\) as \\(|z| \\to \\infty\\) (the leading term \\(a_n z^n\\) dominates), there exists \\(R > 0\\) such that \\(|p(z)| \\ge 1\\) for all \\(|z| \\ge R\\). Hence \\(|f(z)| \\le 1\\) outside the disk \\(|z| \\le R\\). On the compact disk \\(\\{|z| \\le R\\}\\), \\(f\\) is continuous and therefore bounded. So \\(f\\) is bounded on all of \\(\\mathbb{C}\\).</p>
-
-<p><strong>Step 2: Apply Liouville.</strong> \\(f\\) is bounded and entire, hence constant. But \\(1/p(z) = \\text{const}\\) implies \\(p(z) = \\text{const}\\), contradicting the assumption that \\(p\\) is non-constant. \\(\\square\\)</p>
-
-<h3>The Full Factorization</h3>
-
-<p>Applying the theorem repeatedly (factoring out \\(z - z_1\\) and repeating on the quotient):</p>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.4 (Fundamental Theorem of Algebra)</div>
     <div class="env-body">
-        <p>Every degree-\\(n\\) polynomial over \\(\\mathbb{C}\\) factors as</p>
-        \\[
-        p(z) = a_n(z - z_1)(z - z_2)\\cdots(z - z_n)
-        \\]
-        <p>for some \\(z_1, \\ldots, z_n \\in \\mathbb{C}\\) (not necessarily distinct). In particular, \\(p\\) has exactly \\(n\\) roots counted with multiplicity.</p>
+        <p>Every non-constant polynomial \\(p(z) = a_n z^n + \\cdots + a_1 z + a_0\\) with \\(a_n \\neq 0\\) and \\(n \\geq 1\\) has at least one root in \\(\\mathbb{C}\\).</p>
     </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof via Liouville's Theorem</div>
+    <div class="env-body">
+        <p>Suppose for contradiction that \\(p(z) \\neq 0\\) for all \\(z \\in \\mathbb{C}\\). Then \\(g(z) = 1/p(z)\\) is entire.</p>
+        <p>We claim \\(g\\) is bounded. Since \\(p(z) = a_n z^n(1 + a_{n-1}/(a_n z) + \\cdots)\\), for large \\(|z|\\) we have \\(|p(z)| \\geq |a_n||z|^n/2\\), so \\(|g(z)| \\leq 2/(|a_n||z|^n) \\to 0\\). Thus \\(g\\) is bounded for \\(|z| \\geq R_0\\) for some \\(R_0\\).</p>
+        <p>On the compact disk \\(|z| \\leq R_0\\), the continuous function \\(|g|\\) attains a maximum. Combining, \\(g\\) is bounded on all of \\(\\mathbb{C}\\).</p>
+        <p>By Liouville's theorem, \\(g\\) is constant, so \\(p\\) is constant, contradicting \\(n \\geq 1\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
 </div>
 
 <div class="env-block remark">
-    <div class="env-title">Why \\(\\mathbb{R}\\) is Not Enough</div>
+    <div class="env-title">Corollary: Complete Factorization</div>
     <div class="env-body">
-        <p>The theorem fails over \\(\\mathbb{R}\\): \\(z^2 + 1\\) has no real roots. Over \\(\\mathbb{C}\\), it factors as \\((z-i)(z+i)\\). The complex numbers are <em>algebraically closed</em>: every non-constant polynomial over \\(\\mathbb{C}\\) splits completely into linear factors over \\(\\mathbb{C}\\).</p>
+        <p>By induction, any degree-\\(n\\) polynomial factors completely as \\(p(z) = a_n(z - z_1)(z - z_2)\\cdots(z - z_n)\\) for roots \\(z_1, \\ldots, z_n \\in \\mathbb{C}\\) (counted with multiplicity). This is why \\(\\mathbb{C}\\) is called <em>algebraically closed</em>.</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-fta-zeros"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-fta-zeros',
                     title: 'Polynomial Zeros via Domain Coloring',
-                    description: 'Domain coloring of a degree-n polynomial. Zeros appear as points where all colors meet (phase winds through 360°). Adjust the degree and coefficients to see n zeros appear.',
+                    description: 'Domain coloring of a polynomial p(z). Zeros appear as points where all colors converge (a full hue cycle around the point). Adjust the coefficients to move the zeros around. Every degree-n polynomial has exactly n zeros (counted with multiplicity).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 55, originX: 280, originY: 210 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 40
+                        });
 
-                        var degree = 3;
-                        var coeffRe = [1, 0, -1, 0]; // p(z) = z^3 - z
-                        var coeffIm = [0, 0, 0, 0];
+                        var a0r = -1, a0i = 0;
+                        var a1r = 0, a1i = 0;
+                        var a2r = 1, a2i = 0;
+                        var degree = 2;
 
-                        VizEngine.createSlider(controls, 'Degree n', 1, 5, degree, 1, function(v) {
-                            degree = Math.round(v);
-                            while (coeffRe.length <= degree) { coeffRe.push(0); coeffIm.push(0); }
-                            draw();
-                        });
-                        VizEngine.createSlider(controls, 'a\u2081 (Re)', -2, 2, coeffRe[1] || 0, 0.1, function(v) {
-                            if (coeffRe.length > 1) coeffRe[1] = v; draw();
-                        });
-                        VizEngine.createSlider(controls, 'a\u2080 (Re)', -2, 2, coeffRe[0] || 0, 0.1, function(v) {
-                            coeffRe[0] = v; draw();
-                        });
+                        VizEngine.createSlider(controls, 'a\u2080 (re)', -3, 3, a0r, 0.5, function(v) { a0r = v; draw(); });
+                        VizEngine.createSlider(controls, 'a\u2080 (im)', -3, 3, a0i, 0.5, function(v) { a0i = v; draw(); });
+                        VizEngine.createSlider(controls, 'degree', 1, 5, degree, 1, function(v) { degree = Math.round(v); draw(); });
 
                         function polyEval(re, im) {
-                            // Horner's method: p(z) = a_n z^n + ... + a_0
-                            // coeffRe[n] = a_n (leading), coeffRe[0] = a_0 (constant)
-                            var n = degree;
-                            var rre = coeffRe[n] || 0, rim = coeffIm[n] || 0;
-                            for (var k = n - 1; k >= 0; k--) {
-                                // multiply by z = (re, im)
-                                var newRe = rre * re - rim * im + (coeffRe[k] || 0);
-                                var newIm = rre * im + rim * re + (coeffIm[k] || 0);
-                                rre = newRe; rim = newIm;
+                            // p(z) = z^degree + a0
+                            var zr = 1, zi = 0;
+                            var wr = 1, wi = 0;
+                            for (var k = 0; k < degree; k++) {
+                                var nr = wr * re - wi * im;
+                                var ni = wr * im + wi * re;
+                                wr = nr; wi = ni;
                             }
-                            return [rre, rim];
-                        }
-
-                        // Default coefficients by degree
-                        function resetCoeffs() {
-                            var defaults = {
-                                1: [0, 1],
-                                2: [-1, 0, 1],
-                                3: [0, -1, 0, 1],
-                                4: [1, 0, -2, 0, 1],
-                                5: [0, 2, 0, -3, 0, 1]
-                            };
-                            var d = defaults[degree] || [0, 1];
-                            coeffRe = d.slice(); coeffIm = d.map(function() { return 0; });
+                            return [wr + a0r, wi + a0i];
                         }
 
                         function draw() {
-                            viz.clear();
-                            var xRange = [-viz.originX / viz.scale, (viz.width - viz.originX) / viz.scale];
-                            var yRange = [-(viz.height - viz.originY) / viz.scale, viz.originY / viz.scale];
-                            viz.drawDomainColoring(polyEval, xRange, yRange);
-                            viz.drawGrid(1);
-                            viz.drawAxes();
-                            viz.screenText('p(z): degree ' + degree + ' polynomial (domain coloring)', viz.width/2, 14, viz.colors.white, 13, 'center');
-                            viz.screenText('Zeros: phase vortices (all colors meet)', viz.width/2, viz.height - 12, viz.colors.yellow, 11, 'center');
+                            viz.drawDomainColoring(polyEval, [-3, 3], [-2.5, 2.5]);
+                            var ctx = viz.ctx;
+                            ctx.fillStyle = 'rgba(12,12,32,0.7)';
+                            ctx.fillRect(0, 0, viz.width, 28);
+                            var label = 'p(z) = z^' + degree + ' + (' + a0r.toFixed(1) + (a0i >= 0 ? '+' : '') + a0i.toFixed(1) + 'i)';
+                            viz.screenText(label, viz.width / 2, 15, viz.colors.white, 12);
+                            viz.screenText('Zeros: where all colors spiral to a point', viz.width / 2, viz.height - 12, viz.colors.teal, 11);
                         }
-
-                        resetCoeffs(); draw();
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Factor \\(p(z) = z^4 - 1\\) completely over \\(\\mathbb{C}\\). What are the four roots?',
-                    hint: 'The roots of \\(z^4 = 1\\) are the fourth roots of unity: \\(e^{2\\pi i k/4}\\) for \\(k = 0,1,2,3\\).',
-                    solution: '\\(z^4 - 1 = (z^2-1)(z^2+1) = (z-1)(z+1)(z-i)(z+i)\\). The four roots are \\(1, -1, i, -i\\), equally spaced on the unit circle at angles \\(0, \\pi, \\pi/2, 3\\pi/2\\).'
+                    question: 'Use the FTA to show that every polynomial of odd degree with real coefficients has at least one real root.',
+                    hint: 'Consider the behavior of \\(p(x)\\) as \\(x \\to +\\infty\\) and \\(x \\to -\\infty\\) on the real line, using the Intermediate Value Theorem.',
+                    solution: 'For a real polynomial of odd degree \\(n\\), \\(p(x) \\to +\\infty\\) as \\(x \\to +\\infty\\) and \\(p(x) \\to -\\infty\\) as \\(x \\to -\\infty\\) (or vice versa). By the Intermediate Value Theorem, \\(p\\) has a real root. Alternatively, by the FTA, \\(p\\) has \\(n\\) complex roots. Complex roots of real polynomials come in conjugate pairs, so the number of non-real roots is even. Since \\(n\\) is odd, at least one root must be real.'
                 },
                 {
-                    question: 'Why does the Fundamental Theorem of Algebra not apply to the function \\(e^z - 1\\)?',
-                    hint: 'Is \\(e^z - 1\\) a polynomial?',
-                    solution: '\\(e^z - 1\\) is not a polynomial; it is a transcendental entire function. The FTA applies only to polynomials. In fact, \\(e^z - 1\\) has infinitely many zeros (at \\(z = 2\\pi i k\\) for \\(k \\in \\mathbb{Z}\\)), which could not happen for a polynomial.'
+                    question: 'Without using the FTA, show that \\(p(z) = z^4 + 1\\) has no real roots but has four complex roots. Find them explicitly.',
+                    hint: 'Factor \\(z^4 + 1 = (z^2 + \\sqrt{2}z + 1)(z^2 - \\sqrt{2}z + 1)\\), or solve \\(z^4 = -1 = e^{i\\pi}\\).',
+                    solution: '\\(z^4 = -1 = e^{i(\\pi + 2k\\pi)}\\), so \\(z = e^{i(\\pi + 2k\\pi)/4}\\) for \\(k = 0,1,2,3\\). The four roots are \\(e^{i\\pi/4} = \\frac{1+i}{\\sqrt{2}}\\), \\(e^{i3\\pi/4} = \\frac{-1+i}{\\sqrt{2}}\\), \\(e^{i5\\pi/4} = \\frac{-1-i}{\\sqrt{2}}\\), \\(e^{i7\\pi/4} = \\frac{1-i}{\\sqrt{2}}\\). None is real since all have nonzero imaginary parts.'
                 }
             ]
         },
@@ -357,586 +312,726 @@ and the ML-inequality yields</p>
             id: 'sec-morera',
             title: "Morera's Theorem",
             content: `
-<h2>Morera's Theorem</h2>
-
-<p>Cauchy's theorem states: if \\(f\\) is analytic on a domain \\(D\\), then \\(\\oint_C f = 0\\) for every closed contour \\(C\\) in \\(D\\). Morera's theorem is the converse: if the integral around every triangle is zero, then \\(f\\) is analytic.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem (Morera, 1886)</div>
-    <div class="env-body">
-        <p>Let \\(f\\) be continuous on a domain \\(D \\subseteq \\mathbb{C}\\). If</p>
-        \\[
-        \\oint_T f(z) \\, dz = 0
-        \\]
-        <p>for every closed triangle \\(T\\) lying in \\(D\\), then \\(f\\) is analytic on \\(D\\).</p>
-    </div>
-</div>
-
-<h3>Proof</h3>
-
-<p>Fix a basepoint \\(z_0 \\in D\\). Define</p>
-\\[
-F(z) = \\int_{z_0}^{z} f(w) \\, dw,
-\\]
-<p>where the integral is along any path from \\(z_0\\) to \\(z\\) in \\(D\\). The hypothesis \\(\\oint_T f = 0\\) guarantees that \\(F\\) is well-defined (path-independent): any two paths from \\(z_0\\) to \\(z\\) form a closed contour built from triangles, over which \\(f\\) integrates to zero.</p>
-
-<p>Now we show \\(F' = f\\). For small \\(h\\),</p>
-\\[
-\\frac{F(z+h) - F(z)}{h} = \\frac{1}{h}\\int_z^{z+h} f(w)\\,dw.
-\\]
-<p>Since \\(f\\) is continuous, \\(|f(w) - f(z)| < \\varepsilon\\) for \\(|w - z|\\) small. Then</p>
-\\[
-\\left|\\frac{F(z+h)-F(z)}{h} - f(z)\\right| = \\left|\\frac{1}{h}\\int_z^{z+h}(f(w)-f(z))\\,dw\\right| \\le \\varepsilon.
-\\]
-<p>So \\(F'(z) = f(z)\\). Since \\(F\\) has a complex derivative everywhere in \\(D\\), \\(F\\) is analytic. But analytic functions have analytic derivatives (a consequence of Cauchy's formula), so \\(f = F'\\) is analytic. \\(\\square\\)</p>
+<h2>Morera's Theorem: The Converse of Cauchy</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">Why Triangles Are Sufficient</div>
+    <div class="env-title">Testing Analyticity via Integration</div>
     <div class="env-body">
-        <p>Any closed polygon can be triangulated, so vanishing integrals over all triangles imply vanishing integrals over all polygons. More generally, any closed contour can be approximated by polygons, so vanishing over triangles is equivalent to vanishing over all closed contours in the domain. Triangles are the simplest "test shapes."</p>
+        <p>Cauchy's theorem says: if \\(f\\) is analytic on a domain \\(D\\), then \\(\\oint_\\gamma f\\,dz = 0\\) for every closed contour in \\(D\\). Morera's theorem is the converse: if \\(f\\) is continuous and all contour integrals vanish, then \\(f\\) is analytic. This provides a powerful indirect method for establishing analyticity.</p>
     </div>
 </div>
 
-<h3>Application: Uniform Limits of Analytic Functions</h3>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.5 (Morera's Theorem)</div>
     <div class="env-body">
-        <p>If \\(f_n\\) are analytic on \\(D\\) and \\(f_n \\to f\\) uniformly on compact subsets of \\(D\\), then \\(f\\) is analytic on \\(D\\).</p>
+        <p>Let \\(f\\) be continuous on a domain \\(D\\). If \\(\\oint_T f(z)\\,dz = 0\\) for every triangle \\(T\\) contained in \\(D\\), then \\(f\\) is analytic on \\(D\\).</p>
     </div>
 </div>
 
-<p><em>Proof sketch.</em> For each triangle \\(T \\subset D\\): \\(\\oint_T f = \\lim_{n\\to\\infty} \\oint_T f_n = 0\\) (uniform convergence justifies swapping limit and integral). By Morera, \\(f\\) is analytic. \\(\\square\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>It suffices to show \\(f\\) is analytic on each disk \\(B(z_0, r) \\subset D\\). Fix such a disk. Define</p>
+        \\[
+        F(z) = \\int_{z_0}^{z} f(\\zeta)\\,d\\zeta
+        \\]
+        <p>where the integral is along the straight line from \\(z_0\\) to \\(z\\) (the path is inside the convex disk). The hypothesis that triangular integrals vanish implies \\(F\\) is well-defined (path-independent within the disk).</p>
+        <p>We claim \\(F'(z) = f(z)\\). Indeed, for small \\(h\\),</p>
+        \\[
+        \\frac{F(z+h) - F(z)}{h} = \\frac{1}{h}\\int_z^{z+h} f(\\zeta)\\,d\\zeta.
+        \\]
+        <p>Since \\(f\\) is continuous at \\(z\\), for any \\(\\varepsilon > 0\\) we have \\(|f(\\zeta) - f(z)| < \\varepsilon\\) when \\(|\\zeta - z| < \\delta\\), so</p>
+        \\[
+        \\left|\\frac{F(z+h) - F(z)}{h} - f(z)\\right| = \\left|\\frac{1}{h}\\int_z^{z+h} (f(\\zeta) - f(z))\\,d\\zeta\\right| \\leq \\varepsilon.
+        \\]
+        <p>Thus \\(F'(z) = f(z)\\). So \\(F\\) is analytic on the disk, and therefore \\(f = F'\\) is also analytic (derivatives of analytic functions are analytic, by Cauchy's formula for derivatives).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-<p>This is in stark contrast to real analysis, where the uniform limit of differentiable functions need not be differentiable (think of Weierstrass-type examples). In the complex setting, the uniform limit of analytic functions is automatically analytic.</p>
+<div class="env-block example">
+    <div class="env-title">Application: Limits of Analytic Functions</div>
+    <div class="env-body">
+        <p>If \\(\\{f_n\\}\\) is a sequence of analytic functions on \\(D\\) converging uniformly on compact subsets to \\(f\\), then \\(f\\) is analytic. This follows from Morera: uniform convergence lets us pass the limit inside the integral, and each \\(\\oint_T f_n\\,dz = 0\\), so \\(\\oint_T f\\,dz = 0\\).</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-morera-test"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-morera-test',
-                    title: 'Morera Test: Draw a Contour, Compute the Integral',
-                    description: 'Draw a closed triangular contour by clicking three vertices. The integral of the selected function around it is computed numerically. If it is (nearly) zero for every triangle you draw, the function is analytic.',
+                    title: "Morera's Test: Draw a Contour",
+                    description: 'Test whether a function is analytic by checking if contour integrals vanish. Draw a closed triangular path on the plane and see the integral value. For analytic functions it should be zero; for non-analytic ones (like conjugation) it will be nonzero.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 70, originX: 280, originY: 210 });
-                        var pts = [];
-                        var fnIdx = 0;
-                        var fns = [
-                            { name: 'f(z) = z\u00B2 (analytic)', f: function(re, im) { return [re*re-im*im, 2*re*im]; } },
-                            { name: 'f(z) = e^z (analytic)', f: function(re, im) { var r=Math.exp(re); return [r*Math.cos(im), r*Math.sin(im)]; } },
-                            { name: 'f(z) = conj(z) (NOT analytic)', f: function(re, im) { return [re, -im]; } },
-                            { name: 'f(z) = |z| (NOT analytic)', f: function(re, im) { var m=Math.sqrt(re*re+im*im); return [m, 0]; } }
-                        ];
-
-                        var sel = document.createElement('select');
-                        sel.style.cssText = 'background:#1a1a40;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:3px 8px;font-size:0.78rem;margin-right:8px;';
-                        fns.forEach(function(fn, i) { var o=document.createElement('option'); o.value=i; o.textContent=fn.name; sel.appendChild(o); });
-                        sel.addEventListener('change', function() { fnIdx=parseInt(sel.value); draw(); });
-                        controls.appendChild(sel);
-                        VizEngine.createButton(controls, 'Clear', function() { pts=[]; draw(); });
-
-                        function lineIntegral(fn, x1,y1, x2,y2, nSteps) {
-                            // Integrate f(z) dz from (x1+iy1) to (x2+iy2)
-                            var dre = x2-x1, dim = y2-y1;
-                            var sumRe = 0, sumIm = 0;
-                            for (var k = 0; k < nSteps; k++) {
-                                var t = (k + 0.5) / nSteps;
-                                var zre = x1 + t*dre, zim = y1 + t*dim;
-                                var fw = fn.f(zre, zim);
-                                // f(z) dz = (fre+i fim)(dre+i dim) dt/nSteps
-                                sumRe += (fw[0]*dre - fw[1]*dim) / nSteps;
-                                sumIm += (fw[0]*dim + fw[1]*dre) / nSteps;
-                            }
-                            return [sumRe, sumIm];
-                        }
-
-                        function triangleIntegral(fn, p0, p1, p2) {
-                            var nS = 200;
-                            var s1 = lineIntegral(fn, p0[0],p0[1], p1[0],p1[1], nS);
-                            var s2 = lineIntegral(fn, p1[0],p1[1], p2[0],p2[1], nS);
-                            var s3 = lineIntegral(fn, p2[0],p2[1], p0[0],p0[1], nS);
-                            return [s1[0]+s2[0]+s3[0], s1[1]+s2[1]+s3[1]];
-                        }
-
-                        viz.canvas.addEventListener('click', function(e) {
-                            if (pts.length >= 3) pts = [];
-                            var r = viz.canvas.getBoundingClientRect();
-                            var cx = e.clientX - r.left, cy = e.clientY - r.top;
-                            var mp = viz.toMath(cx, cy);
-                            pts.push(mp);
-                            draw();
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 50, originX: 280, originY: 200
                         });
 
-                        function draw() {
-                            viz.clear();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
-                            var fn = fns[fnIdx];
-                            var ctx = viz.ctx;
+                        var funcIdx = 0;
+                        var funcs = [
+                            {
+                                name: 'f(z) = z^2 (analytic)',
+                                fn: function(re, im) { return [re*re - im*im, 2*re*im]; },
+                                analytic: true
+                            },
+                            {
+                                name: 'f(z) = conj(z) (NOT analytic)',
+                                fn: function(re, im) { return [re, -im]; },
+                                analytic: false
+                            },
+                            {
+                                name: 'f(z) = e^z (analytic)',
+                                fn: function(re, im) {
+                                    var r = Math.exp(re);
+                                    return [r * Math.cos(im), r * Math.sin(im)];
+                                },
+                                analytic: true
+                            },
+                            {
+                                name: 'f(z) = |z|^2 = z*conj(z) (NOT analytic)',
+                                fn: function(re, im) { return [re*re + im*im, 0]; },
+                                analytic: false
+                            }
+                        ];
 
-                            // Draw domain coloring faintly
-                            // (skip full domain coloring for performance; just color-hint the background)
+                        // Triangle vertices (draggable)
+                        var triA = viz.addDraggable('a', 0, 2, viz.colors.blue, 7);
+                        var triB = viz.addDraggable('b', -1.5, -1, viz.colors.blue, 7);
+                        var triC = viz.addDraggable('c', 1.5, -1, viz.colors.blue, 7);
 
-                            // Draw points and triangle
-                            pts.forEach(function(p, i) {
-                                viz.drawPoint(p[0], p[1], viz.colors.orange, 'P'+(i+1), 6);
-                            });
-                            if (pts.length >= 2) {
-                                for (var i = 0; i < pts.length - 1; i++) {
-                                    viz.drawSegment(pts[i][0], pts[i][1], pts[i+1][0], pts[i+1][1], viz.colors.blue, 2);
+                        VizEngine.createButton(controls, 'Next function', function() {
+                            funcIdx = (funcIdx + 1) % funcs.length;
+                        });
+
+                        function integrateTriangle(f, ax, ay, bx, by, cx, cy, steps) {
+                            // Numerically integrate f along triangle a->b->c->a
+                            var sumR = 0, sumI = 0;
+                            var segs = [[ax,ay,bx,by],[bx,by,cx,cy],[cx,cy,ax,ay]];
+                            for (var s = 0; s < 3; s++) {
+                                var x0 = segs[s][0], y0 = segs[s][1], x1 = segs[s][2], y1 = segs[s][3];
+                                for (var i = 0; i < steps; i++) {
+                                    var t = (i + 0.5) / steps;
+                                    var xm = x0 + t * (x1 - x0);
+                                    var ym = y0 + t * (y1 - y0);
+                                    var fv = f(xm, ym);
+                                    var dx = (x1 - x0) / steps;
+                                    var dy = (y1 - y0) / steps;
+                                    // f * dz = (u + iv)(dx + i dy) = (u dx - v dy) + i(v dx + u dy)
+                                    sumR += fv[0] * dx - fv[1] * dy;
+                                    sumI += fv[1] * dx + fv[0] * dy;
                                 }
                             }
-                            if (pts.length === 3) {
-                                viz.drawSegment(pts[2][0], pts[2][1], pts[0][0], pts[0][1], viz.colors.blue, 2);
-                                // shade
-                                ctx.beginPath();
-                                var s0=viz.toScreen(pts[0][0],pts[0][1]), s1=viz.toScreen(pts[1][0],pts[1][1]), s2=viz.toScreen(pts[2][0],pts[2][1]);
-                                ctx.moveTo(s0[0],s0[1]); ctx.lineTo(s1[0],s1[1]); ctx.lineTo(s2[0],s2[1]); ctx.closePath();
-                                ctx.fillStyle = viz.colors.blue + '22'; ctx.fill();
-
-                                var result = triangleIntegral(fn, pts[0], pts[1], pts[2]);
-                                var mag = Math.sqrt(result[0]*result[0] + result[1]*result[1]);
-                                var isZero = mag < 0.01;
-                                var color = isZero ? viz.colors.green : viz.colors.red;
-                                viz.screenText('\u222E\u1D40 f dz = ' + result[0].toFixed(4) + ' + ' + result[1].toFixed(4) + 'i', viz.width/2, viz.height - 36, color, 13, 'center');
-                                viz.screenText('|integral| = ' + mag.toFixed(5) + (isZero ? '  \u2248 0 \u2713 analytic' : '  \u2260 0 \u2717 not analytic'), viz.width/2, viz.height - 16, color, 12, 'center');
-                            } else {
-                                viz.screenText('Click three points to draw a triangle', viz.width/2, viz.height-16, viz.colors.text, 12, 'center');
-                            }
-                            viz.screenText(fn.name, viz.width/2, 14, viz.colors.white, 13, 'center');
+                            return [sumR, sumI];
                         }
-                        draw();
+
+                        function drawFrame() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var cur = funcs[funcIdx];
+
+                            // Draw triangle
+                            viz.drawPolygon(
+                                [[triA.x, triA.y], [triB.x, triB.y], [triC.x, triC.y]],
+                                viz.colors.blue + '15', viz.colors.blue, 2
+                            );
+
+                            // Arrows along edges
+                            var edges = [[triA, triB], [triB, triC], [triC, triA]];
+                            for (var e = 0; e < 3; e++) {
+                                var p = edges[e][0], q = edges[e][1];
+                                var mx = (p.x + q.x) / 2, my = (p.y + q.y) / 2;
+                                var dx = q.x - p.x, dy = q.y - p.y;
+                                var len = Math.sqrt(dx*dx + dy*dy);
+                                if (len > 0.01) {
+                                    var ax2 = mx + dx / len * 0.15;
+                                    var ay2 = my + dy / len * 0.15;
+                                    viz.drawVector(mx - dx/len*0.15, my - dy/len*0.15, ax2, ay2, viz.colors.blue + 'aa', null, 1.5);
+                                }
+                            }
+
+                            viz.drawDraggables();
+
+                            // Compute integral
+                            var intVal = integrateTriangle(cur.fn, triA.x, triA.y, triB.x, triB.y, triC.x, triC.y, 200);
+                            var mag = Math.sqrt(intVal[0]*intVal[0] + intVal[1]*intVal[1]);
+
+                            // Display
+                            var ctx = viz.ctx;
+                            ctx.fillStyle = 'rgba(12,12,32,0.8)';
+                            ctx.fillRect(0, 0, viz.width, 28);
+                            viz.screenText(cur.name, viz.width / 2, 14, viz.colors.white, 12);
+
+                            var intStr = intVal[0].toFixed(4) + (intVal[1] >= 0 ? ' + ' : ' - ') + Math.abs(intVal[1]).toFixed(4) + 'i';
+                            var col = mag < 0.01 ? viz.colors.green : viz.colors.red;
+                            viz.screenText('\u222E f dz = ' + intStr, viz.width / 2, viz.height - 30, col, 13);
+                            viz.screenText(
+                                mag < 0.01 ? 'Integral \u2248 0 : consistent with analyticity' : 'Integral \u2260 0 : NOT analytic (Morera fails)',
+                                viz.width / 2, viz.height - 12, col, 11
+                            );
+                        }
+
+                        viz.animate(function() { drawFrame(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Let \\(f_n(z) = z^n / n^2\\). Show that \\(f_n \\to 0\\) uniformly on the closed unit disk \\(\\overline{\\mathbb{D}}\\), and conclude that the limit is analytic on \\(\\mathbb{D}\\).',
-                    hint: 'Estimate \\(|f_n(z)|\\) for \\(|z| \\le 1\\). Then apply the corollary to Morera\'s theorem.',
-                    solution: 'For \\(|z| \\le 1\\): \\(|f_n(z)| = |z|^n/n^2 \\le 1/n^2 \\to 0\\). So \\(f_n \\to 0\\) uniformly. Each \\(f_n\\) is analytic (it is a polynomial), and the uniform limit of analytic functions is analytic by the corollary to Morera\'s theorem. The limit \\(f = 0\\) is of course analytic (trivially).'
-                },
-                {
-                    question: 'Give an example showing that the hypothesis "continuous" cannot be dropped from Morera\'s theorem.',
-                    hint: 'Think of a function that is zero almost everywhere but has a point discontinuity.',
-                    solution: 'Let \\(f(z) = 1\\) for \\(z \\ne 0\\) and \\(f(0) = 0\\). Then \\(f\\) is not continuous at 0, and not analytic at 0 (analyticity implies continuity). However, any contour integral of \\(f\\) differs from \\(\\oint 1\\,dz = 0\\) by at most a measure-zero contribution, so the integral condition is still "morally" satisfied. The theorem fails without continuity: we need continuity to run the proof that \\(F\\) is differentiable.'
+                    question: 'Show that \\(f(z) = \\overline{z}\\) fails Morera\'s test. Compute \\(\\oint_T \\overline{z}\\,dz\\) for the triangle with vertices \\(0, 1, i\\).',
+                    hint: 'Parameterize each edge and compute. Along the edge from \\(0\\) to \\(1\\): \\(z = t\\), \\(dz = dt\\), \\(\\overline{z} = t\\).',
+                    solution: 'Edge \\(0 \\to 1\\): \\(\\int_0^1 t\\,dt = 1/2\\). Edge \\(1 \\to i\\): \\(z = 1 + t(i-1)\\), \\(\\overline{z} = 1 + t(-i-1)\\), \\(dz = (i-1)dt\\). \\(\\int_0^1 (1-t-ti)(i-1)dt = (i-1)\\int_0^1(1-t)dt + (-i)(i-1)\\int_0^1 t\\,dt = (i-1)/2 + (1+i)/2 = i\\). Edge \\(i \\to 0\\): \\(z = i(1-t)\\), \\(\\overline{z} = -i(1-t)\\), \\(dz = -i\\,dt\\). \\(\\int_0^1 -i(1-t)(-i)dt = -\\int_0^1(1-t)dt = -1/2\\). Total: \\(1/2 + i - 1/2 = i \\neq 0\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Schwarz Lemma
+        // SECTION 5: The Schwarz Lemma
         // ================================================================
         {
             id: 'sec-schwarz',
-            title: 'Schwarz Lemma',
+            title: 'The Schwarz Lemma',
             content: `
-<h2>Schwarz Lemma</h2>
+<h2>The Schwarz Lemma</h2>
 
-<p>The Schwarz lemma gives precise quantitative constraints on analytic maps of the unit disk that fix the origin. It is a fundamental tool in geometric function theory and the classification of automorphisms of the disk.</p>
+<div class="env-block intuition">
+    <div class="env-title">A Rigidity Principle for the Disk</div>
+    <div class="env-body">
+        <p>The Schwarz lemma quantifies the following idea: an analytic map from the unit disk to itself that fixes the origin cannot "stretch" distances. It either strictly contracts everything, or it is a rotation. This is a remarkably strong constraint on analytic self-maps of the disk.</p>
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem (Schwarz Lemma)</div>
+    <div class="env-title">Theorem 7.6 (Schwarz Lemma)</div>
     <div class="env-body">
-        <p>Let \\(f: \\mathbb{D} \\to \\mathbb{D}\\) be analytic (where \\(\\mathbb{D} = \\{|z| < 1\\}\\)) with \\(f(0) = 0\\). Then:</p>
+        <p>Let \\(f: \\mathbb{D} \\to \\mathbb{D}\\) be analytic with \\(f(0) = 0\\), where \\(\\mathbb{D} = \\{z : |z| < 1\\}\\). Then:</p>
         <ol>
-            <li>\\(|f(z)| \\le |z|\\) for all \\(z \\in \\mathbb{D}\\).</li>
-            <li>\\(|f'(0)| \\le 1\\).</li>
-            <li>If equality holds in (1) for some \\(z \\ne 0\\), or if \\(|f'(0)| = 1\\), then \\(f(z) = e^{i\\theta} z\\) for some real \\(\\theta\\) (a rotation).</li>
+            <li>\\(|f(z)| \\leq |z|\\) for all \\(z \\in \\mathbb{D}\\).</li>
+            <li>\\(|f'(0)| \\leq 1\\).</li>
+            <li>If \\(|f(z_0)| = |z_0|\\) for some \\(z_0 \\neq 0\\), or if \\(|f'(0)| = 1\\), then \\(f(z) = e^{i\\theta}z\\) for some \\(\\theta \\in \\mathbb{R}\\) (\\(f\\) is a rotation).</li>
         </ol>
     </div>
 </div>
 
-<h3>Proof</h3>
-
-<p>Since \\(f(0) = 0\\), the function \\(g(z) = f(z)/z\\) has a removable singularity at 0 (by the Riemann removable singularity theorem, since \\(f\\) is analytic and \\(f(0) = 0\\) means \\(f(z) = z \cdot h(z)\\) with \\(h\\) analytic). Set \\(g(0) = f'(0)\\).</p>
-
-<p>Now \\(g\\) is analytic on \\(\\mathbb{D}\\). For any \\(r < 1\\), on the circle \\(|z| = r\\) we have \\(|g(z)| = |f(z)|/r < 1/r\\) (since \\(|f(z)| < 1\\)). By the <strong>Maximum Modulus Principle</strong>, \\(|g(z)| < 1/r\\) on all of \\(|z| \\le r\\). Letting \\(r \\to 1\\):</p>
-
-\\[
-|g(z)| \\le 1 \\quad \\text{for all } z \\in \\mathbb{D}.
-\\]
-
-<p>This gives \\(|f(z)| = |z| \\cdot |g(z)| \\le |z|\\) (part 1) and \\(|f'(0)| = |g(0)| \\le 1\\) (part 2).</p>
-
-<p>If \\(|g(z_0)| = 1\\) for some \\(z_0 \\in \\mathbb{D}\\), the Maximum Modulus Principle forces \\(g\\) to be constant: \\(g(z) = e^{i\\theta}\\). Then \\(f(z) = e^{i\\theta} z\\). \\(\\square\\)</p>
-
-<div class="env-block intuition">
-    <div class="env-title">Geometric Interpretation</div>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
     <div class="env-body">
-        <p>The Schwarz lemma says: any analytic self-map of the disk fixing the origin is "no larger than the identity." The image of any disk \\(|z| \\le r\\) must fit inside the same disk. The only maps that achieve equality at every point are the rigid rotations \\(z \\mapsto e^{i\\theta} z\\).</p>
-        <p>Combined with Möbius transformations, this gives the full characterization: the automorphism group of \\(\\mathbb{D}\\) consists exactly of maps of the form \\(z \\mapsto e^{i\\theta}(z-a)/(1-\\bar a z)\\) for \\(|a| < 1\\), \\(\\theta \\in \\mathbb{R}\\).</p>
+        <p>Since \\(f(0) = 0\\), define \\(g(z) = f(z)/z\\) for \\(z \\neq 0\\) and \\(g(0) = f'(0)\\). Then \\(g\\) is analytic on \\(\\mathbb{D}\\) (the singularity at 0 is removable).</p>
+        <p>On \\(|z| = r < 1\\), we have \\(|f(z)| < 1\\) (since \\(f\\) maps to \\(\\mathbb{D}\\)), so \\(|g(z)| = |f(z)|/r < 1/r\\). By the maximum modulus principle, \\(|g(z)| \\leq 1/r\\) on \\(|z| \\leq r\\). Letting \\(r \\to 1^-\\), we get \\(|g(z)| \\leq 1\\) for all \\(z \\in \\mathbb{D}\\).</p>
+        <p>This gives \\(|f(z)| \\leq |z|\\) and \\(|f'(0)| = |g(0)| \\leq 1\\). If equality holds at any interior point, the maximum modulus principle forces \\(g\\) to be constant of modulus 1, i.e., \\(g(z) = e^{i\\theta}\\), so \\(f(z) = e^{i\\theta}z\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block remark">
+    <div class="env-title">Schwarz-Pick Lemma</div>
+    <div class="env-body">
+        <p>The Schwarz-Pick generalization drops the hypothesis \\(f(0) = 0\\). For any analytic \\(f: \\mathbb{D} \\to \\mathbb{D}\\), the hyperbolic distance is contracted:</p>
+        \\[
+        \\frac{|f'(z)|}{1 - |f(z)|^2} \\leq \\frac{1}{1 - |z|^2}.
+        \\]
+        <p>Equality holds if and only if \\(f\\) is a Mobius automorphism of \\(\\mathbb{D}\\).</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-schwarz-lemma"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-schwarz-lemma',
-                    title: 'Schwarz Lemma: |f(z)| ≤ |z|',
-                    description: 'An analytic self-map of the unit disk fixing 0. Drag the point z to explore: the image f(z) always lies inside (or on) the circle of radius |z|. The derivative at 0 satisfies |f\'(0)| ≤ 1.',
+                    title: 'Schwarz Lemma: Contraction in the Unit Disk',
+                    description: 'An analytic self-map of the disk fixing the origin contracts. Drag the point z inside the unit disk and see that |f(z)| <= |z|. The blue circle is |z|, the green circle is |f(z)|. When f is a rotation, the circles coincide.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 130, originX: 280, originY: 210 });
-
-                        // f(z) = z^2 (maps D to D, fixes 0)
-                        // parametrized family: f_t(z) = z * (z + t) / (1 + t*z) for |t| < 1
-                        var tRe = 0.0, tIm = 0.0;
-
-                        VizEngine.createSlider(controls, 't (real part)', -0.9, 0.9, tRe, 0.05, function(v) { tRe = v; draw(); });
-                        VizEngine.createSlider(controls, 't (imag part)', -0.9, 0.9, tIm, 0.05, function(v) { tIm = v; draw(); });
-
-                        // f_t(z) = z * (z - a) / (1 - conj(a) z) composed: use f(z) = z^2 is simpler
-                        // Instead use: f(z) = (z - t)/(1 - conj(t)*z) * e^{i*0} shifted to fix 0:
-                        // g(z) = f(z) - f(0) normalized. Let's just use f(z) = z*(z + t)/(1 + t*z)
-                        function cMul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
-                        function cDiv(a, b) { var d=b[0]*b[0]+b[1]*b[1]; return [(a[0]*b[0]+a[1]*b[1])/d, (a[1]*b[0]-a[0]*b[1])/d]; }
-                        function cAdd(a, b) { return [a[0]+b[0], a[1]+b[1]]; }
-
-                        function fMap(zre, zim) {
-                            // f(z) = z * (z + t) / (1 + conj(t)*z)
-                            var z = [zre, zim], t = [tRe, tIm];
-                            var num = cMul(z, cAdd(z, t));
-                            var den = cAdd([1, 0], cMul([tRe, -tIm], z));
-                            return cDiv(num, den);
-                        }
-
-                        var zx = 0.5, zy = 0.3;
-                        viz.addDraggable('z', zx, zy, viz.colors.orange, 8, function(x, y) {
-                            // clamp inside unit disk
-                            var r = Math.sqrt(x*x + y*y);
-                            if (r > 0.97) { x = x/r*0.97; y = y/r*0.97; }
-                            zx = x; zy = y;
-                            var d = viz.draggables.find(function(d) { return d.id === 'z'; });
-                            if (d) { d.x = zx; d.y = zy; }
-                            draw();
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 140, originX: 280, originY: 195
                         });
 
-                        function draw() {
+                        var funcIdx = 0;
+                        var funcs = [
+                            {
+                                name: 'f(z) = z^2 (strict contraction)',
+                                fn: function(x, y) { return [x*x - y*y, 2*x*y]; }
+                            },
+                            {
+                                name: 'f(z) = z^3',
+                                fn: function(x, y) {
+                                    var r2 = x*x - y*y, i2 = 2*x*y;
+                                    return [r2*x - i2*y, r2*y + i2*x];
+                                }
+                            },
+                            {
+                                name: 'f(z) = e^{i\u03C0/4} z (rotation, equality)',
+                                fn: function(x, y) {
+                                    var c = Math.cos(Math.PI/4), s = Math.sin(Math.PI/4);
+                                    return [c*x - s*y, s*x + c*y];
+                                }
+                            },
+                            {
+                                name: 'f(z) = z/2',
+                                fn: function(x, y) { return [x/2, y/2]; }
+                            }
+                        ];
+
+                        VizEngine.createButton(controls, 'Next function', function() {
+                            funcIdx = (funcIdx + 1) % funcs.length;
+                        });
+
+                        var pt = viz.addDraggable('z', 0.5, 0.3, viz.colors.blue, 8);
+
+                        function drawFrame() {
                             viz.clear();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
 
-                            // Unit circle
-                            viz.drawCircle(0, 0, 1, null, viz.colors.axis, 2);
+                            // Clip point to disk
+                            var r = Math.sqrt(pt.x*pt.x + pt.y*pt.y);
+                            if (r > 0.95) { pt.x *= 0.95/r; pt.y *= 0.95/r; r = 0.95; }
 
-                            // z circle
-                            var rz = Math.sqrt(zx*zx + zy*zy);
-                            viz.drawCircle(0, 0, rz, null, viz.colors.orange + '88', 1.5);
+                            // Unit disk
+                            viz.drawCircle(0, 0, 1, viz.colors.grid + '33', viz.colors.axis, 1.5);
 
-                            // f(z)
-                            var fz = fMap(zx, zy);
-                            var rfz = Math.sqrt(fz[0]*fz[0]+fz[1]*fz[1]);
+                            var cur = funcs[funcIdx];
+                            var fv = cur.fn(pt.x, pt.y);
+                            var fr = Math.sqrt(fv[0]*fv[0] + fv[1]*fv[1]);
 
-                            // f(z) circle (should be <= rz)
-                            viz.drawCircle(0, 0, rfz, null, viz.colors.teal + '88', 1.5);
+                            // |z| circle
+                            if (r > 0.01) {
+                                viz.drawCircle(0, 0, r, null, viz.colors.blue + '44', 1);
+                            }
+                            // |f(z)| circle
+                            if (fr > 0.01) {
+                                viz.drawCircle(0, 0, fr, null, viz.colors.green + '44', 1);
+                            }
 
-                            // Draw segments
-                            viz.drawSegment(0, 0, zx, zy, viz.colors.orange, 2, true);
-                            viz.drawSegment(0, 0, fz[0], fz[1], viz.colors.teal, 2, true);
+                            // Draw z and f(z)
+                            viz.drawSegment(0, 0, pt.x, pt.y, viz.colors.blue + '66', 1, true);
+                            viz.drawPoint(pt.x, pt.y, viz.colors.blue, 'z', 6);
 
-                            viz.drawPoint(zx, zy, viz.colors.orange, 'z', 7);
-                            viz.drawPoint(fz[0], fz[1], viz.colors.teal, 'f(z)', 7);
-                            viz.drawPoint(0, 0, viz.colors.white, null, 4);
+                            viz.drawSegment(0, 0, fv[0], fv[1], viz.colors.green + '66', 1, true);
+                            viz.drawPoint(fv[0], fv[1], viz.colors.green, 'f(z)', 6);
 
-                            // Labels
-                            var ctx = viz.ctx;
-                            var px = 10, py = 10;
-                            ctx.fillStyle = '#0c0c2099'; ctx.fillRect(px-4, py-4, 230, 72);
-                            viz.screenText('|z| = ' + rz.toFixed(3), px + 113, py + 10, viz.colors.orange, 12, 'center');
-                            viz.screenText('|f(z)| = ' + rfz.toFixed(3), px + 113, py + 28, viz.colors.teal, 12, 'center');
-                            var ok = rfz <= rz + 1e-6;
-                            viz.screenText('|f(z)| \u2264 |z|: ' + (ok ? '\u2713' : '\u2717'), px + 113, py + 46, ok ? viz.colors.green : viz.colors.red, 12, 'center');
-
-                            // Derivative at 0
-                            var h = 1e-5;
-                            var fh = fMap(h, 0);
-                            var fprime = Math.sqrt(fh[0]*fh[0] + fh[1]*fh[1]) / h;
-                            viz.screenText("|f'(0)| \u2248 " + fprime.toFixed(3) + (fprime <= 1 + 1e-4 ? ' \u2264 1 \u2713' : ' > 1 \u2717'), px + 113, py + 64, fprime <= 1 + 1e-4 ? viz.colors.green : viz.colors.red, 12, 'center');
+                            viz.drawPoint(0, 0, viz.colors.white, '0', 4);
 
                             viz.drawDraggables();
+
+                            // Info
+                            var ctx = viz.ctx;
+                            ctx.fillStyle = 'rgba(12,12,32,0.8)';
+                            ctx.fillRect(0, 0, viz.width, 26);
+                            viz.screenText(cur.name, viz.width / 2, 13, viz.colors.white, 12);
+
+                            viz.screenText(
+                                '|z| = ' + r.toFixed(3) + '    |f(z)| = ' + fr.toFixed(3) +
+                                '    ratio = ' + (r > 0.001 ? (fr/r).toFixed(3) : 'N/A'),
+                                viz.width / 2, viz.height - 25, viz.colors.teal, 12
+                            );
+                            viz.screenText(
+                                fr <= r + 0.001 ? '|f(z)| \u2264 |z| \u2713  Schwarz satisfied' : '(point outside disk)',
+                                viz.width / 2, viz.height - 8, fr <= r + 0.001 ? viz.colors.green : viz.colors.red, 11
+                            );
                         }
-                        draw();
+
+                        viz.animate(function() { drawFrame(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Let \\(f: \\mathbb{D} \\to \\mathbb{D}\\) be analytic with \\(f(0) = 0\\) and \\(f(1/2) = 1/2\\). Prove that \\(f(z) = z\\) for all \\(z \\in \\mathbb{D}\\).',
-                    hint: 'By the Schwarz lemma, \\(|f(z)| \\le |z|\\). The condition \\(f(1/2) = 1/2\\) says equality holds at \\(z = 1/2\\). What does the rigidity part of the Schwarz lemma tell you?',
-                    solution: 'By the Schwarz lemma, \\(|f(z)| \\le |z|\\). Since \\(|f(1/2)| = 1/2 = |1/2|\\), equality holds at \\(z_0 = 1/2 \\ne 0\\). The rigidity statement says \\(f(z) = e^{i\\theta}z\\) for some \\(\\theta\\). But \\(f(1/2) = e^{i\\theta}/2 = 1/2\\) forces \\(e^{i\\theta} = 1\\), so \\(f(z) = z\\).'
+                    question: 'Let \\(f: \\mathbb{D} \\to \\mathbb{D}\\) be analytic with \\(f(0) = 0\\) and \\(f(1/2) = 1/2\\). What can you conclude about \\(f\\)?',
+                    hint: 'Apply the equality case of the Schwarz lemma with \\(z_0 = 1/2\\).',
+                    solution: 'Since \\(|f(1/2)| = 1/2 = |1/2|\\), the equality case of the Schwarz lemma forces \\(f(z) = e^{i\\theta}z\\) for some \\(\\theta\\). But \\(f(1/2) = e^{i\\theta}/2 = 1/2\\), so \\(e^{i\\theta} = 1\\). Thus \\(f(z) = z\\) (the identity).'
                 },
-                {
-                    question: 'State and prove a "Schwarz Lemma at \\(a\\)" for maps \\(f: \\mathbb{D} \\to \\mathbb{D}\\) with \\(f(a) = a\\) for some \\(a \\in \\mathbb{D}\\).',
-                    hint: 'Use a Möbius transformation \\(\\phi_a(z) = (z-a)/(1-\\bar a z)\\) that maps \\(\\mathbb{D}\\) to \\(\\mathbb{D}\\) with \\(\\phi_a(a) = 0\\), and apply the Schwarz lemma to \\(g = \\phi_a \\circ f \\circ \\phi_a^{-1}\\).',
-                    solution: 'Let \\(\\phi_a(z) = (z-a)/(1-\\bar a z)\\). Then \\(g = \\phi_a \\circ f \\circ \\phi_a^{-1}\\) maps \\(\\mathbb{D} \\to \\mathbb{D}\\) and \\(g(0) = \\phi_a(f(a)) = \\phi_a(a) = 0\\). The Schwarz lemma gives \\(|g(z)| \\le |z|\\) and \\(|g\'(0)| \\le 1\\), with equality iff \\(g\\) is a rotation. Translating back: \\(|f\'(a)| \\le 1\\), with equality iff \\(f\\) is a Möbius automorphism of \\(\\mathbb{D}\\).'
-                }
             ]
         },
 
         // ================================================================
-        // SECTION 6: Identity Theorem
+        // SECTION 6: The Identity Theorem
         // ================================================================
         {
             id: 'sec-identity',
-            title: 'Identity Theorem',
+            title: 'The Identity Theorem',
             content: `
-<h2>Identity Theorem</h2>
-
-<p>The Identity Theorem captures the ultimate rigidity of analytic functions: knowing a function on any "sufficiently rich" subset determines it everywhere.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem (Identity Theorem)</div>
-    <div class="env-body">
-        <p>Let \\(f\\) and \\(g\\) be analytic on a connected domain \\(D\\). If the set \\(\\{z \\in D : f(z) = g(z)\\}\\) has a limit point in \\(D\\), then \\(f \\equiv g\\) on \\(D\\).</p>
-    </div>
-</div>
-
-<p>Equivalently: if \\(h = f - g\\) is analytic on a connected domain \\(D\\) and the zero set \\(\\{z : h(z) = 0\\}\\) has a limit point in \\(D\\), then \\(h \\equiv 0\\) on \\(D\\).</p>
-
-<h3>Proof</h3>
-
-<p>Let \\(h = f - g\\) and \\(Z = \\{z \in D : h(z) = 0\\}\\). Suppose \\(Z\\) has a limit point \\(z_0 \in D\\).</p>
-
-<p><strong>Step 1: \\(h\\) vanishes to all orders at \\(z_0\\).</strong> Write the Taylor expansion \\(h(z) = \sum_{n=0}^{\infty} c_n (z - z_0)^n\\). If \\(c_k \\ne 0\\) for some \\(k\\), let \\(m\\) be the smallest such index. Then \\(h(z) = (z-z_0)^m (c_m + c_{m+1}(z-z_0) + \cdots)\\) and \\(c_m \\ne 0\\). By continuity, the second factor is non-zero near \\(z_0\\), so \\(h\\) has an isolated zero at \\(z_0\\). But \\(z_0\\) is a limit point of zeros, contradiction. Hence all \\(c_n = 0\\), i.e., \\(h \\equiv 0\\) in some disk around \\(z_0\\).</p>
-
-<p><strong>Step 2: The zero set is open and closed.</strong> The set \\(U = \\{z : h^{(n)}(z) = 0 \text{ for all } n \\ge 0\\}\\) is clearly closed (each condition \\(h^{(n)}(z) = 0\\) is a closed condition). Step 1 says every point of \\(U\\) is in the interior of \\(U\\) (since \\(h = 0\\) in a whole disk), so \\(U\\) is open. Since \\(D\\) is connected and \\(U\\) is non-empty (it contains \\(z_0\\)), we have \\(U = D\\). Thus \\(h \\equiv 0\\) on \\(D\\). \\(\\square\\)</p>
+<h2>The Identity Theorem</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">Why Connectedness Is Essential</div>
+    <div class="env-title">Zeros Cannot Accumulate</div>
     <div class="env-body">
-        <p>If \\(D\\) is not connected, the result can fail. On \\(D = \\{|z| < 1\\} \cup \\{|z - 3| < 1\\}\\) (two disjoint disks), we can set \\(f = 0\\) on the left disk and \\(f = 1\\) on the right, getting an analytic function whose zeros accumulate at every point of the left disk but that is non-zero on the right. Connectedness is what allows the "spreading" argument in Step 2.</p>
+        <p>A non-constant analytic function on a connected domain has <em>isolated</em> zeros: each zero has a neighborhood containing no other zeros. Equivalently, the zero set cannot have a limit point inside the domain. This is the key to the identity theorem: if two analytic functions agree at a sequence of points with a limit point, they must agree everywhere.</p>
     </div>
 </div>
 
-<h3>Zeros of Analytic Functions Are Isolated</h3>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.7 (Isolated Zeros)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic and not identically zero on a connected domain \\(D\\), then the zeros of \\(f\\) are <em>isolated</em>: each zero \\(z_0\\) has a neighborhood containing no other zero of \\(f\\).</p>
+        <p>Let \\(f\\) be analytic on a connected domain \\(D\\) and not identically zero. Then the zeros of \\(f\\) are isolated: for every zero \\(z_0\\), there exists \\(r > 0\\) such that \\(f(z) \\neq 0\\) for \\(0 < |z - z_0| < r\\).</p>
     </div>
 </div>
 
-<p>This is the contrapositive of the Identity Theorem: if zeros accumulate, the function is identically zero.</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Suppose \\(f(z_0) = 0\\). Since \\(f\\) is not identically zero on \\(D\\), there is a smallest positive integer \\(m\\) such that \\(f^{(m)}(z_0) \\neq 0\\). (If all derivatives were zero, the Taylor series would be identically zero, and by the identity theorem for power series, \\(f \\equiv 0\\) on the disk of convergence, hence on all of \\(D\\) by connectedness.)</p>
+        <p>Write \\(f(z) = (z - z_0)^m g(z)\\) where \\(g\\) is analytic and \\(g(z_0) = f^{(m)}(z_0)/m! \\neq 0\\). By continuity of \\(g\\), there exists \\(r > 0\\) with \\(g(z) \\neq 0\\) on \\(|z - z_0| < r\\). Hence \\(f(z) \\neq 0\\) for \\(0 < |z - z_0| < r\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 7.8 (Identity Theorem)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) and \\(g\\) be analytic on a connected domain \\(D\\). If \\(\\{z \\in D : f(z) = g(z)\\}\\) has a limit point in \\(D\\), then \\(f \\equiv g\\) on \\(D\\).</p>
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Apply the isolated zeros theorem to \\(h = f - g\\). If \\(h\\) is not identically zero, its zeros are isolated, so they cannot have a limit point in \\(D\\). Contradiction.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Application: Analytic Continuation is Unique</div>
+    <div class="env-body">
+        <p>If \\(f\\) and \\(g\\) are both analytic on \\(D\\) and agree on a curve \\(\\gamma \\subset D\\) (which contains limit points of itself), then \\(f \\equiv g\\). This is why analytic continuation, when it exists, is unique.</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-identity-zeros"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-identity-zeros',
-                    title: 'Accumulating Zeros Force Identically Zero',
-                    description: 'Watch zeros of an analytic function that accumulate at a limit point. By the Identity Theorem, such a function must be identically zero. The animation shows why isolated zeros are the only possibility for a non-trivial analytic function.',
+                    title: 'Identity Theorem: Accumulating Zeros Force f = 0',
+                    description: 'Visualize how zeros of an analytic function must be isolated. If zeros accumulate (have a limit point), the function must be identically zero. Click to place zeros and see if the configuration is possible for a non-constant analytic function.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 55, originX: 280, originY: 210 });
-
-                        var animating = false;
-                        var phase = 0; // 0: show isolated zeros, 1: accumulate
-                        var t = 0;
-                        var animId = null;
-
-                        // f_n(z) = sin(n*pi*z) / (n*pi) -- zeros at z = k/n, spaced 1/n apart
-                        // As n->inf, zeros 0,1/n,2/n,... accumulate at 0
-                        var nVal = 1;
-
-                        VizEngine.createSlider(controls, 'n (zero density)', 1, 20, nVal, 1, function(v) {
-                            nVal = Math.round(v); draw(nVal);
-                        });
-                        VizEngine.createButton(controls, 'Animate accumulation', function() {
-                            if (animId) { cancelAnimationFrame(animId); animId = null; return; }
-                            var n0 = 1;
-                            function step() {
-                                n0 += 0.04;
-                                if (n0 > 20) n0 = 1;
-                                draw(n0);
-                                animId = requestAnimationFrame(step);
-                            }
-                            animId = requestAnimationFrame(step);
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 60, originX: 280, originY: 190
                         });
 
-                        function sinc_fn(re, im, n) {
-                            // f(z) = sin(n*pi*z) / (n * pi)
-                            // sin(w) = sin(x)cosh(y) + i cos(x)sinh(y) where w = x+iy
-                            var w_re = n * Math.PI * re, w_im = n * Math.PI * im;
-                            var fre = Math.sin(w_re) * Math.cosh(w_im);
-                            var fim = Math.cos(w_re) * Math.sinh(w_im);
-                            return [fre / (n * Math.PI), fim / (n * Math.PI)];
-                        }
+                        var mode = 0; // 0: sin(pi*z) isolated, 1: sin(n*pi*z) accumulating at 0
+                        var animT = 0;
 
-                        function draw(n) {
+                        var modeNames = [
+                            'sin(\u03C0z): zeros at integers (isolated)',
+                            'zeros of f_n converging to 0 (accumulation => f\u22610)',
+                            'z*sin(\u03C0/z): zeros at 1/n accumulate at 0 (not analytic at 0!)'
+                        ];
+
+                        VizEngine.createButton(controls, 'Next example', function() {
+                            mode = (mode + 1) % 3;
+                            animT = 0;
+                        });
+
+                        function drawFrame(t) {
+                            animT = t / 1000;
                             viz.clear();
-                            viz.drawGrid(0.5);
+                            viz.drawGrid();
                             viz.drawAxes();
 
-                            // Draw domain coloring
-                            var xRange = [-viz.originX / viz.scale, (viz.width - viz.originX) / viz.scale];
-                            var yRange = [-(viz.height - viz.originY) / viz.scale, viz.originY / viz.scale];
-                            viz.drawDomainColoring(function(re, im) { return sinc_fn(re, im, n); }, xRange, yRange);
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
+                            var ctx = viz.ctx;
 
-                            // Mark zeros on real axis: z = k/n for integer k
-                            var maxK = Math.floor(xRange[1] * n);
-                            var minK = Math.ceil(xRange[0] * n);
-                            for (var k = minK; k <= maxK; k++) {
-                                viz.drawPoint(k / n, 0, viz.colors.white, null, 4);
+                            if (mode === 0) {
+                                // sin(pi*z): zeros at all integers, clearly isolated
+                                viz.drawFunction(function(x) { return Math.sin(Math.PI * x); }, -4.5, 4.5, viz.colors.teal, 2);
+                                for (var n = -4; n <= 4; n++) {
+                                    viz.drawPoint(n, 0, viz.colors.red, null, 5);
+                                    // Small circle showing isolation
+                                    viz.drawCircle(n, 0, 0.4, null, viz.colors.red + '44', 1);
+                                }
+                                viz.screenText('Each zero has a neighborhood with no other zeros', viz.width / 2, viz.height - 12, viz.colors.green, 11);
+                            } else if (mode === 1) {
+                                // Show zeros of z, z/2, z/3,... converging to 0
+                                var nPts = Math.min(20, Math.floor(animT * 3) + 3);
+                                for (var k = 1; k <= nPts; k++) {
+                                    var zx = 1 / k;
+                                    viz.drawPoint(zx, 0, viz.colors.red, null, 4);
+                                }
+                                viz.drawPoint(0, 0, viz.colors.yellow, '0 (limit point)', 7);
+                                // Highlight: no disk around 0 is zero-free
+                                var rr = 1 / nPts;
+                                viz.drawCircle(0, 0, rr * 2, null, viz.colors.yellow + '66', 1);
+                                viz.screenText('Zeros: 1, 1/2, 1/3, ... accumulate at 0', viz.width / 2, 20, viz.colors.white, 12);
+                                viz.screenText('If f is analytic on a domain containing 0, then f \u2261 0', viz.width / 2, viz.height - 12, viz.colors.red, 11);
+                            } else {
+                                // z sin(pi/z): zeros at 1/n accumulate at 0, but NOT analytic at 0
+                                viz.drawFunction(function(x) {
+                                    if (Math.abs(x) < 0.01) return 0;
+                                    return x * Math.sin(Math.PI / x);
+                                }, -4.5, -0.05, viz.colors.purple, 2);
+                                viz.drawFunction(function(x) {
+                                    if (Math.abs(x) < 0.01) return 0;
+                                    return x * Math.sin(Math.PI / x);
+                                }, 0.05, 4.5, viz.colors.purple, 2);
+                                for (var m = 1; m <= 12; m++) {
+                                    viz.drawPoint(1/m, 0, viz.colors.red, null, 3);
+                                    viz.drawPoint(-1/m, 0, viz.colors.red, null, 3);
+                                }
+                                viz.drawPoint(0, 0, viz.colors.yellow, '(essential singularity)', 6);
+                                viz.screenText('z sin(\u03C0/z): zeros accumulate at 0, but f is NOT analytic at 0', viz.width / 2, viz.height - 12, viz.colors.orange, 11);
                             }
 
-                            var nInt = Math.round(n);
-                            viz.screenText('f(z) = sin(' + nInt + '\u03C0z) / (' + nInt + '\u03C0)', viz.width/2, 14, viz.colors.white, 13, 'center');
-                            viz.screenText('Zeros at z = k/' + nInt + ', k \u2208 \u2124   (spacing = 1/' + nInt + ')', viz.width/2, viz.height - 28, viz.colors.yellow, 12, 'center');
-                            viz.screenText('As n\u2192\u221E, zeros accumulate at 0 \u21D2 f\u22610 (Identity Thm)', viz.width/2, viz.height - 10, viz.colors.orange, 12, 'center');
+                            ctx.fillStyle = 'rgba(12,12,32,0.75)';
+                            ctx.fillRect(0, 0, viz.width, 28);
+                            viz.screenText(modeNames[mode], viz.width / 2, 14, viz.colors.white, 12);
                         }
-                        draw(nVal);
+
+                        viz.animate(drawFrame);
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Suppose \\(f\\) is analytic on \\(\\mathbb{C}\\) and \\(f(1/n) = 0\\) for all \\(n = 1, 2, 3, \\ldots\\). Prove that \\(f \\equiv 0\\).',
-                    hint: 'The sequence \\(1/n\\) converges to 0, which is a limit point of the zero set of \\(f\\). Apply the Identity Theorem.',
-                    solution: 'The zero set of \\(f\\) contains \\(\\{1/n : n \\ge 1\\}\\), and this sequence has limit point 0 in \\(\\mathbb{C}\\). Since \\(f\\) is analytic on the connected domain \\(\\mathbb{C}\\), the Identity Theorem gives \\(f \\equiv 0\\).'
+                    question: 'Let \\(f\\) be analytic on \\(\\mathbb{C}\\) and suppose \\(f(1/n) = 1/n^2\\) for all positive integers \\(n\\). Determine \\(f\\).',
+                    hint: 'Consider \\(g(z) = f(z) - z^2\\). Where are the zeros of \\(g\\)?',
+                    solution: 'Let \\(g(z) = f(z) - z^2\\). Then \\(g(1/n) = 0\\) for all positive integers \\(n\\). The sequence \\(1/n \\to 0\\), so the zeros of \\(g\\) have a limit point at 0. By the identity theorem, \\(g \\equiv 0\\), so \\(f(z) = z^2\\).'
                 },
                 {
-                    question: 'Let \\(f\\) be analytic on \\(\\mathbb{D}\\) and suppose \\(f(r_n) = \\sin(r_n)\\) for a sequence \\(r_n \\in (0,1)\\) with \\(r_n \\to 0\\). Prove that \\(f(z) = \\sin(z)\\) on \\(\\mathbb{D}\\).',
-                    hint: 'Apply the Identity Theorem to \\(h(z) = f(z) - \\sin(z)\\).',
-                    solution: 'Let \\(h(z) = f(z) - \\sin(z)\\), which is analytic on \\(\\mathbb{D}\\). By hypothesis, \\(h(r_n) = 0\\) for all \\(n\\), and \\(r_n \\to 0 \\in \\mathbb{D}\\). The zero set of \\(h\\) has limit point 0 in the connected domain \\(\\mathbb{D}\\). By the Identity Theorem, \\(h \\equiv 0\\) on \\(\\mathbb{D}\\), i.e., \\(f(z) = \\sin(z)\\).'
-                }
+                    question: 'Show that \\(\\sin^2 z + \\cos^2 z = 1\\) for all \\(z \\in \\mathbb{C}\\) using the identity theorem.',
+                    hint: 'The identity holds on the real line, which contains limit points.',
+                    solution: 'Let \\(f(z) = \\sin^2 z + \\cos^2 z - 1\\). Then \\(f\\) is entire. On the real axis, \\(f(x) = 0\\) for all \\(x \\in \\mathbb{R}\\). The real axis has limit points in \\(\\mathbb{C}\\), so by the identity theorem, \\(f \\equiv 0\\) on \\(\\mathbb{C}\\). Hence \\(\\sin^2 z + \\cos^2 z = 1\\) for all \\(z\\).'
+                },
             ]
         },
 
         // ================================================================
-        // SECTION 7: Bridge and Outlook
+        // SECTION 7: Bridge — The Open Mapping Theorem and What Comes Next
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Bridge: Rigidity and What Comes Next',
+            title: 'Open Mapping & Bridge',
             content: `
-<h2>Bridge: Rigidity and What Comes Next</h2>
+<h2>The Open Mapping Theorem and What Comes Next</h2>
 
-<h3>The Theme of This Chapter</h3>
-
-<p>Every result in this chapter is a consequence of the same underlying fact: analytic functions are <em>overdetermined</em>. Cauchy's formula expresses interior values in terms of boundary values. This propagates into dramatic global consequences:</p>
-
-<ul>
-    <li><strong>Liouville</strong>: Boundedness on all of \\(\\mathbb{C}\\) forces constancy. Entire functions cannot be "trapped."</li>
-    <li><strong>FTA</strong>: No polynomial can "avoid" all of \\(\\mathbb{C}\\); the complex numbers are large enough that every polynomial has a root.</li>
-    <li><strong>Morera</strong>: The analyticity condition (vanishing integrals) is equivalent to having a local primitive, which is equivalent to being differentiable. These are not separate conditions; they collapse into one.</li>
-    <li><strong>Schwarz</strong>: Self-maps of the disk fixing the origin are constrained by a simple inequality. The extremals are rigid rotations.</li>
-    <li><strong>Identity</strong>: Two analytic functions that agree on "too many" points are the same function. There is no room for perturbation.</li>
-</ul>
-
-<h3>The Maximum Modulus Principle</h3>
-
-<p>A result we used implicitly in the Schwarz lemma proof deserves its own statement:</p>
+<div class="env-block intuition">
+    <div class="env-title">Analytic Functions Are Open Maps</div>
+    <div class="env-body">
+        <p>The open mapping theorem says that a non-constant analytic function maps open sets to open sets. This is a topological consequence of the rigidity we have been studying. In real analysis, this fails dramatically: \\(f(x) = x^2\\) maps the open interval \\((-1, 1)\\) to the half-open interval \\([0, 1)\\), which is not open.</p>
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem (Maximum Modulus Principle)</div>
+    <div class="env-title">Theorem 7.9 (Open Mapping Theorem)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic and non-constant on a connected domain \\(D\\), then \\(|f|\\) attains no maximum in the interior of \\(D\\).</p>
+        <p>Let \\(f\\) be a non-constant analytic function on a connected domain \\(D\\). Then \\(f\\) is an <strong>open map</strong>: if \\(U \\subseteq D\\) is open, then \\(f(U)\\) is open.</p>
     </div>
 </div>
 
-<p>Equivalently, if \\(f\\) is analytic on a closed bounded domain \\(\\overline{D}\\), then \\(\\max_{\\overline{D}} |f| = \\max_{\\partial D} |f|\\): the maximum is on the boundary. This follows from the mean value property of harmonic functions (the real and imaginary parts of an analytic function are harmonic).</p>
+<div class="env-block proof">
+    <div class="env-title">Proof sketch</div>
+    <div class="env-body">
+        <p>Let \\(w_0 = f(z_0)\\) for some \\(z_0 \\in U\\). We need to show \\(w_0\\) is an interior point of \\(f(U)\\). Write \\(f(z) - w_0 = (z - z_0)^m g(z)\\) where \\(g(z_0) \\neq 0\\) and \\(m \\geq 1\\). Choose \\(r > 0\\) small enough that \\(g\\) has no zeros on \\(\\overline{B(z_0, r)} \\subset U\\) and \\(f(z) \\neq w_0\\) for \\(0 < |z - z_0| \\leq r\\).</p>
+        <p>Let \\(\\delta = \\min_{|z - z_0| = r} |f(z) - w_0| > 0\\). For any \\(w\\) with \\(|w - w_0| < \\delta\\), the function \\(f(z) - w\\) has the same number of zeros (counted with multiplicity) inside \\(|z - z_0| < r\\) as \\(f(z) - w_0\\), by Rouche's theorem (or the argument principle). That number is \\(m \\geq 1\\), so \\(w \\in f(U)\\). Thus \\(B(w_0, \\delta) \\subset f(U)\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-<h3>What Comes Next: Singularities</h3>
+<h3>Immediate Consequences</h3>
 
-<p>The theorems of this chapter all apply to functions that are analytic everywhere on their domain. But the most interesting complex functions have <em>singularities</em>: points where analyticity breaks down. The next chapter studies three types:</p>
+<div class="env-block theorem">
+    <div class="env-title">Corollary 7.10 (Maximum Modulus Principle)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is non-constant and analytic on a connected domain \\(D\\), then \\(|f|\\) has no local maximum in \\(D\\).</p>
+    </div>
+</div>
 
-<ol>
-    <li><strong>Removable singularities</strong>: the function is bounded near the singularity and can be extended analytically (e.g., \\(\\sin(z)/z\\) at \\(z = 0\\)).</li>
-    <li><strong>Poles</strong>: \\(|f(z)| \\to \\infty\\) as \\(z \\to z_0\\) (e.g., \\(1/(z-z_0)^n\\)).</li>
-    <li><strong>Essential singularities</strong>: the function oscillates wildly near \\(z_0\\) (e.g., \\(e^{1/z}\\) at \\(z = 0\\)).</li>
-</ol>
-
-<p>The Laurent series expansion handles all three uniformly, and the residue theorem will generalize Cauchy's integral formula to domains with singularities. This opens the door to one of the most powerful techniques in mathematics: contour integration for evaluating real integrals.</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>If \\(|f|\\) had a local max at \\(z_0\\), then near \\(z_0\\), the image \\(f(U)\\) would be contained in the closed disk \\(|w| \\leq |f(z_0)|\\). But by the open mapping theorem, \\(f(U)\\) is open and contains \\(f(z_0)\\), so it must contain points with \\(|w| > |f(z_0)|\\). Contradiction.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">The Big Picture</div>
+    <div class="env-title">Where We Are Headed</div>
     <div class="env-body">
-        <p>Complex analysis is often described as the most "perfect" branch of classical mathematics: its main theorems are clean, its proofs are short, and its applications are everywhere. The rigidity results of this chapter are the heart of that perfection. The Fundamental Theorem of Algebra is one of the oldest results in mathematics, and its shortest proof is the one we gave: two paragraphs, using Liouville's theorem. The Identity Theorem says that analytic continuation is unique: there is at most one way to extend an analytic function from one domain to another. This uniqueness is what allows us to speak of "the" gamma function, "the" Riemann zeta function, as global objects defined by their values anywhere.</p>
+        <p>This chapter has shown that Cauchy's formula, through a series of elegant consequences, establishes the fundamental rigidity of analytic functions:</p>
+        <ul>
+            <li><strong>Liouville:</strong> bounded + entire = constant.</li>
+            <li><strong>FTA:</strong> \\(\\mathbb{C}\\) is algebraically closed.</li>
+            <li><strong>Morera:</strong> continuous + vanishing integrals = analytic.</li>
+            <li><strong>Schwarz:</strong> analytic maps of the disk contract.</li>
+            <li><strong>Identity:</strong> determined by values on any convergent sequence.</li>
+            <li><strong>Open mapping:</strong> non-constant analytic maps are open.</li>
+        </ul>
+        <p>In the next chapters, we turn to <strong>sequences, series, and power series</strong> (Chapters 8-9), where the analyticity = power series equivalence becomes the central theme, followed by <strong>Laurent series and singularities</strong> (Chapter 10), leading to the <strong>residue theorem</strong> (Chapter 11).</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-open-mapping"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-open-mapping',
                     title: 'Open Mapping Theorem',
-                    description: 'A non-constant analytic function maps open sets to open sets. Watch a small disk get mapped: its image is always an open set (no boundary points in the image of the interior). Drag the center or adjust the radius.',
+                    description: 'Visualize how an analytic function maps an open disk to an open region. The left panel shows the domain (an open disk), and the right panel shows its image under f. The image is always open for non-constant analytic f.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 55, originX: 140, originY: 210 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            scale: 1, originX: 0, originY: 0
+                        });
 
-                        var cx = 0.5, cy = 0.3, rad = 0.4;
-                        var fnIdx = 0;
-                        var fns = [
-                            { name: 'f(z) = z\u00B2', f: function(re, im) { return [re*re-im*im, 2*re*im]; } },
-                            { name: 'f(z) = z\u00B3', f: function(re, im) { return [re*re*re-3*re*im*im, 3*re*re*im-im*im*im]; } },
-                            { name: 'f(z) = e^z', f: function(re, im) { var r=Math.exp(re); return [r*Math.cos(im), r*Math.sin(im)]; } },
-                            { name: 'f(z) = z + 1/z', f: function(re, im) {
-                                var d=re*re+im*im; if(d<1e-8) return [0,0];
-                                return [re+re/d, im-im/d];
-                            }}
+                        var funcIdx = 0;
+                        var funcs = [
+                            {
+                                name: 'f(z) = z^2',
+                                fn: function(x, y) { return [x*x - y*y, 2*x*y]; }
+                            },
+                            {
+                                name: 'f(z) = z^3',
+                                fn: function(x, y) {
+                                    var r2 = x*x - y*y, i2 = 2*x*y;
+                                    return [r2*x - i2*y, r2*y + i2*x];
+                                }
+                            },
+                            {
+                                name: 'f(z) = e^z',
+                                fn: function(x, y) {
+                                    var r = Math.exp(x);
+                                    return [r * Math.cos(y), r * Math.sin(y)];
+                                }
+                            },
+                            {
+                                name: 'f(z) = z + 1/z (|z|>0.3)',
+                                fn: function(x, y) {
+                                    var r2 = x*x + y*y;
+                                    if (r2 < 0.01) return [x, y];
+                                    return [x + x/r2, y - y/r2];
+                                }
+                            }
                         ];
 
-                        var sel = document.createElement('select');
-                        sel.style.cssText = 'background:#1a1a40;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:3px 8px;font-size:0.78rem;margin-right:8px;';
-                        fns.forEach(function(fn, i) { var o=document.createElement('option'); o.value=i; o.textContent=fn.name; sel.appendChild(o); });
-                        sel.addEventListener('change', function() { fnIdx=parseInt(sel.value); draw(); });
-                        controls.appendChild(sel);
-                        VizEngine.createSlider(controls, 'Radius', 0.1, 1.2, rad, 0.05, function(v) { rad=v; draw(); });
+                        VizEngine.createButton(controls, 'Next function', function() {
+                            funcIdx = (funcIdx + 1) % funcs.length;
+                            draw();
+                        });
 
-                        viz.addDraggable('c', cx, cy, viz.colors.orange, 7, function(x, y) { cx=x; cy=y; draw(); });
+                        // Disk center and radius
+                        var cx = 0.5, cy = 0.3, rad = 0.8;
 
                         function draw() {
                             viz.clear();
-
-                            // Left panel: domain (z-plane)
                             var ctx = viz.ctx;
-                            ctx.save();
-                            ctx.beginPath(); ctx.rect(0, 0, viz.width/2, viz.height); ctx.clip();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
-                            // Input disk
-                            viz.drawCircle(cx, cy, rad, viz.colors.blue + '33', viz.colors.blue, 2);
-                            viz.drawPoint(cx, cy, viz.colors.orange, null, 6);
-                            viz.screenText('z-plane (input)', viz.width/4, 14, viz.colors.white, 12, 'center');
-                            ctx.restore();
+                            var cur = funcs[funcIdx];
 
-                            // Right panel: image (w-plane) -- offset origin
-                            ctx.save();
-                            ctx.beginPath(); ctx.rect(viz.width/2, 0, viz.width/2, viz.height); ctx.clip();
-                            // Temporarily shift origin for right panel
-                            var oldOriginX = viz.originX;
-                            viz.originX = viz.width/2 + (viz.width/2 - viz.width/2)/2 + viz.width/4;
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
+                            var leftW = viz.width / 2 - 10;
+                            var rightX = viz.width / 2 + 10;
+                            var rightW = viz.width / 2 - 10;
 
-                            // Sample boundary and interior of the input disk
-                            var fn = fns[fnIdx];
-                            var nBnd = 180, nInt = 400;
-                            // Draw image of boundary
+                            // --- Left panel: domain ---
+                            var lScale = leftW / 6;
+                            var lOx = leftW / 2, lOy = viz.height / 2;
+
+                            // Grid
+                            ctx.strokeStyle = viz.colors.grid;
+                            ctx.lineWidth = 0.5;
+                            for (var gx = -3; gx <= 3; gx++) {
+                                var sx = lOx + gx * lScale;
+                                ctx.beginPath(); ctx.moveTo(sx, 30); ctx.lineTo(sx, viz.height - 10); ctx.stroke();
+                            }
+                            for (var gy = -2; gy <= 2; gy++) {
+                                var sy = lOy - gy * lScale;
+                                ctx.beginPath(); ctx.moveTo(10, sy); ctx.lineTo(leftW - 10, sy); ctx.stroke();
+                            }
+                            // Axes
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.moveTo(10, lOy); ctx.lineTo(leftW - 10, lOy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(lOx, 30); ctx.lineTo(lOx, viz.height - 10); ctx.stroke();
+
+                            // Open disk
+                            ctx.fillStyle = viz.colors.blue + '22';
                             ctx.beginPath();
-                            var started = false;
-                            for (var k = 0; k <= nBnd; k++) {
-                                var th = 2*Math.PI*k/nBnd;
-                                var zre = cx + rad*Math.cos(th), zim = cy + rad*Math.sin(th);
-                                var fw = fn.f(zre, zim);
-                                var sc = viz.toScreen(fw[0], fw[1]);
-                                if (!started) { ctx.moveTo(sc[0], sc[1]); started=true; } else { ctx.lineTo(sc[0], sc[1]); }
+                            ctx.arc(lOx + cx * lScale, lOy - cy * lScale, rad * lScale, 0, Math.PI * 2);
+                            ctx.fill();
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 2;
+                            ctx.setLineDash([4, 4]);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            // --- Right panel: image ---
+                            // Sample points in the disk and map them
+                            var rOx = rightX + rightW / 2, rOy = viz.height / 2;
+                            var rScale = rightW / 8;
+
+                            // Right grid
+                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
+                            for (var gx2 = -4; gx2 <= 4; gx2++) {
+                                var sx2 = rOx + gx2 * rScale;
+                                if (sx2 > rightX && sx2 < viz.width - 5) {
+                                    ctx.beginPath(); ctx.moveTo(sx2, 30); ctx.lineTo(sx2, viz.height - 10); ctx.stroke();
+                                }
+                            }
+                            for (var gy2 = -3; gy2 <= 3; gy2++) {
+                                var sy2 = rOy - gy2 * rScale;
+                                ctx.beginPath(); ctx.moveTo(rightX + 5, sy2); ctx.lineTo(viz.width - 5, sy2); ctx.stroke();
+                            }
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.moveTo(rightX + 5, rOy); ctx.lineTo(viz.width - 5, rOy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(rOx, 30); ctx.lineTo(rOx, viz.height - 10); ctx.stroke();
+
+                            // Map boundary of disk
+                            ctx.strokeStyle = viz.colors.green;
+                            ctx.lineWidth = 2;
+                            ctx.setLineDash([4, 4]);
+                            ctx.beginPath();
+                            var steps = 200;
+                            for (var i = 0; i <= steps; i++) {
+                                var theta = 2 * Math.PI * i / steps;
+                                var px = cx + rad * Math.cos(theta);
+                                var py = cy + rad * Math.sin(theta);
+                                var fv = cur.fn(px, py);
+                                var fsx = rOx + fv[0] * rScale;
+                                var fsy = rOy - fv[1] * rScale;
+                                if (i === 0) ctx.moveTo(fsx, fsy);
+                                else ctx.lineTo(fsx, fsy);
                             }
                             ctx.closePath();
-                            ctx.fillStyle = viz.colors.blue + '33'; ctx.fill();
-                            ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 2; ctx.stroke();
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+                            ctx.fillStyle = viz.colors.green + '15';
+                            ctx.fill();
 
-                            // Image of center
-                            var fc = fn.f(cx, cy);
-                            viz.drawPoint(fc[0], fc[1], viz.colors.orange, 'f(z\u2080)', 6);
-                            viz.screenText('w-plane (image)', viz.width/2 + viz.width/4, 14, viz.colors.white, 12, 'center');
-                            viz.screenText('Image is open (interior maps to interior)', viz.width/2 + viz.width/4, viz.height-12, viz.colors.teal, 11, 'center');
-                            viz.originX = oldOriginX;
-                            ctx.restore();
+                            // Map some interior points
+                            ctx.fillStyle = viz.colors.teal + '66';
+                            for (var si = 0; si < 300; si++) {
+                                var angle = Math.random() * 2 * Math.PI;
+                                var rr = Math.sqrt(Math.random()) * rad * 0.95;
+                                var spx = cx + rr * Math.cos(angle);
+                                var spy = cy + rr * Math.sin(angle);
+                                var sfv = cur.fn(spx, spy);
+                                var ssx = rOx + sfv[0] * rScale;
+                                var ssy = rOy - sfv[1] * rScale;
+                                ctx.beginPath();
+                                ctx.arc(ssx, ssy, 1.5, 0, Math.PI * 2);
+                                ctx.fill();
+                            }
+
+                            // Labels
+                            ctx.fillStyle = 'rgba(12,12,32,0.8)';
+                            ctx.fillRect(0, 0, viz.width, 26);
+                            viz.screenText(cur.name, viz.width / 2, 13, viz.colors.white, 12);
+
+                            viz.screenText('Domain (open disk)', leftW / 2, viz.height - 5, viz.colors.blue, 11);
+                            viz.screenText('Image (open!)', rightX + rightW / 2, viz.height - 5, viz.colors.green, 11);
 
                             // Divider
-                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
-                            ctx.beginPath(); ctx.moveTo(viz.width/2, 0); ctx.lineTo(viz.width/2, viz.height); ctx.stroke();
+                            ctx.strokeStyle = viz.colors.axis + '44';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(viz.width / 2, 0);
+                            ctx.lineTo(viz.width / 2, viz.height);
+                            ctx.stroke();
 
-                            viz.drawDraggables();
+                            // Arrow
+                            viz.screenText('\u2192', viz.width / 2, viz.height / 2, viz.colors.white, 20);
                         }
                         draw();
                         return viz;
@@ -945,20 +1040,15 @@ F(z) = \\int_{z_0}^{z} f(w) \\, dw,
             ],
             exercises: [
                 {
-                    question: 'State the Maximum Modulus Principle. Use it to prove: if \\(f\\) is analytic on \\(\\overline{\\mathbb{D}}\\) and \\(|f(z)| = 1\\) for all \\(|z| = 1\\), and \\(f\\) has no zeros in \\(\\mathbb{D}\\), then \\(f\\) is a constant of modulus 1.',
-                    hint: 'Apply the Maximum Modulus Principle to both \\(f\\) and \\(1/f\\).',
-                    solution: 'The Maximum Modulus Principle says \\(|f|\\) achieves its maximum on the boundary. On \\(|z|=1\\): \\(|f|=1\\), so \\(|f(z)| \\le 1\\) for all \\(|z| \\le 1\\). Since \\(f\\) has no zeros in \\(\\mathbb{D}\\), \\(1/f\\) is analytic on \\(\\mathbb{D}\\) with \\(|1/f| = 1\\) on the boundary. By the same principle, \\(|1/f(z)| \\le 1\\), i.e., \\(|f(z)| \\ge 1\\). Together: \\(|f(z)| = 1\\) on all of \\(\\overline{\\mathbb{D}}\\). A non-constant analytic function cannot have constant modulus on an open set (this would force the function to be constant by the Cauchy-Riemann equations), so \\(f\\) is constant.'
+                    question: 'Use the open mapping theorem to give a one-line proof of the maximum modulus principle: if \\(f\\) is non-constant and analytic on a domain \\(D\\), then \\(|f|\\) attains no maximum in \\(D\\).',
+                    hint: 'If \\(|f|\\) had a max at \\(z_0\\), what would that say about the image of a small neighborhood of \\(z_0\\)?',
+                    solution: 'If \\(|f(z)| \\leq |f(z_0)|\\) for \\(z\\) near \\(z_0\\), then \\(f(U)\\) for a small neighborhood \\(U\\) of \\(z_0\\) is contained in the closed disk \\(\\overline{B(0, |f(z_0)|)}\\). But \\(f(U)\\) is open (open mapping theorem) and contains \\(f(z_0)\\) on the boundary of that disk, so \\(f(U)\\) must extend beyond the disk. Contradiction.'
                 },
                 {
-                    question: 'Prove that there is no analytic function \\(f\\) on the punctured disk \\(0 < |z| < 1\\) such that \\(f(1/n) = (-1)^n\\) for all integers \\(n \\ge 2\\).',
-                    hint: 'What would happen if such \\(f\\) existed and could be extended to \\(z=0\\)? Consider the sequences \\(1/(2k)\\) and \\(1/(2k+1)\\).',
-                    solution: 'Suppose such \\(f\\) exists. The subsequence \\(f(1/(2k)) = 1\\) and \\(f(1/(2k+1)) = -1\\) both have limit point 0. If \\(f\\) extends analytically to a neighborhood of 0, then by the Identity Theorem, \\(f \\equiv 1\\) (from the first subsequence) and \\(f \\equiv -1\\) (from the second), a contradiction. So no such analytic extension exists, and in fact no analytic \\(f\\) on the punctured disk can satisfy the given condition, since the singularity at 0 would be essential (the limit of \\(f(1/n)\\) does not exist), incompatible with the function having a consistent analytic structure near 0.'
+                    question: 'Show that a non-constant analytic function cannot map an open set onto a single point.',
+                    hint: 'The image of an open set under an open map is open.',
+                    solution: 'By the open mapping theorem, the image of any open set under a non-constant analytic function is open. A single point is not open in \\(\\mathbb{C}\\).'
                 },
-                {
-                    question: 'The real function \\(g(x) = e^{-1/x^2}\\) (extended by \\(g(0) = 0\\)) is \\(C^\\infty\\) on \\(\\mathbb{R}\\) with \\(g^{(n)}(0) = 0\\) for all \\(n\\). Explain why this does not contradict the Identity Theorem.',
-                    hint: 'The Identity Theorem applies to analytic (holomorphic) functions, not merely smooth ones. How does \\(g\\) behave on the complex plane near \\(z = 0\\)?',
-                    solution: '\\(g\\) is a real-variable smooth function, not an analytic function in the complex sense. Its Taylor series at 0 is identically zero, yet \\(g \\not\\equiv 0\\). This is possible because \\(g\\) is not complex-analytic: the function \\(e^{-1/z^2}\\) has an essential singularity at \\(z = 0\\) in the complex plane and cannot be extended analytically to any neighborhood of 0. The Identity Theorem requires analyticity (complex differentiability), which is a far stronger condition than \\(C^\\infty\\) on \\(\\mathbb{R}\\). The real line is "too thin" to detect the essential singularity at the origin.'
-                }
             ]
         }
     ]
