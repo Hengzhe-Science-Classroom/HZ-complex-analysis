@@ -6,69 +6,69 @@ window.CHAPTERS.push({
     subtitle: 'Solutions to Laplace\'s equation and the Dirichlet problem',
     sections: [
         // ================================================================
-        // SECTION 1: From Analytic to Harmonic
+        // SECTION 1: Motivation — Why Harmonic Functions?
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'From Analytic to Harmonic',
+            title: 'Motivation: Why Harmonic Functions?',
             content: `
-<h2>From Analytic to Harmonic</h2>
+<h2>Why Harmonic Functions?</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Bridge</div>
+    <div class="env-title">From Analytic to Harmonic</div>
     <div class="env-body">
-        <p>Every time you compute the real or imaginary part of an analytic function, you get something special. The function \\(f(z) = z^2 = x^2 - y^2 + 2ixy\\) has real part \\(u = x^2 - y^2\\). Check: \\(u_{xx} + u_{yy} = 2 + (-2) = 0\\). It satisfies Laplace's equation. This is no coincidence.</p>
+        <p>Every analytic function \\(f = u + iv\\) carries two real-valued functions \\(u\\) and \\(v\\) that satisfy the Cauchy-Riemann equations. Take these equations one step further: differentiate the first with respect to \\(x\\) and the second with respect to \\(y\\), then add. You get \\(\\Delta u = u_{xx} + u_{yy} = 0\\). The function \\(u\\) solves <strong>Laplace's equation</strong>, and the same holds for \\(v\\). Functions satisfying this PDE are called <em>harmonic</em>.</p>
     </div>
 </div>
 
-<p>Recall that a function \\(f = u + iv\\) is analytic in a domain \\(D\\) if and only if the Cauchy-Riemann equations hold:</p>
-
-\\[u_x = v_y, \\qquad u_y = -v_x.\\]
-
-<p>Differentiating the first equation with respect to \\(x\\) and the second with respect to \\(y\\):</p>
-
-\\[u_{xx} = v_{yx}, \\qquad u_{yy} = -v_{xy}.\\]
-
-<p>Since mixed partials commute (\\(v_{xy} = v_{yx}\\)) for smooth functions:</p>
-
-\\[u_{xx} + u_{yy} = 0.\\]
-
-<p>An identical argument gives \\(v_{xx} + v_{yy} = 0\\). Both components satisfy <strong>Laplace's equation</strong>.</p>
+<p>Laplace's equation is one of the most important PDEs in mathematics and physics. It governs steady-state temperature distributions, electrostatic potentials, incompressible fluid flow, and gravitational fields. The theory of harmonic functions thus sits at the intersection of complex analysis, PDE theory, and mathematical physics.</p>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 16.1 (Harmonic Function)</div>
+    <div class="env-title">Definition (Harmonic Function)</div>
     <div class="env-body">
-        <p>A real-valued function \\(u(x, y)\\) is <em>harmonic</em> in a domain \\(D\\) if it has continuous second-order partial derivatives in \\(D\\) and satisfies Laplace's equation:</p>
-        \\[\\Delta u = u_{xx} + u_{yy} = 0.\\]
-    </div>
-</div>
-
-<p>We have just proved half of the following fundamental result.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 16.1</div>
-    <div class="env-body">
-        <p>If \\(f = u + iv\\) is analytic in a domain \\(D\\), then \\(u\\) and \\(v\\) are both harmonic in \\(D\\).</p>
+        <p>A real-valued function \\(u: \\Omega \\to \\mathbb{R}\\), where \\(\\Omega \\subseteq \\mathbb{R}^2\\) is open, is <strong>harmonic</strong> on \\(\\Omega\\) if \\(u \\in C^2(\\Omega)\\) and</p>
+        \\[
+        \\Delta u = \\frac{\\partial^2 u}{\\partial x^2} + \\frac{\\partial^2 u}{\\partial y^2} = 0 \\quad \\text{on } \\Omega.
+        \\]
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example: Harmonic Functions from Standard Analytic Functions</div>
+    <div class="env-title">Example: Basic Harmonic Functions</div>
     <div class="env-body">
+        <p>Each of these satisfies \\(\\Delta u = 0\\):</p>
         <ul>
-            <li>\\(f(z) = e^z = e^x \\cos y + i e^x \\sin y\\): both \\(e^x \\cos y\\) and \\(e^x \\sin y\\) are harmonic.</li>
-            <li>\\(f(z) = \\log z = \\ln|z| + i\\arg z\\): \\(\\ln\\sqrt{x^2 + y^2}\\) is harmonic away from the origin.</li>
-            <li>\\(f(z) = z^n\\): the real and imaginary parts are harmonic polynomials of degree \\(n\\).</li>
+            <li>\\(u(x,y) = x^2 - y^2\\) (real part of \\(z^2\\))</li>
+            <li>\\(u(x,y) = e^x \\cos y\\) (real part of \\(e^z\\))</li>
+            <li>\\(u(x,y) = \\log(x^2 + y^2)\\) (real part of \\(2\\log z\\), harmonic on \\(\\mathbb{R}^2 \\setminus \\{0\\}\\))</li>
+            <li>\\(u(x,y) = \\text{Im}(z^3) = 3x^2y - y^3\\)</li>
         </ul>
+        <p>Verification for \\(u = x^2 - y^2\\): we have \\(u_{xx} = 2\\) and \\(u_{yy} = -2\\), so \\(\\Delta u = 2 + (-2) = 0\\). \\(\\checkmark\\)</p>
     </div>
 </div>
 
-<p>Why do harmonic functions matter beyond complex analysis? Laplace's equation governs <strong>steady-state heat conduction</strong>, <strong>electrostatics</strong>, <strong>fluid flow</strong>, and <strong>gravitational potential</strong>. Analytic function theory gives us an extraordinarily powerful toolkit for solving these physical problems.</p>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 16.1 (Analytic implies harmonic)</div>
+    <div class="env-body">
+        <p>If \\(f = u + iv\\) is analytic on a domain \\(\\Omega\\), then both \\(u\\) and \\(v\\) are harmonic on \\(\\Omega\\).</p>
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Since \\(f\\) is analytic, the Cauchy-Riemann equations hold: \\(u_x = v_y\\) and \\(u_y = -v_x\\). Since \\(f\\) is analytic, all partial derivatives of \\(u\\) and \\(v\\) of all orders exist and are continuous. Differentiating:</p>
+        \\[u_{xx} = v_{yx}, \\quad u_{yy} = -v_{xy}.\\]
+        <p>By equality of mixed partials, \\(v_{yx} = v_{xy}\\), so \\(u_{xx} + u_{yy} = v_{yx} - v_{xy} = 0\\). The argument for \\(v\\) is identical. \\(\\square\\)</p>
+    </div>
+</div>
+
+<p>The converse is more subtle. A single harmonic function is not necessarily the real part of an analytic function on arbitrary domains (topological obstructions may prevent finding a harmonic conjugate globally). But on simply connected domains, the converse holds, as we will see in Section 3.</p>
 
 <div class="env-block remark">
-    <div class="env-title">Notation</div>
+    <div class="env-title">Non-example</div>
     <div class="env-body">
-        <p>The Laplacian operator \\(\\Delta = \\partial^2/\\partial x^2 + \\partial^2/\\partial y^2\\) is also written \\(\\nabla^2\\). In polar coordinates: \\(\\Delta u = u_{rr} + \\frac{1}{r} u_r + \\frac{1}{r^2} u_{\\theta\\theta}\\).</p>
+        <p>The function \\(u(x,y) = x^2 + y^2\\) is <em>not</em> harmonic: \\(u_{xx} + u_{yy} = 2 + 2 = 4 \\neq 0\\). It is the modulus squared \\(|z|^2\\), which is not the real part of any analytic function.</p>
     </div>
 </div>
 
@@ -77,69 +77,36 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-harmonic-heatmap',
-                    title: 'Heatmap of a Harmonic Function',
-                    description: 'Visualize the harmonic function u(x,y) = x\u00b2 \u2212 y\u00b2 (real part of z\u00b2) as a heatmap. Notice that no interior maximum or minimum exists; extrema occur only on the boundary.',
+                    title: 'Heatmaps of Harmonic Functions',
+                    description: 'Visualize four harmonic functions as heatmaps. Each satisfies Laplace\'s equation. Use the buttons to switch between functions.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420 });
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 40 });
 
-                        var funcIdx = 0;
-                        var funcs = [
-                            { name: 'x\u00b2 \u2212 y\u00b2', f: function(x, y) { return x*x - y*y; } },
-                            { name: 'e\u02e3 cos y', f: function(x, y) { return Math.exp(x) * Math.cos(y); } },
-                            { name: 'xy', f: function(x, y) { return x * y; } },
-                            { name: 'ln|z|', f: function(x, y) {
-                                var r = Math.sqrt(x*x + y*y);
-                                return r < 0.05 ? NaN : Math.log(r);
-                            }}
+                        var functions = [
+                            { name: 'Re(z\u00B2) = x\u00B2 - y\u00B2', fn: function(x, y) { return x*x - y*y; } },
+                            { name: 'Re(e^z) = e^x cos y', fn: function(x, y) { return Math.exp(x) * Math.cos(y); } },
+                            { name: 'log|z| (r > 0)', fn: function(x, y) { var r2 = x*x + y*y; return r2 < 1e-6 ? NaN : 0.5 * Math.log(r2); } },
+                            { name: 'Im(z\u00B3) = 3x\u00B2y - y\u00B3', fn: function(x, y) { return 3*x*x*y - y*y*y; } }
                         ];
-                        var cmapIdx = 0;
-                        var cmaps = ['viridis', 'inferno', 'coolwarm'];
+                        var currentIdx = 0;
 
-                        var btnWrap = document.createElement('div');
-                        btnWrap.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px;';
-                        controls.appendChild(btnWrap);
-
-                        funcs.forEach(function(fn, i) {
-                            VizEngine.createButton(btnWrap, fn.name, function() {
-                                funcIdx = i;
-                                draw();
-                            });
-                        });
-                        VizEngine.createButton(btnWrap, 'Colormap', function() {
-                            cmapIdx = (cmapIdx + 1) % cmaps.length;
-                            draw();
-                        });
-
-                        function draw() {
-                            var fn = funcs[funcIdx];
-                            viz.drawHeatmap(fn.f, [-3, 3], [-3, 3], cmaps[cmapIdx]);
-
-                            // Axes overlay
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = 'rgba(255,255,255,0.25)';
-                            ctx.lineWidth = 1;
-                            ctx.beginPath();
-                            ctx.moveTo(viz.width / 2, 0);
-                            ctx.lineTo(viz.width / 2, viz.height);
-                            ctx.stroke();
-                            ctx.beginPath();
-                            ctx.moveTo(0, viz.height / 2);
-                            ctx.lineTo(viz.width, viz.height / 2);
-                            ctx.stroke();
-
-                            // Label
-                            viz.screenText('u(x,y) = ' + fn.name, viz.width / 2, 18, '#ffffff', 14);
-                            viz.screenText('\u0394u = 0  (harmonic)', viz.width / 2, viz.height - 12, '#ffffffaa', 11);
-
-                            // Axis labels
-                            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('x', viz.width - 10, viz.height / 2 - 4);
-                            ctx.textAlign = 'right';
-                            ctx.fillText('y', viz.width / 2 + 14, 10);
+                        for (var i = 0; i < functions.length; i++) {
+                            (function(idx) {
+                                VizEngine.createButton(controls, functions[idx].name, function() {
+                                    currentIdx = idx;
+                                    draw();
+                                });
+                            })(i);
                         }
 
+                        function draw() {
+                            viz.drawHeatmap(functions[currentIdx].fn, [-4, 4], [-3, 3], 'coolwarm');
+                            var ctx = viz.ctx;
+                            ctx.fillStyle = 'rgba(12,12,32,0.7)';
+                            ctx.fillRect(0, 0, viz.width, 30);
+                            viz.screenText('u(x,y) = ' + functions[currentIdx].name, viz.width / 2, 16, '#f0f6fc', 14);
+                            viz.screenText('\u0394u = 0 (harmonic)', viz.width / 2, viz.height - 12, '#8b949e', 11);
+                        }
                         draw();
                         return viz;
                     }
@@ -147,14 +114,9 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Verify directly that \\(u(x,y) = x^3 - 3xy^2\\) is harmonic.',
-                    hint: 'Compute \\(u_{xx}\\) and \\(u_{yy}\\) separately, then add.',
-                    solution: '\\(u_x = 3x^2 - 3y^2\\), \\(u_{xx} = 6x\\). \\(u_y = -6xy\\), \\(u_{yy} = -6x\\). So \\(u_{xx} + u_{yy} = 6x - 6x = 0\\). This is the real part of \\(f(z) = z^3\\).'
-                },
-                {
-                    question: 'Is \\(u(x,y) = x^2 + y^2\\) harmonic? What physical quantity does it represent?',
-                    hint: 'Compute the Laplacian. Note this equals \\(|z|^2\\).',
-                    solution: '\\(u_{xx} + u_{yy} = 2 + 2 = 4 \\neq 0\\). Not harmonic. It cannot be the real part of an analytic function. It represents the squared distance from the origin, which grows everywhere and has a global minimum at the origin.'
+                    question: 'Verify that \\(u(x,y) = e^x \\cos y\\) is harmonic by computing \\(u_{xx}\\) and \\(u_{yy}\\) explicitly.',
+                    hint: 'Compute the second partial derivatives and check that their sum is zero.',
+                    solution: 'We have \\(u_x = e^x \\cos y\\) and \\(u_{xx} = e^x \\cos y\\). Also \\(u_y = -e^x \\sin y\\) and \\(u_{yy} = -e^x \\cos y\\). So \\(u_{xx} + u_{yy} = e^x \\cos y - e^x \\cos y = 0\\). \\(\\checkmark\\)'
                 }
             ]
         },
@@ -164,48 +126,72 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-properties',
-            title: 'Properties of Harmonic Functions',
+            title: 'Properties: Mean Value, Maximum Principle, Harnack',
             content: `
 <h2>Properties of Harmonic Functions</h2>
 
-<p>Harmonic functions enjoy remarkable regularity and extremal properties that follow from their connection to analytic functions.</p>
+<p>Harmonic functions inherit remarkable rigidity from their connection to analytic functions. Three properties stand out: the mean value property, the maximum principle, and Harnack's inequality. These properties are not only theoretically elegant but serve as the workhorses of the theory.</p>
 
 <h3>The Mean Value Property</h3>
 
 <div class="env-block theorem">
     <div class="env-title">Theorem 16.2 (Mean Value Property)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic in a domain containing the closed disk \\(\\overline{D}(z_0, R)\\), then</p>
-        \\[u(z_0) = \\frac{1}{2\\pi} \\int_0^{2\\pi} u(z_0 + Re^{i\\theta})\\, d\\theta.\\]
-        <p>The value at the center equals the average over any circle centered there.</p>
+        <p>If \\(u\\) is harmonic on a domain \\(\\Omega\\) and the closed disk \\(\\overline{D}(a, R)\\) is contained in \\(\\Omega\\), then</p>
+        \\[
+        u(a) = \\frac{1}{2\\pi} \\int_0^{2\\pi} u(a + Re^{i\\theta})\\, d\\theta.
+        \\]
+        <p>That is, the value of \\(u\\) at the center of any disk equals the average of \\(u\\) on the boundary circle.</p>
     </div>
 </div>
 
-<p><em>Proof sketch.</em> Let \\(f = u + iv\\) be analytic with real part \\(u\\). By Cauchy's integral formula applied to \\(f\\):</p>
+<div class="env-block proof">
+    <div class="env-title">Proof sketch</div>
+    <div class="env-body">
+        <p>On the simply connected disk \\(D(a, R)\\), the harmonic function \\(u\\) is the real part of some analytic function \\(f\\). By Cauchy's integral formula,</p>
+        \\[
+        f(a) = \\frac{1}{2\\pi i} \\oint_{|z-a|=R} \\frac{f(z)}{z-a}\\, dz = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(a + Re^{i\\theta})\\, d\\theta.
+        \\]
+        <p>Taking the real part of both sides gives the result. \\(\\square\\)</p>
+    </div>
+</div>
 
-\\[f(z_0) = \\frac{1}{2\\pi i} \\oint_{|z - z_0| = R} \\frac{f(z)}{z - z_0}\\, dz.\\]
+<div class="env-block intuition">
+    <div class="env-title">Physical Intuition</div>
+    <div class="env-body">
+        <p>Think of \\(u\\) as a steady-state temperature. No point can be hotter than the average of its surroundings (otherwise, heat would flow inward, contradicting the steady state). This is precisely the mean value property: every point's temperature equals the average over any surrounding circle.</p>
+    </div>
+</div>
 
-<p>Parametrize with \\(z = z_0 + Re^{i\\theta}\\), \\(dz = iRe^{i\\theta}\\, d\\theta\\):</p>
-
-\\[f(z_0) = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(z_0 + Re^{i\\theta})\\, d\\theta.\\]
-
-<p>Taking real parts gives the mean value property. \\(\\square\\)</p>
+<div class="env-block remark">
+    <div class="env-title">Converse of the mean value property</div>
+    <div class="env-body">
+        <p>A continuous function satisfying the mean value property on every disk within \\(\\Omega\\) is harmonic on \\(\\Omega\\). This gives an alternative characterization of harmonic functions that avoids requiring \\(C^2\\) regularity in the definition.</p>
+    </div>
+</div>
 
 <h3>The Maximum Principle</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 16.3 (Maximum Principle)</div>
+    <div class="env-title">Theorem 16.3 (Maximum Principle for Harmonic Functions)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic and nonconstant in a bounded domain \\(D\\), then \\(u\\) attains its maximum and minimum values on the boundary \\(\\partial D\\), not in the interior.</p>
+        <p>Let \\(u\\) be harmonic on a connected open set \\(\\Omega\\).</p>
+        <ol>
+            <li><strong>Strong form:</strong> If \\(u\\) attains its maximum at an interior point of \\(\\Omega\\), then \\(u\\) is constant on \\(\\Omega\\).</li>
+            <li><strong>Weak form:</strong> If \\(\\Omega\\) is bounded and \\(u\\) extends continuously to \\(\\overline{\\Omega}\\), then \\(\\max_{\\overline{\\Omega}} u = \\max_{\\partial \\Omega} u\\).</li>
+        </ol>
+        <p>The same statements hold for the minimum (apply the maximum principle to \\(-u\\)).</p>
     </div>
 </div>
 
-<p><em>Proof idea.</em> Suppose \\(u\\) attains its maximum at an interior point \\(z_0\\). The mean value property forces all values on any small circle around \\(z_0\\) to equal \\(u(z_0)\\). Propagating this argument across \\(D\\) forces \\(u\\) to be constant, a contradiction.</p>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary (Uniqueness for the Dirichlet Problem)</div>
+<div class="env-block proof">
+    <div class="env-title">Proof of the strong form</div>
     <div class="env-body">
-        <p>If two harmonic functions agree on the boundary of a bounded domain, they agree throughout the domain. (Their difference is harmonic with zero boundary values, hence identically zero by the maximum principle.)</p>
+        <p>Suppose \\(u(a) = M = \\max_{\\Omega} u\\) for some \\(a \\in \\Omega\\). Take any disk \\(D(a, r) \\subset \\Omega\\). By the mean value property:</p>
+        \\[
+        M = u(a) = \\frac{1}{2\\pi} \\int_0^{2\\pi} u(a + re^{i\\theta})\\, d\\theta.
+        \\]
+        <p>Since \\(u \\leq M\\) everywhere, the only way the average can equal \\(M\\) is if \\(u \\equiv M\\) on the circle. Since \\(r\\) is arbitrary (up to the boundary of \\(\\Omega\\)), the set \\(\\{z : u(z) = M\\}\\) is open. It is also closed (by continuity of \\(u\\)). Since \\(\\Omega\\) is connected, \\(u \\equiv M\\) on all of \\(\\Omega\\). \\(\\square\\)</p>
     </div>
 </div>
 
@@ -214,17 +200,19 @@ window.CHAPTERS.push({
 <div class="env-block theorem">
     <div class="env-title">Theorem 16.4 (Harnack's Inequality)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic and nonnegative in the disk \\(|z| < R\\), then for \\(|z| = r < R\\):</p>
-        \\[\\frac{R - r}{R + r}\\, u(0) \\leq u(z) \\leq \\frac{R + r}{R - r}\\, u(0).\\]
+        <p>Let \\(u\\) be a <em>non-negative</em> harmonic function on the disk \\(D(0, R)\\). Then for \\(|z| = r < R\\):</p>
+        \\[
+        \\frac{R - r}{R + r} \\, u(0) \\leq u(z) \\leq \\frac{R + r}{R - r} \\, u(0).
+        \\]
     </div>
 </div>
 
-<p>Harnack's inequality quantifies how a harmonic function's values at interior points are controlled by its value at the center. As \\(r \\to R\\), the bounds diverge, reflecting that boundary behavior need not be controlled by the interior.</p>
+<p>Harnack's inequality says that a non-negative harmonic function on a disk cannot vary too wildly: the ratio \\(u(z)/u(0)\\) is bounded above and below by factors depending only on \\(|z|/R\\). As \\(z \\to 0\\), both bounds converge to 1. As \\(|z| \\to R\\), the upper bound blows up and the lower bound goes to zero, which is sharp.</p>
 
-<div class="env-block theorem">
-    <div class="env-title">Theorem 16.5 (Harnack's Principle)</div>
+<div class="env-block remark">
+    <div class="env-title">Harnack's convergence theorem</div>
     <div class="env-body">
-        <p>An increasing sequence of harmonic functions either converges uniformly on compact subsets to a harmonic function, or diverges to \\(+\\infty\\) everywhere.</p>
+        <p>An important consequence: if \\(u_1 \\leq u_2 \\leq u_3 \\leq \\cdots\\) is an increasing sequence of harmonic functions on a domain \\(\\Omega\\), then either \\(u_n \\to \\infty\\) uniformly on compact subsets (in which case the limit is not harmonic) or \\(u_n\\) converges uniformly on compact subsets to a harmonic function.</p>
     </div>
 </div>
 
@@ -233,78 +221,74 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-mean-value-harmonic',
-                    title: 'Mean Value Property: Average on Circle = Value at Center',
-                    description: 'For the harmonic function u = x\u00b2 \u2212 y\u00b2, place a circle anywhere. The value at the center equals the average of u on the circle. Drag the center; watch the animated average converge to the center value.',
+                    title: 'Mean Value Property',
+                    description: 'An animated circle samples points on its boundary. The average of the harmonic function on the boundary equals its value at the center. Drag the center point to test this at different locations.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 60 });
-
-                        var cx = 0, cy = 0;
-                        var radius = 1.0;
-                        var t = 0;
-
-                        VizEngine.createSlider(controls, 'Radius', 0.2, 1.5, radius, 0.05, function(v) {
-                            radius = v;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 400, scale: 60,
+                            originX: 280, originY: 200
                         });
 
-                        var d = viz.addDraggable('center', cx, cy, viz.colors.orange, 8, function(x, y) {
-                            cx = x; cy = y;
+                        var R = 1.5;
+                        var slider = VizEngine.createSlider(controls, 'Radius R', 0.3, 2.5, R, 0.1, function(v) {
+                            R = v;
                         });
 
+                        // Harmonic function: Re(z^2) = x^2 - y^2
                         function u(x, y) { return x*x - y*y; }
 
-                        viz.animate(function(ts) {
-                            t = ts / 800;
+                        var center = viz.addDraggable('center', 1, 0.5, viz.colors.blue, 8);
+
+                        viz.animate(function(t) {
                             viz.clear();
-                            viz.drawGrid();
+                            viz.drawGrid(1);
                             viz.drawAxes();
 
-                            // Draw heatmap-style shading manually
                             var ctx = viz.ctx;
+                            var cx = center.x, cy = center.y;
+                            var uCenter = u(cx, cy);
 
-                            // Compute center value
-                            var centerVal = u(cx, cy);
+                            // Draw circle
+                            viz.drawCircle(cx, cy, R, null, viz.colors.blue + '88', 2);
 
-                            // Draw the circle
-                            viz.drawCircle(cx, cy, radius, null, viz.colors.blue, 2);
-
-                            // Animated sample point on circle
-                            var sx = cx + radius * Math.cos(t);
-                            var sy = cy + radius * Math.sin(t);
-                            var sval = u(sx, sy);
-
-                            // Draw radius line
-                            viz.drawSegment(cx, cy, sx, sy, viz.colors.blue + '88', 1.5, true);
-
-                            // Sample point
-                            viz.drawPoint(sx, sy, viz.colors.teal, null, 5);
-
-                            // Center point
-                            viz.drawDraggables();
-
-                            // Numerically compute average
-                            var N = 200;
-                            var avg = 0;
-                            for (var k = 0; k < N; k++) {
-                                var th = 2 * Math.PI * k / N;
-                                avg += u(cx + radius * Math.cos(th), cy + radius * Math.sin(th));
+                            // Sample points on circle and compute average
+                            var N = 64;
+                            var sum = 0;
+                            var theta = (t / 1500) % (2 * Math.PI);
+                            for (var i = 0; i < N; i++) {
+                                var angle = 2 * Math.PI * i / N;
+                                var px = cx + R * Math.cos(angle);
+                                var py = cy + R * Math.sin(angle);
+                                sum += u(px, py);
                             }
-                            avg /= N;
+                            var avg = sum / N;
 
-                            // Labels
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.textAlign = 'left';
-                            ctx.fillText('u(center) = ' + centerVal.toFixed(4), 12, 30);
-                            ctx.fillStyle = viz.colors.teal;
-                            ctx.fillText('avg on circle = ' + avg.toFixed(4), 12, 50);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.fillText('u(x,y) = x\u00b2 \u2212 y\u00b2', 12, viz.height - 14);
+                            // Draw animated sampling point
+                            var sampX = cx + R * Math.cos(theta);
+                            var sampY = cy + R * Math.sin(theta);
+                            viz.drawPoint(sampX, sampY, viz.colors.orange, null, 5);
 
-                            // Match indicator
-                            var diff = Math.abs(centerVal - avg);
-                            ctx.fillStyle = diff < 0.001 ? viz.colors.green : viz.colors.yellow;
-                            ctx.textAlign = 'right';
-                            ctx.fillText('|diff| = ' + diff.toFixed(5), viz.width - 12, 30);
+                            // Draw a few sample points with colors showing value
+                            var nShow = 24;
+                            for (var j = 0; j < nShow; j++) {
+                                var a = 2 * Math.PI * j / nShow;
+                                var spx = cx + R * Math.cos(a);
+                                var spy = cy + R * Math.sin(a);
+                                var val = u(spx, spy);
+                                var col = val >= 0 ? viz.colors.teal : viz.colors.red;
+                                viz.drawPoint(spx, spy, col, null, 3);
+                            }
+
+                            // Draw center point
+                            viz.drawPoint(cx, cy, viz.colors.blue, null, 6);
+
+                            // Display values
+                            viz.screenText('u(x,y) = x\u00B2 \u2212 y\u00B2   (harmonic)', viz.width / 2, 18, viz.colors.white, 13);
+                            viz.screenText('u(center) = ' + uCenter.toFixed(3), viz.width / 2, viz.height - 50, viz.colors.blue, 13);
+                            viz.screenText('avg on circle = ' + avg.toFixed(3), viz.width / 2, viz.height - 30, viz.colors.orange, 13);
+                            viz.screenText(Math.abs(uCenter - avg) < 0.01 ? 'Equal! Mean value property holds.' : '(adjust for boundary)', viz.width / 2, viz.height - 12, viz.colors.teal, 11);
+
+                            viz.drawDraggables();
                         });
                         return viz;
                     }
@@ -312,14 +296,14 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Use the mean value property to evaluate \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} \\cos^2\\theta\\, d\\theta\\) by recognizing it as the average of a harmonic function on the unit circle.',
-                    hint: 'Write \\(\\cos\\theta = \\operatorname{Re}(e^{i\\theta})\\). Consider \\(u(x,y) = x^2 - y^2\\) or use the connection to \\(\\operatorname{Re}(z^2)\\).',
-                    solution: 'On the unit circle, \\(\\cos^2\\theta = \\frac{1 + \\cos 2\\theta}{2}\\). But more directly: \\(\\frac{1}{2\\pi}\\int_0^{2\\pi}(x^2-y^2)\\,d\\theta\\) with \\(x=\\cos\\theta, y=\\sin\\theta\\) equals \\(u(0,0) = 0\\), so \\(\\int \\cos^2\\theta\\,d\\theta = \\int\\sin^2\\theta\\,d\\theta\\). Since they sum to \\(2\\pi\\), each equals \\(\\pi\\).'
+                    question: 'Show that the mean value property implies the maximum principle directly (without using analyticity).',
+                    hint: 'If \\(u(a) = M\\) is the maximum and the mean value property holds, what can you conclude about \\(u\\) on any circle centered at \\(a\\)?',
+                    solution: 'Suppose \\(u(a) = M = \\max u\\). By the mean value property, \\(M = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(a+re^{i\\theta})\\,d\\theta\\). Since \\(u \\leq M\\), the integrand is at most \\(M\\), and the average equals \\(M\\), so \\(u \\equiv M\\) on each circle. The set \\(\\{u = M\\}\\) is thus open. Being a level set of a continuous function, it is also closed. By connectedness, \\(u \\equiv M\\).'
                 },
                 {
-                    question: 'Prove that if \\(u\\) is harmonic in a bounded domain \\(D\\) and \\(u = 0\\) on \\(\\partial D\\), then \\(u \\equiv 0\\) in \\(D\\).',
-                    hint: 'Apply the maximum principle to both \\(u\\) and \\(-u\\).',
-                    solution: 'By the maximum principle, \\(u \\leq \\max_{\\partial D} u = 0\\) in \\(D\\). Applying the principle to \\(-u\\) (also harmonic), \\(-u \\leq 0\\), so \\(u \\geq 0\\). Together, \\(u \\equiv 0\\).'
+                    question: 'Let \\(u\\) and \\(v\\) be harmonic on a bounded domain \\(\\Omega\\), continuous on \\(\\overline{\\Omega}\\), with \\(u = v\\) on \\(\\partial\\Omega\\). Prove that \\(u = v\\) on \\(\\Omega\\).',
+                    hint: 'Apply the maximum principle to \\(w = u - v\\) and to \\(-w\\).',
+                    solution: 'Let \\(w = u - v\\). Then \\(w\\) is harmonic on \\(\\Omega\\), continuous on \\(\\overline{\\Omega}\\), and \\(w = 0\\) on \\(\\partial\\Omega\\). By the maximum principle, \\(\\max_{\\overline{\\Omega}} w = \\max_{\\partial\\Omega} w = 0\\). By the minimum principle (applied to \\(-w\\)), \\(\\min_{\\overline{\\Omega}} w = 0\\). Hence \\(w \\equiv 0\\), so \\(u \\equiv v\\). This proves <strong>uniqueness</strong> for the Dirichlet problem.'
                 }
             ]
         },
@@ -333,189 +317,162 @@ window.CHAPTERS.push({
             content: `
 <h2>Harmonic Conjugates</h2>
 
-<p>Given a harmonic function \\(u\\), can we always find \\(v\\) such that \\(f = u + iv\\) is analytic? The Cauchy-Riemann equations tell us what \\(v\\) must satisfy:</p>
-
-\\[v_x = -u_y, \\qquad v_y = u_x.\\]
-
-<p>If \\(u\\) is harmonic, these equations are consistent (by \\(\\Delta u = 0\\)), and we can integrate to find \\(v\\).</p>
+<div class="env-block intuition">
+    <div class="env-title">Reconstructing the Analytic Function</div>
+    <div class="env-body">
+        <p>Given a harmonic function \\(u\\), can we find a harmonic function \\(v\\) so that \\(f = u + iv\\) is analytic? Such a \\(v\\) is called a <em>harmonic conjugate</em> of \\(u\\). The Cauchy-Riemann equations tell us exactly what \\(v\\) must be: \\(v_x = -u_y\\) and \\(v_y = u_x\\). The question is whether these conditions can be integrated consistently.</p>
+    </div>
+</div>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 16.2 (Harmonic Conjugate)</div>
+    <div class="env-title">Definition (Harmonic Conjugate)</div>
     <div class="env-body">
-        <p>If \\(u\\) and \\(v\\) are harmonic in \\(D\\) and satisfy the Cauchy-Riemann equations, then \\(v\\) is called a <em>harmonic conjugate</em> of \\(u\\).</p>
+        <p>If \\(u\\) is harmonic on a domain \\(\\Omega\\), a function \\(v\\) is a <strong>harmonic conjugate</strong> of \\(u\\) if \\(v\\) is harmonic on \\(\\Omega\\) and \\(f = u + iv\\) is analytic on \\(\\Omega\\). Equivalently, \\(u\\) and \\(v\\) satisfy the Cauchy-Riemann equations throughout \\(\\Omega\\).</p>
     </div>
 </div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 16.6 (Existence in Simply Connected Domains)</div>
+    <div class="env-title">Theorem 16.5 (Existence of Harmonic Conjugates)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic in a <em>simply connected</em> domain \\(D\\), then \\(u\\) has a harmonic conjugate \\(v\\) in \\(D\\), unique up to an additive constant.</p>
+        <p>If \\(u\\) is harmonic on a <strong>simply connected</strong> domain \\(\\Omega\\), then \\(u\\) has a harmonic conjugate \\(v\\) on \\(\\Omega\\). The conjugate is unique up to an additive constant.</p>
     </div>
 </div>
 
-<p><em>Proof.</em> Define \\(v\\) by integrating along any path from a fixed point \\(z_0\\) to \\(z\\) in \\(D\\):</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Fix \\(z_0 = (x_0, y_0) \\in \\Omega\\). Define</p>
+        \\[
+        v(x, y) = \\int_{(x_0, y_0)}^{(x, y)} \\left( -u_y\\, dx + u_x\\, dy \\right).
+        \\]
+        <p>By Laplace's equation, \\(\\frac{\\partial(-u_y)}{\\partial y} = -u_{yy} = u_{xx} = \\frac{\\partial(u_x)}{\\partial x}\\), so the integrand is an exact differential. On a simply connected domain, the line integral is path-independent. One verifies \\(v_x = -u_y\\) and \\(v_y = u_x\\), which are the Cauchy-Riemann equations. \\(\\square\\)</p>
+    </div>
+</div>
 
-\\[v(x, y) = \\int_{(x_0, y_0)}^{(x, y)} (-u_y\\, dx + u_x\\, dy).\\]
-
-<p>Since \\(D\\) is simply connected and \\(\\Delta u = 0\\) ensures the integrand is a closed form (the mixed partials \\((-u_y)_y = -u_{yy} = u_{xx} = (u_x)_x\\) agree), the integral is path-independent. One verifies that \\(v_x = -u_y\\) and \\(v_y = u_x\\). \\(\\square\\)</p>
+<div class="env-block example">
+    <div class="env-title">Example: Conjugate of \\(x^2 - y^2\\)</div>
+    <div class="env-body">
+        <p>Let \\(u = x^2 - y^2\\). By Cauchy-Riemann: \\(v_y = u_x = 2x\\) and \\(v_x = -u_y = 2y\\).</p>
+        <p>Integrating \\(v_y = 2x\\) with respect to \\(y\\) gives \\(v = 2xy + g(x)\\). Substituting into \\(v_x = 2y + g'(x) = 2y\\), we get \\(g'(x) = 0\\), so \\(g(x) = C\\).</p>
+        <p>Thus \\(v = 2xy + C\\), and \\(f = (x^2 - y^2) + i(2xy) = z^2\\). \\(\\checkmark\\)</p>
+    </div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">Simply Connected is Essential</div>
+    <div class="env-title">Failure on non-simply-connected domains</div>
     <div class="env-body">
-        <p>On the punctured plane \\(\\mathbb{C} \\setminus \\{0\\}\\), the function \\(u = \\ln|z|\\) is harmonic. Its conjugate is \\(\\arg z\\), but this is not single-valued on the punctured plane. The punctured plane is not simply connected, and indeed \\(\\ln z\\) requires a branch cut.</p>
+        <p>The function \\(u(x,y) = \\log\\sqrt{x^2 + y^2}\\) is harmonic on \\(\\mathbb{C} \\setminus \\{0\\}\\). Its would-be conjugate is \\(v = \\arg(z)\\), but \\(\\arg(z)\\) is not single-valued on this domain. The line integral picks up a nonzero increment \\(2\\pi\\) around each loop encircling the origin. Simple connectivity is essential.</p>
     </div>
 </div>
 
 <h3>Orthogonality of Level Curves</h3>
 
-<p>The level curves \\(\\{u = c\\}\\) and \\(\\{v = c'\\}\\) are orthogonal wherever \\(\\nabla u \\neq 0\\). This is because:</p>
+<p>If \\(f = u + iv\\) is analytic and \\(f'(z) \\neq 0\\), the level curves \\(u = c_1\\) and \\(v = c_2\\) are orthogonal wherever they intersect. This is because \\(\\nabla u = (u_x, u_y)\\) and \\(\\nabla v = (v_x, v_y) = (-u_y, u_x)\\) are perpendicular:</p>
+\\[
+\\nabla u \\cdot \\nabla v = u_x(-u_y) + u_y(u_x) = 0.
+\\]
 
-\\[\\nabla u \\cdot \\nabla v = u_x v_x + u_y v_y = u_x(-u_y) + u_y(u_x) = 0.\\]
-
-<p>In fluid flow, if \\(u\\) is the velocity potential, the level curves of \\(u\\) are equipotential lines and those of \\(v\\) are streamlines. They always cross at right angles.</p>
-
-<div class="env-block example">
-    <div class="env-title">Example: Computing a Harmonic Conjugate</div>
-    <div class="env-body">
-        <p>Find the harmonic conjugate of \\(u(x,y) = x^2 - y^2\\).</p>
-        <p>From \\(v_y = u_x = 2x\\), integrate: \\(v = 2xy + g(x)\\). From \\(v_x = -u_y = 2y\\): \\(2y + g'(x) = 2y\\), so \\(g'(x) = 0\\) and \\(g\\) is constant. Thus \\(v = 2xy + C\\). Check: \\(f = (x^2-y^2) + i(2xy) = z^2\\). \\(\\checkmark\\)</p>
-    </div>
-</div>
+<p>This orthogonality is visible in the visualization below, where the level curves of \\(u\\) and \\(v\\) form a grid of curvilinear rectangles.</p>
 
 <div class="viz-placeholder" data-viz="viz-conjugate-level-curves"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-conjugate-level-curves',
-                    title: 'Harmonic Conjugate Level Curves: Orthogonal Families',
-                    description: 'The level curves of u (red) and its harmonic conjugate v (blue) meet at right angles. Drag the slider to animate between different analytic functions f = u + iv.',
+                    title: 'Orthogonal Level Curves of u and v',
+                    description: 'The level curves of a harmonic function u and its conjugate v intersect at right angles, forming an orthogonal net. Choose the analytic function f = u + iv to see the pattern.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 55 });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 400, scale: 60,
+                            originX: 280, originY: 200
+                        });
 
-                        var funcIdx = 0;
-                        var funcDefs = [
+                        var funcs = [
                             {
-                                name: 'z\u00b2: u=x\u00b2-y\u00b2, v=2xy',
+                                name: 'z\u00B2',
                                 u: function(x, y) { return x*x - y*y; },
                                 v: function(x, y) { return 2*x*y; }
                             },
                             {
-                                name: 'e\u1d3f: u=e\u02e3cosy, v=e\u02e3siny',
+                                name: 'e^z',
                                 u: function(x, y) { return Math.exp(x) * Math.cos(y); },
                                 v: function(x, y) { return Math.exp(x) * Math.sin(y); }
                             },
                             {
-                                name: 'z\u00b3: u=x\u00b3-3xy\u00b2, v=3x\u00b2y-y\u00b3',
+                                name: 'z\u00B3',
                                 u: function(x, y) { return x*x*x - 3*x*y*y; },
                                 v: function(x, y) { return 3*x*x*y - y*y*y; }
                             }
                         ];
+                        var currentFunc = 0;
 
-                        var animT = 0;
-                        var animating = false;
-                        var animId = null;
-
-                        var btnWrap = document.createElement('div');
-                        btnWrap.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px;';
-                        controls.appendChild(btnWrap);
-                        funcDefs.forEach(function(fd, i) {
-                            VizEngine.createButton(btnWrap, fd.name.split(':')[0], function() {
-                                funcIdx = i;
-                                animT = 0;
-                                draw();
-                            });
-                        });
-                        VizEngine.createButton(btnWrap, 'Animate', function() {
-                            if (animating) {
-                                animating = false;
-                                if (animId) { cancelAnimationFrame(animId); animId = null; }
-                                draw();
-                            } else {
-                                animating = true;
-                                function loop() {
-                                    animT += 0.015;
+                        for (var i = 0; i < funcs.length; i++) {
+                            (function(idx) {
+                                VizEngine.createButton(controls, 'f(z) = ' + funcs[idx].name, function() {
+                                    currentFunc = idx;
                                     draw();
-                                    if (animating) animId = requestAnimationFrame(loop);
-                                }
-                                loop();
-                            }
-                        });
+                                });
+                            })(i);
+                        }
 
-                        function drawContours(fn, color, levels) {
+                        function drawContours(fn, color, levels, xMin, xMax, yMin, yMax, step) {
                             var ctx = viz.ctx;
-                            var W = viz.width, H = viz.height;
-                            var xRange = [-5, 5], yRange = [-5, 5];
-                            var cols = 200, rows = 200;
-                            var dx = (xRange[1]-xRange[0]) / cols;
-                            var dy = (yRange[1]-yRange[0]) / rows;
-
                             ctx.strokeStyle = color;
-                            ctx.lineWidth = 1.5;
-
-                            levels.forEach(function(lev) {
+                            ctx.lineWidth = 1.2;
+                            var dx = step || 0.04;
+                            var dy = step || 0.04;
+                            // Simple marching: find zero crossings row by row
+                            for (var li = 0; li < levels.length; li++) {
+                                var lev = levels[li];
                                 ctx.beginPath();
-                                var started = false;
-                                // March along horizontal lines
-                                for (var j = 0; j < rows; j++) {
-                                    for (var i = 0; i < cols; i++) {
-                                        var x0 = xRange[0] + i * dx;
-                                        var y0 = yRange[0] + j * dy;
-                                        var v00 = fn(x0, y0) - lev;
-                                        var v10 = fn(x0+dx, y0) - lev;
-                                        var v01 = fn(x0, y0+dy) - lev;
-                                        // Check for crossing on bottom and left edges
+                                var moved = false;
+                                // Scan columns
+                                for (var x = xMin; x <= xMax; x += dx) {
+                                    for (var y = yMin; y <= yMax; y += dy) {
+                                        var v00 = fn(x, y) - lev;
+                                        var v10 = fn(x + dx, y) - lev;
+                                        var v01 = fn(x, y + dy) - lev;
+                                        // Check horizontal edge
                                         if (v00 * v10 < 0) {
                                             var t = v00 / (v00 - v10);
-                                            var px = x0 + t*dx, py = y0;
-                                            var sc = viz.toScreen(px, py);
-                                            started ? ctx.lineTo(sc[0], sc[1]) : ctx.moveTo(sc[0], sc[1]);
-                                            started = false;
+                                            var px = x + t * dx;
+                                            var py = y;
+                                            var s = viz.toScreen(px, py);
+                                            if (!moved) { ctx.moveTo(s[0], s[1]); moved = true; }
+                                            else { ctx.lineTo(s[0], s[1]); }
                                         }
+                                        // Check vertical edge
                                         if (v00 * v01 < 0) {
                                             var t2 = v00 / (v00 - v01);
-                                            var px2 = x0, py2 = y0 + t2*dy;
-                                            var sc2 = viz.toScreen(px2, py2);
-                                            ctx.moveTo(sc2[0], sc2[1]);
+                                            var px2 = x;
+                                            var py2 = y + t2 * dy;
+                                            var s2 = viz.toScreen(px2, py2);
+                                            if (!moved) { ctx.moveTo(s2[0], s2[1]); moved = true; }
+                                            else { ctx.lineTo(s2[0], s2[1]); }
                                         }
                                     }
                                 }
                                 ctx.stroke();
-                            });
+                            }
                         }
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid();
+                            viz.drawGrid(1);
                             viz.drawAxes();
 
-                            var fd = funcDefs[funcIdx];
-                            var uFn = fd.u, vFn = fd.v;
-
-                            // Level values, optionally animated phase shift
-                            var uLevels = [], vLevels = [];
-                            var nLev = 10;
-                            for (var k = -nLev; k <= nLev; k++) {
-                                uLevels.push(k * 0.8 + (animating ? Math.sin(animT) * 0.2 : 0));
-                                vLevels.push(k * 0.8 + (animating ? Math.cos(animT) * 0.2 : 0));
+                            var f = funcs[currentFunc];
+                            var levels = [];
+                            for (var k = -8; k <= 8; k++) {
+                                levels.push(k * 0.5);
                             }
 
-                            drawContours(uFn, viz.colors.red + 'cc', uLevels);
-                            drawContours(vFn, viz.colors.blue + 'cc', vLevels);
+                            drawContours(f.u, viz.colors.blue, levels, -5, 5, -4, 4, 0.05);
+                            drawContours(f.v, viz.colors.orange, levels, -5, 5, -4, 4, 0.05);
 
-                            // Legend
-                            var ctx = viz.ctx;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.fillStyle = viz.colors.red;
-                            ctx.fillText('u = const', 12, 22);
-                            ctx.fillStyle = viz.colors.blue;
-                            ctx.fillText('v = const', 12, 40);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.fillText(fd.name, viz.width / 2 - 80, viz.height - 12);
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.fillText('\u2207u \u22c5 \u2207v = 0 (orthogonal)', 12, viz.height - 14);
+                            viz.screenText('f(z) = ' + f.name, viz.width / 2, 18, viz.colors.white, 14);
+                            viz.screenText('u = const (blue)    v = const (orange)    orthogonal!', viz.width / 2, viz.height - 12, viz.colors.text, 11);
                         }
-
                         draw();
                         return viz;
                     }
@@ -524,67 +481,80 @@ window.CHAPTERS.push({
             exercises: [
                 {
                     question: 'Find the harmonic conjugate of \\(u(x,y) = e^x \\cos y\\).',
-                    hint: 'Use the Cauchy-Riemann equations: \\(v_y = u_x\\) and \\(v_x = -u_y\\).',
-                    solution: '\\(u_x = e^x \\cos y\\), so \\(v_y = e^x \\cos y\\), giving \\(v = e^x \\sin y + g(x)\\). Then \\(v_x = e^x \\sin y + g\'(x) = -u_y = e^x \\sin y\\), so \\(g\'(x) = 0\\). Thus \\(v = e^x \\sin y + C\\). Check: \\(f = e^x(\\cos y + i \\sin y) = e^{x+iy} = e^z\\). \\(\\checkmark\\)'
+                    hint: 'Use the Cauchy-Riemann equations: \\(v_y = u_x\\) and \\(v_x = -u_y\\). Integrate and determine the arbitrary function.',
+                    solution: 'From \\(v_y = u_x = e^x \\cos y\\), integrating with respect to \\(y\\): \\(v = e^x \\sin y + g(x)\\). From \\(v_x = -u_y = e^x \\sin y\\), we get \\(e^x \\sin y + g\'(x) = e^x \\sin y\\), so \\(g\'(x) = 0\\) and \\(g = C\\). Thus \\(v = e^x \\sin y + C\\), and \\(f = e^x\\cos y + ie^x\\sin y = e^z\\). \\(\\checkmark\\)'
                 },
                 {
-                    question: 'Can \\(u(x,y) = x^2 + y^2\\) have a harmonic conjugate? Explain.',
-                    hint: 'First check whether \\(u\\) is harmonic.',
-                    solution: 'No. Since \\(\\Delta u = 2 + 2 = 4 \\neq 0\\), \\(u\\) is not harmonic. A function can only have a harmonic conjugate if it is itself harmonic.'
+                    question: 'Explain why \\(u(x,y) = \\log(x^2 + y^2)\\) has no single-valued harmonic conjugate on \\(\\mathbb{C}\\setminus\\{0\\}\\), but does on any simply connected subdomain.',
+                    hint: 'Compute the conjugate integral around a loop encircling the origin.',
+                    solution: 'The formal conjugate is \\(v = 2\\,\\mathrm{arg}(z)\\). Integrating \\(-u_y\\,dx + u_x\\,dy\\) around the circle \\(|z|=1\\) gives \\(\\oint \\frac{-2y}{x^2+y^2}dx + \\frac{2x}{x^2+y^2}dy = 4\\pi \\neq 0\\). The integral is path-dependent on \\(\\mathbb{C}\\setminus\\{0\\}\\), so no single-valued conjugate exists. On any simply connected subdomain (e.g., a slit plane), the integral is path-independent and a conjugate exists.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 4: Poisson Integral Formula
+        // SECTION 4: The Poisson Integral Formula
         // ================================================================
         {
             id: 'sec-poisson',
-            title: 'Poisson Integral Formula',
+            title: 'The Poisson Integral Formula',
             content: `
-<h2>Poisson Integral Formula</h2>
+<h2>The Poisson Integral Formula</h2>
 
-<p>The Poisson integral formula solves the Dirichlet problem on the unit disk: given continuous boundary values \\(f(e^{i\\theta})\\), find the harmonic function inside the disk that matches them.</p>
+<div class="env-block intuition">
+    <div class="env-title">From Boundary to Interior</div>
+    <div class="env-body">
+        <p>The Dirichlet problem asks: given boundary values, find a harmonic function in the interior. For the unit disk, the answer is the <em>Poisson integral formula</em>, which expresses interior values as a weighted average of boundary values. The weight is the <strong>Poisson kernel</strong>, a bump function that peaks at the boundary point closest to the interior point.</p>
+    </div>
+</div>
 
-<h3>Derivation</h3>
+<h3>Deriving the Poisson Kernel</h3>
 
-<p>Start with the Cauchy integral formula for a function \\(F\\) analytic on and inside the unit circle \\(|z| = 1\\). For \\(|z| = r < 1\\):</p>
+<p>Start with the Cauchy integral formula for the disk \\(D(0,1)\\). If \\(f\\) is analytic on \\(\\overline{D}\\) and \\(|z| < 1\\):</p>
+\\[
+f(z) = \\frac{1}{2\\pi i} \\oint_{|\\zeta|=1} \\frac{f(\\zeta)}{\\zeta - z}\\, d\\zeta.
+\\]
 
-\\[F(z) = \\frac{1}{2\\pi i} \\oint_{|\\zeta| = 1} \\frac{F(\\zeta)}{\\zeta - z}\\, d\\zeta.\\]
+<p>The reflected point \\(1/\\bar{z}\\) lies outside the disk, so by Cauchy's theorem:</p>
+\\[
+0 = \\frac{1}{2\\pi i} \\oint_{|\\zeta|=1} \\frac{f(\\zeta)}{\\zeta - 1/\\bar{z}}\\, d\\zeta.
+\\]
 
-<p>The "reflected" point \\(1/\\bar{z}\\) lies outside the unit disk. By Cauchy's theorem applied to the point \\(1/\\bar{z}\\):</p>
-
-\\[0 = \\frac{1}{2\\pi i} \\oint_{|\\zeta|=1} \\frac{F(\\zeta)}{\\zeta - 1/\\bar{z}}\\, d\\zeta.\\]
-
-<p>Subtracting (after suitable manipulation) and taking real parts yields:</p>
+<p>Subtracting the second from the first, taking the real part, and writing \\(z = re^{i\\theta}\\), \\(\\zeta = e^{i\\varphi}\\), one arrives at the Poisson integral formula.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 16.7 (Poisson Integral Formula)</div>
+    <div class="env-title">Theorem 16.6 (Poisson Integral Formula)</div>
     <div class="env-body">
-        <p>If \\(u\\) is harmonic in \\(|z| < 1\\) and continuous on \\(|z| \\leq 1\\), then for \\(z = re^{i\\phi}\\) with \\(r < 1\\):</p>
-        \\[u(r, \\phi) = \\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\phi)\\, u(1, \\theta)\\, d\\theta,\\]
-        <p>where the <em>Poisson kernel</em> is</p>
-        \\[P_r(\\theta) = \\frac{1 - r^2}{1 - 2r\\cos\\theta + r^2}.\\]
+        <p>Let \\(u\\) be harmonic on a domain containing \\(\\overline{D}(0, R)\\). Then for \\(z = re^{i\\theta}\\) with \\(r < R\\):</p>
+        \\[
+        u(re^{i\\theta}) = \\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\varphi)\\, u(Re^{i\\varphi})\\, d\\varphi,
+        \\]
+        <p>where the <strong>Poisson kernel</strong> (for the disk of radius \\(R\\)) is</p>
+        \\[
+        P_r(\\theta) = \\frac{R^2 - r^2}{R^2 - 2Rr\\cos\\theta + r^2}.
+        \\]
+        <p>For the unit disk (\\(R = 1\\)):</p>
+        \\[
+        P_r(\\theta) = \\frac{1 - r^2}{1 - 2r\\cos\\theta + r^2} = \\text{Re}\\left(\\frac{1 + re^{i\\theta}}{1 - re^{i\\theta}}\\right).
+        \\]
     </div>
 </div>
 
 <h3>Properties of the Poisson Kernel</h3>
 
-<p>The Poisson kernel \\(P_r(\\theta)\\) has several key properties that make it a true "approximate identity":</p>
+<p>The Poisson kernel enjoys three key properties that make it an <em>approximate identity</em>:</p>
+<ol>
+    <li>\\(P_r(\\theta) > 0\\) for all \\(\\theta\\) and \\(0 \\leq r < 1\\).</li>
+    <li>\\(\\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta)\\, d\\theta = 1\\).</li>
+    <li>For any \\(\\delta > 0\\), \\(P_r(\\theta) \\to 0\\) uniformly for \\(|\\theta| \\geq \\delta\\) as \\(r \\to 1^-\\).</li>
+</ol>
 
-<ul>
-    <li><strong>Positivity:</strong> \\(P_r(\\theta) > 0\\) for all \\(r < 1\\).</li>
-    <li><strong>Normalization:</strong> \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} P_r(\\theta)\\, d\\theta = 1\\).</li>
-    <li><strong>Concentration:</strong> As \\(r \\to 1^-\\), \\(P_r(\\theta) \\to 0\\) for \\(\\theta \\neq 0\\) and \\(P_r(0) \\to +\\infty\\).</li>
-    <li><strong>Harmonicity:</strong> \\(P_r(\\theta - \\phi)\\) is harmonic in \\((r, \\phi)\\).</li>
-</ul>
-
-<p>The concentration property means that as \\(z\\) approaches a boundary point \\(e^{i\\phi}\\), the integral picks up only the boundary value there, ensuring continuity up to the boundary.</p>
+<p>Property (3) says that as \\(r \\to 1\\), the Poisson kernel concentrates all its mass near \\(\\theta = 0\\), acting like a Dirac delta at the point \\(e^{i\\varphi}\\) closest to \\(z\\). This is why the Poisson integral recovers the boundary values in the limit.</p>
 
 <div class="env-block example">
-    <div class="env-title">Example: Constant Boundary Data</div>
+    <div class="env-title">Example: Constant boundary data</div>
     <div class="env-body">
-        <p>If \\(u(1, \\theta) = 1\\) for all \\(\\theta\\), then by normalization of the Poisson kernel, \\(u(r, \\phi) = 1\\) everywhere inside. Constant boundary data gives a constant solution.</p>
+        <p>If \\(u \\equiv C\\) on \\(|z| = 1\\), then \\(u(re^{i\\theta}) = \\frac{C}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\varphi)\\,d\\varphi = C\\). A constant boundary condition yields a constant harmonic function in the interior. This is consistent with the maximum principle.</p>
     </div>
 </div>
 
@@ -593,130 +563,106 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-poisson-kernel',
-                    title: 'Poisson Kernel P\u1d63(\u03b8) for Various r',
-                    description: 'As r \u2192 1, the Poisson kernel concentrates near \u03b8 = 0, acting like a Dirac delta. It represents the "weight" given to boundary values at angle \u03b8 when computing u at radius r.',
+                    title: 'The Poisson Kernel P_r(\u03B8)',
+                    description: 'The Poisson kernel concentrates near \u03B8 = 0 as r approaches 1. Use the slider to vary r and watch the kernel sharpen into a spike.',
                     setup: function(body, controls) {
                         var viz = new VizEngine(body, {
-                            width: 560, height: 380,
-                            originX: 80, originY: 340, scale: 1
+                            width: 560, height: 400,
+                            originX: 280, originY: 320, scale: 85
                         });
 
                         var rVal = 0.5;
-                        var animating = false;
-                        var animId = null;
-                        var animT = 0;
-
-                        VizEngine.createSlider(controls, 'r', 0.0, 0.98, rVal, 0.01, function(v) {
+                        VizEngine.createSlider(controls, 'r', 0.0, 0.95, rVal, 0.05, function(v) {
                             rVal = v;
                             draw();
                         });
-                        VizEngine.createButton(controls, 'Animate r', function() {
-                            if (animating) {
-                                animating = false;
-                                if (animId) { cancelAnimationFrame(animId); animId = null; }
-                            } else {
-                                animating = true;
-                                function loop() {
-                                    animT += 0.008;
-                                    rVal = 0.5 + 0.48 * Math.abs(Math.sin(animT));
-                                    draw();
-                                    if (animating) animId = requestAnimationFrame(loop);
-                                }
-                                loop();
-                            }
-                        });
 
-                        function poisson(r, theta) {
-                            return (1 - r*r) / (1 - 2*r*Math.cos(theta) + r*r);
+                        function poissonKernel(r, theta) {
+                            return (1 - r * r) / (1 - 2 * r * Math.cos(theta) + r * r);
                         }
 
                         function draw() {
-                            var ctx = viz.ctx;
                             viz.clear();
+                            var ctx = viz.ctx;
 
-                            var chartLeft = 80;
-                            var chartRight = viz.width - 30;
-                            var chartBottom = 340;
-                            var chartTop = 40;
-                            var chartW = chartRight - chartLeft;
-                            var chartH = chartBottom - chartTop;
+                            // Draw axes manually for this plot
+                            // x-axis: theta from -pi to pi
+                            // y-axis: P_r(theta)
+                            var xScale = viz.width / (2 * Math.PI + 0.5);
+                            var yScale = 250;
+                            var xOff = viz.width / 2;
+                            var yOff = 340;
 
-                            // Grid
+                            // Grid lines
                             ctx.strokeStyle = viz.colors.grid;
                             ctx.lineWidth = 0.5;
-                            [-Math.PI, -Math.PI/2, 0, Math.PI/2, Math.PI].forEach(function(th) {
-                                var sx = chartLeft + (th + Math.PI) / (2*Math.PI) * chartW;
-                                ctx.beginPath(); ctx.moveTo(sx, chartTop); ctx.lineTo(sx, chartBottom); ctx.stroke();
-                                ctx.fillStyle = viz.colors.text;
-                                ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'center';
-                                var label = th === 0 ? '0' : th === Math.PI ? '\u03c0' : th === -Math.PI ? '-\u03c0' : th === Math.PI/2 ? '\u03c0/2' : '-\u03c0/2';
-                                ctx.fillText(label, sx, chartBottom + 14);
-                            });
-
-                            // Y-axis
-                            var yMax = Math.max(20, poisson(rVal, 0) * 1.1);
-                            [0, 5, 10, 15, 20].forEach(function(p) {
-                                if (p > yMax) return;
-                                var sy = chartBottom - (p / yMax) * chartH;
-                                ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
-                                ctx.beginPath(); ctx.moveTo(chartLeft, sy); ctx.lineTo(chartRight, sy); ctx.stroke();
-                                ctx.fillStyle = viz.colors.text;
-                                ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'right';
-                                ctx.fillText(p, chartLeft - 6, sy + 3);
-                            });
-
-                            // Plot multiple curves (static reference)
-                            var rVals = [0.0, 0.3, 0.7, 0.9];
-                            var refColors = [viz.colors.text, viz.colors.teal, viz.colors.blue, viz.colors.purple];
-                            rVals.forEach(function(rr, idx) {
-                                ctx.strokeStyle = refColors[idx] + '55';
-                                ctx.lineWidth = 1;
-                                ctx.beginPath();
-                                var N = 300;
-                                for (var k = 0; k <= N; k++) {
-                                    var th = -Math.PI + 2*Math.PI*k/N;
-                                    var pv = Math.min(poisson(rr, th), yMax);
-                                    var sx = chartLeft + (th + Math.PI) / (2*Math.PI) * chartW;
-                                    var sy = chartBottom - (pv / yMax) * chartH;
-                                    k === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
-                                }
-                                ctx.stroke();
-                            });
-
-                            // Active r curve
-                            ctx.strokeStyle = viz.colors.orange;
-                            ctx.lineWidth = 2.5;
-                            ctx.beginPath();
-                            var N = 600;
-                            for (var k = 0; k <= N; k++) {
-                                var th = -Math.PI + 2*Math.PI*k/N;
-                                var pv = Math.min(poisson(rVal, th), yMax);
-                                var sx = chartLeft + (th + Math.PI) / (2*Math.PI) * chartW;
-                                var sy = chartBottom - (pv / yMax) * chartH;
-                                k === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+                            for (var g = -3; g <= 3; g++) {
+                                var gx = xOff + g * xScale;
+                                ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, viz.height); ctx.stroke();
                             }
-                            ctx.stroke();
+                            for (var h = 0; h <= 5; h++) {
+                                var gy = yOff - h * yScale / 5;
+                                ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(viz.width, gy); ctx.stroke();
+                            }
 
-                            // Axis labels
+                            // Axes
+                            ctx.strokeStyle = viz.colors.axis;
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath(); ctx.moveTo(0, yOff); ctx.lineTo(viz.width, yOff); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(xOff, 0); ctx.lineTo(xOff, viz.height); ctx.stroke();
+
+                            // Labels
                             ctx.fillStyle = viz.colors.text;
                             ctx.font = '11px -apple-system,sans-serif';
                             ctx.textAlign = 'center';
-                            ctx.fillText('\u03b8', (chartLeft + chartRight) / 2, chartBottom + 30);
-                            ctx.save(); ctx.translate(18, (chartTop + chartBottom) / 2); ctx.rotate(-Math.PI / 2);
-                            ctx.fillText('P\u1d63(\u03b8)', 0, 0); ctx.restore();
+                            ctx.textBaseline = 'top';
+                            ctx.fillText('-\u03C0', xOff - Math.PI * xScale, yOff + 4);
+                            ctx.fillText('\u03C0', xOff + Math.PI * xScale, yOff + 4);
+                            ctx.fillText('0', xOff + 4, yOff + 4);
 
-                            // Title
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.font = 'bold 13px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.fillText('r = ' + rVal.toFixed(2), chartLeft + 8, chartTop + 14);
-                            ctx.fillStyle = viz.colors.white;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.fillText('P\u1d63(\u03b8) = (1\u2212r\u00b2) / (1\u22122r\u00b7cos\u03b8 + r\u00b2)', chartLeft + 8, chartTop + 30);
+                            // Draw Poisson kernel for several r values (faded)
+                            var rVals = [0.2, 0.5, 0.8, 0.9];
+                            for (var ri = 0; ri < rVals.length; ri++) {
+                                var rv = rVals[ri];
+                                if (Math.abs(rv - rVal) < 0.05) continue;
+                                ctx.strokeStyle = viz.colors.purple + '33';
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                for (var j = 0; j <= 300; j++) {
+                                    var t = -Math.PI + 2 * Math.PI * j / 300;
+                                    var pv = poissonKernel(rv, t);
+                                    var sx = xOff + t * xScale;
+                                    var sy = yOff - pv * yScale / 5;
+                                    if (sy < 10) { j === 0 ? ctx.moveTo(sx, 10) : ctx.lineTo(sx, 10); continue; }
+                                    j === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
+                                }
+                                ctx.stroke();
+                            }
+
+                            // Draw current r
+                            ctx.strokeStyle = viz.colors.blue;
+                            ctx.lineWidth = 2.5;
+                            ctx.beginPath();
+                            for (var k = 0; k <= 400; k++) {
+                                var t2 = -Math.PI + 2 * Math.PI * k / 400;
+                                var pv2 = poissonKernel(rVal, t2);
+                                var sx2 = xOff + t2 * xScale;
+                                var sy2 = yOff - pv2 * yScale / 5;
+                                if (sy2 < 10) sy2 = 10;
+                                k === 0 ? ctx.moveTo(sx2, sy2) : ctx.lineTo(sx2, sy2);
+                            }
+                            ctx.stroke();
+
+                            // Peak value label
+                            var peakVal = poissonKernel(rVal, 0);
+                            viz.screenText('P_r(\u03B8) with r = ' + rVal.toFixed(2), viz.width / 2, 16, viz.colors.white, 14);
+                            viz.screenText('Peak P_r(0) = ' + peakVal.toFixed(2), viz.width / 2, 36, viz.colors.blue, 12);
+                            viz.screenText('\u03B8', viz.width - 15, yOff - 5, viz.colors.text, 12);
+
+                            if (rVal > 0.85) {
+                                viz.screenText('Kernel concentrating \u2192 approximate identity', viz.width / 2, viz.height - 12, viz.colors.teal, 11);
+                            }
                         }
-
                         draw();
                         return viz;
                     }
@@ -724,14 +670,9 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Verify that \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} P_r(\\theta)\\, d\\theta = 1\\) using the geometric series expansion of the Poisson kernel.',
-                    hint: 'Write \\(P_r(\\theta) = \\operatorname{Re}\\frac{e^{i\\theta}+z}{e^{i\\theta}-z}\\) with \\(z = re^{i\\cdot 0}\\), or use the Fourier series \\(P_r(\\theta) = 1 + 2\\sum_{n=1}^\\infty r^n \\cos(n\\theta)\\).',
-                    solution: 'Using the Fourier series: \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} P_r(\\theta)\\,d\\theta = 1 + 2\\sum_{n=1}^\\infty r^n \\cdot \\frac{1}{2\\pi}\\int_0^{2\\pi}\\cos(n\\theta)\\,d\\theta = 1 + 0 = 1\\), since \\(\\cos(n\\theta)\\) integrates to zero for \\(n \\geq 1\\).'
-                },
-                {
-                    question: 'Use the Poisson formula to find the harmonic function in \\(|z| < 1\\) with boundary values \\(u(e^{i\\theta}) = \\cos\\theta\\).',
-                    hint: 'Use the Fourier expansion \\(P_r(\\theta) = 1 + 2\\sum_{n=1}^\\infty r^n \\cos n\\theta\\) and orthogonality.',
-                    solution: 'Substituting: \\(u(r,\\phi) = \\frac{1}{2\\pi}\\int_0^{2\\pi}P_r(\\theta-\\phi)\\cos\\theta\\,d\\theta\\). Using the Fourier expansion, only the \\(n=1\\) term survives, giving \\(u(r,\\phi) = r\\cos\\phi\\). In Cartesian coordinates, \\(u(x,y) = x\\). This is the real part of \\(f(z) = z\\).'
+                    question: 'Verify that \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} P_r(\\theta)\\,d\\theta = 1\\) for \\(0 \\leq r < 1\\) using the formula \\(P_r(\\theta) = \\text{Re}\\left(\\frac{1+re^{i\\theta}}{1-re^{i\\theta}}\\right)\\).',
+                    hint: 'The integral of the real part is the real part of the integral. Evaluate \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} \\frac{1+re^{i\\theta}}{1-re^{i\\theta}}d\\theta\\) by substituting \\(\\zeta = e^{i\\theta}\\).',
+                    solution: 'Write \\(\\frac{1}{2\\pi}\\int_0^{2\\pi}\\frac{1+re^{i\\theta}}{1-re^{i\\theta}}d\\theta\\). With \\(\\zeta = e^{i\\theta}\\), \\(d\\theta = d\\zeta/(i\\zeta)\\), this becomes \\(\\frac{1}{2\\pi i}\\oint_{|\\zeta|=1}\\frac{1+r\\zeta}{(1-r\\zeta)\\zeta}d\\zeta\\). Partial fractions: \\(\\frac{1+r\\zeta}{(1-r\\zeta)\\zeta} = \\frac{1}{\\zeta} + \\frac{2r}{1-r\\zeta}\\). The first gives residue 1 at \\(\\zeta=0\\); the second has its pole at \\(\\zeta = 1/r > 1\\), outside the contour, contributing 0. The integral equals \\(\\frac{1}{2\\pi i}\\cdot 2\\pi i \\cdot 1 = 1\\). Taking Re gives 1.'
                 }
             ]
         },
@@ -745,197 +686,155 @@ window.CHAPTERS.push({
             content: `
 <h2>The Dirichlet Problem</h2>
 
-<p>The <em>Dirichlet problem</em> asks: given a domain \\(D\\) and continuous boundary data \\(f: \\partial D \\to \\mathbb{R}\\), find a function \\(u\\) that is harmonic in \\(D\\) and equals \\(f\\) on \\(\\partial D\\).</p>
-
 <div class="env-block definition">
-    <div class="env-title">Definition 16.3 (Dirichlet Problem)</div>
+    <div class="env-title">Definition (Dirichlet Problem)</div>
     <div class="env-body">
-        <p>Given a bounded domain \\(D\\) with boundary \\(\\partial D\\) and a continuous function \\(f: \\partial D \\to \\mathbb{R}\\), find \\(u: \\overline{D} \\to \\mathbb{R}\\) such that:</p>
-        \\[\\Delta u = 0 \\text{ in } D, \\qquad u\\big|_{\\partial D} = f.\\]
+        <p>Given a bounded domain \\(\\Omega \\subset \\mathbb{C}\\) and a continuous function \\(g: \\partial\\Omega \\to \\mathbb{R}\\), the <strong>Dirichlet problem</strong> asks for a function \\(u\\) satisfying:</p>
+        <ol>
+            <li>\\(u\\) is harmonic on \\(\\Omega\\),</li>
+            <li>\\(u\\) is continuous on \\(\\overline{\\Omega}\\),</li>
+            <li>\\(u = g\\) on \\(\\partial\\Omega\\).</li>
+        </ol>
     </div>
 </div>
+
+<p>We have already seen that the maximum principle guarantees <strong>uniqueness</strong>: if two solutions exist, their difference is harmonic, zero on the boundary, and hence zero everywhere.</p>
 
 <h3>Solution on the Disk</h3>
 
-<p>For \\(D = \\{|z| < 1\\}\\), the Poisson integral formula gives the unique solution:</p>
+<p>The Poisson integral formula provides an explicit solution for the disk \\(D(0, R)\\):</p>
+\\[
+u(re^{i\\theta}) = \\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\varphi)\\, g(Re^{i\\varphi})\\, d\\varphi.
+\\]
 
-\\[u(z) = \\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\phi)\\, f(e^{i\\theta})\\, d\\theta, \\quad z = re^{i\\phi}.\\]
-
-<p>This can be extended to disks of any radius via a simple scaling.</p>
-
-<h3>Perron's Method (General Domains)</h3>
-
-<p>For general domains, one approach is <strong>Perron's method</strong>, which constructs the solution as a supremum over subharmonic functions.</p>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 16.4 (Subharmonic Function)</div>
-    <div class="env-body">
-        <p>A function \\(v\\) is <em>subharmonic</em> in \\(D\\) if it is upper semicontinuous and satisfies the sub-mean-value property:</p>
-        \\[v(z_0) \\leq \\frac{1}{2\\pi}\\int_0^{2\\pi} v(z_0 + Re^{i\\theta})\\,d\\theta\\]
-        <p>for all disks \\(\\overline{D}(z_0, R) \\subset D\\).</p>
-    </div>
-</div>
+<p>One must verify that: (i) this integral defines a harmonic function in the interior (differentiate under the integral sign), and (ii) the boundary values are attained continuously (this uses the approximate identity properties of the Poisson kernel).</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 16.8 (Perron's Method)</div>
+    <div class="env-title">Theorem 16.7 (Solution of the Dirichlet problem on the disk)</div>
     <div class="env-body">
-        <p>Let \\(\\mathcal{F}\\) be the family of subharmonic functions \\(v\\) in \\(D\\) with \\(v \\leq f\\) on \\(\\partial D\\). The function</p>
-        \\[u(z) = \\sup_{v \\in \\mathcal{F}} v(z)\\]
-        <p>is harmonic in \\(D\\). If \\(\\partial D\\) is "regular" (satisfies an exterior cone condition at every boundary point), then \\(u\\) extends continuously to \\(f\\) on \\(\\partial D\\).</p>
+        <p>If \\(g\\) is continuous on \\(\\partial D(0, R)\\), the Poisson integral</p>
+        \\[
+        u(z) = \\begin{cases} \\frac{1}{2\\pi} \\int_0^{2\\pi} P_r(\\theta - \\varphi)\\, g(Re^{i\\varphi})\\, d\\varphi & |z| < R, \\\\ g(z) & |z| = R \\end{cases}
+        \\]
+        <p>is the unique solution to the Dirichlet problem on \\(D(0, R)\\) with boundary data \\(g\\).</p>
     </div>
 </div>
+
+<h3>General Domains: Perron's Method</h3>
+
+<p>For domains more general than disks, Perron's method provides an elegant existence proof (under mild regularity conditions on \\(\\partial\\Omega\\)).</p>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Subharmonic function)</div>
+    <div class="env-body">
+        <p>A continuous function \\(v: \\Omega \\to \\mathbb{R}\\) is <strong>subharmonic</strong> if for every disk \\(D(a, r) \\subset \\Omega\\),</p>
+        \\[
+        v(a) \\leq \\frac{1}{2\\pi} \\int_0^{2\\pi} v(a + re^{i\\theta})\\, d\\theta.
+        \\]
+        <p>In words: the value at the center is at most the average on the circle. (Harmonic functions satisfy this with equality.)</p>
+    </div>
+</div>
+
+<p><strong>Perron's method:</strong> Define the <em>Perron family</em></p>
+\\[
+\\mathcal{S}_g = \\{ v : v \\text{ is subharmonic on } \\Omega, \\; \\limsup_{z \\to \\zeta} v(z) \\leq g(\\zeta) \\text{ for all } \\zeta \\in \\partial\\Omega \\}.
+\\]
+
+<p>The Perron solution is \\(u(z) = \\sup\\{ v(z) : v \\in \\mathcal{S}_g \\}\\). One shows that \\(u\\) is harmonic (the key step uses the "Poisson modification" trick: replacing a subharmonic function by the Poisson integral on a small disk gives a larger subharmonic function). Whether \\(u\\) attains the boundary values depends on the regularity of \\(\\partial\\Omega\\).</p>
 
 <div class="env-block remark">
-    <div class="env-title">Barriers and Irregular Points</div>
+    <div class="env-title">Barrier functions and regular boundary points</div>
     <div class="env-body">
-        <p>Not every boundary point is regular. A classic example is Lebesgue's thorn: a domain with an inward-pointing spike can fail to attain the prescribed boundary value at the tip. A boundary point is regular if and only if a <em>barrier function</em> exists there.</p>
+        <p>A boundary point \\(\\zeta_0\\) is called <em>regular</em> if the Perron solution attains the prescribed boundary value \\(g(\\zeta_0)\\) there. A sufficient condition for regularity is the existence of a <strong>barrier</strong>: a superharmonic function \\(w\\) on \\(\\Omega\\) with \\(w(z) > 0\\) for \\(z \\neq \\zeta_0\\) and \\(w(\\zeta_0) = 0\\). For domains with smooth boundaries (or even Lipschitz boundaries), every boundary point is regular.</p>
+        <p>The classical example of an irregular boundary point is the origin for the punctured disk \\(D(0,1) \\setminus \\{0\\}\\): the boundary value at 0 cannot be attained by a bounded harmonic function on this domain.</p>
     </div>
 </div>
-
-<h3>Conformal Mapping and the Dirichlet Problem</h3>
-
-<p>Conformal maps preserve harmonic functions (composition of a harmonic function with a conformal map is harmonic). To solve the Dirichlet problem on a complicated domain \\(D\\):</p>
-
-<ol>
-    <li>Find a conformal map \\(\\phi: D \\to \\mathbb{D}\\) (where \\(\\mathbb{D}\\) is the unit disk).</li>
-    <li>Transform the boundary data: \\(\\tilde{f} = f \\circ \\phi^{-1}\\) on \\(\\partial\\mathbb{D}\\).</li>
-    <li>Solve on the disk via the Poisson formula.</li>
-    <li>Pull back: \\(u = \\tilde{u} \\circ \\phi\\).</li>
-</ol>
-
-<p>The Riemann mapping theorem guarantees step 1 is always possible for simply connected domains.</p>
 
 <div class="viz-placeholder" data-viz="viz-dirichlet-disk"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-dirichlet-disk',
-                    title: 'Dirichlet Problem on the Unit Disk',
-                    description: 'Specify boundary values on the unit circle, then see the harmonic solution inside computed via the Poisson integral formula. Choose a boundary function and watch the heatmap update.',
+                    title: 'Dirichlet Problem on the Disk',
+                    description: 'Given piecewise-constant boundary data on the unit disk, the Poisson integral formula produces a smooth harmonic function in the interior. Watch how boundary values propagate inward.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 1 });
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 40 });
 
-                        var bndryIdx = 0;
-                        var bndryFuncs = [
-                            { name: 'cos \u03b8', f: function(th) { return Math.cos(th); } },
-                            { name: 'sin 2\u03b8', f: function(th) { return Math.sin(2*th); } },
-                            { name: 'step', f: function(th) { return th < Math.PI ? 1 : -1; } },
-                            { name: '|\u03b8| / \u03c0', f: function(th) { var t = th - Math.PI; return Math.abs(t) / Math.PI; } }
+                        var bdryType = 0;
+                        var bdryFunctions = [
+                            {
+                                name: 'Hot top / cold bottom',
+                                fn: function(phi) { return Math.sin(phi) > 0 ? 1 : -1; }
+                            },
+                            {
+                                name: 'Single hot arc',
+                                fn: function(phi) { return (phi > -Math.PI/4 && phi < Math.PI/4) ? 1 : 0; }
+                            },
+                            {
+                                name: 'cos(\u03C6)',
+                                fn: function(phi) { return Math.cos(phi); }
+                            },
+                            {
+                                name: 'cos(3\u03C6)',
+                                fn: function(phi) { return Math.cos(3 * phi); }
+                            }
                         ];
 
-                        var btnWrap = document.createElement('div');
-                        btnWrap.style.cssText = 'display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px;';
-                        controls.appendChild(btnWrap);
-                        bndryFuncs.forEach(function(bf, i) {
-                            VizEngine.createButton(btnWrap, bf.name, function() {
-                                bndryIdx = i;
-                                draw();
-                            });
-                        });
+                        for (var i = 0; i < bdryFunctions.length; i++) {
+                            (function(idx) {
+                                VizEngine.createButton(controls, bdryFunctions[idx].name, function() {
+                                    bdryType = idx;
+                                    draw();
+                                });
+                            })(i);
+                        }
 
-                        // Poisson integral on unit disk: u(r, phi)
-                        function poissonSolve(r, phi, bFn) {
-                            var N = 256;
-                            var sum = 0;
-                            var dth = 2 * Math.PI / N;
-                            if (r < 1e-6) {
-                                // At origin, just average
+                        function poissonSolve(r, theta, gFn, N) {
+                            if (r < 1e-8) {
+                                // At origin: simple average
+                                var s = 0;
                                 for (var k = 0; k < N; k++) {
-                                    sum += bFn(k * dth);
+                                    s += gFn(2 * Math.PI * k / N);
                                 }
-                                return sum / N;
+                                return s / N;
                             }
-                            for (var k = 0; k < N; k++) {
-                                var th = k * dth;
-                                var dph = th - phi;
-                                var Pr = (1 - r*r) / (1 - 2*r*Math.cos(dph) + r*r);
-                                sum += Pr * bFn(th) * dth;
+                            var sum = 0;
+                            var dphi = 2 * Math.PI / N;
+                            for (var j = 0; j < N; j++) {
+                                var phi = -Math.PI + dphi * j;
+                                var Pr = (1 - r * r) / (1 - 2 * r * Math.cos(theta - phi) + r * r);
+                                sum += Pr * gFn(phi) * dphi;
                             }
                             return sum / (2 * Math.PI);
                         }
 
-                        var cached = null;
-                        var cachedIdx = -1;
-
                         function draw() {
-                            viz.clear();
-                            var ctx = viz.ctx;
-                            var bf = bndryFuncs[bndryIdx];
+                            var R = 3.5;
+                            var gFn = bdryFunctions[bdryType].fn;
 
-                            // Compute harmonic function on grid
-                            var RES = 80;
-                            var cx = viz.width / 2, cy = viz.height / 2;
-                            var diskR = Math.min(viz.width, viz.height) / 2 - 30;
-
-                            // Build pixel image
-                            var imgData = ctx.createImageData(viz.width, viz.height);
-                            var data = imgData.data;
-
-                            var vMin = Infinity, vMax = -Infinity;
-                            var vals = [];
-                            for (var py = 0; py < viz.height; py++) {
-                                var row = [];
-                                for (var px = 0; px < viz.width; px++) {
-                                    var dx = px - cx, dy = -(py - cy);
-                                    var dist = Math.sqrt(dx*dx + dy*dy) / diskR;
-                                    if (dist >= 1) { row.push(NaN); continue; }
-                                    var phi = Math.atan2(dy, dx);
-                                    if (phi < 0) phi += 2*Math.PI;
-                                    var uval = poissonSolve(dist, phi, bf.f);
-                                    row.push(uval);
-                                    if (isFinite(uval)) { vMin = Math.min(vMin, uval); vMax = Math.max(vMax, uval); }
-                                }
-                                vals.push(row);
-                            }
-
-                            var range = vMax - vMin || 1;
-                            for (var py = 0; py < viz.height; py++) {
-                                for (var px = 0; px < viz.width; px++) {
-                                    var v = vals[py][px];
-                                    var idx = (py * viz.width + px) * 4;
-                                    if (isNaN(v)) {
-                                        data[idx] = 12; data[idx+1] = 12; data[idx+2] = 32; data[idx+3] = 255;
-                                        continue;
-                                    }
-                                    var t = (v - vMin) / range;
-                                    var rgb = VizEngine.colormapSample(t, 'coolwarm');
-                                    data[idx] = rgb[0]; data[idx+1] = rgb[1]; data[idx+2] = rgb[2]; data[idx+3] = 255;
-                                }
-                            }
-                            ctx.putImageData(imgData, 0, 0);
+                            // Draw heatmap: only inside disk
+                            viz.drawHeatmap(function(x, y) {
+                                var rr = Math.sqrt(x * x + y * y);
+                                if (rr > 1.0) return NaN;
+                                if (rr > 0.99) return gFn(Math.atan2(y, x));
+                                var th = Math.atan2(y, x);
+                                return poissonSolve(rr, th, gFn, 128);
+                            }, [-R / viz.scale * viz.width / 2, R / viz.scale * viz.width / 2],
+                               [-R / viz.scale * viz.height / 2, R / viz.scale * viz.height / 2],
+                               'coolwarm');
 
                             // Draw boundary circle
-                            ctx.strokeStyle = 'rgba(255,255,255,0.7)';
+                            var ctx = viz.ctx;
+                            var cx = viz.originX, cy = viz.originY, sr = viz.scale;
+                            ctx.strokeStyle = viz.colors.white;
                             ctx.lineWidth = 2;
                             ctx.beginPath();
-                            ctx.arc(cx, cy, diskR, 0, 2*Math.PI);
+                            ctx.arc(cx, cy, sr, 0, 2 * Math.PI);
                             ctx.stroke();
 
-                            // Draw boundary values as color ring
-                            var ringW = 8;
-                            var N = 360;
-                            for (var k = 0; k < N; k++) {
-                                var th = 2*Math.PI*k/N;
-                                var bv = bf.f(th);
-                                var t2 = (bv - vMin) / range;
-                                var rgb2 = VizEngine.colormapSample(Math.max(0, Math.min(1, t2)), 'coolwarm');
-                                ctx.strokeStyle = 'rgb(' + rgb2[0] + ',' + rgb2[1] + ',' + rgb2[2] + ')';
-                                ctx.lineWidth = ringW;
-                                ctx.beginPath();
-                                ctx.arc(cx, cy, diskR + ringW/2, th, th + 2*Math.PI/N + 0.01);
-                                ctx.stroke();
-                            }
-
-                            // Labels
-                            ctx.fillStyle = 'rgba(255,255,255,0.9)';
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('Boundary: f(\u03b8) = ' + bf.name, viz.width/2, 22);
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                            ctx.fillText('Interior: Poisson integral solution', viz.width/2, viz.height - 10);
+                            viz.screenText('Boundary: ' + bdryFunctions[bdryType].name, viz.width / 2, 16, viz.colors.white, 13);
+                            viz.screenText('Poisson integral solution (harmonic inside disk)', viz.width / 2, viz.height - 12, viz.colors.text, 11);
                         }
-
                         draw();
                         return viz;
                     }
@@ -943,234 +842,182 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'State and prove uniqueness of the solution to the Dirichlet problem in a bounded domain.',
-                    hint: 'Suppose \\(u_1\\) and \\(u_2\\) both solve the problem. What can you say about \\(u_1 - u_2\\)?',
-                    solution: 'Let \\(w = u_1 - u_2\\). Then \\(\\Delta w = 0\\) in \\(D\\) and \\(w = 0\\) on \\(\\partial D\\). By the maximum principle, \\(w \\leq \\max_{\\partial D} w = 0\\). Applying to \\(-w\\): \\(-w \\leq 0\\). Therefore \\(w \\equiv 0\\), so \\(u_1 = u_2\\).'
+                    question: 'Use the Poisson integral formula to solve the Dirichlet problem on the unit disk with boundary data \\(g(e^{i\\theta}) = \\cos\\theta\\). What is \\(u(0)\\)?',
+                    hint: 'Express \\(\\cos\\theta\\) in terms of \\(e^{i\\theta}\\) and use the fact that the Poisson integral of \\(e^{in\\theta}\\) is \\(r^n e^{in\\theta}\\).',
+                    solution: 'The boundary data \\(g(e^{i\\theta}) = \\cos\\theta = \\text{Re}(e^{i\\theta})\\). The Poisson integral extends this to \\(u(re^{i\\theta}) = \\text{Re}(re^{i\\theta}) = r\\cos\\theta\\). This is harmonic (it is \\(x\\), which satisfies \\(\\Delta x = 0\\)) and matches \\(\\cos\\theta\\) on \\(r = 1\\). At the origin: \\(u(0) = 0\\). This is consistent with \\(u(0)\\) being the average of \\(\\cos\\theta\\) over \\([0, 2\\pi]\\), which is 0.'
                 },
                 {
-                    question: 'Use conformal mapping to solve the Dirichlet problem on the upper half-plane \\(\\{y > 0\\}\\) with boundary values \\(f(x, 0) = 1\\) for \\(x > 0\\) and \\(f(x, 0) = 0\\) for \\(x < 0\\).',
-                    hint: 'Map the upper half-plane to the unit disk via \\(\\phi(z) = (z-i)/(z+i)\\). The boundary condition becomes a step function on the unit circle.',
-                    solution: 'The Joukowski-type map \\(\\phi(z) = (z-i)/(z+i)\\) takes the upper half-plane to the unit disk. The solution is \\(u(x,y) = \\frac{1}{\\pi}\\arctan\\frac{x}{y} + \\frac{1}{2}\\) (for \\(y > 0\\)), which is the harmonic function equal to 1 on the positive real axis and 0 on the negative real axis.'
+                    question: 'Explain why the Dirichlet problem on the punctured disk \\(D(0,1) \\setminus \\{0\\}\\) with \\(g \\equiv 0\\) on \\(|z|=1\\) and \\(g(0) = 1\\) has no solution.',
+                    hint: 'If a bounded harmonic function on the punctured disk exists, what does the removable singularity theorem for harmonic functions say?',
+                    solution: 'Any bounded harmonic function on the punctured disk extends harmonically to the full disk (removable singularity theorem for harmonic functions). The extended function is harmonic on \\(D(0,1)\\) with \\(u = 0\\) on \\(|z|=1\\). By the maximum principle, \\(u \\equiv 0\\) on \\(D(0,1)\\). So \\(u(0) = 0 \\neq 1\\), contradicting the boundary condition at 0. The origin is an <em>irregular</em> boundary point for this domain.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 6: Bridge — Physical Applications
+        // SECTION 6: Bridge to the Next Chapter
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Physical Applications and Outlook',
+            title: 'The Harmonic-Analytic Bridge',
             content: `
-<h2>Physical Applications and Outlook</h2>
+<h2>The Harmonic-Analytic Bridge</h2>
 
-<p>Harmonic functions are not a pure mathematical abstraction. They are the language in which classical physics describes equilibrium phenomena.</p>
+<p>Let us take stock of the deep connection between harmonic and analytic functions that we have built throughout this chapter.</p>
 
-<h3>Steady-State Heat Conduction</h3>
+<div class="env-block theorem">
+    <div class="env-title">Summary: The Harmonic-Analytic Correspondence</div>
+    <div class="env-body">
+        <p>On a simply connected domain \\(\\Omega\\), the following are equivalent:</p>
+        <ol>
+            <li>\\(u\\) is harmonic on \\(\\Omega\\).</li>
+            <li>\\(u\\) is locally the real part of an analytic function.</li>
+            <li>\\(u\\) is globally the real part of an analytic function on \\(\\Omega\\).</li>
+        </ol>
+        <p>The passage \\(u \\mapsto f = u + iv\\) (with \\(v\\) the harmonic conjugate) provides a bijection between harmonic functions modulo constants and analytic functions modulo purely imaginary constants.</p>
+    </div>
+</div>
 
-<p>If \\(T(x, y)\\) is the steady-state temperature in a 2D region (no heat sources, equilibrium reached), then energy conservation forces \\(\\Delta T = 0\\). The Dirichlet problem corresponds to maintaining fixed temperatures on the boundary and asking for the equilibrium distribution inside.</p>
+<h3>Applications to Physical Problems</h3>
 
-<h3>Electrostatics</h3>
-
-<p>The electrostatic potential \\(\\Phi\\) in a charge-free region satisfies \\(\\Delta \\Phi = 0\\) (Gauss's law with \\(\\rho = 0\\)). Level curves of \\(\\Phi\\) are equipotential lines; level curves of its harmonic conjugate are electric field lines. Their orthogonality is a direct consequence of the Cauchy-Riemann equations.</p>
-
-<h3>Irrotational Fluid Flow</h3>
-
-<p>An ideal (inviscid, incompressible, irrotational) fluid flow has a velocity potential \\(\\phi\\) satisfying \\(\\Delta \\phi = 0\\). The complex potential \\(w = \\phi + i\\psi\\) (where \\(\\psi\\) is the stream function) is analytic. The velocity field is \\(\\mathbf{v} = \\nabla \\phi = (\\phi_x, \\phi_y)\\).</p>
+<p>The Dirichlet problem is a model for <strong>steady-state heat conduction</strong>. If the boundary of a region is held at prescribed temperatures \\(g\\), the equilibrium temperature distribution inside is the unique harmonic function agreeing with \\(g\\) on the boundary.</p>
 
 <div class="env-block example">
-    <div class="env-title">Example: Flow around a Cylinder</div>
+    <div class="env-title">Example: Heat distribution on a plate</div>
     <div class="env-body">
-        <p>Uniform flow past a cylinder of radius \\(a\\) has complex potential \\(w(z) = U(z + a^2/z)\\). The real part gives the velocity potential; streamlines (level curves of the imaginary part) wrap around the cylinder, illustrating why complex analysis is the natural language for 2D fluid dynamics.</p>
+        <p>Consider a thin circular plate of radius 1. The top semicircle is held at temperature 1, the bottom at temperature 0. The steady-state temperature inside the plate is given by the Poisson integral:</p>
+        \\[
+        u(r, \\theta) = \\frac{1}{2} + \\frac{1}{\\pi} \\arctan\\left(\\frac{2r\\sin\\theta}{1-r^2}\\right).
+        \\]
+        <p>At the center, \\(u(0) = 1/2\\), exactly the average of the boundary values. The isotherms (level curves of \\(u\\)) are circular arcs connecting the two points where the boundary temperature jumps.</p>
     </div>
 </div>
 
-<h3>Summary of the Chapter</h3>
+<h3>Electrostatic Interpretation</h3>
 
-<p>We have developed the theory of harmonic functions along two tracks:</p>
+<p>In two-dimensional electrostatics, the electric potential \\(\\Phi\\) satisfies Laplace's equation in charge-free regions. The boundary conditions are set by the voltages on conductors. The electric field \\(\\mathbf{E} = -\\nabla\\Phi\\) is orthogonal to the equipotential lines, which is why the level curves of \\(u\\) and its conjugate \\(v\\) form an orthogonal grid: the \\(u = \\text{const}\\) curves are equipotentials, and the \\(v = \\text{const}\\) curves are field lines (or vice versa).</p>
 
+<h3>Looking Ahead</h3>
+
+<p>The theory of harmonic functions opens several further directions:</p>
 <ul>
-    <li><strong>Analytic origins:</strong> Real and imaginary parts of analytic functions are harmonic; every harmonic function in a simply connected domain has an analytic "lift."</li>
-    <li><strong>Intrinsic theory:</strong> Harmonic functions satisfy the mean value property, obey the maximum principle, and are uniquely determined by boundary data.</li>
-    <li><strong>Explicit formulas:</strong> The Poisson integral solves the Dirichlet problem on the disk; conformal mapping extends this to arbitrary simply connected domains.</li>
+    <li><strong>Conformal mapping and the Dirichlet problem:</strong> If \\(\\Omega\\) can be conformally mapped to the disk, we can solve the Dirichlet problem on \\(\\Omega\\) by pulling back the Poisson integral through the conformal map. The Riemann mapping theorem guarantees this is possible for any simply connected domain (other than \\(\\mathbb{C}\\) itself).</li>
+    <li><strong>Green's functions:</strong> The Poisson kernel can be interpreted via Green's functions, providing a systematic approach to the Dirichlet problem on general domains.</li>
+    <li><strong>Harmonic functions in higher dimensions:</strong> Laplace's equation \\(\\Delta u = 0\\) makes sense in \\(\\mathbb{R}^n\\) for any \\(n\\). The two-dimensional theory is special because of its connection to complex analysis, but the mean value property, maximum principle, and Poisson integral generalize to all dimensions.</li>
 </ul>
-
-<p>The connection to analytic function theory runs deep. Many results about analytic functions (Cauchy's integral formula, the maximum modulus principle, Schwarz's lemma) have exact counterparts for harmonic functions, often derivable by taking real parts.</p>
-
-<div class="env-block remark">
-    <div class="env-title">Looking Ahead</div>
-    <div class="env-body">
-        <p>Harmonic functions in higher dimensions (\\(\\mathbb{R}^n\\) for \\(n \\geq 3\\)) no longer have a direct connection to complex analysis, but they retain the mean value property and maximum principle. The study of their boundary behavior leads to <em>potential theory</em>. In several complex variables, the analogous objects are <em>pluriharmonic functions</em>, satisfying a system of equations that is strictly stronger than the multi-dimensional Laplace equation.</p>
-    </div>
-</div>
 
 <div class="viz-placeholder" data-viz="viz-temperature"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-temperature',
-                    title: 'Steady-State Heat Distribution',
-                    description: 'Harmonic functions model steady-state temperature. Specify temperatures on two sides of a rectangular plate and watch the interior equilibrium distribution (heatmap + isotherms). Drag the temperature sliders.',
+                    title: 'Steady-State Temperature Distribution',
+                    description: 'A circular plate with prescribed boundary temperatures. The interior temperature is the harmonic extension (Poisson integral). Toggle between boundary conditions to see how heat distributes.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 380, scale: 1 });
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 40 });
 
-                        var TLeft = 100, TRight = 0, TTop = 50, TBottom = 20;
+                        var scenario = 0;
+                        var scenarios = [
+                            {
+                                name: 'Hot top / cold bottom',
+                                fn: function(phi) { return phi > 0 && phi < Math.PI ? 1 : 0; }
+                            },
+                            {
+                                name: 'Two hot arcs',
+                                fn: function(phi) {
+                                    var a = ((phi % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
+                                    return (a < Math.PI/3 || (a > Math.PI && a < 4*Math.PI/3)) ? 1 : 0;
+                                }
+                            },
+                            {
+                                name: 'Gradient (cos\u03C6)',
+                                fn: function(phi) { return 0.5 + 0.5 * Math.cos(phi); }
+                            }
+                        ];
 
-                        VizEngine.createSlider(controls, 'T Left', 0, 100, TLeft, 1, function(v) { TLeft = v; draw(); });
-                        VizEngine.createSlider(controls, 'T Right', 0, 100, TRight, 1, function(v) { TRight = v; draw(); });
-                        VizEngine.createSlider(controls, 'T Top', 0, 100, TTop, 1, function(v) { TTop = v; draw(); });
-                        VizEngine.createSlider(controls, 'T Bottom', 0, 100, TBottom, 1, function(v) { TBottom = v; draw(); });
-
-                        // Approximate solution via series for rectangle [0,1]x[0,1]
-                        // T(x,y) = TBottom + (TTop-TBottom)*y + (TLeft-TRight)*... (simplification)
-                        // Use bilinear + Fourier correction approximation
-                        function tempAt(x, y, nTerms) {
-                            // Bilinear: satisfies BCs at corners
-                            var bilin = TBottom*(1-y) + TTop*y + (TLeft - TBottom*(1-y) - TTop*y)*(1-x) + (TRight - TBottom*(1-y) - TTop*y)*x;
-                            return bilin;
+                        for (var i = 0; i < scenarios.length; i++) {
+                            (function(idx) {
+                                VizEngine.createButton(controls, scenarios[idx].name, function() {
+                                    scenario = idx;
+                                    draw();
+                                });
+                            })(i);
                         }
 
-                        // Better: use superposition of 4 Dirichlet problems each with one non-zero side
-                        // For a [0,a]x[0,b] rectangle with T=f(y) on left, 0 elsewhere:
-                        // u(x,y) = sum_n (2/b) int_0^b f(y)sin(npi y/b)dy * sinh(npi(a-x)/b)/sinh(npi a/b) * sin(npi y/b)
-                        // We use a=W(pixels), b=H(pixels) in normalized coords
-
-                        function solveSeries(nx, ny, TL, TR, TT, TB) {
-                            // Normalize coords to [0,1]x[0,1]
-                            var x = nx, y = ny;
-                            var N = 20; // Fourier terms
-
-                            var u = 0;
-
-                            // Contribution from left wall (TL) at x=0, 0 at other walls
-                            // u_L(x,y) = sum_n A_n sinh(n*pi*(1-x)) / sinh(n*pi) * sin(n*pi*y)
-                            // A_n = 2 * TL * (1 - cos(n*pi)) / (n*pi)
-                            for (var n = 1; n <= N; n++) {
-                                var npi = n * Math.PI;
-                                var cn = (1 - Math.cos(npi)) / npi; // integral of sin on [0,1] = (1-cos(npi))/(npi)
-                                var An = 2 * TL * cn;
-                                var sh = Math.sinh(npi);
-                                if (Math.abs(sh) < 1e-10) continue;
-                                u += An * Math.sinh(npi * (1 - x)) / sh * Math.sin(npi * y);
+                        function poissonSolve(r, theta, gFn, N) {
+                            if (r < 1e-8) {
+                                var s = 0;
+                                for (var k = 0; k < N; k++) {
+                                    s += gFn(-Math.PI + 2 * Math.PI * k / N);
+                                }
+                                return s / N;
                             }
-
-                            // Right wall (TR) at x=1
-                            for (var n = 1; n <= N; n++) {
-                                var npi = n * Math.PI;
-                                var cn = (1 - Math.cos(npi)) / npi;
-                                var An = 2 * TR * cn;
-                                var sh = Math.sinh(npi);
-                                if (Math.abs(sh) < 1e-10) continue;
-                                u += An * Math.sinh(npi * x) / sh * Math.sin(npi * y);
+                            var sum = 0;
+                            var dphi = 2 * Math.PI / N;
+                            for (var j = 0; j < N; j++) {
+                                var phi = -Math.PI + dphi * j;
+                                var Pr = (1 - r * r) / (1 - 2 * r * Math.cos(theta - phi) + r * r);
+                                sum += Pr * gFn(phi) * dphi;
                             }
-
-                            // Bottom wall (TB) at y=0: sum in x direction
-                            for (var n = 1; n <= N; n++) {
-                                var npi = n * Math.PI;
-                                var cn = (1 - Math.cos(npi)) / npi;
-                                var An = 2 * TB * cn;
-                                var sh = Math.sinh(npi);
-                                if (Math.abs(sh) < 1e-10) continue;
-                                u += An * Math.sinh(npi * (1 - y)) / sh * Math.sin(npi * x);
-                            }
-
-                            // Top wall (TT) at y=1
-                            for (var n = 1; n <= N; n++) {
-                                var npi = n * Math.PI;
-                                var cn = (1 - Math.cos(npi)) / npi;
-                                var An = 2 * TT * cn;
-                                var sh = Math.sinh(npi);
-                                if (Math.abs(sh) < 1e-10) continue;
-                                u += An * Math.sinh(npi * y) / sh * Math.sin(npi * x);
-                            }
-
-                            return u;
+                            return sum / (2 * Math.PI);
                         }
 
                         function draw() {
-                            viz.clear();
+                            var xRange = [-1.3, 1.3];
+                            var yRange = [-1.1, 1.1];
+                            var gFn = scenarios[scenario].fn;
+
+                            viz.drawHeatmap(function(x, y) {
+                                var rr = Math.sqrt(x * x + y * y);
+                                if (rr > 1.02) return NaN;
+                                if (rr > 0.99) return gFn(Math.atan2(y, x));
+                                var th = Math.atan2(y, x);
+                                return poissonSolve(rr, th, gFn, 128);
+                            }, xRange, yRange, 'inferno');
+
+                            // Draw boundary circle
                             var ctx = viz.ctx;
-                            var margin = 40;
-                            var W = viz.width - 2*margin, H = viz.height - 2*margin;
+                            // Convert disk boundary to screen coords
+                            var cx = (-xRange[0]) / (xRange[1] - xRange[0]) * viz.canvas.width / (window.devicePixelRatio || 1);
+                            var cy = (yRange[1]) / (yRange[1] - yRange[0]) * viz.canvas.height / (window.devicePixelRatio || 1);
+                            var sr = 1.0 / (xRange[1] - xRange[0]) * viz.canvas.width / (window.devicePixelRatio || 1);
+                            ctx.strokeStyle = '#ffffff88';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, sr, 0, 2 * Math.PI);
+                            ctx.stroke();
 
-                            // Compute temperature field
-                            var RES = 60;
-                            var tvals = [];
-                            var tMin = Infinity, tMax = -Infinity;
-                            for (var j = 0; j <= RES; j++) {
-                                var row = [];
-                                for (var i = 0; i <= RES; i++) {
-                                    var nx = i / RES, ny = j / RES;
-                                    var tv = solveSeries(nx, ny, TLeft, TRight, TBottom, TTop);
-                                    row.push(tv);
-                                    tMin = Math.min(tMin, tv);
-                                    tMax = Math.max(tMax, tv);
-                                }
-                                tvals.push(row);
-                            }
-                            var tRange = tMax - tMin || 1;
-
-                            // Draw heatmap
-                            for (var j = 0; j < RES; j++) {
-                                for (var i = 0; i < RES; i++) {
-                                    var t = (tvals[j][i] - tMin) / tRange;
-                                    var rgb = VizEngine.colormapSample(t, 'inferno');
-                                    ctx.fillStyle = 'rgb(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ')';
-                                    ctx.fillRect(margin + i * W / RES, margin + (RES - j - 1) * H / RES,
-                                                 Math.ceil(W / RES) + 1, Math.ceil(H / RES) + 1);
-                                }
-                            }
-
-                            // Draw isotherms (contours)
-                            var nContours = 8;
-                            for (var k = 1; k < nContours; k++) {
-                                var level = tMin + k * tRange / nContours;
-                                ctx.strokeStyle = 'rgba(255,255,255,0.3)';
-                                ctx.lineWidth = 1;
-                                // Simple marching-squares approximation (horizontal crossings)
+                            // Draw isotherms
+                            ctx.strokeStyle = '#ffffff33';
+                            ctx.lineWidth = 0.8;
+                            for (var lev = 0.1; lev < 1.0; lev += 0.1) {
                                 ctx.beginPath();
                                 var started = false;
-                                for (var j = 0; j < RES; j++) {
-                                    for (var i = 0; i < RES; i++) {
-                                        var v00 = tvals[j][i] - level;
-                                        var v10 = tvals[j][i+1] - level;
-                                        var v01 = tvals[j+1] ? (tvals[j+1][i] - level) : v00;
-                                        if (v00 * v10 < 0) {
-                                            var frac = v00 / (v00 - v10);
-                                            var px = margin + (i + frac) * W / RES;
-                                            var py = margin + (RES - j - 0.5) * H / RES;
-                                            started ? ctx.lineTo(px, py) : ctx.moveTo(px, py);
-                                            started = true;
-                                        } else {
-                                            started = false;
-                                        }
+                                for (var ai = 0; ai <= 360; ai++) {
+                                    var ang = ai * Math.PI / 180;
+                                    // Binary search for radius where u = lev
+                                    var rLo = 0, rHi = 0.99;
+                                    for (var it = 0; it < 20; it++) {
+                                        var rMid = (rLo + rHi) / 2;
+                                        var val = poissonSolve(rMid, ang, gFn, 64);
+                                        if (val < lev) rLo = rMid; else rHi = rMid;
                                     }
-                                    started = false;
+                                    var rSol = (rLo + rHi) / 2;
+                                    if (rSol > 0.01 && rSol < 0.98) {
+                                        var ix = rSol * Math.cos(ang);
+                                        var iy = rSol * Math.sin(ang);
+                                        var px = (-xRange[0] + ix) / (xRange[1] - xRange[0]) * viz.canvas.width / (window.devicePixelRatio || 1);
+                                        var py = (yRange[1] - iy) / (yRange[1] - yRange[0]) * viz.canvas.height / (window.devicePixelRatio || 1);
+                                        if (!started) { ctx.moveTo(px, py); started = true; }
+                                        else ctx.lineTo(px, py);
+                                    }
                                 }
                                 ctx.stroke();
                             }
 
-                            // Border
-                            ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-                            ctx.lineWidth = 2;
-                            ctx.strokeRect(margin, margin, W, H);
-
-                            // Temperature labels on boundaries
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.fillStyle = '#ffffff';
-                            ctx.textAlign = 'center';
-                            ctx.fillText(TTop.toFixed(0) + '\u00b0', margin + W/2, margin - 8);
-                            ctx.fillText(TBottom.toFixed(0) + '\u00b0', margin + W/2, margin + H + 18);
-                            ctx.save(); ctx.translate(margin - 18, margin + H/2); ctx.rotate(-Math.PI/2);
-                            ctx.fillText(TLeft.toFixed(0) + '\u00b0', 0, 0); ctx.restore();
-                            ctx.save(); ctx.translate(margin + W + 18, margin + H/2); ctx.rotate(Math.PI/2);
-                            ctx.fillText(TRight.toFixed(0) + '\u00b0', 0, 0); ctx.restore();
-
-                            ctx.fillStyle = 'rgba(255,255,255,0.5)';
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.fillText('\u0394T = 0 (steady state)', margin + W/2, viz.height - 6);
+                            viz.screenText('Steady-state temperature: ' + scenarios[scenario].name, viz.width / 2, 16, '#f0f6fc', 13);
+                            viz.screenText('Isotherms shown as white curves', viz.width / 2, viz.height - 12, '#8b949e', 11);
                         }
-
                         draw();
                         return viz;
                     }
@@ -1178,14 +1025,14 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'A rectangular plate occupies \\(0 \\leq x \\leq \\pi\\), \\(0 \\leq y \\leq 1\\). The top and bottom edges are held at \\(T = 0\\); the right edge at \\(T = 0\\); the left edge at \\(T = \\sin y\\). Find the steady-state temperature.',
-                    hint: 'Try a separated solution \\(T = X(x)Y(y)\\) with \\(\\Delta T = 0\\). The boundary conditions force a specific eigenvalue.',
-                    solution: 'Separation of variables gives \\(X\'\'Y + XY\'\' = 0\\), so \\(X\'\'/X = -Y\'\'/Y = \\lambda\\). The conditions \\(Y(0)=Y(1)=0\\) force \\(\\lambda = n^2\\pi^2\\), so \\(Y_n = \\sin(n\\pi y)\\). With \\(T(\\pi,y)=0\\): \\(X_n(x) = \\sinh(n\\pi(\\pi-x))/\\sinh(n\\pi^2)\\). Since the left boundary is \\(\\sin y = \\sin(1\\cdot \\pi y / \\pi)\\cdots\\) only \\(n=1\\) contributes: \\(T = \\sin(y)\\,\\sinh(\\pi - x)/\\sinh(\\pi)\\).'
+                    question: 'Suppose \\(u\\) is harmonic on the unit disk with \\(u(e^{i\\theta}) = 1\\) for \\(0 < \\theta < \\pi\\) and \\(u(e^{i\\theta}) = 0\\) for \\(\\pi < \\theta < 2\\pi\\). Find \\(u(0)\\) without computing the full Poisson integral.',
+                    hint: 'Use the mean value property.',
+                    solution: 'By the mean value property, \\(u(0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(e^{i\\theta})\\,d\\theta = \\frac{1}{2\\pi}(\\pi \\cdot 1 + \\pi \\cdot 0) = \\frac{1}{2}\\). The center temperature is the average boundary temperature.'
                 },
                 {
-                    question: 'The electric potential between two concentric cylinders (inner radius 1, outer radius \\(R > 1\\)) is \\(V_1\\) on the inner and \\(V_2\\) on the outer. Find \\(\\Phi(r)\\).',
-                    hint: 'By symmetry \\(\\Phi\\) depends only on \\(r\\). In polar coordinates, \\(\\Delta \\Phi = \\Phi_{rr} + \\frac{1}{r}\\Phi_r = 0\\).',
-                    solution: 'The ODE \\((r\\Phi_r)_r = 0\\) gives \\(\\Phi = A\\ln r + B\\). From \\(\\Phi(1)=V_1\\): \\(B = V_1\\). From \\(\\Phi(R)=V_2\\): \\(A = (V_2-V_1)/\\ln R\\). So \\(\\Phi(r) = V_1 + (V_2-V_1)\\frac{\\ln r}{\\ln R}\\). Note this is the harmonic function \\(\\text{Re}(c\\log z + d)\\).'
+                    question: 'Show that if \\(u\\) is harmonic and bounded on \\(\\mathbb{C}\\), then \\(u\\) is constant. (This is Liouville\'s theorem for harmonic functions.)',
+                    hint: 'Use the mean value property and let the radius of the circle go to infinity, or use the connection to analytic functions.',
+                    solution: 'Method 1 (via analytic functions): On the simply connected domain \\(\\mathbb{C}\\), \\(u = \\text{Re}(f)\\) for some entire function \\(f\\). Since \\(u\\) is bounded, \\(e^f\\) has bounded modulus (\\(|e^f| = e^u\\)), so \\(e^f\\) is a bounded entire function. By Liouville\'s theorem for analytic functions, \\(e^f\\) is constant, hence \\(f\\) is constant, hence \\(u\\) is constant. Method 2: Use Harnack\'s inequality on \\(D(0,R)\\): for \\(u \\geq 0\\), \\(\\frac{R-r}{R+r}u(0) \\leq u(z) \\leq \\frac{R+r}{R-r}u(0)\\). As \\(R \\to \\infty\\) with \\(r = |z|\\) fixed, both bounds approach \\(u(0)\\), so \\(u(z) = u(0)\\) for all \\(z\\).'
                 }
             ]
         }
