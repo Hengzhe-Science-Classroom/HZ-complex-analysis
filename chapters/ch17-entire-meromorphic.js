@@ -6,70 +6,41 @@ window.CHAPTERS.push({
     subtitle: 'Weierstrass products, Mittag-Leffler, and the order of growth',
     sections: [
         // ================================================================
-        // SECTION 0: Motivation
+        // SECTION 1: Motivation
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'Motivation',
+            title: 'Why Entire & Meromorphic Functions?',
             content: `
-<h2>Motivation: Factoring Entire Functions</h2>
+<h2>Why Entire & Meromorphic Functions?</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Central Question</div>
+    <div class="env-title">The Guiding Questions</div>
     <div class="env-body">
-        <p>Every polynomial \\(p(z)\\) of degree \\(n\\) factors completely over \\(\\mathbb{C}\\):
-        \\[p(z) = c\\,(z-z_1)(z-z_2)\\cdots(z-z_n).\\]
-        The zeros tell you everything. Can we do the same for <em>entire functions</em>?</p>
+        <p>Consider \\(\\sin(\\pi z)\\). It vanishes at every integer \\(n \\in \\mathbb{Z}\\). Can we write it as an infinite product over its zeros, the way a polynomial factors over its roots? And can we do this for <em>any</em> entire function with prescribed zeros?</p>
+        <p>Dually, \\(\\pi\\cot(\\pi z)\\) has a simple pole at every integer. Can we decompose it as a sum of its principal parts, one per pole, the way partial fractions decompose a rational function?</p>
+        <p>This chapter answers both questions affirmatively, and then asks: how fast must an entire function grow to support infinitely many zeros?</p>
     </div>
 </div>
 
-<p>An <strong>entire function</strong> is a function holomorphic on all of \\(\\mathbb{C}\\). Examples include polynomials, \\(e^z\\), \\(\\sin z\\), \\(\\cos z\\), and \\(e^{e^z}\\). A <strong>meromorphic function</strong> is holomorphic except for isolated poles, like \\(\\tan z\\), \\(\\cot z\\), and the Gamma function \\(\\Gamma(z)\\).</p>
+<p>Polynomials are determined (up to a constant) by their zeros. For entire functions, the situation is richer: zeros alone do not determine the function, but they constrain its growth. The three pillars of this chapter are:</p>
 
-<p>The fundamental question of this chapter: can we <em>reconstruct</em> an entire function from knowledge of its zeros, or a meromorphic function from knowledge of its poles?</p>
+<ol>
+    <li><strong>Weierstrass Product Theorem:</strong> construct an entire function with any prescribed zero set.</li>
+    <li><strong>Mittag-Leffler Theorem:</strong> construct a meromorphic function with any prescribed principal parts.</li>
+    <li><strong>Hadamard Factorization:</strong> for functions of finite order, the product representation takes a precise form.</li>
+</ol>
 
-<h3>What Goes Wrong with Infinite Products?</h3>
+<p>Together they show that the "algebra" of entire and meromorphic functions is as flexible as one could hope, while the "analysis" (growth rates) imposes rigid constraints on the structure.</p>
 
-<p>Naively one might write \\(\\sin z = C \\cdot z \\prod_{n \\neq 0}(1 - z/n\\pi)\\). But the product
-\\(\\prod_{n=1}^\\infty (1 - z/n\\pi)\\) diverges. The convergence factor \\(e^{z/n\\pi}\\) must be inserted:
-\\[
-\\sin z = z \\prod_{n=1}^\\infty \\Bigl(1 - \\tfrac{z}{n\\pi}\\Bigr)\\Bigl(1 + \\tfrac{z}{n\\pi}\\Bigr)
-= z \\prod_{n=1}^\\infty \\Bigl(1 - \\tfrac{z^2}{n^2\\pi^2}\\Bigr).
-\\]
-This converges because the pairs \\(\\pm n\\pi\\) symmetrize the exponents away. The <em>Weierstrass elementary factors</em> are the general mechanism.</p>
+<h3>Polynomials vs. Entire Functions</h3>
 
-<h3>The Two Dual Problems</h3>
-
-<table style="width:100%;border-collapse:collapse;margin:1em 0;">
-<thead><tr style="border-bottom:1px solid #30363d;">
-<th style="text-align:left;padding:8px;">Problem</th>
-<th style="text-align:left;padding:8px;">Given</th>
-<th style="text-align:left;padding:8px;">Construct</th>
-<th style="text-align:left;padding:8px;">Tool</th>
-</tr></thead>
-<tbody>
-<tr style="border-bottom:1px solid #21262d;">
-<td style="padding:8px;">Prescribed zeros</td>
-<td style="padding:8px;">Sequence \\(\\{a_n\\}\\) with \\(|a_n|\\to\\infty\\)</td>
-<td style="padding:8px;">Entire \\(f\\) with \\(f(a_n)=0\\)</td>
-<td style="padding:8px;">Weierstrass product</td>
-</tr>
-<tr>
-<td style="padding:8px;">Prescribed poles</td>
-<td style="padding:8px;">Sequence \\(\\{b_n\\}\\), principal parts \\(P_n\\)</td>
-<td style="padding:8px;">Meromorphic \\(g\\) with those poles</td>
-<td style="padding:8px;">Mittag-Leffler theorem</td>
-</tr>
-</tbody>
-</table>
-
-<p>Beyond existence, the <strong>Hadamard factorization theorem</strong> gives a remarkably tight description: if \\(f\\) has finite <em>order</em> \\(\\rho\\), its Weierstrass product takes the form
-\\[f(z) = z^m e^{g(z)} \\prod_n E_p(z/a_n),\\]
-where \\(g\\) is a polynomial of degree \\(\\leq \\rho\\) and \\(p \\leq \\rho\\). Order connects the global growth of \\(f\\) to the density of its zeros.</p>
+<p>A polynomial \\(p(z) = c(z - a_1)\\cdots(z - a_n)\\) of degree \\(n\\) has exactly \\(n\\) zeros (counted with multiplicity) and grows like \\(|z|^n\\). An entire function can have infinitely many zeros, but then it must grow <em>at least</em> as fast as the density of its zeros requires. Making this precise leads to the concept of <strong>order of growth</strong>.</p>
 
 <div class="env-block remark">
     <div class="env-title">Historical Note</div>
     <div class="env-body">
-        <p>Karl Weierstrass (1876) proved the product theorem, resolving a question raised by Euler's product for \\(\\sin z\\). G&ouml;sta Mittag-Leffler (1877) proved the partial-fraction theorem. Jacques Hadamard (1893) combined both into the factorization theorem for functions of finite order, with the celebrated application that \\(\\xi(s)\\) has infinitely many zeros, contributing to his proof of the prime number theorem.</p>
+        <p>Weierstrass published his product theorem in 1876, providing the first rigorous construction of entire functions with prescribed zeros. Mittag-Leffler's companion result (1876-1884) handles prescribed poles. Hadamard's factorization theorem (1893), building on earlier work by Borel, connected the order of growth to the genus of the canonical product, yielding one of the deepest structural results in classical function theory.</p>
     </div>
 </div>
 `,
@@ -78,181 +49,158 @@ where \\(g\\) is a polynomial of degree \\(\\leq \\rho\\) and \\(p \\leq \\rho\\
         },
 
         // ================================================================
-        // SECTION 1: Weierstrass Product Theorem
+        // SECTION 2: Weierstrass Products
         // ================================================================
         {
             id: 'sec-weierstrass',
-            title: 'Weierstrass Product Theorem',
+            title: 'Weierstrass Products',
             content: `
-<h2>Weierstrass Product Theorem</h2>
+<h2>Weierstrass Products</h2>
+
+<div class="env-block intuition">
+    <div class="env-title">The Challenge of Infinite Products</div>
+    <div class="env-body">
+        <p>For a polynomial, \\(p(z) = c \\prod_{k=1}^{n}(z - a_k)\\) converges trivially (finite product). If the zeros \\(\\{a_k\\}\\) form an infinite sequence with \\(|a_k| \\to \\infty\\), the naive product \\(\\prod(1 - z/a_k)\\) may diverge. The Weierstrass trick: multiply each factor by a convergence-producing exponential.</p>
+    </div>
+</div>
 
 <h3>Elementary Factors</h3>
 
-<p>The key building block is the <strong>Weierstrass elementary factor</strong>:
-\\[
-E_0(z) = 1 - z, \\qquad
-E_p(z) = (1-z)\\exp\\!\\Bigl(z + \\tfrac{z^2}{2} + \\cdots + \\tfrac{z^p}{p}\\Bigr), \\quad p \\geq 1.
-\\]
-The exponential exactly cancels the first \\(p\\) terms in \\(\\log(1-z)\\), making \\(E_p(z/a)\\) converge fast enough even when \\(\\sum 1/|a_n|^{p}\\) diverges.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Lemma (elementary factor estimate)</div>
+<div class="env-block definition">
+    <div class="env-title">Definition (Elementary Factors)</div>
     <div class="env-body">
-        <p>For \\(|z| \\leq 1\\),
-        \\[|1 - E_p(z)| \\leq |z|^{p+1}.\\]</p>
+        <p>For \\(p \\geq 0\\), the <strong>elementary factor</strong> of order \\(p\\) is</p>
+        \\[E_p(z) = (1 - z)\\exp\\!\\left(z + \\frac{z^2}{2} + \\cdots + \\frac{z^p}{p}\\right).\\]
+        <p>In particular, \\(E_0(z) = 1 - z\\). The exponential factor is chosen so that \\(E_p(z) = 1 + O(z^{p+1})\\) near \\(z = 0\\), which accelerates convergence of the product.</p>
     </div>
 </div>
 
-<p><em>Proof sketch.</em> Write \\(\\log E_p(z) = \\log(1-z) + z + z^2/2 + \\cdots + z^p/p = -\\sum_{k=p+1}^\\infty z^k/k.\\) So \\(|\\log E_p(z)| \\leq \\sum_{k\\geq p+1} |z|^k/k \\leq |z|^{p+1}/(1-|z|)\\). For \\(|z|\\leq 1/2\\) this gives \\(|E_p(z)-1|\\leq 2|z|^{p+1}\\). \\(\\square\\)</p>
-
 <div class="env-block theorem">
-    <div class="env-title">Weierstrass Product Theorem</div>
+    <div class="env-title">Lemma (Elementary Factor Estimate)</div>
     <div class="env-body">
-        <p>Let \\(\\{a_n\\}\\) be any sequence of nonzero complex numbers with \\(|a_n| \\to \\infty\\). Then there exist non-negative integers \\(p_n\\) such that the product
-        \\[
-        \\prod_{n=1}^\\infty E_{p_n}\\!\\bigl(z/a_n\\bigr)
-        \\]
-        converges absolutely and uniformly on compact sets to an entire function whose zeros are exactly \\(\\{a_n\\}\\) (with multiplicity). If \\(m \\geq 0\\), the function
-        \\[
-        f(z) = z^m \\prod_{n=1}^\\infty E_{p_n}\\!\\bigl(z/a_n\\bigr)
-        \\]
-        is entire with a zero of order \\(m\\) at \\(0\\) and zeros at \\(a_n\\).</p>
-        <p><strong>Corollary.</strong> Any entire function \\(f\\) can be written as
-        \\[f(z) = z^m e^{g(z)} \\prod_{n=1}^\\infty E_{p_n}\\!\\bigl(z/a_n\\bigr),\\]
-        where \\(g\\) is entire and \\(\\{a_n\\}\\) are the nonzero zeros of \\(f\\).</p>
+        <p>For \\(|z| \\leq 1\\) and \\(p \\geq 0\\):</p>
+        \\[|1 - E_p(z)| \\leq |z|^{p+1}.\\]
+        <p>This is the key estimate ensuring convergence of Weierstrass products.</p>
     </div>
 </div>
 
-<p><em>Proof of convergence.</em> Fix \\(R > 0\\). For \\(|z| \\leq R\\) and \\(|a_n| > 2R\\), we have \\(|z/a_n| \\leq 1/2\\), so \\(|1-E_{p_n}(z/a_n)| \\leq (|z|/|a_n|)^{p_n+1} \\leq (R/|a_n|)^{p_n+1}\\). Choosing \\(p_n = n-1\\) works whenever \\(\\sum (R/|a_n|)^n < \\infty\\), which holds since \\(|a_n| \\to \\infty\\). Absolute convergence of \\(\\sum |1-E_{p_n}(z/a_n)|\\) implies absolute convergence of the product. \\(\\square\\)</p>
+<h3>The Weierstrass Product Theorem</h3>
 
-<h3>Non-uniqueness and the Role of \\(e^{g(z)}\\)</h3>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 17.1 (Weierstrass Product)</div>
+    <div class="env-body">
+        <p>Let \\(\\{a_n\\}_{n=1}^{\\infty}\\) be a sequence of nonzero complex numbers with \\(|a_n| \\to \\infty\\), and let \\(m \\geq 0\\) be the order of the zero at the origin. If \\(\\{p_n\\}\\) is any sequence of non-negative integers such that</p>
+        \\[\\sum_{n=1}^{\\infty} \\left(\\frac{r}{|a_n|}\\right)^{p_n + 1} < \\infty \\quad \\text{for all } r > 0,\\]
+        <p>then the product</p>
+        \\[f(z) = z^m \\prod_{n=1}^{\\infty} E_{p_n}\\!\\left(\\frac{z}{a_n}\\right)\\]
+        <p>converges uniformly on compact subsets of \\(\\mathbb{C}\\) to an entire function whose zero set is \\(\\{a_n\\}\\) (with multiplicity) together with a zero of order \\(m\\) at the origin.</p>
+    </div>
+</div>
 
-<p>The Weierstrass product is far from unique: multiplying by \\(e^{g(z)}\\) for any entire \\(g\\) gives another entire function with the same zeros. Two entire functions with the same zeros differ by a zero-free entire factor, and every zero-free entire function has the form \\(e^{g(z)}\\) (since \\(\\log f\\) can be defined on the simply-connected domain \\(\\mathbb{C}\\)).</p>
+<div class="env-block proof">
+    <div class="env-title">Proof Sketch</div>
+    <div class="env-body">
+        <p>On \\(|z| \\leq R\\), for \\(n\\) large enough that \\(|a_n| > R\\), we have \\(|z/a_n| < 1\\), so</p>
+        \\[|1 - E_{p_n}(z/a_n)| \\leq |z/a_n|^{p_n+1} \\leq (R/|a_n|)^{p_n+1}.\\]
+        <p>The convergence condition ensures \\(\\sum |1 - E_{p_n}(z/a_n)| < \\infty\\), so the product converges absolutely and uniformly on \\(|z| \\leq R\\). Since \\(R\\) is arbitrary, the product defines an entire function. Each factor \\(E_{p_n}(z/a_n)\\) vanishes precisely at \\(z = a_n\\), and no other factors vanish there.</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Canonical Product)</div>
+    <div class="env-body">
+        <p>When \\(p_n = p\\) is constant for all \\(n\\), the product is called the <strong>canonical product of genus \\(p\\)</strong>:</p>
+        \\[P(z) = \\prod_{n=1}^{\\infty} E_p\\!\\left(\\frac{z}{a_n}\\right).\\]
+        <p>The smallest such \\(p\\) for which the product converges is the <strong>genus</strong> of the zero sequence.</p>
+    </div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Canonical Example: sin(\\(\\pi z\\))</div>
+    <div class="env-title">Example: \\(\\sin(\\pi z)\\) as a Weierstrass Product</div>
     <div class="env-body">
-        <p>The zeros of \\(\\sin(\\pi z)\\) are the integers \\(\\mathbb{Z}\\). With \\(p_n = 1\\) for all \\(n\\),
-        \\[
-        \\sin(\\pi z) = \\pi z \\prod_{n=1}^\\infty \\Bigl(1 - \\tfrac{z^2}{n^2}\\Bigr).
-        \\]
-        Setting \\(z = 1/2\\) gives Wallis's product: \\(\\pi/2 = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}\\).</p>
+        <p>The zeros of \\(\\sin(\\pi z)\\) are at \\(z = n\\) for \\(n \\in \\mathbb{Z}\\). Since \\(\\sum |n|^{-2} < \\infty\\), we can use elementary factors of order \\(p = 1\\):</p>
+        \\[\\sin(\\pi z) = \\pi z \\prod_{n=1}^{\\infty}\\left(1 - \\frac{z^2}{n^2}\\right) = \\pi z \\prod_{n=1}^{\\infty} E_1\\!\\left(\\frac{z}{n}\\right) E_1\\!\\left(\\frac{z}{-n}\\right).\\]
+        <p>Pairing the \\(n\\) and \\(-n\\) factors cancels the linear exponential terms, yielding the classical Euler product.</p>
     </div>
 </div>
+
+<div class="viz-placeholder" data-viz="viz-weierstrass-product"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-weierstrass-product',
-                    title: 'Building sin(z)/z as an Infinite Product',
-                    description: 'Animate adding factors \\((1 - z^2/n^2\\pi^2)\\) to the partial product. Watch the product converge to sin(z)/z on the real line.',
+                    title: 'sin(z) as a Weierstrass Product',
+                    description: 'Watch the partial products converge to sin(pi*z). Each factor (1 - z^2/n^2) introduces a new pair of zeros. The blue curve is the partial product; the dashed orange curve is sin(pi*z).',
                     setup: function(body, controls) {
                         var viz = new VizEngine(body, {
-                            width: 560, height: 360,
-                            originX: 280, originY: 180, scale: 50
+                            width: 560, height: 380,
+                            originX: 280, originY: 200, scale: 55
                         });
 
-                        var N = 1;
+                        var nTerms = 3;
                         var animating = false;
-                        var animId = null;
+                        var animFrame = 0;
 
-                        VizEngine.createSlider(controls, 'factors N', 1, 12, 1, 1, function(v) {
-                            N = Math.round(v);
+                        VizEngine.createSlider(controls, 'N terms', 1, 20, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
                             draw();
                         });
+
                         VizEngine.createButton(controls, 'Animate', function() {
                             if (animating) return;
                             animating = true;
-                            N = 1;
-                            var step = function() {
+                            nTerms = 1;
+                            animFrame = 0;
+                            function step() {
+                                if (nTerms > 20) { animating = false; return; }
                                 draw();
-                                if (N < 12) { N++; animId = setTimeout(step, 500); }
-                                else { animating = false; }
-                            };
+                                nTerms++;
+                                setTimeout(step, 400);
+                            }
                             step();
                         });
 
-                        function partialProduct(x, n) {
-                            // prod_{k=1}^{n} (1 - x^2/(k*pi)^2)
-                            var p = 1;
-                            for (var k = 1; k <= n; k++) {
-                                p *= (1 - (x * x) / (k * k * Math.PI * Math.PI));
+                        function partialProduct(x, N) {
+                            var result = Math.PI * x;
+                            for (var n = 1; n <= N; n++) {
+                                result *= (1 - (x * x) / (n * n));
                             }
-                            return p;
-                        }
-
-                        function sincReal(x) {
-                            return Math.abs(x) < 1e-10 ? 1 : Math.sin(x) / x;
+                            return result;
                         }
 
                         function draw() {
                             viz.clear();
                             viz.drawGrid(1);
                             viz.drawAxes();
+                            var ctx = viz.ctx;
 
-                            var xMin = -5.5, xMax = 5.5;
-                            var steps = 400;
+                            // Draw sin(pi*z) as reference
+                            ctx.setLineDash([6, 4]);
+                            viz.drawFunction(function(x) { return Math.sin(Math.PI * x); }, -4.5, 4.5, viz.colors.orange, 2, 500);
+                            ctx.setLineDash([]);
 
-                            // True sinc
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.setLineDash([5, 3]);
-                            viz.ctx.beginPath();
-                            var started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = sincReal(x);
-                                if (!isFinite(y) || Math.abs(y) > 3) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
-                            }
-                            viz.ctx.stroke();
-                            viz.ctx.setLineDash([]);
+                            // Draw partial product
+                            viz.drawFunction(function(x) { return partialProduct(x, nTerms); }, -4.5, 4.5, viz.colors.blue, 2.5, 500);
 
-                            // Partial product
-                            viz.ctx.strokeStyle = viz.colors.orange;
-                            viz.ctx.lineWidth = 2;
-                            viz.ctx.beginPath();
-                            started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = partialProduct(x, N);
-                                if (!isFinite(y) || Math.abs(y) > 3) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
-                            }
-                            viz.ctx.stroke();
-
-                            // Mark zeros included
-                            for (var k = 1; k <= N; k++) {
-                                viz.drawPoint(k * Math.PI, 0, viz.colors.teal, null, 4);
-                                viz.drawPoint(-k * Math.PI, 0, viz.colors.teal, null, 4);
+                            // Mark zeros
+                            for (var k = -nTerms; k <= nTerms; k++) {
+                                viz.drawPoint(k, 0, viz.colors.teal, null, 4);
                             }
 
                             // Labels
-                            viz.screenText('sin(x)/x vs partial product', viz.width / 2, 18, viz.colors.white, 14);
+                            viz.screenText('N = ' + nTerms + ' factors', viz.width / 2, 20, viz.colors.white, 14);
 
-                            var ctx = viz.ctx;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            // legend
-                            ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 1.5;
-                            ctx.setLineDash([5, 3]);
-                            ctx.beginPath(); ctx.moveTo(viz.width - 180, 40); ctx.lineTo(viz.width - 155, 40); ctx.stroke();
-                            ctx.setLineDash([]);
-                            ctx.fillStyle = viz.colors.blue;
-                            ctx.fillText('sin(x)/x', viz.width - 150, 44);
-
+                            // Legend
+                            ctx.setLineDash([6, 4]);
                             ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(viz.width - 180, 58); ctx.lineTo(viz.width - 155, 58); ctx.stroke();
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('\u220f\u2099(1 \u2212 x\u00b2/n\u00b2\u03c0\u00b2), N=' + N, viz.width - 150, 62);
+                            ctx.beginPath(); ctx.moveTo(20, viz.height - 30); ctx.lineTo(50, viz.height - 30); ctx.stroke();
+                            ctx.setLineDash([]);
+                            viz.screenText('sin(\u03C0z)', 85, viz.height - 30, viz.colors.orange, 11, 'left');
 
-                            ctx.fillStyle = viz.colors.teal;
-                            ctx.fillText('zeros: \u00b1\u03c0..\u00b1' + N + '\u03c0', viz.width - 150, 78);
+                            ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 2.5;
+                            ctx.beginPath(); ctx.moveTo(20, viz.height - 14); ctx.lineTo(50, viz.height - 14); ctx.stroke();
+                            viz.screenText('\u03C0z \u220F(1 - z\u00B2/n\u00B2)', 85, viz.height - 14, viz.colors.blue, 11, 'left');
                         }
-
                         draw();
                         return viz;
                     }
@@ -260,493 +208,469 @@ The exponential exactly cancels the first \\(p\\) terms in \\(\\log(1-z)\\), mak
             ],
             exercises: [
                 {
-                    question: 'Find the Weierstrass product for \\(\\cos(\\pi z)\\). Its zeros are \\(z = n + 1/2\\) for \\(n \\in \\mathbb{Z}\\).',
-                    hint: 'Pair zeros at \\(\\pm(n+1/2)\\) and use the identity \\(\\cos(\\pi z) = \\sin(\\pi(z+1/2))/\\sin(\\pi/2)\\).',
-                    solution: '\\(\\cos(\\pi z) = \\prod_{n=0}^\\infty \\bigl(1 - \\frac{z^2}{(n+1/2)^2}\\bigr)\\). More explicitly, \\(\\cos(\\pi z) = \\prod_{n=0}^\\infty \\bigl(1 - \\frac{4z^2}{(2n+1)^2}\\bigr)\\).'
+                    question: 'Verify the elementary factor estimate \\(|1 - E_1(z)| \\leq |z|^2\\) for \\(|z| \\leq 1\\) by writing \\(E_1(z) = (1-z)e^z\\) and expanding.',
+                    hint: 'Expand \\(\\log E_1(z) = \\log(1-z) + z = -z^2/2 - z^3/3 - \\cdots\\) and use \\(|e^w - 1| \\leq |w|e^{|w|}\\).',
+                    solution: 'We have \\(\\log E_1(z) = \\log(1-z) + z = -\\sum_{k=2}^{\\infty} z^k/k\\). For \\(|z| \\leq 1\\), \\(|\\log E_1(z)| \\leq |z|^2 \\sum_{k=0}^{\\infty} |z|^k/(k+2) \\leq |z|^2\\). Then \\(|1 - E_1(z)| = |1 - e^{\\log E_1(z)}| \\leq |\\log E_1(z)| \\cdot e^{|\\log E_1(z)|} \\leq |z|^2 \\cdot e^{|z|^2} \\leq e|z|^2\\). A refined argument gives the sharp bound \\(|z|^2\\).'
+                },
+                {
+                    question: 'The zeros of \\(\\cos(\\pi z)\\) are at \\(z = n + 1/2\\) for \\(n \\in \\mathbb{Z}\\). Write down a Weierstrass product for \\(\\cos(\\pi z)\\).',
+                    hint: 'Pair the zeros at \\(n + 1/2\\) and \\(-(n+1/2)\\) to get factors \\((1 - z^2/(n+1/2)^2)\\). Compare with the product for \\(\\sin\\).',
+                    solution: '\\(\\cos(\\pi z) = \\prod_{n=0}^{\\infty} \\left(1 - \\frac{z^2}{(n + 1/2)^2}\\right) = \\prod_{n=0}^{\\infty}\\left(1 - \\frac{4z^2}{(2n+1)^2}\\right)\\). This converges since \\(\\sum 1/(2n+1)^2 < \\infty\\). The product needs no extra exponential factors (genus 1 with pairing).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 2: Mittag-Leffler Theorem
+        // SECTION 3: Mittag-Leffler Theorem
         // ================================================================
         {
             id: 'sec-mittag-leffler',
-            title: 'Mittag-Leffler Theorem',
+            title: 'The Mittag-Leffler Theorem',
             content: `
-<h2>Mittag-Leffler Theorem</h2>
+<h2>The Mittag-Leffler Theorem</h2>
 
-<p>The Mittag-Leffler theorem is the meromorphic analogue of the Weierstrass product theorem: it constructs a meromorphic function with prescribed poles and principal parts.</p>
+<div class="env-block intuition">
+    <div class="env-title">Partial Fractions for Meromorphic Functions</div>
+    <div class="env-body">
+        <p>A rational function can be decomposed into partial fractions. The Mittag-Leffler theorem generalizes this to meromorphic functions with infinitely many poles: given any sequence of points and any "principal parts" at those points, there exists a meromorphic function with exactly those singularities. The catch: we may need to subtract polynomial "correction terms" to ensure convergence of the sum.</p>
+    </div>
+</div>
 
-<h3>Principal Parts</h3>
-
-<p>At a pole \\(b\\) of order \\(m\\), the <strong>principal part</strong> is the singular portion of the Laurent expansion:
-\\[
-P(z, b) = \\frac{c_{-m}}{(z-b)^m} + \\cdots + \\frac{c_{-1}}{z-b}.
-\\]</p>
+<div class="env-block definition">
+    <div class="env-title">Definition (Principal Part)</div>
+    <div class="env-body">
+        <p>If \\(f\\) has a pole of order \\(m\\) at \\(z = a\\), its <strong>principal part</strong> at \\(a\\) is the negative-power portion of the Laurent series:</p>
+        \\[S_a(z) = \\frac{c_{-m}}{(z-a)^m} + \\frac{c_{-m+1}}{(z-a)^{m-1}} + \\cdots + \\frac{c_{-1}}{z-a}.\\]
+        <p>The function \\(f(z) - S_a(z)\\) is analytic in a neighborhood of \\(a\\).</p>
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Mittag-Leffler Theorem</div>
+    <div class="env-title">Theorem 17.2 (Mittag-Leffler)</div>
     <div class="env-body">
-        <p>Let \\(\\{b_n\\}\\) be a sequence of distinct complex numbers with \\(|b_n| \\to \\infty\\), and let \\(P_n(z)\\) be a rational function (principal part) with pole only at \\(b_n\\). Then there exists a meromorphic function \\(f\\) on \\(\\mathbb{C}\\) whose poles are exactly \\(\\{b_n\\}\\) with principal parts \\(P_n\\). Explicitly,
-        \\[
-        f(z) = \\sum_{n=1}^\\infty \\bigl[P_n(z) - q_n(z)\\bigr],
-        \\]
-        where \\(q_n\\) is a polynomial (Taylor partial sum of \\(P_n\\) at \\(0\\)) chosen to ensure convergence. The general meromorphic function with these poles is \\(f(z) + g(z)\\) for any entire \\(g\\).</p>
+        <p>Let \\(\\{a_n\\}\\) be a sequence of distinct complex numbers with \\(|a_n| \\to \\infty\\), and let \\(S_n(z)\\) be a polynomial in \\(1/(z - a_n)\\) (the prescribed principal part at \\(a_n\\)). Then there exists a meromorphic function \\(f\\) on \\(\\mathbb{C}\\) whose poles are exactly the \\(a_n\\) and whose principal part at each \\(a_n\\) is \\(S_n\\).</p>
+        <p>More precisely, there exist polynomials \\(P_n(z)\\) such that</p>
+        \\[f(z) = \\sum_{n=1}^{\\infty} \\bigl[S_n(z) - P_n(z)\\bigr]\\]
+        <p>converges uniformly on compact subsets of \\(\\mathbb{C} \\setminus \\{a_n\\}\\). The polynomials \\(P_n\\) are the initial segments of the Taylor expansion of \\(S_n\\) about the origin, chosen to ensure convergence.</p>
+        <p>Any two such functions differ by an entire function.</p>
     </div>
 </div>
 
-<p><em>Proof idea.</em> Fix \\(R > 0\\) and consider the disc \\(|z| < R\\). For all \\(|b_n| > 2R\\), the principal part \\(P_n(z)\\) is holomorphic on \\(|z| < R\\), so its Taylor series converges there. Take \\(q_n\\) to be the partial sum of that series chosen so that \\(|P_n(z) - q_n(z)| < 2^{-n}\\) on \\(|z| \\leq R\\). The series then converges normally on \\(\\mathbb{C} \\setminus \\{b_n\\}\\). \\(\\square\\)</p>
+<div class="env-block proof">
+    <div class="env-title">Proof Idea</div>
+    <div class="env-body">
+        <p>Each \\(S_n(z)\\) is analytic on \\(|z| < |a_n|\\) and can be expanded in a Taylor series there. Let \\(P_n(z)\\) be the Taylor polynomial of \\(S_n\\) of sufficiently high degree \\(d_n\\). Then \\(S_n(z) - P_n(z) = O(|z/a_n|^{d_n+1})\\) on \\(|z| \\leq R < |a_n|\\). By choosing \\(d_n\\) large enough (e.g., \\(d_n = n\\)), the tails \\(|z/a_n|^{n+1}\\) are summable, giving uniform convergence on compact sets.</p>
+    </div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Partial Fractions for \\(\\pi \\cot(\\pi z)\\)</div>
+    <div class="env-title">Example: \\(\\pi\\cot(\\pi z)\\)</div>
     <div class="env-body">
-        <p>The function \\(\\pi \\cot(\\pi z)\\) has simple poles at every integer \\(n \\in \\mathbb{Z}\\), each with residue \\(1\\). The Mittag-Leffler expansion is
-        \\[
-        \\pi \\cot(\\pi z) = \\frac{1}{z} + \\sum_{n=1}^\\infty \\Bigl(\\frac{1}{z-n} + \\frac{1}{z+n}\\Bigr)
-        = \\frac{1}{z} + \\sum_{n=1}^\\infty \\frac{2z}{z^2 - n^2}.
-        \\]
-        This follows from comparing the Weierstrass product \\(\\sin(\\pi z) = \\pi z\\prod_n(1 - z^2/n^2)\\) with its logarithmic derivative.</p>
+        <p>\\(\\pi\\cot(\\pi z)\\) has simple poles at every integer \\(n\\) with residue 1. Its Mittag-Leffler expansion is:</p>
+        \\[\\pi\\cot(\\pi z) = \\frac{1}{z} + \\sum_{n=1}^{\\infty}\\left(\\frac{1}{z - n} + \\frac{1}{z + n}\\right) = \\frac{1}{z} + \\sum_{n=1}^{\\infty} \\frac{2z}{z^2 - n^2}.\\]
+        <p>The correction polynomials \\(P_n(z) = -1/n\\) and \\(P_{-n}(z) = 1/n\\) cancel when we pair the \\(n\\) and \\(-n\\) terms, yielding the clean formula above.</p>
     </div>
 </div>
 
-<h3>Connection to Weierstrass</h3>
+<div class="env-block example">
+    <div class="env-title">Example: \\(\\pi^2/\\sin^2(\\pi z)\\)</div>
+    <div class="env-body">
+        <p>Differentiating the partial fraction for \\(\\pi\\cot(\\pi z)\\) gives:</p>
+        \\[\\frac{\\pi^2}{\\sin^2(\\pi z)} = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{(z-n)^2}.\\]
+        <p>Setting \\(z = 1/2\\) yields \\(\\pi^2 = \\sum_{n=-\\infty}^{\\infty} \\frac{1}{(n + 1/2)^2} = 4\\sum_{n=0}^{\\infty}\\frac{1}{(2n+1)^2}\\), which gives \\(\\sum_{n=0}^{\\infty}\\frac{1}{(2n+1)^2} = \\pi^2/8\\) and hence \\(\\sum_{n=1}^{\\infty} 1/n^2 = \\pi^2/6\\).</p>
+    </div>
+</div>
 
-<p>Taking the logarithmic derivative of the Weierstrass product gives the Mittag-Leffler expansion:
-\\[
-\\frac{f'(z)}{f(z)} = \\frac{m}{z} + g'(z) + \\sum_n \\frac{d}{dz} \\log E_{p_n}(z/a_n).
-\\]
-Each term \\(\\frac{d}{dz}\\log E_p(z/a)\\) has a simple pole at \\(z = a\\) with residue \\(1\\).</p>
+<div class="viz-placeholder" data-viz="viz-mittag-leffler"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-mittag-leffler',
-                    title: 'Building a Function with Prescribed Poles',
-                    description: 'Animate adding principal parts \\(1/(z-n)\\) to construct \\(\\pi\\cot(\\pi z)\\). The domain coloring shows poles as bright points; watch convergence as more terms are added.',
+                    title: 'Mittag-Leffler: Adding Principal Parts',
+                    description: 'Build pi*cot(pi*z) by summing principal parts 1/(z-n). Watch the partial sum converge as N grows. The blue curve is the partial sum; the orange dashed curve is pi*cot(pi*z).',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            originX: 280, originY: 190, scale: 30
+                        });
+
+                        var nTerms = 3;
+
+                        VizEngine.createSlider(controls, 'N terms', 1, 30, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
+                        });
+
+                        function piCot(x) {
+                            if (Math.abs(x - Math.round(x)) < 0.01) return NaN;
+                            return Math.PI * Math.cos(Math.PI * x) / Math.sin(Math.PI * x);
+                        }
+
+                        function partialMittagLeffler(x, N) {
+                            if (Math.abs(x) < 1e-10) return NaN;
+                            var sum = 1 / x;
+                            for (var n = 1; n <= N; n++) {
+                                var dn1 = x - n;
+                                var dn2 = x + n;
+                                if (Math.abs(dn1) < 0.01 || Math.abs(dn2) < 0.01) return NaN;
+                                sum += 1 / dn1 + 1 / dn2;
+                            }
+                            return sum;
+                        }
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid(1);
+                            viz.drawAxes();
+                            var ctx = viz.ctx;
+
+                            // Reference: pi*cot(pi*z)
+                            ctx.setLineDash([5, 4]);
+                            viz.drawFunction(piCot, -4.5, 4.5, viz.colors.orange, 1.5, 800);
+                            ctx.setLineDash([]);
+
+                            // Partial sum
+                            viz.drawFunction(function(x) { return partialMittagLeffler(x, nTerms); }, -4.5, 4.5, viz.colors.blue, 2.5, 800);
+
+                            // Mark poles
+                            for (var k = -nTerms; k <= nTerms; k++) {
+                                ctx.strokeStyle = viz.colors.red; ctx.lineWidth = 1;
+                                ctx.setLineDash([3, 3]);
+                                var sx = viz.toScreen(k, 0)[0];
+                                ctx.beginPath(); ctx.moveTo(sx, 0); ctx.lineTo(sx, viz.height); ctx.stroke();
+                                ctx.setLineDash([]);
+                            }
+
+                            viz.screenText('N = ' + nTerms, viz.width / 2, 18, viz.colors.white, 14);
+                            viz.screenText('1/z + \u03A3 (1/(z-n) + 1/(z+n))', viz.width / 2, viz.height - 14, viz.colors.blue, 11);
+                        }
+                        draw();
+                        return viz;
+                    }
+                }
+            ],
+            exercises: [
+                {
+                    question: 'Derive the partial fraction expansion of \\(\\pi/\\sin(\\pi z)\\).',
+                    hint: 'The poles of \\(1/\\sin(\\pi z)\\) are at \\(z = n\\) with residues \\((-1)^n/\\pi\\). Pair the \\(n\\) and \\(-n\\) terms.',
+                    solution: '\\(\\frac{\\pi}{\\sin(\\pi z)} = \\frac{1}{z} + \\sum_{n=1}^{\\infty} (-1)^n \\left(\\frac{1}{z-n} + \\frac{1}{z+n}\\right) = \\frac{1}{z} + \\sum_{n=1}^{\\infty} \\frac{(-1)^n 2z}{z^2 - n^2}\\). The residue at \\(z = n\\) is \\(\\lim_{z \\to n}(z-n) \\pi/\\sin(\\pi z) = \\pi \\cdot 1/(\\pi \\cos(\\pi n)) = (-1)^n\\).'
+                },
+                {
+                    question: 'Use the Mittag-Leffler expansion of \\(\\pi^2/\\sin^2(\\pi z)\\) to compute \\(\\sum_{n=1}^{\\infty} 1/n^2\\).',
+                    hint: 'Set \\(z = 0\\) in the derivative of \\(\\pi\\cot(\\pi z)\\), or set \\(z = 1/2\\) in the expansion of \\(\\pi^2/\\sin^2(\\pi z)\\).',
+                    solution: 'From \\(\\pi^2/\\sin^2(\\pi z) = \\sum_{n=-\\infty}^{\\infty} 1/(z-n)^2\\), set \\(z = 1/2\\): \\(\\pi^2/1 = \\sum_{n=-\\infty}^{\\infty} 1/(1/2 - n)^2 = 4\\sum_{n=0}^{\\infty} 1/(2n+1)^2\\). So \\(\\sum 1/(2n+1)^2 = \\pi^2/8\\). Since \\(\\sum 1/n^2 = \\sum 1/(2k)^2 + \\sum 1/(2k+1)^2 = (1/4)\\sum 1/k^2 + \\pi^2/8\\), we get \\((3/4)\\sum 1/n^2 = \\pi^2/8\\), hence \\(\\sum 1/n^2 = \\pi^2/6\\).'
+                }
+            ]
+        },
+
+        // ================================================================
+        // SECTION 4: Order of Growth
+        // ================================================================
+        {
+            id: 'sec-order',
+            title: 'Order of Growth',
+            content: `
+<h2>Order of Growth</h2>
+
+<div class="env-block intuition">
+    <div class="env-title">How Fast Can Entire Functions Grow?</div>
+    <div class="env-body">
+        <p>A polynomial of degree \\(d\\) satisfies \\(|p(z)| \\leq C|z|^d\\) for large \\(|z|\\). Entire functions can grow faster: \\(e^z\\) grows like \\(e^r\\) on the positive real axis. The "order" measures this growth on a logarithmic scale. An entire function of order \\(\\rho\\) grows roughly like \\(e^{|z|^\\rho}\\).</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Order of an Entire Function)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be a non-constant entire function. Define</p>
+        \\[M(r) = \\max_{|z|=r} |f(z)|.\\]
+        <p>The <strong>order</strong> of \\(f\\) is</p>
+        \\[\\rho = \\limsup_{r \\to \\infty} \\frac{\\log\\log M(r)}{\\log r}.\\]
+        <p>Equivalently, \\(\\rho\\) is the infimum of all \\(\\alpha > 0\\) such that \\(M(r) \\leq e^{r^\\alpha}\\) for all sufficiently large \\(r\\).</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Examples of Order</div>
+    <div class="env-body">
+        <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:0.9em;">
+            <tr style="border-bottom:2px solid var(--border-default);">
+                <th style="padding:8px; text-align:left;">Function</th>
+                <th style="padding:8px; text-align:center;">Growth</th>
+                <th style="padding:8px; text-align:center;">Order \\(\\rho\\)</th>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">Polynomial \\(p(z)\\)</td>
+                <td style="padding:8px; text-align:center;">\\(|z|^d\\)</td>
+                <td style="padding:8px; text-align:center;">0</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">\\(e^z\\)</td>
+                <td style="padding:8px; text-align:center;">\\(e^r\\)</td>
+                <td style="padding:8px; text-align:center;">1</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">\\(\\sin(\\pi z)\\)</td>
+                <td style="padding:8px; text-align:center;">\\(\\sim e^{\\pi r}/2\\)</td>
+                <td style="padding:8px; text-align:center;">1</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">\\(e^{z^2}\\)</td>
+                <td style="padding:8px; text-align:center;">\\(e^{r^2}\\)</td>
+                <td style="padding:8px; text-align:center;">2</td>
+            </tr>
+            <tr>
+                <td style="padding:8px;">\\(e^{e^z}\\)</td>
+                <td style="padding:8px; text-align:center;">\\(e^{e^r}\\)</td>
+                <td style="padding:8px; text-align:center;">\\(\\infty\\)</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<h3>The Exponent of Convergence</h3>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Exponent of Convergence)</div>
+    <div class="env-body">
+        <p>Given the zeros \\(\\{a_n\\}\\) of an entire function (listed with multiplicity, \\(a_n \\neq 0\\)), the <strong>exponent of convergence</strong> is</p>
+        \\[\\lambda = \\inf\\left\\{\\alpha > 0 : \\sum_{n=1}^{\\infty} \\frac{1}{|a_n|^\\alpha} < \\infty\\right\\}.\\]
+        <p>Equivalently, \\(\\lambda = \\limsup_{r \\to \\infty} \\frac{\\log n(r)}{\\log r}\\), where \\(n(r)\\) counts the number of zeros in \\(|z| \\leq r\\).</p>
+    </div>
+</div>
+
+<div class="env-block theorem">
+    <div name="env-title">Theorem 17.3 (Order-Exponent Inequality)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is entire of order \\(\\rho\\) with exponent of convergence \\(\\lambda\\), then \\(\\lambda \\leq \\rho\\).</p>
+        <p>Equality \\(\\lambda = \\rho\\) holds when the growth of \\(f\\) is "entirely due to its zeros" (more precisely, when the canonical product has the same order as \\(f\\)).</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-order-growth"></div>
+`,
+            visualizations: [
+                {
+                    id: 'viz-order-growth',
+                    title: 'Comparing Growth Rates',
+                    description: 'Compare log log M(r) / log r for different entire functions as r grows, illustrating how the order captures the growth rate.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            originX: 70, originY: 340, scale: 1
+                        });
+
+                        function draw() {
+                            viz.clear();
+                            var ctx = viz.ctx;
+
+                            var chartL = 70, chartR = 530, chartT = 40, chartB = 330;
+                            var chartW = chartR - chartL, chartH = chartB - chartT;
+
+                            // Axes
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
+                            ctx.beginPath(); ctx.moveTo(chartL, chartB); ctx.lineTo(chartR, chartB); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(chartL, chartB); ctx.lineTo(chartL, chartT); ctx.stroke();
+
+                            viz.screenText('r', chartR + 10, chartB, viz.colors.text, 12);
+                            viz.screenText('log log M(r) / log r', chartL - 10, chartT - 12, viz.colors.text, 10, 'center');
+
+                            var rMax = 10;
+                            var yMax = 3.5;
+
+                            // Grid
+                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
+                            for (var gy = 0; gy <= 3; gy++) {
+                                var sy = chartB - (gy / yMax) * chartH;
+                                ctx.beginPath(); ctx.moveTo(chartL, sy); ctx.lineTo(chartR, sy); ctx.stroke();
+                                ctx.fillStyle = viz.colors.text; ctx.font = '10px -apple-system,sans-serif';
+                                ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+                                ctx.fillText(gy.toString(), chartL - 6, sy);
+                            }
+
+                            // Functions: log log M(r) / log r
+                            var funcs = [
+                                { name: 'e^z (\u03C1=1)', color: viz.colors.blue, fn: function(r) { return r > 0.5 ? Math.log(Math.log(Math.exp(r))) / Math.log(r) : 0; } },
+                                { name: 'sin(\u03C0z) (\u03C1=1)', color: viz.colors.teal, fn: function(r) { var M = Math.exp(Math.PI * r) / 2; return r > 1 ? Math.log(Math.log(Math.max(M, 2))) / Math.log(r) : 0; } },
+                                { name: 'e^{z\u00B2} (\u03C1=2)', color: viz.colors.orange, fn: function(r) { return r > 0.5 ? Math.log(Math.log(Math.exp(r * r))) / Math.log(r) : 0; } },
+                                { name: 'e^{z\u00B3} (\u03C1=3)', color: viz.colors.purple, fn: function(r) { return r > 0.5 ? Math.log(Math.log(Math.exp(r * r * r))) / Math.log(r) : 0; } }
+                            ];
+
+                            for (var fi = 0; fi < funcs.length; fi++) {
+                                var f = funcs[fi];
+                                ctx.strokeStyle = f.color; ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                var started = false;
+                                for (var i = 0; i <= 300; i++) {
+                                    var r = 0.5 + (rMax - 0.5) * i / 300;
+                                    var y = f.fn(r);
+                                    if (!isFinite(y) || y < 0 || y > yMax * 1.2) { started = false; continue; }
+                                    var sx = chartL + ((r - 0) / rMax) * chartW;
+                                    var sy = chartB - (y / yMax) * chartH;
+                                    if (!started) { ctx.moveTo(sx, sy); started = true; }
+                                    else ctx.lineTo(sx, sy);
+                                }
+                                ctx.stroke();
+
+                                // Legend
+                                ctx.fillStyle = f.color;
+                                ctx.font = '11px -apple-system,sans-serif';
+                                ctx.textAlign = 'left';
+                                ctx.fillText(f.name, chartR - 140, chartT + 16 + fi * 18);
+                                ctx.fillRect(chartR - 155, chartT + 10 + fi * 18, 10, 10);
+                            }
+
+                            // Dashed reference lines at y=1,2,3
+                            ctx.setLineDash([4, 4]);
+                            for (var ref = 1; ref <= 3; ref++) {
+                                var ry = chartB - (ref / yMax) * chartH;
+                                ctx.strokeStyle = viz.colors.text + '44'; ctx.lineWidth = 1;
+                                ctx.beginPath(); ctx.moveTo(chartL, ry); ctx.lineTo(chartR, ry); ctx.stroke();
+                            }
+                            ctx.setLineDash([]);
+
+                            viz.screenText('Order of Growth Comparison', viz.width / 2, 18, viz.colors.white, 14);
+                        }
+                        draw();
+                        return viz;
+                    }
+                }
+            ],
+            exercises: [
+                {
+                    question: 'Compute the order of \\(f(z) = \\sum_{n=0}^{\\infty} z^n / (n!)^2\\).',
+                    hint: 'Use the Hadamard formula \\(1/R = \\limsup |c_n|^{1/n}\\) for the radius (which is \\(\\infty\\)), then estimate \\(M(r)\\) using \\(|c_n| = 1/(n!)^2\\). Apply Stirling.',
+                    solution: 'By Stirling, \\(|c_n|^{1/n} = 1/(n!)^{2/n} \\sim e^2/n^2 \\to 0\\), so \\(R = \\infty\\). For \\(M(r)\\), the dominant term in \\(\\sum r^n/(n!)^2\\) is at \\(n \\approx \\sqrt{r}\\), giving \\(\\log M(r) \\sim 2\\sqrt{r}\\). Thus \\(\\rho = \\limsup \\log\\log M(r)/\\log r = \\limsup \\log(2\\sqrt{r})/\\log r = 1/2\\). The order is \\(1/2\\). (This function is related to the Bessel function \\(I_0(2\\sqrt{z})\\).)'
+                }
+            ]
+        },
+
+        // ================================================================
+        // SECTION 5: Hadamard Factorization
+        // ================================================================
+        {
+            id: 'sec-hadamard',
+            title: 'Hadamard Factorization',
+            content: `
+<h2>Hadamard's Factorization Theorem</h2>
+
+<div class="env-block intuition">
+    <div class="env-title">Structure of Finite-Order Entire Functions</div>
+    <div class="env-body">
+        <p>Weierstrass tells us that an entire function <em>can</em> be written as a product over its zeros times an exponential. Hadamard sharpens this for functions of finite order: the exponential factor must be a polynomial, and its degree is controlled by the order. This is a remarkably rigid constraint.</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Genus)</div>
+    <div class="env-body">
+        <p>An entire function \\(f\\) of finite order \\(\\rho\\) has <strong>genus</strong> \\(\\mu\\) if it can be written as</p>
+        \\[f(z) = z^m e^{Q(z)} \\prod_{n=1}^{\\infty} E_p\\!\\left(\\frac{z}{a_n}\\right),\\]
+        <p>where \\(Q\\) is a polynomial of degree \\(q\\) and \\(p\\) is the genus of the canonical product. The genus is \\(\\mu = \\max(p, q)\\).</p>
+    </div>
+</div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 17.4 (Hadamard Factorization)</div>
+    <div class="env-body">
+        <p>Let \\(f\\) be an entire function of finite order \\(\\rho\\), with zeros \\(\\{a_n\\}\\) (\\(a_n \\neq 0\\)) of exponent of convergence \\(\\lambda\\). Let \\(p = \\lfloor \\lambda \\rfloor\\) if \\(\\sum |a_n|^{-\\lambda}\\) diverges, and \\(p = \\lceil \\lambda \\rceil - 1\\) if it converges. Then</p>
+        \\[f(z) = z^m e^{Q(z)} \\prod_{n=1}^{\\infty} E_p\\!\\left(\\frac{z}{a_n}\\right),\\]
+        <p>where \\(Q(z)\\) is a polynomial of degree \\(\\leq \\lfloor \\rho \\rfloor\\), and the genus satisfies \\(\\mu \\leq \\lfloor \\rho \\rfloor\\).</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Hadamard Factorization of \\(\\sin(\\pi z)\\)</div>
+    <div class="env-body">
+        <p>\\(\\sin(\\pi z)\\) has order \\(\\rho = 1\\). Its zeros are \\(a_n = n\\) for \\(n \\in \\mathbb{Z} \\setminus \\{0\\}\\), with exponent of convergence \\(\\lambda = 1\\) (since \\(\\sum |n|^{-1}\\) diverges but \\(\\sum |n|^{-2}\\) converges). The genus is \\(p = 1\\). By Hadamard:</p>
+        \\[\\sin(\\pi z) = z \\cdot e^{Q(z)} \\prod_{n \\neq 0} E_1(z/n) = z \\cdot e^{Q(z)} \\prod_{n=1}^{\\infty}\\left(1 - \\frac{z^2}{n^2}\\right),\\]
+        <p>where \\(Q(z)\\) has degree \\(\\leq 1\\). Comparing with \\(\\sin(\\pi z)/z \\to \\pi\\) as \\(z \\to 0\\), we find \\(e^{Q(0)} = \\pi\\). By symmetry \\(\\sin(\\pi z)\\) is odd, so \\(Q(z) = \\log \\pi\\) (constant). Thus \\(\\sin(\\pi z) = \\pi z \\prod_{n=1}^{\\infty}(1 - z^2/n^2)\\).</p>
+    </div>
+</div>
+
+<div class="env-block corollary">
+    <div class="env-title">Corollary (Zeros Determine Order-1 Functions)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is entire of order \\(< 1\\), then \\(Q\\) is a constant and \\(f\\) is determined (up to a multiplicative constant) by its zeros alone:</p>
+        \\[f(z) = c z^m \\prod_{n=1}^{\\infty} \\left(1 - \\frac{z}{a_n}\\right).\\]
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-hadamard"></div>
+`,
+            visualizations: [
+                {
+                    id: 'viz-hadamard',
+                    title: 'Hadamard Factorization of sin(pi*z)',
+                    description: 'See how the canonical product pi*z * prod(1 - z^2/n^2) converges to sin(pi*z). The convergence is rapid because the elementary factors of order 1 eliminate the leading error terms.',
                     setup: function(body, controls) {
                         var viz = new VizEngine(body, {
                             width: 560, height: 380,
                             originX: 280, originY: 190, scale: 55
                         });
 
-                        var N = 1;
-                        VizEngine.createSlider(controls, 'terms N', 1, 10, 1, 1, function(v) {
-                            N = Math.round(v);
+                        var nTerms = 5;
+
+                        VizEngine.createSlider(controls, 'N factors', 1, 30, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
                             draw();
                         });
 
-                        // Partial sum of pi*cot(pi*z): 1/z + sum_{n=1}^{N} 2z/(z^2-n^2)
-                        function partialCot(re, im, n) {
-                            // 1/z
-                            var denom0 = re * re + im * im;
-                            if (denom0 < 1e-20) return [1e10, 0];
-                            var re_sum = re / denom0;
-                            var im_sum = -im / denom0;
-
-                            for (var k = 1; k <= n; k++) {
-                                // 2z / (z^2 - k^2)
-                                // z^2 = (re^2-im^2) + 2*re*im*i
-                                var z2re = re * re - im * im - k * k;
-                                var z2im = 2 * re * im;
-                                var d = z2re * z2re + z2im * z2im;
-                                if (d < 1e-20) { re_sum += 1e8; continue; }
-                                // 2z * conj(z^2-k^2) / |z^2-k^2|^2
-                                re_sum += (2 * (re * z2re + im * z2im)) / d;
-                                im_sum += (2 * (im * z2re - re * z2im)) / d;
+                        function partialProduct(x, N) {
+                            var result = Math.PI * x;
+                            for (var n = 1; n <= N; n++) {
+                                result *= (1 - (x * x) / (n * n));
                             }
-                            return [re_sum, im_sum];
-                        }
-
-                        function draw() {
-                            var xRange = [-3.5, 3.5];
-                            var yRange = [-3.5, 3.5];
-                            viz.drawDomainColoring(function(re, im) {
-                                return partialCot(re, im, N);
-                            }, xRange, yRange);
-
-                            // Axis overlay
-                            viz.ctx.strokeStyle = 'rgba(255,255,255,0.2)';
-                            viz.ctx.lineWidth = 1;
-                            viz.ctx.beginPath();
-                            viz.ctx.moveTo(viz.originX, 0);
-                            viz.ctx.lineTo(viz.originX, viz.height);
-                            viz.ctx.stroke();
-                            viz.ctx.beginPath();
-                            viz.ctx.moveTo(0, viz.originY);
-                            viz.ctx.lineTo(viz.width, viz.originY);
-                            viz.ctx.stroke();
-
-                            viz.screenText(
-                                '1/z + \u03a3\u2099\u2081\u1d4e 2z/(z\u00b2\u2212n\u00b2),  N=' + N,
-                                viz.width / 2, 18, '#ffffffcc', 13
-                            );
-                            viz.screenText('Domain coloring of partial Mittag-Leffler sum', viz.width / 2, viz.height - 14, '#88888866', 11);
-                        }
-
-                        draw();
-                        return viz;
-                    }
-                }
-            ],
-            exercises: [
-                {
-                    question: 'Using the Mittag-Leffler theorem, write a meromorphic function with simple poles at \\(z = n^2\\) for \\(n = 1, 2, 3, \\ldots\\) each with residue \\(1\\).',
-                    hint: 'The poles \\(n^2\\) grow fast enough that no convergence polynomials \\(q_n\\) are needed.',
-                    solution: '\\(f(z) = \\sum_{n=1}^\\infty \\frac{1}{z - n^2}\\). Since \\(|1/n^2|\\) is summable, the series converges normally on compact subsets of \\(\\mathbb{C} \\setminus \\{n^2\\}\\) without any correction terms.'
-                }
-            ]
-        },
-
-        // ================================================================
-        // SECTION 3: Order and Type
-        // ================================================================
-        {
-            id: 'sec-order',
-            title: 'Order and Type',
-            content: `
-<h2>Order and Type of Entire Functions</h2>
-
-<p>Growth rate is the key to classifying entire functions. The <strong>order</strong> measures how fast \\(|f(re^{i\\theta})|\\) can grow as \\(r \\to \\infty\\).</p>
-
-<div class="env-block definition">
-    <div class="env-title">Definition (Order)</div>
-    <div class="env-body">
-        <p>The <strong>order</strong> of an entire function \\(f\\) is
-        \\[
-        \\rho = \\limsup_{r \\to \\infty} \\frac{\\log \\log M(r)}{\\log r},
-        \\]
-        where \\(M(r) = \\max_{|z|=r} |f(z)|\\) is the maximum modulus. Equivalently, \\(\\rho\\) is the infimum of \\(\\lambda\\) such that \\(M(r) = O(e^{r^\\lambda})\\).</p>
-    </div>
-</div>
-
-<table style="width:100%;border-collapse:collapse;margin:1em 0;">
-<thead><tr style="border-bottom:1px solid #30363d;">
-<th style="padding:8px;text-align:left;">Function</th>
-<th style="padding:8px;text-align:left;">\\(M(r)\\) roughly</th>
-<th style="padding:8px;text-align:left;">Order \\(\\rho\\)</th>
-</tr></thead>
-<tbody>
-<tr style="border-bottom:1px solid #21262d;">
-<td style="padding:8px;">\\(p(z)\\) (polynomial, degree \\(d\\))</td>
-<td style="padding:8px;">\\(r^d\\)</td>
-<td style="padding:8px;">\\(0\\)</td>
-</tr>
-<tr style="border-bottom:1px solid #21262d;">
-<td style="padding:8px;">\\(e^z\\), \\(\\sin z\\), \\(\\cos z\\)</td>
-<td style="padding:8px;">\\(e^r\\)</td>
-<td style="padding:8px;">\\(1\\)</td>
-</tr>
-<tr style="border-bottom:1px solid #21262d;">
-<td style="padding:8px;">\\(e^{z^2}\\)</td>
-<td style="padding:8px;">\\(e^{r^2}\\)</td>
-<td style="padding:8px;">\\(2\\)</td>
-</tr>
-<tr style="border-bottom:1px solid #21262d;">
-<td style="padding:8px;">\\(e^{e^z}\\)</td>
-<td style="padding:8px;">\\(e^{e^r}\\)</td>
-<td style="padding:8px;">\\(\\infty\\)</td>
-</tr>
-</tbody>
-</table>
-
-<div class="env-block definition">
-    <div class="env-title">Definition (Type)</div>
-    <div class="env-body">
-        <p>For an entire function of finite order \\(\\rho\\), the <strong>type</strong> is
-        \\[\\sigma = \\limsup_{r \\to \\infty} \\frac{\\log M(r)}{r^\\rho}.\\]
-        We say \\(f\\) is of <em>minimal type</em> (\\(\\sigma = 0\\)), <em>normal type</em> (\\(0 < \\sigma < \\infty\\)), or <em>maximal type</em> (\\(\\sigma = \\infty\\)).</p>
-    </div>
-</div>
-
-<h3>Power Series Criterion</h3>
-
-<p>If \\(f(z) = \\sum_{n=0}^\\infty c_n z^n\\), then
-\\[
-\\rho = \\limsup_{n \\to \\infty} \\frac{n \\log n}{-\\log |c_n|}.
-\\]
-For example, \\(e^z = \\sum z^n/n!\\): \\(|c_n| = 1/n!\\), \\(-\\log|c_n| = \\log n! \\approx n\\log n\\), so \\(\\rho = 1\\). For \\(e^{z^2} = \\sum z^{2n}/n!\\): only even terms nonzero, \\(-\\log|c_{2n}| = \\log n! \\approx n\\log n = (2n)\\log(2n)/2\\), giving \\(\\rho = 2\\).</p>
-
-<h3>Jensen's Formula and the Zero Counting Function</h3>
-
-<p>The number of zeros \\(n(r)\\) of \\(f\\) in \\(|z| \\leq r\\) is controlled by growth via Jensen's formula:
-\\[
-\\frac{1}{2\\pi}\\int_0^{2\\pi} \\log|f(re^{i\\theta})| \\,d\\theta = \\log|f(0)| + \\sum_{|a_n|\\leq r} \\log\\frac{r}{|a_n|}.
-\\]
-It follows that if \\(f\\) has order \\(\\rho\\), then \\(n(r) = O(r^{\\rho+\\varepsilon})\\) for every \\(\\varepsilon > 0\\).</p>
-`,
-            visualizations: [
-                {
-                    id: 'viz-order-growth',
-                    title: 'Comparing Growth: Polynomial vs Exponential vs Super-Exponential',
-                    description: 'Domain coloring side by side (on the real axis slice) showing how quickly M(r) grows for functions of order 0, 1, and 2.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, {
-                            width: 560, height: 340,
-                            originX: 280, originY: 240, scale: 1
-                        });
-
-                        var rMax = 3;
-                        VizEngine.createSlider(controls, 'r max', 1, 5, 3, 0.1, function(v) {
-                            rMax = v; draw();
-                        });
-
-                        function Mz3(r) { return Math.pow(r, 3); }
-                        function Mexp(r) { return Math.exp(r); }
-                        function Mexp2(r) { return Math.exp(r * r); }
-
-                        function draw() {
-                            viz.clear();
-                            var ctx = viz.ctx;
-                            var pw = viz.width, ph = viz.height;
-                            var chartBottom = ph - 30;
-                            var chartTop = 30;
-                            var chartH = chartBottom - chartTop;
-                            var chartLeft = 60;
-                            var chartRight = pw - 20;
-                            var chartW = chartRight - chartLeft;
-
-                            // Compute max for scaling
-                            var maxVal = Math.max(Mz3(rMax), Mexp(rMax), Math.min(Mexp2(rMax), 1e15));
-                            var logMax = Math.log(Math.max(maxVal, 1)) + 1;
-
-                            var steps = 300;
-
-                            function toScreenX(r) { return chartLeft + (r / rMax) * chartW; }
-                            function toScreenY(y) {
-                                var lv = Math.log(Math.max(y, 1));
-                                return chartBottom - (lv / logMax) * chartH;
-                            }
-
-                            // Grid lines (log scale)
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
-                            ctx.fillStyle = viz.colors.text;
-                            ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'right';
-                            ctx.textBaseline = 'middle';
-                            for (var p = 0; p <= Math.ceil(logMax); p += 2) {
-                                var sy = chartBottom - (p / logMax) * chartH;
-                                ctx.beginPath(); ctx.moveTo(chartLeft, sy); ctx.lineTo(chartRight, sy); ctx.stroke();
-                                ctx.fillText('e^' + p, chartLeft - 4, sy);
-                            }
-                            // X axis
-                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.moveTo(chartLeft, chartBottom); ctx.lineTo(chartRight, chartBottom); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(chartLeft, chartTop); ctx.lineTo(chartLeft, chartBottom); ctx.stroke();
-                            ctx.fillStyle = viz.colors.text; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            for (var ri = 0; ri <= rMax; ri++) {
-                                var sx = toScreenX(ri);
-                                ctx.fillText(ri.toFixed(0), sx, chartBottom + 4);
-                            }
-
-                            // Draw functions
-                            var fns = [
-                                { fn: Mz3, color: viz.colors.teal, label: 'r\u00b3 (order 0)' },
-                                { fn: Mexp, color: viz.colors.blue, label: 'e^r (order 1)' },
-                                { fn: Mexp2, color: viz.colors.orange, label: 'e^(r\u00b2) (order 2)' }
-                            ];
-
-                            fns.forEach(function(item) {
-                                ctx.strokeStyle = item.color; ctx.lineWidth = 2;
-                                ctx.beginPath();
-                                var started = false;
-                                for (var i = 0; i <= steps; i++) {
-                                    var r = (rMax * i) / steps;
-                                    var y = item.fn(r);
-                                    if (!isFinite(y) || y < 0.5) { started = false; continue; }
-                                    var sx = toScreenX(r);
-                                    var sy = toScreenY(y);
-                                    if (sy < chartTop - 5) { started = false; continue; }
-                                    if (!started) { ctx.moveTo(sx, sy); started = true; }
-                                    else { ctx.lineTo(sx, sy); }
-                                }
-                                ctx.stroke();
-                            });
-
-                            // Legend
-                            var legX = chartLeft + 10, legY = chartTop + 10;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            fns.forEach(function(item, i) {
-                                ctx.strokeStyle = item.color; ctx.lineWidth = 2;
-                                ctx.beginPath(); ctx.moveTo(legX, legY + i * 20 + 5); ctx.lineTo(legX + 22, legY + i * 20 + 5); ctx.stroke();
-                                ctx.fillStyle = item.color; ctx.textAlign = 'left';
-                                ctx.fillText(item.label, legX + 28, legY + i * 20 + 9);
-                            });
-
-                            viz.screenText('Maximum Modulus M(r) — log scale', pw / 2, 14, viz.colors.white, 13);
-                            viz.screenText('r', chartRight - 8, chartBottom + 4, viz.colors.text, 11);
-                        }
-
-                        draw();
-                        return viz;
-                    }
-                }
-            ],
-            exercises: [
-                {
-                    question: 'Compute the order of \\(f(z) = \\sum_{n=0}^\\infty z^n / n^n\\).',
-                    hint: 'Apply the power series formula \\(\\rho = \\limsup n\\log n / (-\\log|c_n|)\\) with \\(c_n = 1/n^n\\).',
-                    solution: '\\(-\\log|c_n| = n\\log n\\), so \\(\\rho = \\limsup_{n\\to\\infty} n\\log n / (n\\log n) = 1\\). The function has order \\(1\\).'
-                }
-            ]
-        },
-
-        // ================================================================
-        // SECTION 4: Hadamard Factorization
-        // ================================================================
-        {
-            id: 'sec-hadamard',
-            title: 'Hadamard Factorization',
-            content: `
-<h2>Hadamard Factorization Theorem</h2>
-
-<p>Hadamard sharpened Weierstrass: for entire functions of <em>finite order</em>, the factor \\(e^{g(z)}\\) is forced to be a polynomial, and the exponent \\(p_n\\) in the elementary factors is a fixed integer \\(p\\).</p>
-
-<div class="env-block definition">
-    <div class="env-title">Definition (Genus)</div>
-    <div class="env-body">
-        <p>An entire function has <strong>finite genus</strong> \\(\\mu\\) if there is an integer \\(p\\) such that \\(\\sum_n |a_n|^{-(p+1)} < \\infty\\) and the Weierstrass product uses \\(E_p\\) factors. The genus is \\(\\mu = \\max(p, \\deg g)\\).</p>
-    </div>
-</div>
-
-<div class="env-block theorem">
-    <div class="env-title">Hadamard Factorization Theorem</div>
-    <div class="env-body">
-        <p>Let \\(f\\) be an entire function of finite order \\(\\rho\\). Let \\(m\\) be the order of the zero at \\(0\\) and \\(\\{a_n\\}\\) the nonzero zeros. Then there exists a polynomial \\(g\\) with \\(\\deg g \\leq \\rho\\) and integer \\(p \\leq \\rho\\) such that
-        \\[
-        f(z) = z^m e^{g(z)} \\prod_{n=1}^\\infty E_p\\!\\bigl(z/a_n\\bigr).
-        \\]
-        The genus satisfies \\(\\mu \\leq \\rho \\leq \\mu + 1\\). In particular, \\(\\rho\\) is either an integer or half-integer (by a result of Borel).</p>
-    </div>
-</div>
-
-<p><em>Key steps of the proof.</em></p>
-<ol>
-    <li><strong>Growth controls zero density.</strong> Jensen's formula gives \\(n(r) \\leq C r^{\\rho+\\varepsilon}\\), so \\(\\sum |a_n|^{-(\\rho+\\varepsilon)} < \\infty\\). Thus \\(p = \\lfloor\\rho\\rfloor\\) works.</li>
-    <li><strong>The quotient is zero-free.</strong> After dividing by the Weierstrass product \\(h(z)\\), the quotient \\(f(z)/h(z)\\) is entire and zero-free, hence \\(e^{g(z)}\\) for some entire \\(g\\).</li>
-    <li><strong>\\(g\\) is a polynomial.</strong> One shows \\(|\\text{Re}\\, g(z)| \\leq C r^{\\rho+\\varepsilon}\\) on \\(|z| = r\\). A subharmonic function growing polynomially must be a polynomial.</li>
-</ol>
-
-<div class="env-block example">
-    <div class="env-title">\\(\\sin(\\pi z)\\) revisited</div>
-    <div class="env-body">
-        <p>\\(\\sin(\\pi z)\\) has order \\(1\\). Zeros at \\(\\mathbb{Z}\\), all with \\(|a_n| = |n|\\). Since \\(\\sum 1/n^2 < \\infty\\), we use \\(p = 1\\). Hadamard gives
-        \\[
-        \\sin(\\pi z) = z e^{Az+B} \\prod_{n \\neq 0} E_1(z/n)
-        = \\pi z \\prod_{n=1}^\\infty \\bigl(1 - z^2/n^2\\bigr).
-        \\]
-        From asymptotics one deduces \\(A = 0\\), \\(e^B = \\pi\\).</p>
-    </div>
-</div>
-
-<h3>Corollary: Picard's Little Theorem (sketch)</h3>
-
-<p>If \\(f\\) is entire and omits two values, then Hadamard's theorem applied to \\(f - a\\) and \\(f - b\\) forces strong constraints on the genus that ultimately yield \\(f\\) constant. (The full proof uses the modular function.)</p>
-`,
-            visualizations: [
-                {
-                    id: 'viz-hadamard',
-                    title: 'Hadamard Product for sin(\\(\\pi z\\))',
-                    description: 'Animate the partial product \\(\\pi z \\prod_{n=1}^{N}(1 - z^2/n^2)\\) converging to \\(\\sin(\\pi z)\\) as N grows. Errors shown below.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, {
-                            width: 560, height: 380,
-                            originX: 280, originY: 190, scale: 45
-                        });
-
-                        var N = 1;
-                        var animating = false;
-
-                        VizEngine.createSlider(controls, 'N', 1, 15, 1, 1, function(v) {
-                            N = Math.round(v); draw();
-                        });
-                        VizEngine.createButton(controls, 'Animate', function() {
-                            if (animating) return;
-                            animating = true; N = 1;
-                            (function step() {
-                                draw();
-                                if (N < 15) { N++; setTimeout(step, 350); }
-                                else { animating = false; }
-                            })();
-                        });
-
-                        function partialHadamard(x, n) {
-                            var p = Math.PI * x;
-                            for (var k = 1; k <= n; k++) {
-                                p *= (1 - (x * x) / (k * k));
-                            }
-                            return p;
+                            return result;
                         }
 
                         function draw() {
                             viz.clear();
                             viz.drawGrid(1);
                             viz.drawAxes();
-
-                            var xMin = -4, xMax = 4, steps = 400;
-
-                            // sin(pi*x)
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.setLineDash([5, 3]);
-                            viz.ctx.beginPath();
-                            var started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = Math.sin(Math.PI * x);
-                                if (!isFinite(y)) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
-                            }
-                            viz.ctx.stroke();
-                            viz.ctx.setLineDash([]);
-
-                            // Partial Hadamard product
-                            viz.ctx.strokeStyle = viz.colors.orange;
-                            viz.ctx.lineWidth = 2;
-                            viz.ctx.beginPath();
-                            started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = partialHadamard(x, N);
-                                if (!isFinite(y) || Math.abs(y) > 4) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
-                            }
-                            viz.ctx.stroke();
-
-                            // Mark zeros included
-                            for (var k = 1; k <= N; k++) {
-                                viz.drawPoint(k, 0, viz.colors.teal, null, 4);
-                                viz.drawPoint(-k, 0, viz.colors.teal, null, 4);
-                            }
-
-                            // Max error label
-                            var maxErr = 0;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var err = Math.abs(Math.sin(Math.PI * x) - partialHadamard(x, N));
-                                if (isFinite(err)) maxErr = Math.max(maxErr, err);
-                            }
-
-                            viz.screenText('sin(\u03c0x) vs \u03c0x\u220f\u207F\u2081(1\u2212x\u00b2/n\u00b2), N=' + N, viz.width / 2, 16, viz.colors.white, 13);
-                            viz.screenText('max error: ' + maxErr.toFixed(4), viz.width / 2, viz.height - 14, viz.colors.orange, 12);
-
                             var ctx = viz.ctx;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 1.5;
-                            ctx.setLineDash([5, 3]);
-                            ctx.beginPath(); ctx.moveTo(viz.width - 175, 40); ctx.lineTo(viz.width - 150, 40); ctx.stroke();
-                            ctx.setLineDash([]);
-                            ctx.fillStyle = viz.colors.blue; ctx.textAlign = 'left';
-                            ctx.fillText('sin(\u03c0x)', viz.width - 145, 44);
-                            ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(viz.width - 175, 58); ctx.lineTo(viz.width - 150, 58); ctx.stroke();
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('partial product', viz.width - 145, 62);
-                        }
 
+                            // sin(pi*z) reference
+                            ctx.setLineDash([5, 4]);
+                            viz.drawFunction(function(x) { return Math.sin(Math.PI * x); }, -4.5, 4.5, viz.colors.orange, 1.5, 500);
+                            ctx.setLineDash([]);
+
+                            // Partial product
+                            viz.drawFunction(function(x) { return partialProduct(x, nTerms); }, -4.5, 4.5, viz.colors.blue, 2.5, 500);
+
+                            // Error plot at bottom
+                            var errH = 60, errBot = viz.height - 10, errTop = errBot - errH;
+                            ctx.fillStyle = viz.colors.bg;
+                            ctx.fillRect(0, errTop - 5, viz.width, errH + 15);
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 0.5;
+                            ctx.beginPath(); ctx.moveTo(30, errTop + errH / 2); ctx.lineTo(viz.width - 30, errTop + errH / 2); ctx.stroke();
+
+                            // Plot |error| in the error strip
+                            ctx.strokeStyle = viz.colors.red; ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            var started = false;
+                            var maxErr = 0;
+                            for (var i = 0; i <= 400; i++) {
+                                var x = -4 + 8 * i / 400;
+                                var err = Math.abs(Math.sin(Math.PI * x) - partialProduct(x, nTerms));
+                                if (err > maxErr) maxErr = err;
+                            }
+                            if (maxErr < 1e-10) maxErr = 1;
+                            for (var j = 0; j <= 400; j++) {
+                                var xx = -4 + 8 * j / 400;
+                                var e = Math.abs(Math.sin(Math.PI * xx) - partialProduct(xx, nTerms));
+                                var sx = 30 + (viz.width - 60) * j / 400;
+                                var sy = errTop + errH / 2 - (e / maxErr) * (errH / 2 - 2);
+                                if (!started) { ctx.moveTo(sx, sy); started = true; }
+                                else ctx.lineTo(sx, sy);
+                            }
+                            ctx.stroke();
+
+                            viz.screenText('|error|', 16, errTop + errH / 2, viz.colors.red, 9, 'left');
+                            viz.screenText('max |err| = ' + maxErr.toExponential(2), viz.width - 16, errTop + 8, viz.colors.red, 9, 'right');
+
+                            viz.screenText('N = ' + nTerms + ' factors, genus p = 1', viz.width / 2, 18, viz.colors.white, 13);
+                        }
                         draw();
                         return viz;
                     }
@@ -754,290 +678,260 @@ It follows that if \\(f\\) has order \\(\\rho\\), then \\(n(r) = O(r^{\\rho+\\va
             ],
             exercises: [
                 {
-                    question: 'What is the genus of \\(\\sin(\\pi z)\\)? Of \\(e^z \\sin(\\pi z)\\)? Justify.',
-                    hint: 'Genus depends on \\(p\\) (determined by convergence of \\(\\sum|a_n|^{-(p+1)}\\)) and \\(\\deg g\\).',
-                    solution: 'For \\(\\sin(\\pi z)\\): zeros at \\(n \\in \\mathbb{Z}\\), \\(\\sum 1/n^2 < \\infty\\) so \\(p=1\\), \\(g\\) is constant, genus \\(\\mu = 1\\). For \\(e^z\\sin(\\pi z)\\): same zeros, \\(g(z) = z\\) so \\(\\deg g = 1\\), genus \\(\\mu = 1\\).'
+                    question: 'Find the Hadamard factorization of \\(\\cos(\\pi z)\\).',
+                    hint: 'The order is 1. The zeros are at \\(z = (2n+1)/2\\). There is no zero at the origin. What is \\(Q(z)\\)?',
+                    solution: 'Order \\(\\rho = 1\\), zeros at \\(a_n = (2n+1)/2\\) for \\(n \\in \\mathbb{Z}\\), exponent of convergence \\(\\lambda = 1\\). By Hadamard: \\(\\cos(\\pi z) = e^{Q(z)} \\prod_{n=0}^{\\infty}(1 - 4z^2/(2n+1)^2)\\) with \\(\\deg Q \\leq 1\\). Since \\(\\cos(\\pi z)\\) is even, \\(Q(z)\\) must be constant. Setting \\(z = 0\\): \\(1 = e^{Q(0)} \\cdot 1\\), so \\(Q = 0\\). Thus \\(\\cos(\\pi z) = \\prod_{n=0}^{\\infty}(1 - 4z^2/(2n+1)^2)\\).'
+                },
+                {
+                    question: 'Prove that an entire function of order \\(\\rho < 1/2\\) with no zeros must be a constant.',
+                    hint: 'By Hadamard, \\(f(z) = e^{Q(z)}\\) with \\(\\deg Q \\leq \\lfloor \\rho \\rfloor = 0\\).',
+                    solution: 'Since \\(\\rho < 1/2 < 1\\), \\(\\lfloor \\rho \\rfloor = 0\\), so \\(Q\\) has degree 0, meaning \\(Q\\) is a constant. Then \\(f(z) = e^c\\), a constant. (Note: this argument fails at \\(\\rho = 1\\); \\(e^z\\) has order 1 and no zeros.)'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Meromorphic Functions
+        // SECTION 6: Meromorphic Functions
         // ================================================================
         {
             id: 'sec-meromorphic',
-            title: 'Meromorphic Functions',
+            title: 'Meromorphic Functions on C',
             content: `
-<h2>Meromorphic Functions in Depth</h2>
+<h2>Meromorphic Functions on \\(\\mathbb{C}\\)</h2>
 
-<h3>Global Structure</h3>
+<div class="env-block intuition">
+    <div class="env-title">Ratios and Beyond</div>
+    <div class="env-body">
+        <p>A meromorphic function on \\(\\mathbb{C}\\) is a ratio of two entire functions (with the denominator not identically zero). Alternatively, it is a function that is analytic everywhere except for isolated poles. Classic examples include \\(\\pi\\cot(\\pi z)\\) and the Gamma function \\(1/\\Gamma(z)\\). Both Weierstrass and Mittag-Leffler give us tools to construct and decompose these functions.</p>
+    </div>
+</div>
 
-<p>A meromorphic function on \\(\\mathbb{C}\\) is a ratio \\(f = g/h\\) of two entire functions. Conversely, any such ratio is meromorphic wherever \\(h \\neq 0\\). The poles of \\(f\\) are (a subset of) the zeros of \\(h\\).</p>
+<div class="env-block definition">
+    <div class="env-title">Definition (Meromorphic Function)</div>
+    <div class="env-body">
+        <p>A function \\(f\\) is <strong>meromorphic on \\(\\mathbb{C}\\)</strong> if it is holomorphic on \\(\\mathbb{C}\\) except for a set of isolated points \\(\\{a_n\\}\\) where \\(f\\) has poles. Equivalently, \\(f = g/h\\) where \\(g, h\\) are entire and \\(h \\not\\equiv 0\\).</p>
+    </div>
+</div>
 
-<p>The partial fraction expansion via Mittag-Leffler combined with the Weierstrass product gives the global decomposition. The two key examples are \\(\\pi\\cot(\\pi z)\\) and \\(\\Gamma(z)\\).</p>
+<h3>\\(\\pi\\cot(\\pi z)\\): A Complete Portrait</h3>
 
-<h3>The Cotangent and Its Partial Fractions</h3>
+<p>Combining Weierstrass and Mittag-Leffler gives a beautiful relationship. Taking the logarithmic derivative of the Weierstrass product for \\(\\sin(\\pi z)\\):</p>
 
-<p>From the Weierstrass product \\(\\sin(\\pi z) = \\pi z \\prod_{n=1}^\\infty (1-z^2/n^2)\\), taking the logarithmic derivative:
-\\[
-\\pi \\cot(\\pi z) = \\frac{1}{z} + \\sum_{n=1}^\\infty \\Bigl(\\frac{1}{z-n} + \\frac{1}{z+n}\\Bigr).
-\\]
-This is the Mittag-Leffler expansion: simple poles at all integers, all with residue \\(1\\).</p>
+\\[\\frac{d}{dz}\\log\\sin(\\pi z) = \\pi\\cot(\\pi z) = \\frac{\\pi\\cos(\\pi z)}{\\sin(\\pi z)}.\\]
 
-<p>Integrating from \\(0\\) to \\(z\\) yields:
-\\[
-\\log\\sin(\\pi z) = \\log(\\pi z) + \\sum_{n=1}^\\infty \\log\\Bigl(1 - \\frac{z^2}{n^2}\\Bigr),
-\\]
-recovering the Weierstrass product.</p>
+<p>The Weierstrass product \\(\\sin(\\pi z) = \\pi z\\prod_{n=1}^{\\infty}(1 - z^2/n^2)\\) gives</p>
+
+\\[\\pi\\cot(\\pi z) = \\frac{1}{z} + \\sum_{n=1}^{\\infty}\\left(\\frac{1}{z-n} + \\frac{1}{z+n}\\right) = \\frac{1}{z} + \\sum_{n=1}^{\\infty}\\frac{2z}{z^2 - n^2}.\\]
+
+<p>This is simultaneously a Mittag-Leffler expansion and the logarithmic derivative of a Weierstrass product, connecting the two fundamental theorems.</p>
 
 <h3>The Gamma Function</h3>
 
-<p>The Gamma function \\(\\Gamma(z)\\) is the unique meromorphic function satisfying:
-<ul>
-<li>\\(\\Gamma(z+1) = z\\,\\Gamma(z)\\)</li>
-<li>\\(\\Gamma(1) = 1\\)</li>
-<li>\\(\\log\\Gamma\\) is convex on \\((0,\\infty)\\) (Bohr-Mollerup)</li>
-</ul></p>
-
-<p>Its Weierstrass product representation:
-\\[
-\\frac{1}{\\Gamma(z)} = z e^{\\gamma z} \\prod_{n=1}^\\infty \\Bigl(1 + \\frac{z}{n}\\Bigr) e^{-z/n},
-\\]
-where \\(\\gamma = 0.5772\\ldots\\) is the Euler-Mascheroni constant. Thus \\(\\Gamma(z)\\) has simple poles at \\(z = 0, -1, -2, \\ldots\\) with
-\\[
-\\text{Res}_{z=-n} \\Gamma(z) = \\frac{(-1)^n}{n!}.
-\\]</p>
-
-<p>The Mittag-Leffler expansion for \\(1/\\Gamma\\) is entire (the poles cancel), while \\(\\Gamma\\) itself is meromorphic. The reflection formula ties \\(\\Gamma\\) to \\(\\sin\\):
-\\[
-\\Gamma(z)\\Gamma(1-z) = \\frac{\\pi}{\\sin(\\pi z)}.
-\\]</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Partial Fraction of \\(\\Gamma'/\\Gamma\\) (Digamma)</div>
+<div class="env-block definition">
+    <div class="env-title">Definition (Gamma Function via Weierstrass)</div>
     <div class="env-body">
-        <p>The digamma function \\(\\psi(z) = \\Gamma'(z)/\\Gamma(z)\\) satisfies
-        \\[
-        \\psi(z) = -\\gamma - \\frac{1}{z} + \\sum_{n=1}^\\infty \\Bigl(\\frac{1}{n} - \\frac{1}{z+n}\\Bigr).
-        \\]</p>
+        <p>The <strong>Gamma function</strong> can be defined via the Weierstrass product for \\(1/\\Gamma(z)\\):</p>
+        \\[\\frac{1}{\\Gamma(z)} = z e^{\\gamma z} \\prod_{n=1}^{\\infty}\\left(1 + \\frac{z}{n}\\right)e^{-z/n},\\]
+        <p>where \\(\\gamma = \\lim_{n \\to \\infty}(1 + 1/2 + \\cdots + 1/n - \\log n) \\approx 0.5772\\) is the Euler-Mascheroni constant.</p>
+        <p>Thus \\(1/\\Gamma(z)\\) is entire of order 1, with simple zeros at \\(z = 0, -1, -2, \\ldots\\), and \\(\\Gamma(z)\\) is meromorphic with simple poles at \\(z = 0, -1, -2, \\ldots\\).</p>
     </div>
 </div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 17.5 (Euler's Reflection Formula)</div>
+    <div class="env-body">
+        <p>For all \\(z \\notin \\mathbb{Z}\\):</p>
+        \\[\\Gamma(z)\\Gamma(1-z) = \\frac{\\pi}{\\sin(\\pi z)}.\\]
+        <p>This follows directly from comparing the Weierstrass products of \\(1/\\Gamma(z)\\), \\(1/\\Gamma(1-z)\\), and \\(\\sin(\\pi z)\\).</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-gamma-function"></div>
+<div class="viz-placeholder" data-viz="viz-pi-cot"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-gamma-function',
-                    title: 'Domain Coloring of \\(\\Gamma(z)\\)',
-                    description: 'Domain coloring reveals the poles of Gamma at 0, -1, -2, ... (bright singularities) and the function behavior in the right half-plane.',
+                    title: 'The Gamma Function: Domain Coloring',
+                    description: 'Domain coloring of the Gamma function on the complex plane. The hue encodes the argument of Gamma(z), and brightness encodes the modulus. Poles at 0, -1, -2, ... appear as bright spots with all colors swirling around them.',
                     setup: function(body, controls) {
                         var viz = new VizEngine(body, {
-                            width: 560, height: 420,
-                            originX: 280, originY: 210, scale: 55
+                            width: 560, height: 380,
+                            originX: 350, originY: 190, scale: 50
                         });
 
-                        // Lanczos approximation for Gamma(z), z = (re, im)
+                        // Lanczos approximation for Gamma
                         function gammaComplex(re, im) {
-                            // Reflection formula for re < 0.5
+                            // Reflection for Re(z) < 0.5
                             if (re < 0.5) {
-                                // Gamma(z)*Gamma(1-z) = pi/sin(pi*z)
-                                var zr = 1 - re, zi = -im;
-                                var gr = gammaLanczos(zr, zi);
-                                // sin(pi*z) = sin(pi*re)*cosh(pi*im) + i*cos(pi*re)*sinh(pi*im)
-                                var sinr = Math.sin(Math.PI * re) * Math.cosh(Math.PI * im);
-                                var sini = Math.cos(Math.PI * re) * Math.sinh(Math.PI * im);
-                                var denom = sinr * sinr + sini * sini;
-                                if (denom < 1e-30) return [1e8, 0];
-                                // pi / sin(pi*z)
-                                var qr = Math.PI * sinr / denom;
-                                var qi = -Math.PI * sini / denom;
-                                // Gamma(z) = pi/(sin(pi*z)*Gamma(1-z)) = q / Gamma(1-z)
-                                var d2 = gr[0]*gr[0] + gr[1]*gr[1];
-                                if (d2 < 1e-30) return [1e8, 0];
-                                return [(qr*gr[0] + qi*gr[1])/d2, (qi*gr[0] - qr*gr[1])/d2];
+                                // Gamma(z) = pi / (sin(pi*z) * Gamma(1-z))
+                                var gr = gammaComplex(1 - re, -im);
+                                // sin(pi*z)
+                                var sinRe = Math.sin(Math.PI * re) * Math.cosh(Math.PI * im);
+                                var sinIm = Math.cos(Math.PI * re) * Math.sinh(Math.PI * im);
+                                // pi / (sin * gamma(1-z))
+                                // complex division: pi / (sin * gr)
+                                var pRe = sinRe * gr[0] - sinIm * gr[1];
+                                var pIm = sinRe * gr[1] + sinIm * gr[0];
+                                var denom = pRe * pRe + pIm * pIm;
+                                if (denom < 1e-30) return [1e10, 0];
+                                return [Math.PI * pRe / denom, -Math.PI * pIm / denom];
                             }
-                            return gammaLanczos(re, im);
-                        }
 
-                        function gammaLanczos(re, im) {
-                            // Lanczos g=7 coefficients
+                            // Lanczos coefficients (g=7)
                             var g = 7;
                             var c = [0.99999999999980993, 676.5203681218851, -1259.1392167224028,
                                      771.32342877765313, -176.61502916214059, 12.507343278686905,
                                      -0.13857109526572012, 9.9843695780195716e-6, 1.5056327351493116e-7];
 
-                            // z -> z-1 for Lanczos
                             var zr = re - 1, zi = im;
-
                             var xr = c[0], xi = 0;
-                            for (var i = 1; i < g + 2; i++) {
+                            for (var i = 1; i < 9; i++) {
                                 var dr = zr + i, di = zi;
-                                var d2 = dr*dr + di*di;
-                                if (d2 < 1e-30) { xr += 1e8; continue; }
+                                var d2 = dr * dr + di * di;
+                                if (d2 < 1e-30) d2 = 1e-30;
                                 xr += c[i] * dr / d2;
-                                xi -= c[i] * di / d2;
+                                xi += -c[i] * di / d2;
                             }
 
-                            // t = z + g - 0.5
-                            var tr = zr + g - 0.5, ti = zi;
+                            var tr = zr + g + 0.5, ti = zi;
+                            // (t)^(z+0.5) * exp(-t) * x * sqrt(2*pi)
+                            // log(t) = log|t| + i*arg(t)
+                            var logMagT = 0.5 * Math.log(tr * tr + ti * ti);
+                            var argT = Math.atan2(ti, tr);
 
-                            // sqrt(2*pi) * t^(z+0.5) * exp(-t) * x
-                            var sqrt2pi = Math.sqrt(2 * Math.PI);
+                            // (z+0.5)*log(t)
+                            var pr = (zr + 0.5) * logMagT - zi * argT;
+                            var pi2 = (zr + 0.5) * argT + zi * logMagT;
 
-                            // t^(z+0.5): exp((z+0.5)*log(t))
-                            var logtMag = 0.5 * Math.log(tr*tr + ti*ti);
-                            var logtArg = Math.atan2(ti, tr);
-                            var expRe = zr + 0.5, expIm = zi;
-                            var logpowRe = expRe * logtMag - expIm * logtArg;
-                            var logpowIm = expRe * logtArg + expIm * logtMag;
-                            var powMag = Math.exp(logpowRe);
-                            var tPowRe = powMag * Math.cos(logpowIm);
-                            var tPowIm = powMag * Math.sin(logpowIm);
+                            // subtract t
+                            pr -= tr;
+                            pi2 -= ti;
 
-                            // exp(-t)
-                            var expNegRe = Math.exp(-tr) * Math.cos(-ti);
-                            var expNegIm = Math.exp(-tr) * Math.sin(-ti);
+                            // exp(p) * x * sqrt(2pi)
+                            var expR = Math.exp(pr);
+                            var eRe = expR * Math.cos(pi2);
+                            var eIm = expR * Math.sin(pi2);
 
-                            // result = sqrt2pi * tPow * expNeg * x
-                            // tPow * expNeg
-                            var a1r = tPowRe*expNegRe - tPowIm*expNegIm;
-                            var a1i = tPowRe*expNegIm + tPowIm*expNegRe;
-                            // * x
-                            var a2r = a1r*xr - a1i*xi;
-                            var a2i = a1r*xi + a1i*xr;
-                            return [sqrt2pi * a2r, sqrt2pi * a2i];
+                            var sq2pi = Math.sqrt(2 * Math.PI);
+                            // multiply by x
+                            var rRe = eRe * xr - eIm * xi;
+                            var rIm = eRe * xi + eIm * xr;
+
+                            return [rRe * sq2pi, rIm * sq2pi];
                         }
 
-                        var xRange = [-4, 4];
-                        var yRange = [-3.8, 3.8];
-                        viz.drawDomainColoring(gammaComplex, xRange, yRange);
+                        function draw() {
+                            viz.drawDomainColoring(
+                                function(re, im) { return gammaComplex(re, im); },
+                                [-5.5, 3.5], [-3.5, 3.5]
+                            );
+                            var ctx = viz.ctx;
 
-                        // Axis lines overlay
-                        viz.ctx.strokeStyle = 'rgba(255,255,255,0.15)';
-                        viz.ctx.lineWidth = 1;
-                        viz.ctx.beginPath();
-                        viz.ctx.moveTo(viz.originX, 0); viz.ctx.lineTo(viz.originX, viz.height); viz.ctx.stroke();
-                        viz.ctx.beginPath();
-                        viz.ctx.moveTo(0, viz.originY); viz.ctx.lineTo(viz.width, viz.originY); viz.ctx.stroke();
+                            // Draw axes overlay
+                            ctx.strokeStyle = 'rgba(255,255,255,0.3)'; ctx.lineWidth = 1;
+                            var ox = viz.toScreen(0, 0)[0], oy = viz.toScreen(0, 0)[1];
+                            ctx.beginPath(); ctx.moveTo(0, oy); ctx.lineTo(viz.width, oy); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(ox, 0); ctx.lineTo(ox, viz.height); ctx.stroke();
 
-                        // Label poles
-                        var ctx = viz.ctx;
-                        ctx.font = '11px -apple-system,sans-serif';
-                        ctx.textAlign = 'center';
-                        for (var n = 0; n >= -3; n--) {
-                            var s = viz.toScreen(n, 0);
-                            ctx.strokeStyle = 'rgba(255,255,255,0.6)';
-                            ctx.lineWidth = 1;
-                            ctx.beginPath();
-                            ctx.arc(s[0], s[1], 5, 0, 2*Math.PI);
-                            ctx.stroke();
-                            ctx.fillStyle = 'rgba(255,255,255,0.7)';
-                            ctx.fillText(n === 0 ? '0' : n.toString(), s[0], s[1] - 12);
+                            // Mark poles
+                            for (var n = 0; n >= -5; n--) {
+                                var sp = viz.toScreen(n, 0);
+                                ctx.strokeStyle = 'rgba(255,255,255,0.7)'; ctx.lineWidth = 1.5;
+                                ctx.beginPath();
+                                ctx.moveTo(sp[0] - 5, sp[1] - 5); ctx.lineTo(sp[0] + 5, sp[1] + 5); ctx.stroke();
+                                ctx.beginPath();
+                                ctx.moveTo(sp[0] + 5, sp[1] - 5); ctx.lineTo(sp[0] - 5, sp[1] + 5); ctx.stroke();
+                            }
+
+                            viz.screenText('\u0393(z) Domain Coloring', viz.width / 2, 16, '#ffffffcc', 14);
+                            viz.screenText('Poles at z = 0, -1, -2, ...', viz.width / 2, viz.height - 12, '#ffffffaa', 11);
                         }
-
-                        viz.screenText('\u0393(z) — domain coloring (poles at 0,\u22121,\u22122,...)', viz.width / 2, 16, '#ffffffcc', 13);
-                        viz.screenText('hue = arg, brightness = |f|', viz.width / 2, viz.height - 12, '#88888899', 11);
-
+                        draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-pi-cot',
-                    title: 'Partial Fraction Convergence of \\(\\pi\\cot(\\pi z)\\)',
-                    description: 'Add terms 1/(z-n) + 1/(z+n) one by one and watch convergence to pi*cot(pi*z) on the real axis.',
+                    title: '\u03C0 cot(\u03C0z): Partial Fraction Convergence',
+                    description: 'The domain coloring of pi*cot(pi*z) compared with its partial fraction approximation. Slide N to see how many pole-pairs are included.',
                     setup: function(body, controls) {
                         var viz = new VizEngine(body, {
-                            width: 560, height: 360,
-                            originX: 280, originY: 180, scale: 40
+                            width: 560, height: 380,
+                            originX: 280, originY: 190, scale: 40
                         });
 
-                        var N = 1;
-                        var animating = false;
+                        var nTerms = 5;
+                        var showExact = true;
 
-                        VizEngine.createSlider(controls, 'N', 1, 12, 1, 1, function(v) {
-                            N = Math.round(v); draw();
-                        });
-                        VizEngine.createButton(controls, 'Animate', function() {
-                            if (animating) return;
-                            animating = true; N = 1;
-                            (function step() {
-                                draw();
-                                if (N < 12) { N++; setTimeout(step, 400); }
-                                else animating = false;
-                            })();
+                        VizEngine.createSlider(controls, 'N poles', 1, 20, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
                         });
 
-                        function partialCotReal(x, n) {
-                            // 1/x + sum_{k=1}^{n} (1/(x-k) + 1/(x+k))
-                            if (Math.abs(x) < 1e-8) return 1e10;
-                            var s = 1 / x;
-                            for (var k = 1; k <= n; k++) {
-                                var d1 = x - k, d2 = x + k;
-                                if (Math.abs(d1) < 1e-8 || Math.abs(d2) < 1e-8) return 1e10;
-                                s += 1/d1 + 1/d2;
-                            }
-                            return s;
-                        }
-
-                        function piCotReal(x) {
-                            if (Math.abs(x - Math.round(x)) < 1e-8) return 1e10;
-                            return Math.PI / Math.tan(Math.PI * x);
-                        }
+                        VizEngine.createButton(controls, 'Toggle Exact/Approx', function() {
+                            showExact = !showExact;
+                            draw();
+                        });
 
                         function draw() {
-                            viz.clear();
-                            viz.drawGrid(1);
-                            viz.drawAxes();
-
-                            var xMin = -4, xMax = 4, steps = 600;
-                            var yClip = 6;
-
-                            // True pi*cot
-                            viz.ctx.strokeStyle = viz.colors.blue;
-                            viz.ctx.lineWidth = 1.5;
-                            viz.ctx.setLineDash([5, 3]);
-                            viz.ctx.beginPath();
-                            var started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = piCotReal(x);
-                                if (!isFinite(y) || Math.abs(y) > yClip) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
+                            if (showExact) {
+                                // Domain coloring of pi*cot(pi*z)
+                                viz.drawDomainColoring(function(re, im) {
+                                    // pi*cot(pi*z) = pi*cos(pi*z)/sin(pi*z)
+                                    var sinRe = Math.sin(Math.PI * re) * Math.cosh(Math.PI * im);
+                                    var sinIm = Math.cos(Math.PI * re) * Math.sinh(Math.PI * im);
+                                    var cosRe = Math.cos(Math.PI * re) * Math.cosh(Math.PI * im);
+                                    var cosIm = -Math.sin(Math.PI * re) * Math.sinh(Math.PI * im);
+                                    var d2 = sinRe * sinRe + sinIm * sinIm;
+                                    if (d2 < 1e-20) return [1e6, 0];
+                                    var qr = (cosRe * sinRe + cosIm * sinIm) / d2;
+                                    var qi = (cosIm * sinRe - cosRe * sinIm) / d2;
+                                    return [Math.PI * qr, Math.PI * qi];
+                                }, [-6, 6], [-4, 4]);
+                                viz.screenText('\u03C0 cot(\u03C0z) - exact', viz.width / 2, 16, '#ffffffcc', 14);
+                            } else {
+                                // Domain coloring of partial fraction
+                                viz.drawDomainColoring(function(re, im) {
+                                    // 1/z + sum_{n=1}^{N} (1/(z-n) + 1/(z+n))
+                                    var d2 = re * re + im * im;
+                                    if (d2 < 1e-20) return [1e6, 0];
+                                    var sr = re / d2, si = -im / d2;
+                                    for (var n = 1; n <= nTerms; n++) {
+                                        // 1/(z-n)
+                                        var d1r = re - n, d1i = im;
+                                        var dd1 = d1r * d1r + d1i * d1i;
+                                        if (dd1 < 1e-20) return [1e6, 0];
+                                        sr += d1r / dd1;
+                                        si += -d1i / dd1;
+                                        // 1/(z+n)
+                                        var d2r = re + n, d2i = im;
+                                        var dd2 = d2r * d2r + d2i * d2i;
+                                        if (dd2 < 1e-20) return [1e6, 0];
+                                        sr += d2r / dd2;
+                                        si += -d2i / dd2;
+                                    }
+                                    return [sr, si];
+                                }, [-6, 6], [-4, 4]);
+                                viz.screenText('Partial fraction, N = ' + nTerms, viz.width / 2, 16, '#ffffffcc', 14);
                             }
-                            viz.ctx.stroke();
-                            viz.ctx.setLineDash([]);
 
-                            // Partial sum
-                            viz.ctx.strokeStyle = viz.colors.orange;
-                            viz.ctx.lineWidth = 2;
-                            viz.ctx.beginPath();
-                            started = false;
-                            for (var i = 0; i <= steps; i++) {
-                                var x = xMin + (xMax - xMin) * i / steps;
-                                var y = partialCotReal(x, N);
-                                if (!isFinite(y) || Math.abs(y) > yClip) { started = false; continue; }
-                                var s = viz.toScreen(x, y);
-                                if (!started) { viz.ctx.moveTo(s[0], s[1]); started = true; }
-                                else { viz.ctx.lineTo(s[0], s[1]); }
-                            }
-                            viz.ctx.stroke();
-
-                            viz.screenText('\u03c0 cot(\u03c0x) — Mittag-Leffler partial sums, N=' + N, viz.width / 2, 16, viz.colors.white, 13);
-
+                            // Mark integer poles
                             var ctx = viz.ctx;
-                            ctx.font = '11px -apple-system,sans-serif';
-                            ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 1.5;
-                            ctx.setLineDash([5, 3]);
-                            ctx.beginPath(); ctx.moveTo(20, 40); ctx.lineTo(45, 40); ctx.stroke();
-                            ctx.setLineDash([]);
-                            ctx.fillStyle = viz.colors.blue; ctx.textAlign = 'left';
-                            ctx.fillText('\u03c0 cot(\u03c0x)', 50, 44);
-                            ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(20, 58); ctx.lineTo(45, 58); ctx.stroke();
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.fillText('1/x + \u03a3 (1/(x\u2212k)+1/(x+k))', 50, 62);
-                        }
+                            var limit = showExact ? 5 : nTerms;
+                            for (var k = -limit; k <= limit; k++) {
+                                var sp = viz.toScreen(k, 0);
+                                if (sp[0] > 10 && sp[0] < viz.width - 10) {
+                                    ctx.strokeStyle = 'rgba(255,255,255,0.5)'; ctx.lineWidth = 1;
+                                    ctx.beginPath();
+                                    ctx.arc(sp[0], sp[1], 4, 0, Math.PI * 2);
+                                    ctx.stroke();
+                                }
+                            }
 
+                            viz.screenText(showExact ? 'Click Toggle for partial fraction' : 'Click Toggle for exact function',
+                                viz.width / 2, viz.height - 12, '#ffffff88', 10);
+                        }
                         draw();
                         return viz;
                     }
@@ -1045,86 +939,91 @@ where \\(\\gamma = 0.5772\\ldots\\) is the Euler-Mascheroni constant. Thus \\(\\
             ],
             exercises: [
                 {
-                    question: 'Derive the Wallis product \\(\\frac{\\pi}{2} = \\prod_{n=1}^\\infty \\frac{4n^2}{4n^2-1}\\) from the Weierstrass product for \\(\\sin(\\pi z)\\).',
-                    hint: 'Evaluate the product at \\(z = 1/2\\) and simplify.',
-                    solution: 'Setting \\(z=1/2\\) in \\(\\sin(\\pi z)=\\pi z\\prod_{n=1}^\\infty(1-z^2/n^2)\\): \\(1 = \\frac{\\pi}{2}\\prod_{n=1}^\\infty(1-\\frac{1}{4n^2}) = \\frac{\\pi}{2}\\prod_{n=1}^\\infty\\frac{4n^2-1}{4n^2}\\). Inverting: \\(\\frac{\\pi}{2}=\\prod_{n=1}^\\infty\\frac{4n^2}{4n^2-1}\\).'
+                    question: 'Derive Euler\'s reflection formula \\(\\Gamma(z)\\Gamma(1-z) = \\pi/\\sin(\\pi z)\\) from the Weierstrass product definitions.',
+                    hint: 'Write the Weierstrass products for \\(1/\\Gamma(z)\\) and \\(1/\\Gamma(1-z)\\), multiply them, and compare with the Weierstrass product for \\(\\sin(\\pi z)/\\pi\\).',
+                    solution: '\\(\\frac{1}{\\Gamma(z)\\Gamma(1-z)} = z e^{\\gamma z}\\prod_{n=1}^{\\infty}(1+z/n)e^{-z/n} \\cdot (-z)e^{-\\gamma z} \\cdot \\prod_{n=1}^{\\infty}(1 - z/n + 1/n)e^{z/n - 1/n}\\cdots\\). After careful simplification using \\((1-z) \\to z\\) substitution and product cancellations, one obtains \\(1/(\\Gamma(z)\\Gamma(1-z)) = \\sin(\\pi z)/\\pi\\), giving the reflection formula.'
                 },
                 {
-                    question: 'Verify that \\(\\text{Res}_{z=-n}\\,\\Gamma(z) = (-1)^n/n!\\) for \\(n = 0, 1, 2, \\ldots\\)',
-                    hint: 'Use the functional equation \\(\\Gamma(z+1) = z\\Gamma(z)\\) repeatedly to reduce to \\(\\Gamma(z)\\) near \\(z=0\\), where \\(\\text{Res}_{z=0}\\Gamma(z) = 1\\).',
-                    solution: 'Near \\(z=-n\\), write \\(z = -n+\\varepsilon\\). Then \\(\\Gamma(z) = \\Gamma(\\varepsilon+1)/[z(z+1)\\cdots(z+n-1)] \\to \\Gamma(1)/[(-n)(-n+1)\\cdots(-1)\\varepsilon] = 1/((-1)^n n! \\varepsilon)\\). So \\(\\text{Res}=(-1)^n/n!\\). \\(\\square\\)'
+                    question: 'Show that \\(\\Gamma(z)\\) has no zeros in \\(\\mathbb{C}\\).',
+                    hint: 'Use the fact that \\(1/\\Gamma(z)\\) is entire. If \\(\\Gamma(z_0) = 0\\), what does that mean for \\(1/\\Gamma\\)?',
+                    solution: 'If \\(\\Gamma(z_0) = 0\\), then \\(1/\\Gamma(z_0) = \\infty\\), contradicting the fact that \\(1/\\Gamma\\) is entire (hence finite everywhere). Therefore \\(\\Gamma(z) \\neq 0\\) for all \\(z \\in \\mathbb{C}\\). (At \\(z = 0, -1, -2, \\ldots\\), \\(\\Gamma\\) has poles, not zeros; and \\(1/\\Gamma\\) has zeros there.)'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 6: Bridge
+        // SECTION 7: Bridge to Next Chapter
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Connections & Looking Ahead',
+            title: 'Looking Ahead',
             content: `
-<h2>Connections and Looking Ahead</h2>
+<h2>Looking Ahead: Analytic Continuation</h2>
 
-<h3>What We Have Built</h3>
-
-<p>This chapter answered three fundamental questions about entire and meromorphic functions:</p>
-
-<ol>
-    <li><strong>Zeros prescribed:</strong> Weierstrass products give existence and the role of elementary factors \\(E_p\\).</li>
-    <li><strong>Poles prescribed:</strong> Mittag-Leffler gives existence of meromorphic functions with any prescribed singularity structure.</li>
-    <li><strong>Zeros + growth tightly linked:</strong> Hadamard's theorem says finite order \\(\\rho\\) forces both the Weierstrass exponent \\(p \\leq \\rho\\) and the degree of the exponential factor \\(\\leq \\rho\\).</li>
-</ol>
-
-<h3>The Riemann Zeta Function</h3>
-
-<p>The completed zeta function \\(\\xi(s) = \\frac{1}{2}s(s-1)\\pi^{-s/2}\\Gamma(s/2)\\zeta(s)\\) is entire of order \\(1\\). Hadamard's theorem gives
-\\[
-\\xi(s) = e^{A+Bs} \\prod_\\rho \\Bigl(1 - \\frac{s}{\\rho}\\Bigr) e^{s/\\rho},
-\\]
-where the product is over nontrivial zeros \\(\\rho\\) of \\(\\zeta\\). The Riemann Hypothesis asserts all \\(\\rho\\) lie on the critical line \\(\\text{Re}(s) = 1/2\\).</p>
-
-<div class="env-block remark">
-    <div class="env-title">Prime Number Theorem</div>
+<div class="env-block intuition">
+    <div class="env-title">From Construction to Continuation</div>
     <div class="env-body">
-        <p>Hadamard and de la Vall&eacute;e-Poussin proved (1896) that \\(\\zeta(s) \\neq 0\\) on \\(\\text{Re}(s)=1\\). The Weierstrass product for \\(\\xi\\) then implies there are no zeros on the boundary of the critical strip, and the prime number theorem \\(\\pi(x) \\sim x/\\log x\\) follows by a Tauberian argument.</p>
+        <p>In this chapter, we built entire and meromorphic functions "from scratch": prescribing zeros (Weierstrass), prescribing poles (Mittag-Leffler), and constraining the result by growth (Hadamard). These are <em>constructive</em> theorems: given specifications, they produce functions.</p>
+        <p>The next chapter asks a different question: given a function defined on a small domain, can we <em>extend</em> it to a larger one? This is the theory of <strong>analytic continuation</strong>, and it leads to the Riemann surface viewpoint, multi-valued functions, and ultimately the Riemann zeta function.</p>
     </div>
 </div>
 
-<h3>Value Distribution Theory</h3>
+<h3>Key Ideas to Carry Forward</h3>
 
-<p>Picard's theorems (proved via the modular function or the Schwarz-Pick lemma) sharpen the growth picture:</p>
 <ul>
-    <li><strong>Little Picard:</strong> A non-constant entire function misses at most one value in \\(\\mathbb{C}\\).</li>
-    <li><strong>Great Picard:</strong> In any punctured neighborhood of an essential singularity, \\(f\\) takes every complex value (with at most one exception) infinitely often.</li>
+    <li><strong>The Weierstrass product for \\(\\Gamma\\)</strong> defines it on \\(\\mathbb{C}\\) minus the non-positive integers, but the functional equation \\(\\Gamma(z+1) = z\\Gamma(z)\\) can extend it. Analytic continuation makes this process systematic.</li>
+    <li><strong>The Riemann zeta function</strong> \\(\\zeta(s) = \\sum n^{-s}\\) converges only for \\(\\operatorname{Re}(s) > 1\\), but it has a meromorphic continuation to all of \\(\\mathbb{C}\\) (with a single pole at \\(s = 1\\)). Proving this uses the Gamma function and Mittag-Leffler ideas.</li>
+    <li><strong>Order of growth</strong> connects to the distribution of zeros of \\(\\zeta(s)\\) and other L-functions. The Hadamard product for \\(\\xi(s)\\) (the completed zeta function) is a central tool in analytic number theory.</li>
 </ul>
 
-<p>Nevanlinna theory (1920s) makes this quantitative: the characteristic function \\(T(r,f)\\) plays the role of \\(\\log M(r)\\), and the defect relation bounds how many values \\(f\\) can miss.</p>
+<h3>Summary of Main Results</h3>
 
-<h3>Looking Ahead: Analytic Continuation</h3>
+<div class="env-block definition">
+    <div class="env-title">Chapter 17 at a Glance</div>
+    <div class="env-body">
+        <table style="width:100%; border-collapse:collapse; margin:12px 0; font-size:0.9em;">
+            <tr style="border-bottom:2px solid var(--border-default);">
+                <th style="padding:8px; text-align:left;">Theorem</th>
+                <th style="padding:8px; text-align:left;">What it does</th>
+                <th style="padding:8px; text-align:left;">Key formula</th>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">Weierstrass</td>
+                <td style="padding:8px;">Prescribes zeros of an entire function</td>
+                <td style="padding:8px;">\\(f = z^m \\prod E_{p_n}(z/a_n)\\)</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">Mittag-Leffler</td>
+                <td style="padding:8px;">Prescribes poles of a meromorphic function</td>
+                <td style="padding:8px;">\\(f = \\sum [S_n(z) - P_n(z)]\\)</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+                <td style="padding:8px;">Hadamard</td>
+                <td style="padding:8px;">Factors finite-order entire functions</td>
+                <td style="padding:8px;">\\(f = z^m e^{Q(z)} \\prod E_p(z/a_n)\\)</td>
+            </tr>
+            <tr>
+                <td style="padding:8px;">Order & Genus</td>
+                <td style="padding:8px;">Connects growth to zero distribution</td>
+                <td style="padding:8px;">\\(\\lambda \\leq \\rho\\), \\(\\mu \\leq \\lfloor\\rho\\rfloor\\)</td>
+            </tr>
+        </table>
+    </div>
+</div>
 
-<p>Chapter 18 will use the Weierstrass and Mittag-Leffler frameworks to understand how entire and meromorphic functions extend across branch cuts. The Gamma function's functional equation \\(\\Gamma(z+1) = z\\Gamma(z)\\) and the zeta function's functional equation
-\\[\\zeta(s) = 2^s \\pi^{s-1} \\sin(\\tfrac{\\pi s}{2})\\Gamma(1-s)\\zeta(1-s)\\]
-are both forms of analytic continuation: they define the functions beyond their original domains using the identities proved here.</p>
-
-<div class="env-block intuition">
+<div class="env-block remark">
     <div class="env-title">The Big Picture</div>
     <div class="env-body">
-        <p>Entire functions are the analogue of polynomials in the world of analysis: they are globally defined, their zeros are their intrinsic data, and they factor accordingly. Meromorphic functions add controlled singularities, just as rational functions add poles to polynomials. The order \\(\\rho\\) is the analogue of degree, and Hadamard's theorem is the Fundamental Theorem of Algebra for entire functions of finite order.</p>
+        <p>The Weierstrass and Mittag-Leffler theorems are "existence" results: they show the algebra of meromorphic functions is rich enough to accommodate any prescribed zero/pole data. Hadamard's theorem adds "rigidity": finite growth constrains the factorization. Together, they form the foundation for much of modern complex analysis, from value distribution theory (Nevanlinna theory) to the study of L-functions in number theory.</p>
     </div>
 </div>
 `,
             visualizations: [],
             exercises: [
                 {
-                    question: 'Explain why an entire function of order \\(\\rho < 1\\) can have only finitely many zeros.',
-                    hint: 'Use Jensen\'s formula: \\(n(r) \\leq C r^\\rho\\). What happens to \\(\\sum 1/|a_n|^{\\rho+\\varepsilon}\\)?',
-                    solution: 'By Jensen, \\(n(r) = O(r^\\rho)\\). Integrating: \\(\\sum_{|a_n|\\leq r} \\log(r/|a_n|) = O(r^\\rho)\\). If \\(\\rho < 1\\), then \\(\\sum 1/|a_n| < \\infty\\) if there were infinitely many zeros, but the order formula implies \\(n(r)/r \\to 0\\), so actually the zeros cannot accumulate fast enough to be infinite. More precisely, \\(n(r)\\leq Cr^\\rho\\), and summing \\(\\sum_n 1/|a_n|^{1+\\varepsilon}\\) converges, but \\(\\sum_n 1/|a_n|\\) need not unless \\(\\rho < 1\\); for \\(\\rho < 1\\) the convergence exponent is \\(< 1\\), meaning \\(\\sum |a_n|^{-\\rho-\\varepsilon} < \\infty\\) for small \\(\\varepsilon > 0\\) with convergence exponent \\(\\leq \\rho < 1\\). Actually for \\(\\rho < 1/2\\) one can show only finitely many zeros; for \\(1/2 \\leq \\rho < 1\\) infinitely many zeros are possible (e.g., \\(\\cos\\sqrt{z}\\) has order \\(1/2\\) with zeros at \\(\\{(n+1/2)^2\\pi^2\\}\\)).'
-                },
-                {
-                    question: 'Show that \\(\\Gamma(z)\\Gamma(1-z) = \\pi/\\sin(\\pi z)\\) by comparing Weierstrass products.',
-                    hint: 'Write the products for \\(1/\\Gamma(z)\\) and \\(1/\\Gamma(1-z)\\), multiply, and compare with the product for \\(\\sin(\\pi z)/\\pi z\\).',
-                    solution: 'We have \\(1/\\Gamma(z) = ze^{\\gamma z}\\prod_{n=1}^\\infty(1+z/n)e^{-z/n}\\) and \\(1/\\Gamma(1-z) = (1-z)e^{-\\gamma z}\\prod_{n=1}^\\infty(1-(z-1)/n)e^{(z-1)/n}\\). Multiplying: \\(1/(\\Gamma(z)\\Gamma(1-z)) = z(1-z)\\prod_{n=1}^\\infty(1-z^2/n^2)\\) after cancellation. But \\(\\sin(\\pi z)/(\\pi z) = \\prod_{n=1}^\\infty(1-z^2/n^2)\\), so \\(1/(\\Gamma(z)\\Gamma(1-z)) = z(1-z)\\cdot\\sin(\\pi z)/(\\pi z) = (1-z)\\sin(\\pi z)/\\pi = \\sin(\\pi z)/\\pi\\) (using \\(\\sin(\\pi z)/\\pi z\\) at \\(z\\neq 0\\) then both sides agree). Inverting: \\(\\Gamma(z)\\Gamma(1-z) = \\pi/\\sin(\\pi z)\\).'
+                    question: 'Explain why the Weierstrass and Mittag-Leffler theorems can be viewed as "duals" of each other.',
+                    hint: 'One prescribes zeros (where the function vanishes), the other prescribes poles (where it blows up). Think about how logarithmic differentiation connects products and sums.',
+                    solution: 'Weierstrass constructs an entire function \\(f\\) with prescribed zeros via a product. Mittag-Leffler constructs a meromorphic function with prescribed poles via a sum. Logarithmic differentiation converts products to sums: if \\(f = \\prod E_p(z/a_n)\\), then \\(f\'/f = \\sum\\) (principal parts at the \\(a_n\\)). So the logarithmic derivative of a Weierstrass product is a Mittag-Leffler expansion. This is exactly what happens with \\(\\sin(\\pi z)\\) and \\(\\pi\\cot(\\pi z)\\).'
                 }
             ]
         }
