@@ -15,56 +15,36 @@ window.CHAPTERS.push({
 <h2>Why Power Series?</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">A Central Question</div>
+    <div class="env-title">The Central Question</div>
     <div class="env-body">
-        <p>You have encountered functions like \\(e^z\\), \\(\\sin z\\), and \\(\\cos z\\) defined by their real-line formulas. But what <em>is</em> \\(e^{2+3i}\\)? How do you evaluate a transcendental function at a complex argument? The answer lies in power series.</p>
-        <p>More strikingly: we will prove that a function is holomorphic if and only if it locally equals a convergent power series. This equivalence is one of the deepest theorems in all of analysis, with no real-variable analogue.</p>
+        <p>We know from calculus that many familiar functions, \\(e^x\\), \\(\\sin x\\), \\(\\cos x\\), can be expressed as infinite polynomials (power series). In complex analysis, something far more remarkable happens: <strong>every</strong> holomorphic function has a power series expansion around each point of its domain. Conversely, every convergent power series defines a holomorphic function. The two notions, "differentiable" and "expressible as a power series," are the same.</p>
     </div>
 </div>
 
-<p>A <strong>power series centered at \\(z_0\\)</strong> is a formal expression</p>
-
+<p>A <strong>power series</strong> centered at \\(z_0 \\in \\mathbb{C}\\) is a formal expression</p>
 \\[
-\\sum_{n=0}^{\\infty} a_n (z - z_0)^n = a_0 + a_1(z-z_0) + a_2(z-z_0)^2 + \\cdots
+f(z) = \\sum_{n=0}^{\\infty} a_n (z - z_0)^n = a_0 + a_1(z-z_0) + a_2(z-z_0)^2 + \\cdots
 \\]
+<p>where the coefficients \\(a_n \\in \\mathbb{C}\\). Without loss of generality we often take \\(z_0 = 0\\) (by translating coordinates), writing \\(\\sum a_n z^n\\).</p>
 
-<p>where \\(a_n \\in \\mathbb{C}\\) are the <em>coefficients</em>. For any fixed \\(z \\in \\mathbb{C}\\), this is a series of complex numbers, and the question is: for which \\(z\\) does it converge?</p>
+<h3>Why This Chapter Matters</h3>
 
-<h3>Why the Complex Setting Is Special</h3>
-
-<p>In real analysis, a function can be infinitely differentiable without being representable by a Taylor series. The classic example is</p>
-
-\\[f(x) = \\begin{cases} e^{-1/x^2} & x \\neq 0 \\\\ 0 & x = 0 \\end{cases}\\]
-
-<p>which has \\(f^{(n)}(0) = 0\\) for all \\(n\\), so its Taylor series at 0 converges to the zero function, not to \\(f\\).</p>
-
-<p>In complex analysis, no such pathology exists. Holomorphic means analytic: once a function has a complex derivative everywhere in a domain, it automatically has a convergent power series representation there. The Cauchy integral formula, which we derived in Chapter 6, will be the key that unlocks this equivalence.</p>
-
-<h3>Preview of the Chapter</h3>
-
+<p>Power series are the single most important computational and theoretical tool in complex analysis, for three reasons:</p>
 <ol>
-    <li><strong>Radius of Convergence</strong>: the Hadamard formula determines exactly where a power series converges.</li>
-    <li><strong>Taylor's Theorem</strong>: every holomorphic function is locally a power series.</li>
-    <li><strong>Analytic = Holomorphic</strong>: the great equivalence, proved via Cauchy's formula.</li>
-    <li><strong>Operations</strong>: add, multiply, compose, and differentiate power series term by term.</li>
-    <li><strong>Zeros</strong>: isolated zeros, orders, and the identity principle.</li>
+    <li><strong>Local representation.</strong> Every holomorphic function equals its Taylor series in a disk around each point. This lets us reduce analytic questions to algebraic manipulations of coefficients.</li>
+    <li><strong>The analytic-holomorphic equivalence.</strong> In real analysis, being infinitely differentiable (\\(C^\\infty\\)) does <em>not</em> guarantee a convergent Taylor series. In complex analysis it does. This is the deepest structural fact separating complex from real.</li>
+    <li><strong>Gateway to singularities.</strong> Understanding where a power series converges (and where it fails) leads directly to the classification of singularities and the Laurent series of Chapter 10.</li>
 </ol>
 
 <div class="env-block remark">
-    <div class="env-title">Historical Note</div>
+    <div class="env-title">A Real Cautionary Tale</div>
     <div class="env-body">
-        <p>Brook Taylor introduced his series in 1715, but the systematic complex-variable theory was developed by Cauchy (1820s) and Weierstrass (1840s–1880s). Weierstrass actually <em>defined</em> analytic functions via convergent power series, making analyticity the primary notion and holomorphicity a consequence. Today we take the holomorphic approach first and derive the series representation as a theorem.</p>
+        <p>The function \\(f(x) = e^{-1/x^2}\\) (with \\(f(0)=0\\)) is \\(C^\\infty\\) on \\(\\mathbb{R}\\), and all its derivatives at \\(x=0\\) are zero. Its Taylor series at the origin is the zero function, yet \\(f\\) is clearly not zero. In the complex plane, \\(f(z) = e^{-1/z^2}\\) has an essential singularity at \\(z=0\\), so no Taylor series exists there. The real and complex stories are consistent, but the complex viewpoint explains <em>why</em> the real Taylor series fails.</p>
     </div>
 </div>
 `,
             visualizations: [],
-            exercises: [
-                {
-                    question: 'Write out the first five terms of the power series for \\(e^z\\) centered at \\(z_0 = 0\\). For \\(z = i\\), use the series to compute \\(e^i\\) and verify that the imaginary part matches \\(\\sin(1)\\).',
-                    hint: 'The coefficients are \\(a_n = 1/n!\\). Group even- and odd-index terms separately to identify \\(\\cos(1)\\) and \\(\\sin(1)\\).',
-                    solution: '\\(e^z = 1 + z + z^2/2! + z^3/3! + z^4/4! + \\cdots\\). At \\(z = i\\): \\(i^0=1, i^1=i, i^2=-1, i^3=-i, i^4=1,\\ldots\\). So \\(e^i = (1 - 1/2! + 1/4! - \\cdots) + i(1 - 1/3! + 1/5! - \\cdots) = \\cos 1 + i\\sin 1\\). The imaginary part is \\(\\sin(1) \\approx 0.8415\\), confirming Euler\'s formula.'
-                }
-            ]
+            exercises: []
         },
 
         // ================================================================
@@ -76,65 +56,62 @@ window.CHAPTERS.push({
             content: `
 <h2>Radius of Convergence</h2>
 
-<p>Given \\(\\sum_{n=0}^\\infty a_n (z-z_0)^n\\), the set of \\(z\\) for which the series converges has a remarkably clean geometry: it is always a disk.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 9.1 (Cauchy–Hadamard)</div>
+<div class="env-block intuition">
+    <div class="env-title">The Key Idea</div>
     <div class="env-body">
-        <p>Define the <strong>radius of convergence</strong></p>
-        \\[R = \\frac{1}{\\limsup_{n\\to\\infty} |a_n|^{1/n}}\\]
-        <p>with the conventions \\(1/0 = \\infty\\) and \\(1/\\infty = 0\\). Then:</p>
-        <ul>
-            <li>The series converges absolutely for all \\(z\\) with \\(|z - z_0| < R\\).</li>
-            <li>The series diverges for all \\(z\\) with \\(|z - z_0| > R\\).</li>
-            <li>On the circle \\(|z - z_0| = R\\), convergence depends on the particular series.</li>
-        </ul>
+        <p>Every power series \\(\\sum a_n z^n\\) converges inside some disk \\(|z| < R\\) and diverges outside it. The boundary \\(|z| = R\\) is where anything can happen. The number \\(R\\) is determined entirely by the growth rate of the coefficients \\(a_n\\).</p>
     </div>
 </div>
 
-<p>The open disk \\(D(z_0, R) = \\{z : |z - z_0| < R\\}\\) is called the <strong>disk of convergence</strong>. Note: \\(R = 0\\) means the series converges only at \\(z_0\\); \\(R = \\infty\\) means it converges everywhere in \\(\\mathbb{C}\\).</p>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 9.1 (Hadamard's Formula)</div>
+    <div class="env-body">
+        <p>The <strong>radius of convergence</strong> of \\(\\sum_{n=0}^\\infty a_n z^n\\) is</p>
+        \\[
+        R = \\frac{1}{\\limsup_{n \\to \\infty} |a_n|^{1/n}}.
+        \\]
+        <p>The series converges absolutely for \\(|z| < R\\) and diverges for \\(|z| > R\\). (We set \\(R = \\infty\\) if the limsup is 0, and \\(R = 0\\) if it is \\(\\infty\\).)</p>
+    </div>
+</div>
 
-<h3>Proof Sketch</h3>
+<div class="env-block definition">
+    <div class="env-title">Definition (Disk of Convergence)</div>
+    <div class="env-body">
+        <p>The open disk \\(D(z_0, R) = \\{z \\in \\mathbb{C} : |z - z_0| < R\\}\\) is the <strong>disk of convergence</strong> of the power series \\(\\sum a_n (z-z_0)^n\\).</p>
+    </div>
+</div>
 
-<p>Set \\(L = \\limsup |a_n|^{1/n}\\). For \\(|z - z_0| = r < 1/L\\), choose \\(\\rho\\) with \\(rL < \\rho < 1\\). By definition of limsup, eventually \\(|a_n|^{1/n} < \\rho/r\\), so \\(|a_n| r^n < \\rho^n\\), and the series is dominated by the geometric series \\(\\sum \\rho^n\\). For \\(r > 1/L\\), infinitely many \\(n\\) have \\(|a_n|^{1/n} > 1/r\\), giving \\(|a_n(z-z_0)^n| > 1\\) infinitely often, so the series diverges. \\(\\square\\)</p>
+<h3>Proof Sketch of Hadamard's Formula</h3>
+
+<p>Set \\(\\alpha = \\limsup |a_n|^{1/n}\\). For \\(|z| < 1/\\alpha\\), choose \\(r\\) with \\(|z| < r < 1/\\alpha\\). Then \\(|a_n|^{1/n} < 1/r\\) for all large \\(n\\), so \\(|a_n z^n| < (|z|/r)^n\\). Since \\(|z|/r < 1\\), the series converges by comparison with a geometric series. For \\(|z| > 1/\\alpha\\), we get \\(|a_n z^n| > 1\\) for infinitely many \\(n\\), so the terms do not tend to zero and the series diverges.</p>
 
 <h3>The Ratio Test Alternative</h3>
 
-<p>When the limit exists, one can use</p>
-\\[R = \\lim_{n \\to \\infty} \\left|\\frac{a_n}{a_{n+1}}\\right|.\\]
-<p>This is the ratio test form, easier to apply when coefficients involve factorials.</p>
+<p>When the limit exists, the ratio test gives a more practical formula:</p>
+\\[
+R = \\lim_{n \\to \\infty} \\left|\\frac{a_n}{a_{n+1}}\\right|.
+\\]
 
 <div class="env-block example">
     <div class="env-title">Example: Geometric Series</div>
     <div class="env-body">
-        <p>\\(\\sum_{n=0}^\\infty z^n\\) has \\(a_n = 1\\), so \\(\\limsup |a_n|^{1/n} = 1\\), giving \\(R = 1\\). The series converges to \\(1/(1-z)\\) for \\(|z| < 1\\) and diverges for \\(|z| \\geq 1\\).</p>
+        <p>For \\(\\sum z^n\\), we have \\(a_n = 1\\), so \\(|a_n|^{1/n} = 1\\) and \\(R = 1\\). The series converges for \\(|z| < 1\\) to \\(\\frac{1}{1-z}\\).</p>
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example: Exponential</div>
+    <div class="env-title">Example: Exponential Series</div>
     <div class="env-body">
-        <p>\\(e^z = \\sum_{n=0}^\\infty z^n/n!\\) has \\(a_n = 1/n!\\). Then \\(|a_n|^{1/n} = (n!)^{-1/n} \\to 0\\) (since \\(n! \\to \\infty\\) faster than any exponential). So \\(R = \\infty\\): \\(e^z\\) converges everywhere.</p>
+        <p>For \\(e^z = \\sum \\frac{z^n}{n!}\\), we have \\(a_n = 1/n!\\), so \\(|a_n|^{1/n} = (n!)^{-1/n} \\to 0\\) by Stirling, giving \\(R = \\infty\\). The exponential function is entire (analytic on all of \\(\\mathbb{C}\\)).</p>
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example: Logarithm</div>
+    <div class="env-title">Example: \\(\\sum n! \\, z^n\\)</div>
     <div class="env-body">
-        <p>\\(\\log(1+z) = \\sum_{n=1}^\\infty (-1)^{n-1} z^n/n\\) has \\(a_n = (-1)^{n-1}/n\\). Then \\(|a_n|^{1/n} = n^{-1/n} \\to 1\\), giving \\(R = 1\\). The boundary circle \\(|z| = 1\\) contains both convergent points (like \\(z = 1\\), alternating harmonic series) and divergent points (like \\(z = -1\\), harmonic series).</p>
+        <p>Here \\(|a_n|^{1/n} = (n!)^{1/n} \\to \\infty\\), so \\(R = 0\\). This series converges only at \\(z = 0\\).</p>
     </div>
 </div>
-
-<h3>Uniform Convergence Inside the Disk</h3>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 9.2 (Uniform Convergence on Compact Subsets)</div>
-    <div class="env-body">
-        <p>A power series with radius of convergence \\(R > 0\\) converges uniformly on every compact subset of \\(D(z_0, R)\\). In particular, it converges uniformly on every closed disk \\(\\overline{D}(z_0, r)\\) with \\(r < R\\).</p>
-    </div>
-</div>
-
-<p>This uniform convergence is what allows term-by-term differentiation and integration inside the disk of convergence.</p>
 
 <div class="viz-placeholder" data-viz="viz-radius-convergence"></div>
 <div class="viz-placeholder" data-viz="viz-hadamard"></div>
@@ -142,210 +119,187 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-radius-convergence',
-                    title: 'Disk of Convergence',
-                    description: 'The series converges inside the disk (blue region), diverges outside (dark). Partial sums are shown for a sample point. Drag the point or adjust R to explore.',
+                    title: 'Convergence Disk of a Power Series',
+                    description: 'The power series \\(\\sum a_n z^n\\) converges inside the disk of radius \\(R\\) (green) and diverges outside (red). Points on the boundary can go either way. Drag the test point \\(z\\) to see whether partial sums converge or diverge. Choose different series with the buttons.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 80 });
+                        var viz = new VizEngine(body, { width: 560, height: 480, scale: 80 });
+                        var seriesType = 'geometric';
+                        var N = 30;
 
-                        var R = 1.5;
-                        var ptX = 1.0, ptY = 0.0;
-                        var Nterms = 8;
-
-                        VizEngine.createSlider(controls, 'R', 0.3, 3.0, R, 0.1, function(v) { R = v; draw(); });
-                        VizEngine.createSlider(controls, 'N terms', 1, 20, Nterms, 1, function(v) { Nterms = Math.round(v); draw(); });
-
-                        viz.addDraggable('pt', ptX, ptY, viz.colors.orange, 7, function(x, y) {
-                            ptX = x; ptY = y; draw();
-                        });
-
-                        // partial sum of geometric series sum z^n
-                        function partialSum(re, im, N) {
-                            var sumRe = 0, sumIm = 0;
-                            var zRe = 1, zIm = 0; // z^0 = 1
-                            for (var n = 0; n <= N; n++) {
-                                sumRe += zRe; sumIm += zIm;
-                                var newRe = zRe * re - zIm * im;
-                                var newIm = zRe * im + zIm * re;
-                                zRe = newRe; zIm = newIm;
-                            }
-                            return [sumRe, sumIm];
+                        function getCoeffs(type) {
+                            if (type === 'geometric') return { name: '1/(1-z)', R: 1, a: function(n) { return 1; } };
+                            if (type === 'log') return { name: 'Log(1+z)', R: 1, a: function(n) { return n === 0 ? 0 : Math.pow(-1, n+1) / n; } };
+                            if (type === 'exp') return { name: 'exp(z)', R: 12, a: function(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return 1 / f; } };
+                            return { name: 'sin(z)', R: 12, a: function(n) { if (n % 2 === 0) return 0; var f = 1; for (var i = 2; i <= n; i++) f *= i; return Math.pow(-1, (n-1)/2) / f; } };
                         }
-                        // exact sum 1/(1-z) for |z|<1
-                        function exactSum(re, im) {
-                            var dRe = 1 - re, dIm = -im;
-                            var d2 = dRe * dRe + dIm * dIm;
-                            if (d2 < 1e-10) return [Infinity, Infinity];
-                            return [dRe / d2, dIm / d2];
+
+                        var info = getCoeffs(seriesType);
+                        var zDrag = viz.addDraggable('z', 0.6, 0.4, viz.colors.blue);
+
+                        VizEngine.createButton(controls, '1/(1-z)', function() { seriesType = 'geometric'; info = getCoeffs(seriesType); draw(); });
+                        VizEngine.createButton(controls, 'Log(1+z)', function() { seriesType = 'log'; info = getCoeffs(seriesType); draw(); });
+                        VizEngine.createButton(controls, 'exp(z)', function() { seriesType = 'exp'; info = getCoeffs(seriesType); draw(); });
+                        VizEngine.createButton(controls, 'sin(z)', function() { seriesType = 'sin'; info = getCoeffs(seriesType); draw(); });
+
+                        function complexPow(re, im, n) {
+                            var r = Math.sqrt(re * re + im * im);
+                            var theta = Math.atan2(im, re);
+                            var rn = Math.pow(r, n);
+                            return [rn * Math.cos(n * theta), rn * Math.sin(n * theta)];
+                        }
+
+                        function partialSum(re, im, maxN) {
+                            var sr = 0, si = 0;
+                            for (var n = 0; n <= maxN; n++) {
+                                var an = info.a(n);
+                                var p = complexPow(re, im, n);
+                                sr += an * p[0];
+                                si += an * p[1];
+                                if (Math.abs(sr) > 1e8 || Math.abs(si) > 1e8) return [sr, si, false];
+                            }
+                            return [sr, si, true];
                         }
 
                         function draw() {
                             viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var R = info.R;
+                            var dispR = Math.min(R, 5);
+
                             // Draw convergence disk
-                            var ctx = viz.ctx;
-                            var [sx0, sy0] = viz.toScreen(0, 0);
-                            var rPx = R * viz.scale;
-                            ctx.beginPath();
-                            ctx.arc(sx0, sy0, rPx, 0, Math.PI * 2);
-                            ctx.fillStyle = viz.colors.blue + '22';
-                            ctx.fill();
-                            ctx.strokeStyle = viz.colors.blue;
-                            ctx.lineWidth = 2;
-                            ctx.setLineDash([6, 3]);
-                            ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            viz.drawGrid(); viz.drawAxes();
-
-                            // Label R
-                            viz.screenText('R = ' + R.toFixed(2), sx0 + rPx / 2, sy0 - 10, viz.colors.blue, 12);
-
-                            var dist = Math.sqrt(ptX * ptX + ptY * ptY);
-                            var inside = dist < R;
-
-                            // Partial sum display
-                            var [psRe, psIm] = partialSum(ptX, ptY, Nterms);
-                            var psStr = 'S_' + Nterms + ' = ' + psRe.toFixed(3) + (psIm >= 0 ? '+' : '') + psIm.toFixed(3) + 'i';
-
-                            if (inside && dist < 0.98) {
-                                var [exRe, exIm] = exactSum(ptX, ptY);
-                                var errRe = psRe - exRe, errIm = psIm - exIm;
-                                var err = Math.sqrt(errRe * errRe + errIm * errIm);
-                                viz.screenText(psStr, viz.width / 2, viz.height - 52, viz.colors.teal, 12);
-                                viz.screenText('Error |S_N - 1/(1-z)| = ' + err.toExponential(2), viz.width / 2, viz.height - 34, viz.colors.green, 12);
-                            } else if (inside) {
-                                viz.screenText(psStr + '  (z near singularity)', viz.width / 2, viz.height - 44, viz.colors.yellow, 12);
-                            } else {
-                                viz.screenText('Outside disk: series diverges   |z| = ' + dist.toFixed(3), viz.width / 2, viz.height - 44, viz.colors.red, 12);
+                            if (R < 10) {
+                                viz.drawCircle(0, 0, dispR, viz.colors.green + '15', viz.colors.green, 2);
                             }
 
-                            // Segment from origin to point
-                            viz.drawSegment(0, 0, ptX, ptY, viz.colors.orange, 1, true);
+                            // Labels
+                            var ctx = viz.ctx;
+                            viz.screenText('Series: ' + info.name, viz.width / 2, 18, viz.colors.white, 14);
+                            viz.screenText('R = ' + (R > 10 ? '∞' : R.toString()), viz.width / 2, 38, viz.colors.teal, 12);
 
-                            // Point label
-                            var col = inside ? viz.colors.teal : viz.colors.red;
-                            viz.screenText(inside ? 'CONVERGES' : 'DIVERGES', viz.width / 2, 22, col, 14);
-                            viz.screenText('|z| = ' + dist.toFixed(3), viz.width / 2, 40, viz.colors.text, 11);
+                            // Test point info
+                            var zx = zDrag.x, zy = zDrag.y;
+                            var r = Math.sqrt(zx * zx + zy * zy);
+                            var result = partialSum(zx, zy, N);
+                            var converged = result[2] && Math.abs(result[0]) < 1e6 && Math.abs(result[1]) < 1e6;
+
+                            // Draw line from origin to z
+                            viz.drawSegment(0, 0, zx, zy, viz.colors.blue + '66', 1, true);
+
+                            // Info panel
+                            var col = converged ? viz.colors.green : viz.colors.red;
+                            viz.screenText('z = ' + zx.toFixed(2) + ' + ' + zy.toFixed(2) + 'i', viz.width / 2, viz.height - 60, viz.colors.white, 12);
+                            viz.screenText('|z| = ' + r.toFixed(3), viz.width / 2, viz.height - 44, viz.colors.text, 11);
+                            if (converged) {
+                                viz.screenText('S_' + N + ' = ' + result[0].toFixed(4) + ' + ' + result[1].toFixed(4) + 'i', viz.width / 2, viz.height - 26, col, 12);
+                            } else {
+                                viz.screenText('DIVERGES', viz.width / 2, viz.height - 26, col, 13);
+                            }
 
                             viz.drawDraggables();
                         }
+
+                        zDrag.onDrag = function() { draw(); };
                         draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-hadamard',
-                    title: 'Hadamard Formula: Interactive Coefficient Calculator',
-                    description: 'Choose a series type and watch how \\(R = 1/\\limsup|a_n|^{1/n}\\) is computed from the coefficients. The plot shows \\(|a_n|^{1/n}\\) converging to \\(1/R\\).',
+                    title: 'Hadamard\'s Formula: \\(R = 1/\\limsup |a_n|^{1/n}\\)',
+                    description: 'Watch how \\(|a_n|^{1/n}\\) behaves as \\(n\\) grows. The limsup of this sequence determines the radius of convergence. Choose different series to see how coefficient decay rates control \\(R\\).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 320, originX: 60, originY: 270, scale: 1 });
-                        var ctx = viz.ctx;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 380,
+                            originX: 60, originY: 300, scale: 12
+                        });
 
-                        var seriesType = 0;
-                        var seriesNames = ['Geometric: a_n=1', 'Factorial: a_n=1/n!', 'Power: a_n=1/2^n', 'Logarithm: a_n=1/n', 'Mixed: a_n=n^n/n!'];
+                        var seriesType = 'geometric';
 
-                        function getCoeffs(type, N) {
-                            var arr = [];
-                            for (var n = 0; n < N; n++) {
-                                if (type === 0) arr.push(1);
-                                else if (type === 1) {
-                                    var f = 1; for (var k = 1; k <= n; k++) f *= k;
-                                    arr.push(1 / f);
-                                } else if (type === 2) arr.push(Math.pow(0.5, n));
-                                else if (type === 3) arr.push(n === 0 ? 1 : 1 / n);
-                                else {
-                                    // n^n/n! => limsup = e, R = 1/e
-                                    var f2 = 1; for (var k2 = 1; k2 <= n; k2++) f2 *= k2;
-                                    arr.push(n === 0 ? 1 : Math.pow(n, n) / f2);
-                                }
-                            }
-                            return arr;
+                        function getInfo(type) {
+                            if (type === 'geometric') return { name: 'Σ zⁿ (aₙ=1)', a: function(n) { return 1; }, R: 1 };
+                            if (type === 'log') return { name: 'Σ zⁿ/n', a: function(n) { return n === 0 ? 1 : 1/n; }, R: 1 };
+                            if (type === 'exp') return { name: 'Σ zⁿ/n!', a: function(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return 1/f; }, R: Infinity };
+                            return { name: 'Σ 2ⁿzⁿ', a: function(n) { return Math.pow(2, n); }, R: 0.5 };
                         }
 
-                        // Build select
-                        var sel = document.createElement('select');
-                        sel.style.cssText = 'background:#1a1a40;color:#c9d1d9;border:1px solid #30363d;border-radius:4px;padding:3px 8px;font-size:0.78rem;';
-                        seriesNames.forEach(function(nm, i) {
-                            var opt = document.createElement('option'); opt.value = i; opt.textContent = nm; sel.appendChild(opt);
-                        });
-                        sel.addEventListener('change', function() { seriesType = parseInt(sel.value); draw(); });
-                        controls.appendChild(sel);
+                        VizEngine.createButton(controls, 'aₙ = 1', function() { seriesType = 'geometric'; draw(); });
+                        VizEngine.createButton(controls, 'aₙ = 1/n', function() { seriesType = 'log'; draw(); });
+                        VizEngine.createButton(controls, 'aₙ = 1/n!', function() { seriesType = 'exp'; draw(); });
+                        VizEngine.createButton(controls, 'aₙ = 2ⁿ', function() { seriesType = 'pow2'; draw(); });
 
                         function draw() {
+                            var info = getInfo(seriesType);
                             viz.clear();
-                            var N = 30;
-                            var coeffs = getCoeffs(seriesType, N);
-                            var roots = coeffs.map(function(a, n) { return n === 0 ? Math.abs(a) : Math.pow(Math.abs(a), 1 / n); });
-                            var limsup = 0;
-                            for (var k = Math.floor(N * 0.5); k < N; k++) if (isFinite(roots[k])) limsup = Math.max(limsup, roots[k]);
-                            var R = limsup < 1e-10 ? Infinity : 1 / limsup;
+                            var ctx = viz.ctx;
 
-                            var chartW = viz.width - 80, chartH = 220;
-                            var maxVal = 0;
-                            for (var i = 1; i < N; i++) if (isFinite(roots[i])) maxVal = Math.max(maxVal, roots[i]);
-                            if (maxVal < 0.01) maxVal = 1;
-                            var yScale = (chartH - 20) / (maxVal * 1.15);
-                            var xStep = chartW / N;
-
-                            // Grid lines
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
-                            for (var g = 0; g <= 4; g++) {
-                                var yy = 270 - g * (chartH / 4);
-                                ctx.beginPath(); ctx.moveTo(60, yy); ctx.lineTo(viz.width - 20, yy); ctx.stroke();
-                                var val = (maxVal * g / 4).toFixed(2);
-                                ctx.fillStyle = viz.colors.text; ctx.font = '10px sans-serif';
-                                ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
-                                ctx.fillText(val, 55, yy);
-                            }
-
-                            // limsup line
-                            if (isFinite(limsup) && limsup > 0) {
-                                var lsY = 270 - limsup * yScale;
-                                ctx.strokeStyle = viz.colors.red; ctx.lineWidth = 1.5; ctx.setLineDash([6, 3]);
-                                ctx.beginPath(); ctx.moveTo(60, lsY); ctx.lineTo(viz.width - 20, lsY); ctx.stroke();
-                                ctx.setLineDash([]);
-                                ctx.fillStyle = viz.colors.red; ctx.font = '11px sans-serif'; ctx.textAlign = 'left';
-                                ctx.fillText('limsup = ' + limsup.toFixed(3) + ' = 1/R', viz.width - 180, lsY - 8);
-                            }
-
-                            // Plot |a_n|^{1/n}
-                            ctx.beginPath();
-                            var started = false;
-                            for (var i2 = 1; i2 < N; i2++) {
-                                if (!isFinite(roots[i2])) { started = false; continue; }
-                                var px2 = 60 + i2 * xStep;
-                                var py2 = 270 - roots[i2] * yScale;
-                                if (!started) { ctx.moveTo(px2, py2); started = true; }
-                                else ctx.lineTo(px2, py2);
-                            }
-                            ctx.strokeStyle = viz.colors.teal; ctx.lineWidth = 2;
-                            ctx.stroke();
-
-                            // Dots
-                            for (var i3 = 1; i3 < N; i3++) {
-                                if (!isFinite(roots[i3])) continue;
-                                var px3 = 60 + i3 * xStep;
-                                var py3 = 270 - roots[i3] * yScale;
-                                ctx.fillStyle = viz.colors.blue;
-                                ctx.beginPath(); ctx.arc(px3, py3, 3, 0, Math.PI * 2); ctx.fill();
-                            }
+                            // Draw axes manually (custom coordinate system)
+                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
+                            ctx.beginPath(); ctx.moveTo(60, 300); ctx.lineTo(540, 300); ctx.stroke();
+                            ctx.beginPath(); ctx.moveTo(60, 300); ctx.lineTo(60, 20); ctx.stroke();
 
                             // X-axis labels
-                            ctx.fillStyle = viz.colors.text; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            for (var lab = 0; lab <= 30; lab += 5) {
-                                ctx.fillText(lab, 60 + lab * xStep, 275);
+                            ctx.fillStyle = viz.colors.text; ctx.font = '10px -apple-system,sans-serif';
+                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                            for (var i = 0; i <= 40; i += 5) {
+                                var sx = 60 + i * 12;
+                                ctx.fillText(i.toString(), sx, 305);
+                                ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 0.5;
+                                ctx.beginPath(); ctx.moveTo(sx, 20); ctx.lineTo(sx, 300); ctx.stroke();
                             }
 
-                            // Axis labels
-                            ctx.fillStyle = viz.colors.text; ctx.font = '11px sans-serif';
-                            ctx.textAlign = 'center';
-                            ctx.fillText('n', viz.width / 2, 295);
-                            ctx.save(); ctx.translate(14, 160); ctx.rotate(-Math.PI / 2);
-                            ctx.fillText('|a\u2099|\u00B9\u141F\u207F', 0, 0); ctx.restore();
+                            // Compute and plot |a_n|^{1/n}
+                            var maxY = 0;
+                            var pts = [];
+                            for (var n = 1; n <= 40; n++) {
+                                var an = Math.abs(info.a(n));
+                                if (an === 0) { pts.push(null); continue; }
+                                var val = Math.pow(an, 1/n);
+                                if (val > 100) val = 100;
+                                pts.push(val);
+                                if (val > maxY) maxY = val;
+                            }
+                            if (maxY < 1) maxY = 2;
+                            maxY = Math.ceil(maxY * 1.2);
+                            var scaleY = 260 / maxY;
 
-                            // Title / result
-                            var Rstr = R === Infinity ? '\u221E' : R.toFixed(3);
-                            viz.screenText(seriesNames[seriesType] + '   R = ' + Rstr, viz.width / 2, 14, viz.colors.white, 13);
+                            // Y-axis labels
+                            ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+                            var yStep = maxY <= 3 ? 0.5 : (maxY <= 10 ? 1 : Math.ceil(maxY / 5));
+                            for (var yv = 0; yv <= maxY; yv += yStep) {
+                                var sy = 300 - yv * scaleY;
+                                ctx.fillStyle = viz.colors.text;
+                                ctx.fillText(yv.toFixed(yStep < 1 ? 1 : 0), 55, sy);
+                            }
+
+                            // Plot points
+                            for (var n = 0; n < pts.length; n++) {
+                                if (pts[n] === null) continue;
+                                var px = 60 + (n + 1) * 12;
+                                var py = 300 - pts[n] * scaleY;
+                                ctx.fillStyle = viz.colors.blue;
+                                ctx.beginPath(); ctx.arc(px, py, 3, 0, Math.PI * 2); ctx.fill();
+                            }
+
+                            // Draw limsup line
+                            var limsup = info.R === 0 ? maxY : (info.R === Infinity ? 0 : 1 / info.R);
+                            if (limsup < maxY && limsup >= 0) {
+                                var lsy = 300 - limsup * scaleY;
+                                ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 2; ctx.setLineDash([6, 4]);
+                                ctx.beginPath(); ctx.moveTo(60, lsy); ctx.lineTo(540, lsy); ctx.stroke();
+                                ctx.setLineDash([]);
+                                ctx.fillStyle = viz.colors.orange; ctx.font = '12px -apple-system,sans-serif';
+                                ctx.textAlign = 'left'; ctx.fillText('limsup = ' + limsup.toFixed(2), 400, lsy - 8);
+                            }
+
+                            // Title and info
+                            viz.screenText(info.name, viz.width / 2, 14, viz.colors.white, 14);
+                            viz.screenText('R = ' + (info.R === Infinity ? '∞' : info.R.toString()), viz.width / 2, 34, viz.colors.teal, 13);
+                            viz.screenText('|aₙ|^(1/n)', 30, 20, viz.colors.blue, 11, 'left');
+                            viz.screenText('n', 545, 310, viz.colors.text, 11);
                         }
+
                         draw();
                         return viz;
                     }
@@ -353,75 +307,76 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Find the radius of convergence of \\(\\sum_{n=0}^\\infty n! \\, z^n\\).',
-                    hint: 'Compute \\(\\limsup |a_n|^{1/n}\\) where \\(a_n = n!\\). Use Stirling: \\((n!)^{1/n} \\sim n/e \\to \\infty\\).',
-                    solution: 'Since \\((n!)^{1/n} \\to \\infty\\), we get \\(\\limsup |a_n|^{1/n} = \\infty\\), so \\(R = 0\\). The series converges only at \\(z = 0\\).'
+                    question: 'Find the radius of convergence of \\(\\sum_{n=0}^\\infty \\frac{z^n}{2^n}\\).',
+                    hint: 'Here \\(a_n = 1/2^n\\). Compute \\(|a_n|^{1/n}\\).',
+                    solution: '\\(|a_n|^{1/n} = (1/2^n)^{1/n} = 1/2\\), so \\(\\limsup |a_n|^{1/n} = 1/2\\) and \\(R = 1/(1/2) = 2\\).'
                 },
                 {
                     question: 'Find the radius of convergence of \\(\\sum_{n=1}^\\infty \\frac{z^n}{n^2}\\).',
-                    hint: 'Compute \\(|a_n|^{1/n} = (n^{-2})^{1/n} = n^{-2/n}\\). What does this tend to as \\(n \\to \\infty\\)?',
-                    solution: '\\(n^{-2/n} = e^{-(2/n)\\ln n} \\to e^0 = 1\\). So \\(R = 1\\). On \\(|z|=1\\), \\(|a_n z^n| = 1/n^2\\) and \\(\\sum 1/n^2 < \\infty\\), so the series converges absolutely on the entire boundary circle.'
+                    hint: 'Compute \\((1/n^2)^{1/n} = n^{-2/n} = e^{-2\\ln n / n}\\). What is the limit?',
+                    solution: '\\(|a_n|^{1/n} = n^{-2/n} = e^{-2\\ln n / n} \\to e^0 = 1\\) as \\(n \\to \\infty\\). So \\(R = 1/1 = 1\\). (Note: the series actually converges on all of \\(|z| = 1\\) since \\(\\sum 1/n^2\\) converges.)'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: Taylor's Theorem
+        // SECTION 3: Taylor Series
         // ================================================================
         {
             id: 'sec-taylor',
-            title: "Taylor's Theorem",
+            title: 'Taylor Series',
             content: `
-<h2>Taylor's Theorem</h2>
+<h2>Taylor Series of Holomorphic Functions</h2>
 
-<p>We now establish the central result connecting holomorphic functions to power series. The Cauchy integral formula from Chapter 6 is the engine that makes this work.</p>
+<div class="env-block intuition">
+    <div class="env-title">The Miracle of Complex Differentiability</div>
+    <div class="env-body">
+        <p>In real analysis, being differentiable once says very little about higher derivatives. In complex analysis, differentiability once implies differentiability infinitely many times, and guarantees a convergent Taylor expansion. This is the single most important theorem in the subject.</p>
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 9.3 (Taylor's Theorem for Holomorphic Functions)</div>
+    <div class="env-title">Theorem 9.2 (Taylor's Theorem for Holomorphic Functions)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be holomorphic in a domain \\(\\Omega\\) and let \\(z_0 \\in \\Omega\\). If \\(D(z_0, R) \\subset \\Omega\\), then for all \\(z \\in D(z_0, R)\\),</p>
-        \\[f(z) = \\sum_{n=0}^{\\infty} a_n (z - z_0)^n, \\quad a_n = \\frac{f^{(n)}(z_0)}{n!} = \\frac{1}{2\\pi i} \\oint_{|w-z_0|=r} \\frac{f(w)}{(w-z_0)^{n+1}}\\,dw\\]
-        <p>for any \\(r < R\\). The series converges absolutely and uniformly on compact subsets of \\(D(z_0, R)\\).</p>
+        <p>Let \\(f\\) be holomorphic in an open set \\(\\Omega\\), and let \\(D(z_0, R) \\subset \\Omega\\) be a disk centered at \\(z_0\\). Then</p>
+        \\[
+        f(z) = \\sum_{n=0}^{\\infty} a_n (z - z_0)^n \\quad \\text{for all } z \\in D(z_0, R),
+        \\]
+        <p>where the coefficients are given by</p>
+        \\[
+        a_n = \\frac{f^{(n)}(z_0)}{n!} = \\frac{1}{2\\pi i} \\oint_{\\gamma} \\frac{f(\\zeta)}{(\\zeta - z_0)^{n+1}} \\, d\\zeta.
+        \\]
+        <p>The series converges absolutely and uniformly on every closed subdisk \\(\\overline{D}(z_0, r)\\) with \\(r < R\\).</p>
     </div>
 </div>
 
-<h3>Proof via Cauchy's Formula</h3>
+<h3>Proof Idea</h3>
 
-<p>Fix \\(z\\) with \\(|z - z_0| < R\\) and choose \\(r\\) with \\(|z - z_0| < r < R\\). By Cauchy's integral formula,</p>
+<p>The proof uses Cauchy's integral formula. For \\(z \\in D(z_0, R)\\), take a circle \\(\\gamma\\) of radius \\(r\\) with \\(|z - z_0| < r < R\\). Then</p>
+\\[
+f(z) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(\\zeta)}{\\zeta - z} \\, d\\zeta.
+\\]
+<p>The key step is expanding the Cauchy kernel as a geometric series:</p>
+\\[
+\\frac{1}{\\zeta - z} = \\frac{1}{(\\zeta - z_0) - (z - z_0)} = \\frac{1}{\\zeta - z_0} \\cdot \\frac{1}{1 - \\frac{z-z_0}{\\zeta - z_0}} = \\sum_{n=0}^\\infty \\frac{(z - z_0)^n}{(\\zeta - z_0)^{n+1}}
+\\]
+<p>which converges because \\(|z - z_0| < |\\zeta - z_0| = r\\). Substituting back and interchanging sum and integral (justified by uniform convergence) gives the result.</p>
 
-\\[f(z) = \\frac{1}{2\\pi i} \\oint_{|w-z_0|=r} \\frac{f(w)}{w - z}\\,dw.\\]
+<h3>The Radius Equals Distance to Nearest Singularity</h3>
 
-<p>Factor out \\((w - z_0)\\) from the denominator:</p>
-
-\\[\\frac{1}{w-z} = \\frac{1}{(w-z_0) - (z-z_0)} = \\frac{1}{w-z_0} \\cdot \\frac{1}{1 - \\frac{z-z_0}{w-z_0}}.\\]
-
-<p>Setting \\(\\zeta = (z - z_0)/(w - z_0)\\), we have \\(|\\zeta| < 1\\) on the circle \\(|w - z_0| = r\\), so the geometric series converges:</p>
-
-\\[\\frac{1}{1 - \\zeta} = \\sum_{n=0}^{\\infty} \\zeta^n = \\sum_{n=0}^{\\infty} \\frac{(z-z_0)^n}{(w-z_0)^n}.\\]
-
-<p>Substituting back and integrating term by term (justified by uniform convergence on the circle):</p>
-
-\\[f(z) = \\sum_{n=0}^{\\infty} \\left(\\frac{1}{2\\pi i} \\oint \\frac{f(w)}{(w-z_0)^{n+1}}\\,dw\\right)(z-z_0)^n = \\sum_{n=0}^{\\infty} \\frac{f^{(n)}(z_0)}{n!}(z-z_0)^n. \\quad \\square\\]
-
-<h3>The Taylor Coefficients</h3>
-
-<p>Once we know \\(f(z) = \\sum a_n(z-z_0)^n\\) in a neighborhood, the coefficients are uniquely determined by</p>
-
-\\[a_n = \\frac{f^{(n)}(z_0)}{n!}.\\]
-
-<p>Moreover, the radius of convergence of the Taylor series is at least the distance from \\(z_0\\) to the nearest singularity of \\(f\\) in \\(\\mathbb{C} \\cup \\{\\infty\\}\\).</p>
-
-<div class="env-block example">
-    <div class="env-title">Example: \\(f(z) = 1/(1-z)\\) at \\(z_0 = 0\\)</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 9.3</div>
     <div class="env-body">
-        <p>\\(f^{(n)}(z) = n!/(1-z)^{n+1}\\), so \\(a_n = 1\\) for all \\(n\\). The nearest singularity is at \\(z = 1\\), distance 1 from \\(z_0 = 0\\), giving \\(R = 1\\). This recovers the geometric series.</p>
+        <p>The Taylor series of \\(f\\) centered at \\(z_0\\) converges in the largest disk \\(D(z_0, R)\\) contained in the domain of analyticity of \\(f\\). Equivalently, \\(R\\) equals the distance from \\(z_0\\) to the nearest singularity of \\(f\\).</p>
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example: \\(\\log(1+z)\\) at \\(z_0 = 0\\)</div>
+    <div class="env-title">Example: \\(f(z) = 1/(1+z^2)\\)</div>
     <div class="env-body">
-        <p>The principal branch of \\(\\log\\) is holomorphic on \\(\\mathbb{C} \\setminus (-\\infty, 0]\\). The nearest singularity to \\(z_0 = 0\\) is the branch point at \\(z = -1\\), distance 1. So \\(R = 1\\). Differentiating: \\((\\log(1+z))' = 1/(1+z) = \\sum (-1)^n z^n\\), and integrating term by term gives \\(\\log(1+z) = \\sum_{n=1}^\\infty (-1)^{n-1} z^n/n\\).</p>
+        <p>This function is holomorphic except at \\(z = \\pm i\\). Its Taylor series centered at \\(z_0 = 0\\) is</p>
+        \\[\\frac{1}{1+z^2} = \\sum_{n=0}^\\infty (-1)^n z^{2n} = 1 - z^2 + z^4 - z^6 + \\cdots\\]
+        <p>The radius of convergence is \\(R = 1\\), which is the distance from 0 to \\(\\pm i\\). A real analyst might find this puzzling (the real function \\(1/(1+x^2)\\) is perfectly smooth everywhere on \\(\\mathbb{R}\\)), but in \\(\\mathbb{C}\\) the singularities at \\(\\pm i\\) block convergence past \\(|z| = 1\\).</p>
     </div>
 </div>
 
@@ -430,102 +385,145 @@ window.CHAPTERS.push({
             visualizations: [
                 {
                     id: 'viz-taylor-approximation',
-                    title: "Taylor Polynomial Approximation (Domain Coloring)",
-                    description: 'Compare \\(f(z) = 1/(1-z)\\) (left) with its degree-\\(N\\) Taylor polynomial (right) via domain coloring. Inside the disk of convergence the colors match; outside they diverge.',
+                    title: 'Taylor Approximation via Domain Coloring',
+                    description: 'Compare the domain coloring of a function \\(f(z)\\) with its Taylor polynomial \\(T_n(z)\\). As \\(n\\) increases, the approximation matches \\(f\\) inside the disk of convergence. Outside, wild colors reveal divergence.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 310, scale: 60 });
-                        var N = 5;
-                        VizEngine.createSlider(controls, 'Degree N', 1, 20, N, 1, function(v) { N = Math.round(v); draw(); });
+                        // Create two canvases side by side
+                        var wrapper = document.createElement('div');
+                        wrapper.style.cssText = 'display:flex;gap:8px;justify-content:center;flex-wrap:wrap;';
+                        body.appendChild(wrapper);
 
-                        function cmul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
-                        function cadd(a, b) { return [a[0]+b[0], a[1]+b[1]]; }
+                        var leftDiv = document.createElement('div');
+                        var rightDiv = document.createElement('div');
+                        wrapper.appendChild(leftDiv);
+                        wrapper.appendChild(rightDiv);
 
-                        // f(z) = 1/(1-z)
-                        function fExact(re, im) {
-                            var dRe = 1-re, dIm = -im, d2 = dRe*dRe+dIm*dIm;
-                            if (d2 < 1e-10) return [1e6, 0];
-                            return [dRe/d2, dIm/d2];
-                        }
-                        // Taylor poly sum_{k=0}^N z^k
-                        function fTaylor(re, im, deg) {
-                            var sRe = 0, sIm = 0, zRe = 1, zIm = 0;
-                            for (var k = 0; k <= deg; k++) {
-                                sRe += zRe; sIm += zIm;
-                                var nr = zRe*re - zIm*im; zIm = zRe*im + zIm*re; zRe = nr;
-                            }
-                            return [sRe, sIm];
-                        }
+                        var vizL = new VizEngine(leftDiv, { width: 270, height: 270, scale: 40 });
+                        var vizR = new VizEngine(rightDiv, { width: 270, height: 270, scale: 40 });
 
-                        function drawHalf(offsetX, f, xRange, yRange) {
-                            var ctx = viz.ctx;
-                            var pw = Math.round(viz.width/2), ph = viz.canvas.height;
-                            var dpr = window.devicePixelRatio || 1;
-                            var imgW = pw * dpr, imgH = ph;
-                            ctx.save(); ctx.setTransform(1,0,0,1,0,0);
-                            var imgData = ctx.createImageData(imgW, imgH);
-                            var data = imgData.data;
-                            for (var py = 0; py < imgH; py++) {
-                                for (var px = 0; px < imgW; px++) {
-                                    var re = xRange[0] + (xRange[1]-xRange[0])*px/imgW;
-                                    var im = yRange[1] - (yRange[1]-yRange[0])*py/imgH;
-                                    var res = f(re, im);
-                                    var u = res[0], v = res[1];
-                                    var arg = Math.atan2(v, u);
-                                    var mag = Math.sqrt(u*u+v*v);
-                                    var hue = (arg/Math.PI+1)/2;
-                                    var light = 1 - 1/(1+mag*0.3);
-                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
-                                    var idx = (py*imgW+px)*4;
-                                    data[idx]=rgb[0]; data[idx+1]=rgb[1]; data[idx+2]=rgb[2]; data[idx+3]=255;
+                        var nTerms = 5;
+                        var funcType = 'exp';
+
+                        var slider = VizEngine.createSlider(controls, 'Terms n', 1, 20, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
+                        });
+
+                        VizEngine.createButton(controls, 'exp(z)', function() { funcType = 'exp'; draw(); });
+                        VizEngine.createButton(controls, '1/(1-z)', function() { funcType = 'geo'; draw(); });
+                        VizEngine.createButton(controls, 'sin(z)', function() { funcType = 'sin'; draw(); });
+                        VizEngine.createButton(controls, 'log(1+z)', function() { funcType = 'log'; draw(); });
+
+                        function factorial(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return f; }
+
+                        function getFunc(type) {
+                            if (type === 'exp') return {
+                                name: 'exp(z)',
+                                R: Infinity,
+                                f: function(re, im) {
+                                    var er = Math.exp(re);
+                                    return [er * Math.cos(im), er * Math.sin(im)];
+                                },
+                                coeff: function(n) { return 1 / factorial(n); }
+                            };
+                            if (type === 'geo') return {
+                                name: '1/(1-z)',
+                                R: 1,
+                                f: function(re, im) {
+                                    var dr = 1 - re, di = -im;
+                                    var d = dr * dr + di * di;
+                                    if (d < 1e-10) return [1e6, 0];
+                                    return [dr / d, di / d];
+                                },
+                                coeff: function(n) { return 1; }
+                            };
+                            if (type === 'sin') return {
+                                name: 'sin(z)',
+                                R: Infinity,
+                                f: function(re, im) {
+                                    return [Math.sin(re) * Math.cosh(im), Math.cos(re) * Math.sinh(im)];
+                                },
+                                coeff: function(n) {
+                                    if (n % 2 === 0) return 0;
+                                    return Math.pow(-1, (n - 1) / 2) / factorial(n);
                                 }
+                            };
+                            return {
+                                name: 'log(1+z)',
+                                R: 1,
+                                f: function(re, im) {
+                                    var u = 1 + re, v = im;
+                                    return [0.5 * Math.log(u * u + v * v), Math.atan2(v, u)];
+                                },
+                                coeff: function(n) {
+                                    if (n === 0) return 0;
+                                    return Math.pow(-1, n + 1) / n;
+                                }
+                            };
+                        }
+
+                        function complexMul(ar, ai, br, bi) { return [ar * br - ai * bi, ar * bi + ai * br]; }
+
+                        function taylorEval(re, im, coeffFn, N) {
+                            var sr = 0, si = 0;
+                            var pr = 1, pi = 0; // z^n
+                            for (var n = 0; n <= N; n++) {
+                                var c = coeffFn(n);
+                                sr += c * pr;
+                                si += c * pi;
+                                var next = complexMul(pr, pi, re, im);
+                                pr = next[0]; pi = next[1];
                             }
-                            ctx.putImageData(imgData, offsetX*dpr, 0);
-                            ctx.restore();
+                            return [sr, si];
                         }
 
                         function draw() {
-                            viz.clear();
-                            var xHalf = [-viz.width/2/viz.scale, viz.width/2/viz.scale];
-                            var yHalf = [-viz.height/2/viz.scale, viz.height/2/viz.scale];
+                            var info = getFunc(funcType);
+                            var range = info.R < 5 ? [-3, 3] : [-5, 5];
 
-                            drawHalf(0, fExact, xHalf, yHalf);
-                            var Ncap = N;
-                            drawHalf(viz.width/2, function(re,im){ return fTaylor(re,im,Ncap); }, xHalf, yHalf);
+                            vizL.drawDomainColoring(info.f, range, range);
+                            var ctxL = vizL.ctx;
+                            ctxL.fillStyle = '#000000aa';
+                            ctxL.fillRect(0, 0, 270, 22);
+                            vizL.screenText('f(z) = ' + info.name, 135, 12, vizL.colors.white, 12);
 
-                            // Divider
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = viz.colors.white; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.moveTo(viz.width/2,0); ctx.lineTo(viz.width/2,viz.height); ctx.stroke();
+                            vizR.drawDomainColoring(function(re, im) {
+                                return taylorEval(re, im, info.coeff, nTerms);
+                            }, range, range);
+                            var ctxR = vizR.ctx;
+                            ctxR.fillStyle = '#000000aa';
+                            ctxR.fillRect(0, 0, 270, 22);
+                            vizR.screenText('T_' + nTerms + '(z)', 135, 12, vizR.colors.white, 12);
 
-                            // Unit circle overlay on both halves
-                            ctx.strokeStyle = viz.colors.yellow; ctx.lineWidth = 1.5; ctx.setLineDash([5,3]);
-                            var cx1 = viz.width/4, cx2 = 3*viz.width/4, cy = viz.height/2;
-                            var rPx = viz.scale;
-                            ctx.beginPath(); ctx.arc(cx1, cy, rPx, 0, Math.PI*2); ctx.stroke();
-                            ctx.beginPath(); ctx.arc(cx2, cy, rPx, 0, Math.PI*2); ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            ctx.fillStyle = viz.colors.white; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
-                            ctx.fillText('f(z) = 1/(1\u2212z)', viz.width/4, 18);
-                            ctx.fillText('Taylor poly, deg ' + N, 3*viz.width/4, 18);
-                            ctx.fillStyle = viz.colors.yellow; ctx.font = '10px sans-serif';
-                            ctx.fillText('R=1', cx1+rPx+12, cy-5);
+                            // Draw convergence circle on Taylor side if finite R
+                            if (info.R < 10) {
+                                var cx = 135, cy = 135;
+                                var rPx = info.R / (range[1] - range[0]) * 270;
+                                ctxR.strokeStyle = '#ffffff66';
+                                ctxR.lineWidth = 1.5;
+                                ctxR.setLineDash([4, 4]);
+                                ctxR.beginPath();
+                                ctxR.arc(cx, cy, rPx, 0, Math.PI * 2);
+                                ctxR.stroke();
+                                ctxR.setLineDash([]);
+                            }
                         }
+
                         draw();
-                        return viz;
+                        return vizR;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Find the Taylor series of \\(f(z) = \\cos z\\) centered at \\(z_0 = 0\\) and determine its radius of convergence.',
-                    hint: 'Differentiate \\(f\\) repeatedly at 0. Note that \\(\\cos^{(2k)}(0) = (-1)^k\\) and odd derivatives are zero.',
-                    solution: '\\(\\cos z = \\sum_{k=0}^\\infty \\frac{(-1)^k}{(2k)!} z^{2k} = 1 - \\frac{z^2}{2!} + \\frac{z^4}{4!} - \\cdots\\). The coefficients \\(a_n = 1/(n!)\\) (for the \\(n\\)-th nonzero term index) give \\(\\limsup |a_{2k}|^{1/(2k)} = (1/(2k)!)^{1/(2k)} \\to 0\\), so \\(R = \\infty\\). Cosine is entire.'
+                    question: 'Find the Taylor series of \\(f(z) = \\frac{1}{1-z}\\) centered at \\(z_0 = i\\) and determine its radius of convergence.',
+                    hint: 'Write \\(\\frac{1}{1-z} = \\frac{1}{(1-i) - (z-i)}\\) and expand as a geometric series in \\(\\frac{z-i}{1-i}\\).',
+                    solution: '\\(\\frac{1}{1-z} = \\frac{1}{1-i} \\cdot \\frac{1}{1 - \\frac{z-i}{1-i}} = \\sum_{n=0}^\\infty \\frac{(z-i)^n}{(1-i)^{n+1}}\\). The radius of convergence is \\(R = |1-i| = \\sqrt{2}\\), which is the distance from \\(z_0 = i\\) to the singularity at \\(z = 1\\).'
                 },
                 {
-                    question: 'Find the Taylor series of \\(f(z) = z/(z^2 + 1)\\) centered at \\(z_0 = 0\\). What is the radius of convergence?',
-                    hint: 'Write \\(z/(z^2+1) = z \\cdot 1/(1-(-z^2))\\) and expand \\(1/(1-w)\\) with \\(w = -z^2\\). Identify the nearest singularities of \\(f\\).',
-                    solution: '\\(\\frac{z}{z^2+1} = z \\sum_{k=0}^\\infty (-1)^k z^{2k} = \\sum_{k=0}^\\infty (-1)^k z^{2k+1}\\) for \\(|z|<1\\). Singularities are at \\(z = \\pm i\\), distance 1 from 0. So \\(R = 1\\).'
+                    question: 'Show that the Taylor series of \\(f(z) = \\frac{1}{1+z^2}\\) centered at \\(z_0 = 0\\) has radius of convergence \\(R = 1\\), even though the real function \\(f(x) = 1/(1+x^2)\\) is smooth on all of \\(\\mathbb{R}\\).',
+                    hint: 'Where are the singularities of \\(1/(1+z^2)\\) in \\(\\mathbb{C}\\)?',
+                    solution: 'The function \\(1/(1+z^2) = 1/((z-i)(z+i))\\) has poles at \\(z = \\pm i\\). The distance from \\(z_0 = 0\\) to the nearest singularity is \\(|i| = 1\\), so \\(R = 1\\) by Theorem 9.3. The real smoothness is irrelevant; the complex singularities at \\(\\pm i\\) are invisible on \\(\\mathbb{R}\\) but limit the radius.'
                 }
             ]
         },
@@ -535,230 +533,287 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-analytic-holomorphic',
-            title: 'Analytic = Holomorphic',
+            title: 'Analytic ⇔ Holomorphic',
             content: `
-<h2>The Great Equivalence: Analytic = Holomorphic</h2>
+<h2>The Great Equivalence</h2>
 
-<p>This section delivers the central theorem of the chapter. In real analysis, there is a strict hierarchy:</p>
+<div class="env-block intuition">
+    <div class="env-title">Two Roads to the Same Place</div>
+    <div class="env-body">
+        <p>There are two natural ways to define "nice" complex functions:</p>
+        <ul>
+            <li><strong>Holomorphic:</strong> the complex derivative \\(f'(z_0) = \\lim_{z \\to z_0} \\frac{f(z) - f(z_0)}{z - z_0}\\) exists at every point.</li>
+            <li><strong>Analytic:</strong> \\(f\\) has a convergent power series representation around every point.</li>
+        </ul>
+        <p>That these are the same is perhaps the most important theorem in complex analysis. Nothing like it holds in the real case.</p>
+    </div>
+</div>
 
-\\[C^\\omega \\subsetneq C^\\infty \\subsetneq C^k \\subsetneq C^0\\]
-
-<p>where \\(C^\\omega\\) denotes real-analytic (convergent power series). Being \\(C^1\\) does not imply \\(C^2\\), much less \\(C^\\infty\\), and being \\(C^\\infty\\) does not imply \\(C^\\omega\\).</p>
-
-<p>In complex analysis, having one complex derivative is enough for everything:</p>
+<div class="env-block definition">
+    <div class="env-title">Definition (Analytic Function)</div>
+    <div class="env-body">
+        <p>A function \\(f: \\Omega \\to \\mathbb{C}\\) is <strong>analytic</strong> (or <strong>complex-analytic</strong>) on \\(\\Omega\\) if for every \\(z_0 \\in \\Omega\\), there exists \\(r > 0\\) and coefficients \\(\\{a_n\\}\\) such that</p>
+        \\[f(z) = \\sum_{n=0}^\\infty a_n (z - z_0)^n \\quad \\text{for } |z - z_0| < r.\\]
+    </div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 9.4 (Analytic = Holomorphic)</div>
+    <div class="env-title">Theorem 9.4 (Analytic \\(\\Leftrightarrow\\) Holomorphic)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be defined on a domain \\(\\Omega \\subset \\mathbb{C}\\). The following are equivalent:</p>
+        <p>Let \\(f: \\Omega \\to \\mathbb{C}\\) where \\(\\Omega\\) is open. The following are equivalent:</p>
         <ol>
-            <li>\\(f\\) is <strong>holomorphic</strong> on \\(\\Omega\\): \\(f'(z)\\) exists for every \\(z \\in \\Omega\\).</li>
-            <li>\\(f\\) is <strong>analytic</strong> on \\(\\Omega\\): every \\(z_0 \\in \\Omega\\) has a neighborhood \\(D(z_0, r)\\) on which \\(f\\) equals a convergent power series.</li>
-            <li>\\(f\\) is <strong>infinitely differentiable</strong>: \\(f \\in C^\\infty(\\Omega)\\) and all derivatives \\(f^{(n)}\\) are themselves holomorphic.</li>
+            <li>\\(f\\) is holomorphic on \\(\\Omega\\) (complex-differentiable at every point).</li>
+            <li>\\(f\\) is analytic on \\(\\Omega\\) (locally representable by convergent power series).</li>
         </ol>
     </div>
 </div>
 
-<h3>Proof of (1) \\(\\Rightarrow\\) (2)</h3>
+<h3>Proof Outline</h3>
 
-<p>This is Taylor's Theorem (Theorem 9.3), already proved. If \\(f\\) is holomorphic, Cauchy's formula gives the power series representation. \\(\\square\\)</p>
+<p><strong>(2) \\(\\Rightarrow\\) (1):</strong> This direction is elementary. A convergent power series can be differentiated term-by-term, so it is holomorphic inside its disk of convergence. Moreover, the derivative is also a power series with the same radius of convergence:</p>
+\\[
+f(z) = \\sum a_n z^n \\implies f'(z) = \\sum n a_n z^{n-1}.
+\\]
+<p>By induction, \\(f\\) is infinitely differentiable.</p>
 
-<h3>Proof of (2) \\(\\Rightarrow\\) (3)</h3>
+<p><strong>(1) \\(\\Rightarrow\\) (2):</strong> This is the deep direction, and it relies on Cauchy's integral formula (Chapter 6). If \\(f\\) is holomorphic, Cauchy gives</p>
+\\[
+f^{(n)}(z_0) = \\frac{n!}{2\\pi i} \\oint_\\gamma \\frac{f(\\zeta)}{(\\zeta - z_0)^{n+1}} d\\zeta,
+\\]
+<p>from which we obtain the Taylor coefficients \\(a_n = f^{(n)}(z_0)/n!\\). The convergence of the resulting series follows from the geometric series expansion of the Cauchy kernel.</p>
 
-<p>If \\(f(z) = \\sum a_n (z-z_0)^n\\) converges in \\(D(z_0, R)\\), we show it is differentiable term by term (Theorem 9.6 below). The derivative \\(f'(z) = \\sum_{n=1}^\\infty n a_n (z-z_0)^{n-1}\\) also has radius of convergence \\(R\\) (the factor \\(n^{1/n} \\to 1\\) does not affect the limsup). Hence \\(f'\\) is itself given by a power series, so it is differentiable, and so on inductively. \\(\\square\\)</p>
+<h3>Consequences</h3>
 
-<h3>Proof of (3) \\(\\Rightarrow\\) (1)</h3>
-
-<p>Immediate: if \\(f \\in C^\\infty\\), in particular \\(f' \\) exists. \\(\\square\\)</p>
-
-<h3>What This Means</h3>
-
-<p>A function that merely satisfies the Cauchy–Riemann equations — the definition of holomorphicity — automatically:</p>
-<ul>
-    <li>has derivatives of all orders,</li>
-    <li>is representable by a convergent power series around every interior point,</li>
-    <li>is determined locally by its values on any curve or on any open subset.</li>
-</ul>
+<div class="env-block theorem">
+    <div class="env-title">Corollary 9.5</div>
+    <div class="env-body">
+        <p>If \\(f\\) is holomorphic on \\(\\Omega\\), then:</p>
+        <ol>
+            <li>\\(f\\) is infinitely differentiable on \\(\\Omega\\).</li>
+            <li>All derivatives \\(f', f'', f''', \\ldots\\) are also holomorphic on \\(\\Omega\\).</li>
+            <li>\\(f\\) can be integrated term-by-term inside any disk of convergence.</li>
+        </ol>
+    </div>
+</div>
 
 <div class="env-block remark">
-    <div class="env-title">Why Real Analysis Cannot Match This</div>
+    <div class="env-title">Contrast with Real Analysis</div>
     <div class="env-body">
-        <p>The key ingredient is Cauchy's integral formula, which has no real analogue. The formula expresses \\(f(z_0)\\) as a weighted average of \\(f\\) over a surrounding circle. This "rigidity at a distance" propagates regularity in a way impossible for real functions.</p>
-        <p>The real function \\(f(x) = e^{-1/x^2}\\) is \\(C^\\infty\\) at 0 but equals 0 there together with all its derivatives, so it cannot equal its Taylor series (which is identically 0) on any interval. Its complex extension \\(f(z) = e^{-1/z^2}\\) has an essential singularity at \\(z = 0\\), explaining the failure.</p>
+        <p>In \\(\\mathbb{R}\\), these notions split apart:</p>
+        <ul>
+            <li>\\(C^1\\) (once differentiable) does not imply \\(C^2\\), let alone \\(C^\\infty\\).</li>
+            <li>\\(C^\\infty\\) does not imply analytic (the function \\(e^{-1/x^2}\\) is the standard counterexample).</li>
+        </ul>
+        <p>In \\(\\mathbb{C}\\), "differentiable once" \\(\\Rightarrow\\) "differentiable infinitely many times" \\(\\Rightarrow\\) "equals its Taylor series." The rigidity of the Cauchy-Riemann equations forces this.</p>
     </div>
 </div>
-
-<div class="env-block corollary">
-    <div class="env-title">Corollary 9.5 (Cauchy's Estimates)</div>
-    <div class="env-body">
-        <p>If \\(f\\) is holomorphic in \\(|z - z_0| \\leq R\\) and \\(|f| \\leq M\\) there, then</p>
-        \\[|f^{(n)}(z_0)| \\leq \\frac{M \\cdot n!}{R^n}.\\]
-    </div>
-</div>
-
-<p>These estimates are immediate from the integral formula for \\(a_n\\).</p>
 `,
             visualizations: [],
             exercises: [
                 {
-                    question: 'Let \\(f\\) be entire (holomorphic on all of \\(\\mathbb{C}\\)) with \\(|f(z)| \\leq M|z|^k\\) for all large \\(|z|\\), for some integer \\(k \\geq 0\\). Prove that \\(f\\) is a polynomial of degree at most \\(k\\).',
-                    hint: 'Apply Cauchy\'s estimates to \\(f^{(n)}(0)\\) using a circle of radius \\(R\\), then let \\(R \\to \\infty\\). What happens to \\(|f^{(n)}(0)|\\) for \\(n > k\\)?',
-                    solution: 'By Cauchy\'s estimates with a circle of radius \\(R\\): \\(|f^{(n)}(0)| \\leq n! \\cdot MR^k / R^n = M n! R^{k-n}\\). For \\(n > k\\), as \\(R \\to \\infty\\) this gives \\(|f^{(n)}(0)| \\leq 0\\), so \\(f^{(n)}(0) = 0\\) for all \\(n > k\\). Since \\(f(z) = \\sum_{n=0}^\\infty f^{(n)}(0)z^n/n!\\), the series terminates at degree \\(k\\).'
+                    question: 'Let \\(f\\) be holomorphic on \\(\\mathbb{C}\\) and suppose \\(|f(z)| \\leq M\\) for all \\(z\\). What can you conclude about the Taylor coefficients \\(a_n\\) for \\(n \\geq 1\\)?',
+                    hint: 'Use Cauchy\'s inequality: \\(|a_n| \\leq \\frac{M}{R^n}\\) for any \\(R > 0\\). Let \\(R \\to \\infty\\).',
+                    solution: 'Cauchy\'s inequality gives \\(|a_n| \\leq M / R^n\\) for every \\(R > 0\\). Letting \\(R \\to \\infty\\) gives \\(a_n = 0\\) for all \\(n \\geq 1\\). Thus \\(f\\) is constant. This is Liouville\'s theorem, proved via the Taylor series.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Operations on Power Series
+        // SECTION 5: Manipulation of Power Series
         // ================================================================
         {
             id: 'sec-manipulation',
-            title: 'Operations on Power Series',
+            title: 'Manipulating Power Series',
             content: `
-<h2>Operations on Power Series</h2>
+<h2>Algebra of Power Series</h2>
 
-<p>Inside the disk of convergence, power series behave like polynomials: they can be added, multiplied, composed, differentiated, and integrated term by term. These operations are the working tools for computing with analytic functions.</p>
+<div class="env-block intuition">
+    <div class="env-title">Power Series as Infinite Polynomials</div>
+    <div class="env-body">
+        <p>Power series can be added, multiplied, composed, and differentiated using the same rules as polynomials, provided we stay within the disk of convergence. This turns analytic questions into algebraic ones.</p>
+    </div>
+</div>
 
 <h3>Addition and Scalar Multiplication</h3>
 
-<p>If \\(f(z) = \\sum a_n z^n\\) and \\(g(z) = \\sum b_n z^n\\) both converge for \\(|z| < R\\), then</p>
-\\[\\alpha f(z) + \\beta g(z) = \\sum_{n=0}^\\infty (\\alpha a_n + \\beta b_n) z^n\\]
-<p>for any \\(\\alpha, \\beta \\in \\mathbb{C}\\), with the same radius of convergence \\(\\geq R\\).</p>
+<p>If \\(f(z) = \\sum a_n z^n\\) with radius \\(R_f\\) and \\(g(z) = \\sum b_n z^n\\) with radius \\(R_g\\), then</p>
+\\[
+f(z) + g(z) = \\sum_{n=0}^\\infty (a_n + b_n) z^n, \\quad R \\geq \\min(R_f, R_g).
+\\]
 
-<h3>Multiplication (Cauchy Product)</h3>
+<h3>Cauchy Product (Multiplication)</h3>
 
 <div class="env-block theorem">
     <div class="env-title">Theorem 9.6 (Product of Power Series)</div>
     <div class="env-body">
-        <p>If \\(f(z) = \\sum_{n=0}^\\infty a_n z^n\\) converges for \\(|z| < R_1\\) and \\(g(z) = \\sum_{n=0}^\\infty b_n z^n\\) converges for \\(|z| < R_2\\), then</p>
-        \\[f(z)g(z) = \\sum_{n=0}^\\infty c_n z^n, \\quad c_n = \\sum_{k=0}^n a_k b_{n-k},\\]
-        <p>with convergence for \\(|z| < \\min(R_1, R_2)\\).</p>
+        <p>If \\(f(z) = \\sum a_n z^n\\) and \\(g(z) = \\sum b_n z^n\\) both converge for \\(|z| < R\\), then</p>
+        \\[
+        f(z) \\cdot g(z) = \\sum_{n=0}^\\infty c_n z^n, \\quad c_n = \\sum_{k=0}^n a_k b_{n-k},
+        \\]
+        <p>and the product series converges for \\(|z| < R\\). The sequence \\(\\{c_n\\}\\) is the <strong>Cauchy product</strong> (discrete convolution) of \\(\\{a_n\\}\\) and \\(\\{b_n\\}\\).</p>
     </div>
 </div>
 
 <div class="env-block example">
-    <div class="env-title">Example: \\(e^z \\cdot e^w = e^{z+w}\\)</div>
+    <div class="env-title">Example: \\(e^z \\cdot e^z = e^{2z}\\)</div>
     <div class="env-body">
-        <p>The product of \\(e^z = \\sum z^n/n!\\) and \\(e^w = \\sum w^n/n!\\), where we treat \\(w\\) as a parameter, gives \\(\\sum c_n\\) with \\(c_n = \\sum_{k=0}^n \\frac{z^k}{k!} \\cdot \\frac{w^{n-k}}{(n-k)!} = \\frac{1}{n!} \\sum_{k=0}^n \\binom{n}{k} z^k w^{n-k} = \\frac{(z+w)^n}{n!}\\). Hence \\(e^z e^w = e^{z+w}\\). This is a purely algebraic proof of the exponential law.</p>
+        <p>With \\(a_n = b_n = 1/n!\\), the Cauchy product gives</p>
+        \\[c_n = \\sum_{k=0}^n \\frac{1}{k!} \\cdot \\frac{1}{(n-k)!} = \\frac{1}{n!} \\sum_{k=0}^n \\binom{n}{k} = \\frac{2^n}{n!},\\]
+        <p>confirming \\(e^z \\cdot e^z = \\sum \\frac{(2z)^n}{n!} = e^{2z}\\).</p>
     </div>
 </div>
 
 <h3>Term-by-Term Differentiation</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 9.7 (Differentiation)</div>
+    <div class="env-title">Theorem 9.7</div>
     <div class="env-body">
-        <p>If \\(f(z) = \\sum_{n=0}^\\infty a_n (z-z_0)^n\\) has radius of convergence \\(R\\), then \\(f\\) is holomorphic in \\(D(z_0, R)\\) and</p>
-        \\[f'(z) = \\sum_{n=1}^{\\infty} n a_n (z-z_0)^{n-1}.\\]
-        <p>The derived series also has radius of convergence \\(R\\).</p>
-    </div>
-</div>
-
-<p>Proof: \\(\\limsup(n|a_n|)^{1/(n-1)} = \\limsup|a_n|^{1/n}\\) since \\(n^{1/n} \\to 1\\). The detailed argument uses the dominated convergence (or uniform convergence on compact sets) to justify swapping the derivative and the sum. \\(\\square\\)</p>
-
-<h3>Composition</h3>
-
-<p>If \\(g(z) = \\sum b_n z^n\\) with \\(b_0 = 0\\) (so \\(g(0) = 0\\)) and \\(|g(z)| < R_f\\) for \\(|z| < r\\), and \\(f(w) = \\sum a_n w^n\\) converges for \\(|w| < R_f\\), then</p>
-\\[f(g(z)) = \\sum_{n=0}^\\infty a_n (g(z))^n\\]
-<p>converges absolutely for \\(|z| < r\\). The coefficients of the composed series can be found by expanding \\(g(z)^n\\) using the Cauchy product repeatedly.</p>
-
-<div class="env-block example">
-    <div class="env-title">Example: \\(e^{\\sin z}\\)</div>
-    <div class="env-body">
-        <p>With \\(g(z) = \\sin z = z - z^3/6 + \\cdots\\) and \\(f(w) = e^w = 1 + w + w^2/2 + \\cdots\\):</p>
-        \\[e^{\\sin z} = 1 + z + \\frac{z^2}{2} - \\frac{z^4}{8} - \\frac{z^5}{15} + \\cdots\\]
-        <p>with \\(R = \\infty\\) (since \\(\\sin\\) is entire and \\(e^w\\) is entire).</p>
+        <p>If \\(f(z) = \\sum_{n=0}^\\infty a_n z^n\\) has radius \\(R > 0\\), then \\(f\\) is differentiable on \\(D(0, R)\\) and</p>
+        \\[
+        f'(z) = \\sum_{n=1}^\\infty n a_n z^{n-1}.
+        \\]
+        <p>The differentiated series has the same radius of convergence \\(R\\).</p>
     </div>
 </div>
 
 <h3>Term-by-Term Integration</h3>
 
-<p>If \\(f(z) = \\sum_{n=0}^\\infty a_n (z-z_0)^n\\) converges in \\(D(z_0, R)\\) and \\(\\gamma\\) is a path in \\(D(z_0, R)\\), then</p>
-\\[\\int_\\gamma f(z)\\,dz = \\sum_{n=0}^\\infty a_n \\int_\\gamma (z-z_0)^n\\,dz.\\]
+<p>Similarly, for \\(|z| < R\\):</p>
+\\[
+\\int_0^z f(\\zeta) \\, d\\zeta = \\sum_{n=0}^\\infty \\frac{a_n}{n+1} z^{n+1}.
+\\]
+<p>The integrated series also has radius \\(R\\).</p>
+
+<h3>Composition</h3>
+
+<p>If \\(f(z) = \\sum a_n z^n\\) and \\(g(z) = \\sum b_n z^n\\) with \\(g(0) = 0\\), then \\(f(g(z))\\) has a power series expansion obtained by substituting and collecting terms. The resulting series converges for \\(|z|\\) small enough that \\(|g(z)| < R_f\\).</p>
 
 <div class="viz-placeholder" data-viz="viz-taylor-exp"></div>
 <div class="viz-placeholder" data-viz="viz-taylor-sin"></div>
+<div class="viz-placeholder" data-viz="viz-taylor-log"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-taylor-exp',
-                    title: 'Taylor Polynomials of \\(e^z\\) Converging',
-                    description: 'Watch the Taylor polynomial of degree \\(N\\) converge to \\(e^x\\) on the real axis. Since \\(R = \\infty\\), the approximation improves everywhere as \\(N \\to \\infty\\).',
+                    title: 'Taylor Polynomials of \\(e^z\\)',
+                    description: 'Watch the Taylor polynomials of \\(e^z\\) converge everywhere in \\(\\mathbb{C}\\). Since \\(R = \\infty\\), the approximation improves uniformly on any compact set as \\(n\\) increases.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 340, originX: 280, originY: 200, scale: 45 });
-                        var N = 3;
-                        var animating = false;
-                        var animId = null;
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 50 });
+                        var nTerms = 5;
 
-                        VizEngine.createSlider(controls, 'N', 1, 15, N, 1, function(v) { N = Math.round(v); draw(); });
-                        var btn = VizEngine.createButton(controls, 'Animate', function() {
-                            if (animating) { animating = false; btn.textContent = 'Animate'; if (animId) clearInterval(animId); }
-                            else {
-                                animating = true; btn.textContent = 'Stop'; N = 1;
-                                animId = setInterval(function() {
-                                    N = (N % 15) + 1; draw();
-                                    if (!animating) clearInterval(animId);
-                                }, 400);
-                            }
+                        var slider = VizEngine.createSlider(controls, 'n', 1, 25, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
                         });
 
-                        function factorial(n) { var f = 1; for (var k = 2; k <= n; k++) f *= k; return f; }
-                        function taylorExp(x, deg) {
-                            var s = 0, xn = 1;
-                            for (var k = 0; k <= deg; k++) { s += xn / factorial(k); xn *= x; }
-                            return s;
-                        }
+                        function factorial(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return f; }
 
                         function draw() {
-                            viz.clear(); viz.drawGrid(); viz.drawAxes();
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
 
-                            // True e^x
-                            viz.drawFunction(function(x) { return Math.exp(x); }, -5, 3, viz.colors.teal, 2.5);
+                            // Plot real exp(x)
+                            viz.drawFunction(function(x) { return Math.exp(x); }, -5, 5, viz.colors.white, 2);
 
-                            // Taylor poly
-                            viz.drawFunction(function(x) { return taylorExp(x, N); }, -5, 3, viz.colors.orange, 2);
+                            // Plot Taylor polynomial
+                            viz.drawFunction(function(x) {
+                                var sum = 0;
+                                for (var k = 0; k <= nTerms; k++) {
+                                    sum += Math.pow(x, k) / factorial(k);
+                                }
+                                return sum;
+                            }, -5, 5, viz.colors.blue, 2.5);
 
-                            // Legend
-                            viz.screenText('e^x  (exact)', viz.width - 110, 22, viz.colors.teal, 12);
-                            viz.screenText('T_' + N + '(x)  (degree ' + N + ')', viz.width - 130, 40, viz.colors.orange, 12);
-
-                            // Error at x=3
-                            var err = Math.abs(Math.exp(3) - taylorExp(3, N));
-                            viz.screenText('|e^3 - T_' + N + '(3)| = ' + err.toExponential(2), viz.width / 2, viz.height - 16, viz.colors.text, 11);
+                            viz.screenText('exp(x) (white) vs T_' + nTerms + '(x) (blue)', viz.width / 2, 18, viz.colors.teal, 13);
+                            viz.screenText('R = ∞ : converges everywhere', viz.width / 2, 38, viz.colors.text, 11);
                         }
+
                         draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-taylor-sin',
-                    title: 'Taylor Polynomials of \\(\\sin z\\) on \\(\\mathbb{R}\\)',
-                    description: 'The Taylor polynomial of \\(\\sin x\\) at degree \\(2k+1\\) converges to \\(\\sin x\\) on all of \\(\\mathbb{R}\\). Watch the convergence range widen as degree increases.',
+                    title: 'Taylor Polynomials of \\(\\sin z\\)',
+                    description: 'The odd-powered Taylor polynomials of \\(\\sin z\\) approximate the function on progressively larger intervals. Since \\(\\sin z\\) is entire, \\(R = \\infty\\).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 300, originX: 280, originY: 150, scale: 38 });
-                        var N = 1;
-                        VizEngine.createSlider(controls, 'Odd degree', 1, 19, N, 2, function(v) {
-                            N = Math.round(v); if (N % 2 === 0) N += 1; draw();
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 30, originY: 200 });
+                        var nTerms = 3;
+
+                        var slider = VizEngine.createSlider(controls, 'n', 1, 20, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
                         });
 
-                        function factorial(n) { var f = 1; for (var k = 2; k <= n; k++) f *= k; return f; }
-                        function taylorSin(x, deg) {
-                            var s = 0, xpow = x, sign = 1;
-                            for (var k = 0; 2*k+1 <= deg; k++) {
-                                s += sign * xpow / factorial(2*k+1);
-                                xpow *= x * x; sign = -sign;
-                            }
-                            return s;
-                        }
+                        function factorial(n) { var f = 1; for (var i = 2; i <= n; i++) f *= i; return f; }
 
                         function draw() {
-                            viz.clear(); viz.drawGrid(); viz.drawAxes();
-                            viz.drawFunction(Math.sin, -7, 7, viz.colors.teal, 2.5);
-                            viz.drawFunction(function(x) { return taylorSin(x, N); }, -7, 7, viz.colors.purple, 2);
-                            viz.screenText('sin(x)  (exact)', viz.width - 140, 20, viz.colors.teal, 12);
-                            viz.screenText('T_' + N + '(x)', viz.width - 100, 38, viz.colors.purple, 12);
-                            viz.screenText('Degree ' + N + ' approximation', viz.width/2, viz.height - 14, viz.colors.text, 11);
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            // Plot sin(x)
+                            viz.drawFunction(Math.sin, -8, 8, viz.colors.white, 2);
+
+                            // Plot Taylor polynomial
+                            viz.drawFunction(function(x) {
+                                var sum = 0;
+                                for (var k = 0; k <= nTerms; k++) {
+                                    var m = 2 * k + 1;
+                                    sum += Math.pow(-1, k) * Math.pow(x, m) / factorial(m);
+                                }
+                                return sum;
+                            }, -8, 8, viz.colors.purple, 2.5);
+
+                            viz.screenText('sin(x) (white) vs T_{' + (2 * nTerms + 1) + '}(x) (purple)', viz.width / 2, 18, viz.colors.teal, 13);
                         }
+
+                        draw();
+                        return viz;
+                    }
+                },
+                {
+                    id: 'viz-taylor-log',
+                    title: 'Taylor Polynomials of \\(\\log(1+z)\\): The \\(R=1\\) Boundary',
+                    description: 'The Taylor series \\(\\sum_{n=1}^\\infty (-1)^{n+1} z^n/n\\) converges only for \\(|z| < 1\\). Watch how the polynomial approximation degrades sharply at \\(x = -1\\) (where \\(\\log(1+z)\\) has a singularity).',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 60, originX: 300, originY: 250 });
+                        var nTerms = 5;
+
+                        var slider = VizEngine.createSlider(controls, 'n', 1, 30, nTerms, 1, function(v) {
+                            nTerms = Math.round(v);
+                            draw();
+                        });
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            // Draw R=1 region indicators
+                            viz.drawSegment(-1, -4, -1, 4, viz.colors.red + '66', 1, true);
+                            viz.drawSegment(1, -4, 1, 4, viz.colors.green + '44', 1, true);
+
+                            // Plot log(1+x)
+                            viz.drawFunction(function(x) { return x > -1 ? Math.log(1 + x) : NaN; }, -0.99, 4, viz.colors.white, 2);
+
+                            // Taylor polynomial
+                            viz.drawFunction(function(x) {
+                                var sum = 0;
+                                for (var k = 1; k <= nTerms; k++) {
+                                    sum += Math.pow(-1, k + 1) * Math.pow(x, k) / k;
+                                }
+                                return sum;
+                            }, -2, 4, viz.colors.orange, 2.5);
+
+                            viz.screenText('log(1+x) (white) vs T_' + nTerms + '(x) (orange)', viz.width / 2, 18, viz.colors.teal, 13);
+                            viz.screenText('R = 1: singularity at z = -1', viz.width / 2, 38, viz.colors.red, 11);
+
+                            // Mark singularity
+                            viz.drawPoint(-1, 0, viz.colors.red, 'z = -1', 5);
+                        }
+
                         draw();
                         return viz;
                     }
@@ -766,14 +821,14 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Using the Cauchy product, find the power series for \\(1/(1-z)^2\\) and identify the radius of convergence.',
-                    hint: 'Write \\(1/(1-z)^2 = [1/(1-z)] \\cdot [1/(1-z)]\\) and multiply the two geometric series, or differentiate \\(1/(1-z)\\) term by term.',
-                    solution: 'Differentiating \\(1/(1-z) = \\sum z^n\\) term by term: \\(1/(1-z)^2 = \\sum_{n=1}^\\infty n z^{n-1} = \\sum_{n=0}^\\infty (n+1) z^n\\). Radius of convergence \\(R = 1\\) (same as \\(1/(1-z)\\), the differentiated series keeps the same \\(R\\)).'
+                    question: 'Use the Cauchy product to find the first four terms of the power series for \\(\\frac{e^z}{1-z}\\) around \\(z = 0\\).',
+                    hint: 'Multiply \\(e^z = \\sum z^n / n!\\) by \\(\\frac{1}{1-z} = \\sum z^n\\). The coefficient of \\(z^n\\) is \\(c_n = \\sum_{k=0}^n 1/k!\\).',
+                    solution: '\\(c_n = \\sum_{k=0}^n \\frac{1}{k!}\\). So \\(c_0 = 1\\), \\(c_1 = 1 + 1 = 2\\), \\(c_2 = 1 + 1 + 1/2 = 5/2\\), \\(c_3 = 1 + 1 + 1/2 + 1/6 = 8/3\\). The series begins \\(1 + 2z + \\frac{5}{2}z^2 + \\frac{8}{3}z^3 + \\cdots\\) with \\(R = 1\\) (limited by the pole at \\(z = 1\\)).'
                 },
                 {
-                    question: 'Compute the first four nonzero terms of the Taylor series of \\(\\tan z\\) at \\(z_0 = 0\\) by dividing the series for \\(\\sin z\\) by the series for \\(\\cos z\\).',
-                    hint: 'Write \\(\\tan z = \\sin z / \\cos z\\). Seek \\(\\tan z = b_1 z + b_3 z^3 + \\cdots\\) and match coefficients with \\(\\cos z \\cdot \\tan z = \\sin z\\).',
-                    solution: 'Matching \\((1 - z^2/2 + z^4/24 - \\cdots)(b_1 z + b_3 z^3 + b_5 z^5 + \\cdots) = z - z^3/6 + z^5/120 - \\cdots\\): \\(b_1 = 1\\); \\(b_3 - b_1/2 = -1/6 \\Rightarrow b_3 = 1/3\\); \\(b_5 - b_3/2 + b_1/24 = 1/120 \\Rightarrow b_5 = 2/15\\). So \\(\\tan z = z + z^3/3 + 2z^5/15 + 17z^7/315 + \\cdots\\). Radius of convergence \\(R = \\pi/2\\) (nearest singularity).'
+                    question: 'Differentiate the geometric series \\(\\frac{1}{1-z} = \\sum_{n=0}^\\infty z^n\\) to find a power series for \\(\\frac{1}{(1-z)^2}\\).',
+                    hint: 'Differentiate both sides term by term.',
+                    solution: 'Differentiating: \\(\\frac{1}{(1-z)^2} = \\sum_{n=1}^\\infty n z^{n-1} = \\sum_{n=0}^\\infty (n+1) z^n\\) for \\(|z| < 1\\). The radius of convergence remains \\(R = 1\\).'
                 }
             ]
         },
@@ -785,170 +840,157 @@ window.CHAPTERS.push({
             id: 'sec-zeros',
             title: 'Zeros of Analytic Functions',
             content: `
-<h2>Zeros of Analytic Functions</h2>
+<h2>Zeros: Isolated, Ordered, Finite</h2>
 
-<p>The power series representation gives us precise control over where a holomorphic function vanishes and with what multiplicity. This theory is foundational for the residue theorem and for understanding the global structure of analytic functions.</p>
-
-<h3>Isolated Zeros and Order</h3>
+<div class="env-block intuition">
+    <div class="env-title">A Striking Rigidity</div>
+    <div class="env-body">
+        <p>Polynomials of degree \\(n\\) have at most \\(n\\) zeros. Analytic functions share a version of this rigidity: if an analytic function has zeros that "accumulate" (pile up) at a point in its domain, then it must be identically zero. This is the <strong>identity theorem</strong>, and it has far-reaching consequences.</p>
+    </div>
+</div>
 
 <div class="env-block definition">
-    <div class="env-title">Definition (Zero of Order \\(m\\))</div>
+    <div class="env-title">Definition (Zero and Its Order)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be holomorphic near \\(z_0\\) with \\(f(z_0) = 0\\). We say \\(z_0\\) is a <strong>zero of order \\(m\\)</strong> (or of <strong>multiplicity \\(m\\)</strong>) if</p>
-        \\[f(z) = (z - z_0)^m g(z)\\]
-        <p>where \\(g\\) is holomorphic near \\(z_0\\) and \\(g(z_0) \\neq 0\\). Equivalently, \\(f^{(k)}(z_0) = 0\\) for \\(0 \\leq k < m\\) and \\(f^{(m)}(z_0) \\neq 0\\).</p>
+        <p>Let \\(f\\) be analytic near \\(z_0\\) with \\(f(z_0) = 0\\). The <strong>order</strong> (or <strong>multiplicity</strong>) of the zero at \\(z_0\\) is the smallest integer \\(m \\geq 1\\) such that \\(f^{(m)}(z_0) \\neq 0\\). Equivalently, \\(f(z) = (z - z_0)^m g(z)\\) where \\(g\\) is analytic and \\(g(z_0) \\neq 0\\).</p>
     </div>
 </div>
 
-<p>In terms of the Taylor series: if \\(f(z) = \\sum_{n=0}^\\infty a_n(z-z_0)^n\\) and the first nonzero coefficient is \\(a_m\\), then \\(z_0\\) is a zero of order \\(m\\).</p>
+<p>In terms of the Taylor series \\(f(z) = \\sum_{n=0}^\\infty a_n (z - z_0)^n\\), the order of the zero is the index of the first nonzero coefficient:</p>
+\\[
+a_0 = a_1 = \\cdots = a_{m-1} = 0, \\quad a_m \\neq 0.
+\\]
 
-<h3>The Isolation of Zeros</h3>
+<div class="env-block example">
+    <div class="env-title">Example: Orders of Zeros</div>
+    <div class="env-body">
+        <ul>
+            <li>\\(\\sin z\\) has a simple zero (order 1) at \\(z = 0\\): \\(\\sin z = z - z^3/6 + \\cdots\\)</li>
+            <li>\\(1 - \\cos z\\) has a zero of order 2 at \\(z = 0\\): \\(1 - \\cos z = z^2/2 - z^4/24 + \\cdots\\)</li>
+            <li>\\(z^2 \\sin z\\) has a zero of order 3 at \\(z = 0\\).</li>
+        </ul>
+    </div>
+</div>
+
+<h3>The Identity Theorem</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 9.8 (Zeros are Isolated)</div>
+    <div class="env-title">Theorem 9.8 (Identity Theorem)</div>
     <div class="env-body">
-        <p>If \\(f\\) is holomorphic on a connected domain \\(\\Omega\\) and \\(f \\not\\equiv 0\\), then the zeros of \\(f\\) are isolated: every zero \\(z_0\\) has a punctured neighborhood \\(D(z_0, r) \\setminus \\{z_0\\}\\) in which \\(f\\) has no zeros.</p>
+        <p>Let \\(f\\) and \\(g\\) be analytic on a connected open set \\(\\Omega\\). If \\(f(z_n) = g(z_n)\\) for a sequence \\(\\{z_n\\}\\) with a limit point in \\(\\Omega\\), then \\(f \\equiv g\\) on all of \\(\\Omega\\).</p>
     </div>
 </div>
-
-<p><em>Proof.</em> If \\(f(z_0) = 0\\), write \\(f(z) = (z-z_0)^m g(z)\\) with \\(g(z_0) \\neq 0\\). By continuity of \\(g\\), there is \\(r > 0\\) with \\(g(z) \\neq 0\\) for \\(|z-z_0| < r\\), so \\(f(z) \\neq 0\\) for \\(0 < |z-z_0| < r\\). \\(\\square\\)</p>
-
-<h3>The Identity Principle</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 9.9 (Identity Principle)</div>
+    <div class="env-title">Corollary 9.9 (Isolation of Zeros)</div>
     <div class="env-body">
-        <p>Let \\(f\\) and \\(g\\) be holomorphic on a connected domain \\(\\Omega\\). If \\(f = g\\) on a set with an accumulation point in \\(\\Omega\\), then \\(f \\equiv g\\) on all of \\(\\Omega\\).</p>
+        <p>If \\(f\\) is analytic and not identically zero on a connected open set \\(\\Omega\\), then the zeros of \\(f\\) are <strong>isolated</strong>: every zero has a neighborhood containing no other zeros.</p>
     </div>
 </div>
 
-<p><em>Proof.</em> \\(h = f - g\\) is holomorphic and zero on a set \\(S\\) with an accumulation point \\(z_0 \\in \\Omega\\). If \\(h(z_0) \\neq 0\\), continuity gives a neighborhood with no zeros, contradicting accumulation. So \\(h(z_0) = 0\\). By the Taylor series: if any \\(a_n \\neq 0\\), the zero at \\(z_0\\) is isolated, again contradicting accumulation. Thus all \\(a_n = 0\\) and \\(h \\equiv 0\\) on a disk \\(D(z_0, r)\\). The set \\(\\{z : h \\equiv 0 \\text{ near }z\\}\\) is both open (by Taylor) and closed (by continuity) in \\(\\Omega\\), hence equals \\(\\Omega\\). \\(\\square\\)</p>
+<p>The proof is immediate: if the zeros had a limit point in \\(\\Omega\\), the identity theorem (applied to \\(f\\) and \\(g \\equiv 0\\)) would force \\(f \\equiv 0\\).</p>
 
-<div class="env-block remark">
-    <div class="env-title">Profound Consequence</div>
+<div class="env-block example">
+    <div class="env-title">Example: A Powerful Application</div>
     <div class="env-body">
-        <p>Two holomorphic functions that agree on a sequence converging to an interior point must be identically equal. This has no real analogue: \\(f(x) = e^{-1/x^2}\\) and \\(g(x) = 0\\) agree at \\(\\{1/n\\}_{n=1}^\\infty \\to 0\\) but are different functions.</p>
-        <p>The identity principle is the foundation for analytic continuation (Chapter 18): a holomorphic function on a small disk extends in at most one way to any larger connected domain.</p>
+        <p>Suppose \\(f\\) is entire and \\(f(1/n) = 0\\) for all \\(n \\in \\mathbb{N}\\). Since \\(1/n \\to 0\\) and \\(0 \\in \\mathbb{C}\\), the identity theorem gives \\(f \\equiv 0\\). The values on a single convergent sequence determine the entire function!</p>
     </div>
 </div>
 
 <div class="viz-placeholder" data-viz="viz-zero-structure"></div>
-<div class="viz-placeholder" data-viz="viz-taylor-log"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-zero-structure',
-                    title: 'Zero Structure via Domain Coloring',
-                    description: 'Domain coloring of \\(f(z) = z^m(1-z)\\). Zeros of order \\(m\\) appear as points where the color wheel winds \\(m\\) times. Adjust the order to see higher-order zeros.',
+                    title: 'Zero Structure of Analytic Functions',
+                    description: 'Visualize the isolated zeros of \\(\\sin(z)\\) and \\(z^2 \\sin(z)\\) in the complex plane. Each zero is marked with its order. Domain coloring reveals the zero structure through the characteristic color wheel pattern around each zero.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 380, scale: 90 });
-                        var m = 1;
+                        var viz = new VizEngine(body, { width: 560, height: 400, scale: 30 });
+                        var funcType = 'sin';
 
-                        VizEngine.createSlider(controls, 'Zero order m', 1, 5, m, 1, function(v) {
-                            m = Math.round(v); draw();
-                        });
-
-                        // Complex power z^m
-                        function cpow(re, im, n) {
-                            var r = Math.sqrt(re*re+im*im);
-                            var theta = Math.atan2(im, re);
-                            var rn = Math.pow(r, n);
-                            return [rn*Math.cos(n*theta), rn*Math.sin(n*theta)];
-                        }
-                        function cmul(a, b) { return [a[0]*b[0]-a[1]*b[1], a[0]*b[1]+a[1]*b[0]]; }
+                        VizEngine.createButton(controls, 'sin(z)', function() { funcType = 'sin'; draw(); });
+                        VizEngine.createButton(controls, 'z² sin(z)', function() { funcType = 'z2sin'; draw(); });
+                        VizEngine.createButton(controls, 'z³ - 1', function() { funcType = 'z3m1'; draw(); });
+                        VizEngine.createButton(controls, 'sin(πz)', function() { funcType = 'sinpi'; draw(); });
 
                         function draw() {
-                            viz.clear();
-                            var xRange = [-2, 2], yRange = [-2, 2];
-                            var pw = viz.canvas.width, ph = viz.canvas.height;
+                            var range = [-6, 6];
                             var ctx = viz.ctx;
-                            ctx.save(); ctx.setTransform(1,0,0,1,0,0);
-                            var imgData = ctx.createImageData(pw, ph);
-                            var data = imgData.data;
-                            for (var py = 0; py < ph; py++) {
-                                for (var px = 0; px < pw; px++) {
-                                    var re = xRange[0] + (xRange[1]-xRange[0])*px/pw;
-                                    var im = yRange[1] - (yRange[1]-yRange[0])*py/ph;
-                                    // f(z) = z^m * (1 - z)
-                                    var zm = cpow(re, im, m);
-                                    var oneMz = [1-re, -im];
-                                    var res = cmul(zm, oneMz);
-                                    var u = res[0], v = res[1];
-                                    var arg = Math.atan2(v, u);
-                                    var mag = Math.sqrt(u*u+v*v);
-                                    var hue = (arg/Math.PI+1)/2;
-                                    var light = 1 - 1/(1+mag*0.3);
-                                    var rgb = VizEngine.hslToRgb(hue, 0.8, light);
-                                    var idx = (py*pw+px)*4;
-                                    data[idx]=rgb[0]; data[idx+1]=rgb[1]; data[idx+2]=rgb[2]; data[idx+3]=255;
+
+                            if (funcType === 'sin') {
+                                viz.drawDomainColoring(function(re, im) {
+                                    // sin(z) = sin(re)cosh(im) + i cos(re)sinh(im)
+                                    return [Math.sin(re) * Math.cosh(im), Math.cos(re) * Math.sinh(im)];
+                                }, range, range);
+                                // Mark zeros at nπ
+                                for (var n = -1; n <= 1; n++) {
+                                    var zx = n * Math.PI;
+                                    var sx = viz.originX + zx * viz.scale;
+                                    var sy = viz.originY;
+                                    ctx.strokeStyle = '#ffffffcc'; ctx.lineWidth = 2;
+                                    ctx.beginPath(); ctx.arc(sx, sy, 8, 0, Math.PI * 2); ctx.stroke();
+                                    ctx.fillStyle = '#ffffffcc'; ctx.font = 'bold 10px -apple-system,sans-serif';
+                                    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                                    ctx.fillText('m=1', sx, sy - 10);
                                 }
+                                viz.screenText('sin(z): simple zeros at z = nπ', viz.width / 2, 18, '#ffffffcc', 13);
+                            } else if (funcType === 'z2sin') {
+                                viz.drawDomainColoring(function(re, im) {
+                                    var sr = Math.sin(re) * Math.cosh(im), si = Math.cos(re) * Math.sinh(im);
+                                    var zr = re * re - im * im, zi = 2 * re * im;
+                                    return [zr * sr - zi * si, zr * si + zi * sr];
+                                }, range, range);
+                                // zero at 0 with order 3
+                                var sx0 = viz.originX, sy0 = viz.originY;
+                                ctx.strokeStyle = '#ffffffcc'; ctx.lineWidth = 2;
+                                ctx.beginPath(); ctx.arc(sx0, sy0, 10, 0, Math.PI * 2); ctx.stroke();
+                                ctx.fillStyle = '#ffffffcc'; ctx.font = 'bold 10px -apple-system,sans-serif';
+                                ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                                ctx.fillText('m=3', sx0, sy0 - 12);
+                                for (var n = -1; n <= 1; n++) {
+                                    if (n === 0) continue;
+                                    var zx2 = n * Math.PI;
+                                    var sx2 = viz.originX + zx2 * viz.scale;
+                                    ctx.beginPath(); ctx.arc(sx2, sy0, 8, 0, Math.PI * 2); ctx.stroke();
+                                    ctx.fillText('m=1', sx2, sy0 - 10);
+                                }
+                                viz.screenText('z² sin(z): order-3 zero at origin', viz.width / 2, 18, '#ffffffcc', 13);
+                            } else if (funcType === 'z3m1') {
+                                viz.drawDomainColoring(function(re, im) {
+                                    var r2 = re * re - im * im, i2 = 2 * re * im;
+                                    var r3 = r2 * re - i2 * im, i3 = r2 * im + i2 * re;
+                                    return [r3 - 1, i3];
+                                }, range, range);
+                                // zeros at cube roots of unity
+                                var roots = [[1, 0], [-0.5, Math.sqrt(3)/2], [-0.5, -Math.sqrt(3)/2]];
+                                for (var k = 0; k < 3; k++) {
+                                    var sxr = viz.originX + roots[k][0] * viz.scale;
+                                    var syr = viz.originY - roots[k][1] * viz.scale;
+                                    ctx.strokeStyle = '#ffffffcc'; ctx.lineWidth = 2;
+                                    ctx.beginPath(); ctx.arc(sxr, syr, 8, 0, Math.PI * 2); ctx.stroke();
+                                    ctx.fillStyle = '#ffffffcc'; ctx.font = 'bold 10px -apple-system,sans-serif';
+                                    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                                    ctx.fillText('m=1', sxr, syr - 10);
+                                }
+                                viz.screenText('z³ - 1: three simple zeros (cube roots of unity)', viz.width / 2, 18, '#ffffffcc', 13);
+                            } else {
+                                viz.drawDomainColoring(function(re, im) {
+                                    var pre = Math.PI * re, pim = Math.PI * im;
+                                    return [Math.sin(pre) * Math.cosh(pim), Math.cos(pre) * Math.sinh(pim)];
+                                }, range, range);
+                                for (var n2 = -2; n2 <= 2; n2++) {
+                                    var sx3 = viz.originX + n2 * viz.scale;
+                                    var sy3 = viz.originY;
+                                    ctx.strokeStyle = '#ffffffcc'; ctx.lineWidth = 2;
+                                    ctx.beginPath(); ctx.arc(sx3, sy3, 8, 0, Math.PI * 2); ctx.stroke();
+                                    ctx.fillStyle = '#ffffffcc'; ctx.font = 'bold 10px -apple-system,sans-serif';
+                                    ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
+                                    ctx.fillText('m=1', sx3, sy3 - 10);
+                                }
+                                viz.screenText('sin(πz): simple zeros at every integer', viz.width / 2, 18, '#ffffffcc', 13);
                             }
-                            ctx.putImageData(imgData, 0, 0);
-                            ctx.restore();
-
-                            // Axes
-                            viz.drawAxes();
-
-                            // Label zeros
-                            ctx.fillStyle = viz.colors.white; ctx.font = 'bold 12px sans-serif'; ctx.textAlign = 'center';
-                            var [sx0, sy0] = viz.toScreen(0, 0);
-                            ctx.fillText('z=0 (order '+m+')', sx0, sy0 - 14);
-                            var [sx1, sy1] = viz.toScreen(1, 0);
-                            ctx.fillText('z=1 (order 1)', sx1, sy1 - 14);
-
-                            ctx.fillStyle = viz.colors.text; ctx.font = '11px sans-serif';
-                            ctx.fillText('f(z) = z\u1D50(1\u2212z)', viz.width/2, viz.height - 10);
-                        }
-                        draw();
-                        return viz;
-                    }
-                },
-                {
-                    id: 'viz-taylor-log',
-                    title: 'Taylor Series of \\(\\log(1+z)\\): Radius \\(R=1\\)',
-                    description: 'The partial sum of \\(\\log(1+z) = \\sum_{n=1}^\\infty (-1)^{n-1}z^n/n\\) converges for \\(|z|<1\\) but not outside. The singularity at \\(z=-1\\) limits \\(R\\).',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 320, originX: 200, originY: 160, scale: 100 });
-                        var N = 5;
-                        VizEngine.createSlider(controls, 'N terms', 1, 25, N, 1, function(v) { N = Math.round(v); draw(); });
-
-                        function logTaylor(x, n) {
-                            var s = 0, xk = x, sign = 1;
-                            for (var k = 1; k <= n; k++) {
-                                s += sign * xk / k;
-                                xk *= x; sign = -sign;
-                            }
-                            return s;
                         }
 
-                        function draw() {
-                            viz.clear(); viz.drawGrid(); viz.drawAxes();
-
-                            // True log(1+x) for x in (-1, 2]
-                            viz.drawFunction(function(x) { return x > -1 ? Math.log(1+x) : NaN; }, -0.95, 2.5, viz.colors.teal, 2.5);
-
-                            // Taylor poly
-                            viz.drawFunction(function(x) { return logTaylor(x, N); }, -1.5, 1.5, viz.colors.orange, 2);
-
-                            // R=1 boundary
-                            var [sx1, sy0] = viz.toScreen(1, 0);
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = viz.colors.yellow; ctx.lineWidth = 1.5; ctx.setLineDash([5,3]);
-                            ctx.beginPath(); ctx.moveTo(sx1, 0); ctx.lineTo(sx1, viz.height); ctx.stroke();
-                            ctx.setLineDash([]);
-                            var [sxm1] = viz.toScreen(-1, 0);
-                            ctx.strokeStyle = viz.colors.red; ctx.lineWidth = 1.5; ctx.setLineDash([5,3]);
-                            ctx.beginPath(); ctx.moveTo(sxm1, 0); ctx.lineTo(sxm1, viz.height); ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            ctx.fillStyle = viz.colors.yellow; ctx.font = '11px sans-serif'; ctx.textAlign = 'center';
-                            ctx.fillText('x=1', sx1, 14);
-                            ctx.fillStyle = viz.colors.red;
-                            ctx.fillText('x=\u22121 (singularity)', sxm1, 14);
-
-                            viz.screenText('log(1+x)  (exact)', viz.width-160, 26, viz.colors.teal, 12);
-                            viz.screenText('T_'+N+'(x)', viz.width-100, 44, viz.colors.orange, 12);
-                        }
                         draw();
                         return viz;
                     }
@@ -956,19 +998,19 @@ window.CHAPTERS.push({
             ],
             exercises: [
                 {
-                    question: 'Find the order of the zero of \\(f(z) = z^3 \\sin z\\) at \\(z_0 = 0\\).',
-                    hint: 'Expand \\(\\sin z = z - z^3/6 + \\cdots\\) and multiply by \\(z^3\\). What is the lowest power of \\(z\\) with nonzero coefficient?',
-                    solution: '\\(f(z) = z^3(z - z^3/6 + \\cdots) = z^4 - z^6/6 + \\cdots\\). The lowest power is \\(z^4\\), so \\(z_0 = 0\\) is a zero of order 4.'
+                    question: 'What is the order of the zero of \\(f(z) = z^2(e^z - 1)\\) at \\(z = 0\\)?',
+                    hint: 'Expand \\(e^z - 1 = z + z^2/2 + \\cdots\\), then multiply by \\(z^2\\).',
+                    solution: '\\(e^z - 1 = z + z^2/2 + z^3/6 + \\cdots\\), so \\(z^2(e^z - 1) = z^3 + z^4/2 + \\cdots\\). The first nonzero term is \\(z^3\\), so the zero has order 3.'
                 },
                 {
-                    question: 'Let \\(f\\) be holomorphic on \\(\\mathbb{D} = \\{|z| < 1\\}\\) with \\(f(1/n) = 1/n^2\\) for all \\(n \\geq 2\\). What can you conclude about \\(f\\)?',
-                    hint: 'Consider \\(h(z) = f(z) - z^2\\) and apply the identity principle.',
-                    solution: 'Let \\(h(z) = f(z) - z^2\\). Then \\(h(1/n) = 1/n^2 - 1/n^2 = 0\\) for all \\(n \\geq 2\\). Since \\(1/n \\to 0\\) and \\(0 \\in \\mathbb{D}\\), the zeros of \\(h\\) accumulate at 0. By the identity principle, \\(h \\equiv 0\\) on \\(\\mathbb{D}\\), so \\(f(z) = z^2\\) on all of \\(\\mathbb{D}\\).'
+                    question: 'Let \\(f\\) be entire with \\(f(n) = 0\\) for all \\(n \\in \\mathbb{Z}\\). Must \\(f \\equiv 0\\)?',
+                    hint: 'The integers have limit points, but where? Consider whether any limit point of \\(\\mathbb{Z}\\) lies in \\(\\mathbb{C}\\).',
+                    solution: 'No. The integers \\(\\mathbb{Z}\\) have no finite limit point (they escape to infinity), so the identity theorem does not apply. The function \\(f(z) = \\sin(\\pi z)\\) is entire, vanishes on \\(\\mathbb{Z}\\), but is not identically zero.'
                 },
                 {
-                    question: 'Show that if \\(f\\) is holomorphic and nonzero on a connected domain \\(\\Omega\\), and \\(|f|\\) is constant on \\(\\Omega\\), then \\(f\\) is constant.',
-                    hint: 'Write \\(|f|^2 = f \\overline{f} = c^2\\). Differentiate using Cauchy--Riemann and use the fact that \\(f \\neq 0\\).',
-                    solution: 'If \\(|f|^2 = c^2\\), then \\(u^2+v^2 = c^2\\) where \\(f = u+iv\\). Differentiate: \\(uu_x + vv_x = 0\\) and \\(uu_y + vv_y = 0\\). By C-R, \\(u_x = v_y\\) and \\(u_y = -v_x\\). Substituting: \\(u u_x - v u_y = 0\\) and \\(u u_y + v u_x = 0\\). This system \\((u^2+v^2)u_x = 0\\) and \\((u^2+v^2)u_y = 0\\), so if \\(c \\neq 0\\) then \\(u_x = u_y = 0\\), meaning \\(f\\) is constant.'
+                    question: 'Prove that if \\(f\\) and \\(g\\) are entire functions satisfying \\(f(z)^2 + g(z)^2 = 1\\) for all \\(z\\), then \\(f\\) and \\(g\\) are constant.',
+                    hint: 'Factor: \\((f + ig)(f - ig) = 1\\). What does this say about the range of the entire functions \\(f \\pm ig\\)?',
+                    solution: 'Write \\(h(z) = f(z) + ig(z)\\). Then \\(h(z) \\cdot \\overline{h(\\bar{z})} = f(z)^2 + g(z)^2 = 1\\) shows \\(h\\) is entire and never zero, so \\(1/h\\) is also entire. Since \\(h \\cdot (1/h) = 1\\), both \\(h\\) and \\(1/h\\) are entire. If \\(h\\) is unbounded, \\(1/h \\to 0\\) at infinity, contradicting \\(1/h\\) being entire and nonvanishing. By Liouville, \\(h\\) (and \\(1/h\\)) are bounded entire functions, hence constant. So \\(f\\) and \\(g\\) are constant.'
                 }
             ]
         },
@@ -978,63 +1020,83 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Looking Ahead',
+            title: 'Bridge: Beyond the Disk',
             content: `
-<h2>Looking Ahead: Beyond the Disk of Convergence</h2>
+<h2>What Happens at the Boundary?</h2>
 
-<p>Taylor series represent holomorphic functions perfectly inside a disk. But what about singularities — points where \\(f\\) fails to be holomorphic? The function \\(1/(z-1)\\) has a singularity at \\(z = 1\\), and its Taylor series centered at 0 simply refuses to see past \\(|z| = 1\\).</p>
+<div class="env-block intuition">
+    <div class="env-title">Looking Ahead</div>
+    <div class="env-body">
+        <p>A Taylor series captures the behavior of \\(f\\) inside a disk. But what about functions with singularities inside the region of interest? If \\(f\\) has a pole at \\(z_0\\), no Taylor series centered at \\(z_0\\) can represent it. We need a generalization that allows <em>negative</em> powers of \\((z - z_0)\\). This is the <strong>Laurent series</strong> of Chapter 10.</p>
+    </div>
+</div>
 
-<h3>What Happens at the Boundary</h3>
+<h3>A Preview of Laurent Series</h3>
 
-<p>The radius of convergence \\(R\\) is not arbitrary: it equals the distance from the center \\(z_0\\) to the nearest singularity. Once you hit a singularity, a power series stops. The key facts proved in this chapter are:</p>
+<p>Consider \\(f(z) = 1/z\\), which has a pole at the origin. No Taylor series at \\(z_0 = 0\\) works, but we can write</p>
+\\[
+f(z) = z^{-1} = \\sum_{n=-1}^{-1} a_n z^n \\quad (a_{-1} = 1).
+\\]
+<p>More generally, a <strong>Laurent series</strong> takes the form</p>
+\\[
+f(z) = \\sum_{n=-\\infty}^{\\infty} a_n (z - z_0)^n = \\cdots + \\frac{a_{-2}}{(z-z_0)^2} + \\frac{a_{-1}}{z-z_0} + a_0 + a_1(z-z_0) + \\cdots
+\\]
+<p>and converges in an <strong>annulus</strong> \\(r < |z - z_0| < R\\).</p>
 
-<ol>
-    <li><strong>Inside the disk</strong>: absolute and uniform convergence, term-by-term differentiation and integration, the analytic = holomorphic equivalence.</li>
-    <li><strong>On the boundary circle</strong>: behavior is delicate and depends on the specific series.</li>
-    <li><strong>Outside the disk</strong>: the partial sums diverge.</li>
-</ol>
+<h3>Classification of Singularities</h3>
 
-<h3>The Laurent Expansion</h3>
+<p>The nature of the Laurent series at an isolated singularity \\(z_0\\) classifies it:</p>
+<ul>
+    <li><strong>Removable singularity:</strong> no negative powers (\\(a_n = 0\\) for all \\(n < 0\\)).</li>
+    <li><strong>Pole of order \\(m\\):</strong> finitely many negative powers (\\(a_{-m} \\neq 0\\), \\(a_n = 0\\) for \\(n < -m\\)).</li>
+    <li><strong>Essential singularity:</strong> infinitely many negative powers.</li>
+</ul>
 
-<p>To represent a holomorphic function in an <em>annulus</em> \\(R_1 < |z - z_0| < R_2\\) (the natural region surrounding a singularity), we need to allow negative powers of \\((z - z_0)\\). This leads to the <strong>Laurent series</strong></p>
-
-\\[f(z) = \\sum_{n=-\\infty}^{\\infty} c_n (z - z_0)^n\\]
-
-<p>which will be developed in Chapter 10. The coefficients of the negative-power part (the <em>principal part</em>) classify the type of singularity: removable, pole, or essential. This classification is the foundation for the residue theorem in Chapter 11.</p>
-
-<h3>Summary of Chapter 9</h3>
-
-<div class="env-block remark">
-    <div class="env-title">Core Results</div>
+<div class="env-block example">
+    <div class="env-title">Example: Types of Singularities</div>
     <div class="env-body">
         <ul>
-            <li><strong>Hadamard formula</strong>: \\(R = 1/\\limsup|a_n|^{1/n}\\) determines the disk of convergence precisely.</li>
-            <li><strong>Taylor's theorem</strong>: every holomorphic function equals its Taylor series inside the largest singularity-free disk.</li>
-            <li><strong>Analytic = Holomorphic</strong>: the one complex derivative condition implies infinite differentiability and power series representability.</li>
-            <li><strong>Isolated zeros</strong>: zeros of non-constant holomorphic functions are isolated, with well-defined orders.</li>
-            <li><strong>Identity principle</strong>: a holomorphic function on a connected domain is determined by its values on any set with an accumulation point.</li>
+            <li>\\(\\frac{\\sin z}{z} = 1 - \\frac{z^2}{6} + \\cdots\\) has a removable singularity at \\(z = 0\\).</li>
+            <li>\\(\\frac{1}{z^2}\\) has a pole of order 2 at \\(z = 0\\).</li>
+            <li>\\(e^{1/z} = 1 + \\frac{1}{z} + \\frac{1}{2z^2} + \\cdots\\) has an essential singularity at \\(z = 0\\).</li>
         </ul>
     </div>
 </div>
 
-<p>These results form a tight, self-reinforcing structure. The Cauchy integral formula (Chapter 6) gives the Taylor coefficients. The Taylor series gives infinite differentiability. Infinite differentiability gives the identity principle. The identity principle gives analytic continuation. Complex analysis coheres in a way that real analysis does not, and power series are the algebraic language in which that coherence is written.</p>
+<h3>The Residue: A Sneak Peek</h3>
+
+<p>The coefficient \\(a_{-1}\\) in the Laurent expansion has a special name: the <strong>residue</strong> of \\(f\\) at \\(z_0\\), written \\(\\operatorname{Res}_{z=z_0} f(z)\\). It controls the value of contour integrals via the residue theorem (Chapter 11):</p>
+\\[
+\\oint_\\gamma f(z) \\, dz = 2\\pi i \\sum_{k} \\operatorname{Res}_{z=z_k} f(z).
+\\]
+<p>This single formula is the most powerful computational tool in all of analysis, connecting local behavior (residues) to global computation (integrals).</p>
+
+<h3>Summary: What We Proved</h3>
+
+<div class="env-block theorem">
+    <div class="env-title">Chapter 9 Summary</div>
+    <div class="env-body">
+        <ol>
+            <li>Every power series converges in a disk of radius \\(R = 1/\\limsup |a_n|^{1/n}\\) (Hadamard).</li>
+            <li>Every holomorphic function equals its Taylor series in the largest singularity-free disk (Taylor's theorem).</li>
+            <li><strong>Analytic \\(\\Leftrightarrow\\) Holomorphic</strong>: the two definitions of "nice complex function" are equivalent.</li>
+            <li>Power series can be added, multiplied, composed, differentiated, and integrated term by term within their disk of convergence.</li>
+            <li>Zeros of analytic functions are isolated and have finite order (identity theorem).</li>
+        </ol>
+    </div>
+</div>
 `,
             visualizations: [],
             exercises: [
                 {
-                    question: 'Let \\(f(z) = \\sum_{n=0}^\\infty a_n z^n\\) have radius of convergence \\(R\\). If \\(|a_n| \\leq C r^{-n}\\) for all \\(n\\) and some constants \\(C, r > 0\\), what can you say about \\(R\\)?',
-                    hint: 'Apply Hadamard: \\(\\limsup |a_n|^{1/n} \\leq \\limsup (C^{1/n} r^{-1}) = r^{-1}\\).',
-                    solution: '\\(|a_n|^{1/n} \\leq C^{1/n}/r\\). As \\(n\\to\\infty\\), \\(C^{1/n} \\to 1\\), so \\(\\limsup |a_n|^{1/n} \\leq 1/r\\). By Hadamard, \\(R = 1/\\limsup |a_n|^{1/n} \\geq r\\).'
+                    question: 'Find the first three nonzero terms of the Laurent series of \\(f(z) = \\frac{e^z}{z^3}\\) around \\(z = 0\\). What type of singularity does \\(f\\) have at the origin?',
+                    hint: 'Write \\(e^z = 1 + z + z^2/2 + z^3/6 + \\cdots\\) and divide each term by \\(z^3\\).',
+                    solution: '\\(\\frac{e^z}{z^3} = \\frac{1}{z^3} + \\frac{1}{z^2} + \\frac{1}{2z} + \\frac{1}{6} + \\cdots\\). The first nonzero term is \\(z^{-3}\\), so this is a <strong>pole of order 3</strong>. The residue is \\(a_{-1} = 1/2\\).'
                 },
                 {
-                    question: 'Suppose \\(f\\) is holomorphic on the unit disk \\(\\mathbb{D}\\) and satisfies \\(f(z^2) = f(z)^2\\) for all \\(z \\in \\mathbb{D}\\). Suppose also \\(f(0) = 0\\) and \\(f\'(0) = 1\\). Prove that \\(f(z) = z\\) on \\(\\mathbb{D}\\).',
-                    hint: 'Write \\(f(z) = \\sum a_n z^n\\), substitute into the functional equation, and match coefficients. Use induction to show \\(a_n = 0\\) for \\(n \\geq 2\\).',
-                    solution: 'The condition \\(f(0)=0\\) gives \\(a_0 = 0\\); \\(f\'(0)=1\\) gives \\(a_1=1\\). Write \\(f(z) = z + a_2 z^2 + a_3 z^3 + \\cdots\\). Then \\(f(z^2) = z^2 + a_2 z^4 + \\cdots\\) and \\(f(z)^2 = z^2 + 2a_2 z^3 + (a_2^2+2a_3)z^4+\\cdots\\). Matching the \\(z^3\\) term: \\(0 = 2a_2\\), so \\(a_2=0\\). Matching \\(z^4\\): \\(a_2 = a_2^2+2a_3 \\Rightarrow 0 = 2a_3\\), so \\(a_3=0\\). By induction, all \\(a_n = 0\\) for \\(n \\geq 2\\), so \\(f(z) = z\\).'
-                },
-                {
-                    question: 'Find all entire functions \\(f\\) satisfying \\(f(z+1) = f(z)\\) for all \\(z \\in \\mathbb{C}\\) and \\(|f(z)| \\leq e^{\\pi|\\text{Im}(z)|}\\).',
-                    hint: 'The periodicity forces \\(f\\) to be a function of \\(e^{2\\pi i z}\\). The growth bound controls which Fourier modes survive.',
-                    solution: 'Setting \\(w = e^{2\\pi i z}\\), define \\(g(w) = f(z)\\). The periodicity \\(f(z+1)=f(z)\\) is consistent. The map \\(z \\mapsto w\\) covers \\(\\mathbb{C}^*\\). The bound \\(|f(z)| \\leq e^{\\pi|\\text{Im}z|}\\) translates to \\(|g(w)| \\leq C(|w|^{1/2} + |w|^{-1/2})\\). The Laurent expansion of \\(g\\) around \\(w=0\\) must satisfy \\(|c_n||w|^n \\leq C|w|^{1/2}\\) (and similar for \\(w \\to \\infty\\)), forcing \\(c_n = 0\\) for \\(|n| \\geq 1\\). Wait: matching more carefully, the bound allows \\(n=0\\) and \\(n=\\pm 1\\) terms but kills \\(|n| \\geq 2\\). The answer is \\(f(z) = A + B e^{2\\pi i z} + C e^{-2\\pi iz}\\) for constants \\(A, B, C\\). (This problem previews Fourier analysis on \\(\\mathbb{T}\\).)'
+                    question: 'Determine the radius of convergence of the Taylor series of \\(f(z) = \\frac{z}{\\sin z}\\) centered at \\(z = 0\\).',
+                    hint: 'Where are the singularities of \\(z / \\sin z\\)? Is \\(z = 0\\) actually a singularity?',
+                    solution: 'At \\(z = 0\\), \\(\\sin z\\) has a simple zero, so \\(z/\\sin z \\to 1\\) as \\(z \\to 0\\); the singularity is removable. The nearest genuine singularity is at \\(z = \\pm \\pi\\) (where \\(\\sin z = 0\\) but \\(z \\neq 0\\)). Therefore \\(R = \\pi\\).'
                 }
             ]
         }
