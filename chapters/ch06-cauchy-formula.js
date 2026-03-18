@@ -10,614 +10,459 @@ window.CHAPTERS.push({
         // ================================================================
         {
             id: 'sec-motivation',
-            title: 'Motivation',
+            title: 'Why Boundary Data Determines Everything',
             content: `
-<h2>Motivation</h2>
+<h2>Why Boundary Data Determines Everything</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">A Remarkable Rigidity</div>
+    <div class="env-title">The Remarkable Rigidity of Analytic Functions</div>
     <div class="env-body">
-        <p>Suppose you know the values of an analytic function on a closed curve. Is that enough to determine the function <em>inside</em> the curve? For a real differentiable function, the answer is no: knowing a function on a circle tells you nothing about its interior values. But analytic functions are so tightly constrained that the answer is a resounding <strong>yes</strong>.</p>
-        <p>This is the miracle of Cauchy's integral formula, and it is one of the deepest results in all of analysis.</p>
+        <p>In real analysis, knowing a smooth function on the boundary of a disk tells you almost nothing about its values inside. You can extend the boundary data to the interior in infinitely many ways. Complex analysis is radically different: if \\(f\\) is analytic inside and on a closed curve \\(\\gamma\\), then the values of \\(f\\) on \\(\\gamma\\) completely determine \\(f\\) at every interior point.</p>
+        <p>This is not merely a theoretical curiosity. It means that an analytic function is far more constrained than any real-differentiable function could be. A single contour integral encodes all interior information.</p>
     </div>
 </div>
 
-<p>Recall from Cauchy's theorem (Chapter 5) that if \\(f\\) is analytic on and inside a simple closed contour \\(C\\), then</p>
+<p>In the previous chapter, we established Cauchy's integral theorem: if \\(f\\) is analytic on a simply connected domain \\(D\\), then</p>
 
 \\[
-\\oint_C f(z)\\,dz = 0.
+\\oint_\\gamma f(z)\\,dz = 0
 \\]
 
-<p>Now suppose we want to recover the value \\(f(z_0)\\) for some point \\(z_0\\) <em>inside</em> \\(C\\). The function \\(f(z)/(z - z_0)\\) is not analytic at \\(z_0\\), so Cauchy's theorem does not immediately apply. But by a careful excision argument, we can isolate the singularity and extract the value.</p>
+<p>for every closed contour \\(\\gamma\\) in \\(D\\). This tells us that contour integrals of analytic functions vanish. But what happens when the integrand has a singularity inside the contour?</p>
 
-<h3>The Key Idea: Deforming the Contour</h3>
+<p>Consider the function \\(g(z) = f(z)/(z - z_0)\\), where \\(f\\) is analytic and \\(z_0\\) lies inside \\(\\gamma\\). The function \\(g\\) is not analytic at \\(z_0\\), so Cauchy's theorem does not directly apply. Yet the integral \\(\\oint_\\gamma g(z)\\,dz\\) is far from arbitrary: it equals exactly \\(2\\pi i\\, f(z_0)\\). The contour integral "reads off" the value of \\(f\\) at the singular point.</p>
 
-<p>Since \\(f\\) is analytic everywhere inside \\(C\\) except at \\(z_0\\), we can shrink the contour around \\(z_0\\) without changing the integral. On a tiny circle of radius \\(\\varepsilon\\) around \\(z_0\\), the function \\(f(z)\\) is approximately \\(f(z_0)\\), so</p>
+<h3>What This Chapter Builds</h3>
 
-\\[
-\\oint_C \\frac{f(z)}{z - z_0}\\,dz \\approx f(z_0) \\oint_{|z - z_0| = \\varepsilon} \\frac{dz}{z - z_0} = f(z_0) \\cdot 2\\pi i.
-\\]
+<p>We develop a chain of increasingly powerful results, each following from the last:</p>
+<ol>
+    <li><strong>Cauchy's integral formula:</strong> recover \\(f(z_0)\\) from boundary values.</li>
+    <li><strong>Derivative formula:</strong> all derivatives \\(f^{(n)}(z_0)\\) are also determined by the same contour integral (analyticity implies infinite differentiability).</li>
+    <li><strong>Mean value property:</strong> \\(f(z_0)\\) equals the average of \\(f\\) on any circle centered at \\(z_0\\).</li>
+    <li><strong>Maximum modulus principle:</strong> \\(|f|\\) cannot attain a maximum in the interior of its domain.</li>
+    <li><strong>Liouville's theorem and the Fundamental Theorem of Algebra:</strong> bounded entire functions are constant, and every non-constant polynomial has a root.</li>
+</ol>
 
-<p>As \\(\\varepsilon \\to 0\\), the approximation becomes exact. This yields the formula</p>
-
-\\[
-f(z_0) = \\frac{1}{2\\pi i} \\oint_C \\frac{f(z)}{z - z_0}\\,dz.
-\\]
-
-<h3>Why This Is Surprising</h3>
-
-<p>The formula says that the value of \\(f\\) at an <em>interior</em> point is completely determined by its values on the <em>boundary</em>. This has no real-variable analogue. A smooth function on a disk need not satisfy any such relation between boundary and interior.</p>
-
-<p>Analyticity is a global constraint disguised as a local one. The Cauchy-Riemann equations look local, but they propagate information across the entire domain.</p>
-
-<div class="env-block remark">
-    <div class="env-title">Preview of Consequences</div>
-    <div class="env-body">
-        <p>From this single formula, we will derive:</p>
-        <ul>
-            <li><strong>Derivatives via integrals</strong>: all derivatives of \\(f\\) exist and are themselves analytic.</li>
-            <li><strong>Mean value property</strong>: \\(f(z_0)\\) equals the average of \\(f\\) over any circle centered at \\(z_0\\).</li>
-            <li><strong>Maximum modulus principle</strong>: \\(|f|\\) cannot have an interior local maximum.</li>
-            <li><strong>Liouville's theorem</strong>: bounded entire functions are constant.</li>
-            <li><strong>Fundamental theorem of algebra</strong>: every non-constant polynomial has a root.</li>
-        </ul>
-    </div>
-</div>
+<p>Each result is a manifestation of the same underlying rigidity: analytic functions are globally constrained by local data.</p>
 `,
-            visualizations: [
-                {
-                    id: 'viz-cauchy-formula',
-                    title: "Cauchy's Integral Formula: Live Demo",
-                    description: 'Drag z\u2080 inside the contour. The formula f(z\u2080) = (1/2\u03c0i) \u222e f(z)/(z\u2212z\u2080) dz is evaluated numerically in real time. The integrand f(z)/(z\u2212z\u2080) is shown as a vector field along the contour.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 420, scale: 80, originX: 300, originY: 210 });
-                        var c = viz.colors;
-
-                        // State
-                        var z0 = { x: 0.3, y: 0.4 };
-                        var R = 1.8;
-                        var N = 200; // integration steps
-
-                        // Complex multiply
-                        function cmul(a, b) { return { x: a.x*b.x - a.y*b.y, y: a.x*b.y + a.y*b.x }; }
-                        function cdiv(a, b) {
-                            var d = b.x*b.x + b.y*b.y;
-                            if (d < 1e-20) return { x: 0, y: 0 };
-                            return { x: (a.x*b.x + a.y*b.y)/d, y: (a.y*b.x - a.x*b.y)/d };
-                        }
-                        function cabs(a) { return Math.sqrt(a.x*a.x + a.y*a.y); }
-
-                        // f(z) = z^2 + 0.5 (a simple analytic function)
-                        function f(x, y) {
-                            return { x: x*x - y*y + 0.5, y: 2*x*y };
-                        }
-
-                        // Numerically integrate (1/2pi i) * integral f(z)/(z-z0) dz along circle of radius R
-                        function cauchyIntegral(z0x, z0y) {
-                            var re = 0, im = 0;
-                            for (var k = 0; k < N; k++) {
-                                var t = 2 * Math.PI * k / N;
-                                var dt = 2 * Math.PI / N;
-                                // z = R e^{it}
-                                var zx = R * Math.cos(t), zy = R * Math.sin(t);
-                                // dz = i R e^{it} dt
-                                var dzx = -R * Math.sin(t) * dt;
-                                var dzy =  R * Math.cos(t) * dt;
-                                // f(z)
-                                var fz = f(zx, zy);
-                                // z - z0
-                                var denom = { x: zx - z0x, y: zy - z0y };
-                                // f(z)/(z-z0)
-                                var ratio = cdiv(fz, denom);
-                                // multiply by dz
-                                var integrand = cmul(ratio, { x: dzx, y: dzy });
-                                re += integrand.x;
-                                im += integrand.y;
-                            }
-                            // divide by 2pi i: divide by i => swap and negate, then divide by 2pi
-                            // 1/(2pi i) * (re + i*im) = (im - i*re) / (2pi)
-                            return { x: im / (2 * Math.PI), y: -re / (2 * Math.PI) };
-                        }
-
-                        viz.addDraggable('z0', z0.x, z0.y, c.orange, 8, function(wx, wy) {
-                            // Constrain inside contour with margin
-                            var d = Math.sqrt(wx*wx + wy*wy);
-                            if (d < R - 0.15) { z0.x = wx; z0.y = wy; }
-                        });
-
-                        function draw() {
-                            viz.clear();
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
-
-                            // Draw contour circle
-                            viz.drawCircle(0, 0, R, null, c.blue, 2.5);
-
-                            // Draw integrand vectors along contour (sub-sampled)
-                            var nArrows = 24;
-                            for (var k = 0; k < nArrows; k++) {
-                                var t = 2 * Math.PI * k / nArrows;
-                                var zx = R * Math.cos(t), zy = R * Math.sin(t);
-                                var fz = f(zx, zy);
-                                var denom = { x: zx - z0.x, y: zy - z0.y };
-                                var ratio = cdiv(fz, denom);
-                                var len = cabs(ratio);
-                                if (len < 1e-6) continue;
-                                // Scale for display
-                                var scale = Math.min(0.25, 0.12 / (len + 0.01));
-                                var ex = ratio.x * scale;
-                                var ey = ratio.y * scale;
-                                viz.drawVector(zx, zy, zx + ex, zy + ey, c.teal + 'bb', null, 1.5);
-                            }
-
-                            // Compute integral result
-                            var inside = Math.sqrt(z0.x*z0.x + z0.y*z0.y) < R - 0.05;
-                            var result = inside ? cauchyIntegral(z0.x, z0.y) : null;
-                            var fz0 = f(z0.x, z0.y);
-
-                            // Draw z0
-                            viz.drawDraggables();
-                            viz.drawPoint(z0.x, z0.y, c.orange, null, 6);
-
-                            // Label z0
-                            var ctx = viz.ctx;
-                            ctx.fillStyle = c.orange;
-                            ctx.font = 'bold 13px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.textBaseline = 'bottom';
-                            var [sx0, sy0] = viz.toScreen(z0.x, z0.y);
-                            ctx.fillText('z\u2080', sx0 + 10, sy0 - 4);
-
-                            // Info panel
-                            var px = 14, py = 14;
-                            ctx.fillStyle = '#0c0c2088';
-                            ctx.fillRect(px - 4, py - 4, 310, 110);
-                            ctx.fillStyle = c.white;
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.textAlign = 'left';
-                            ctx.textBaseline = 'top';
-                            ctx.fillText('f(z) = z\u00b2 + 0.5', px, py);
-                            ctx.fillText('z\u2080 = ' + z0.x.toFixed(3) + (z0.y >= 0 ? ' + ' : ' \u2212 ') + Math.abs(z0.y).toFixed(3) + 'i', px, py + 22);
-                            if (inside && result) {
-                                ctx.fillStyle = c.teal;
-                                ctx.fillText('f(z\u2080) = ' + fz0.x.toFixed(4) + (fz0.y >= 0 ? ' + ' : ' \u2212 ') + Math.abs(fz0.y).toFixed(4) + 'i', px, py + 44);
-                                ctx.fillStyle = c.orange;
-                                ctx.fillText('\u222e formula: ' + result.x.toFixed(4) + (result.y >= 0 ? ' + ' : ' \u2212 ') + Math.abs(result.y).toFixed(4) + 'i', px, py + 66);
-                                ctx.fillStyle = c.green;
-                                var err = Math.sqrt((result.x - fz0.x)**2 + (result.y - fz0.y)**2);
-                                ctx.fillText('Error: ' + err.toExponential(2), px, py + 88);
-                            } else {
-                                ctx.fillStyle = c.red;
-                                ctx.fillText('z\u2080 is outside the contour', px, py + 44);
-                            }
-
-                            // Label contour
-                            viz.screenText('C', viz.toScreen(R, 0)[0] + 10, viz.toScreen(R, 0)[1] - 8, c.blue, 14);
-                        }
-
-                        viz.animate(draw);
-                        return viz;
-                    }
-                }
-            ],
-            exercises: [
-                {
-                    question: 'State Cauchy\'s integral formula precisely: what conditions must \\(f\\) and \\(C\\) satisfy?',
-                    hint: 'Think about analyticity requirements both on and inside the contour.',
-                    solution: 'Let \\(f\\) be analytic on and inside a positively oriented simple closed contour \\(C\\), and let \\(z_0\\) be any point inside \\(C\\). Then \\(f(z_0) = \\frac{1}{2\\pi i} \\oint_C \\frac{f(z)}{z - z_0}\\,dz\\). The key conditions are: (1) \\(f\\) analytic on the closed region bounded by \\(C\\); (2) \\(z_0\\) lies strictly inside \\(C\\); (3) \\(C\\) is traversed counterclockwise.'
-                }
-            ]
+            visualizations: [],
+            exercises: []
         },
 
         // ================================================================
-        // SECTION 2: The Integral Formula
+        // SECTION 2: Cauchy's Integral Formula
         // ================================================================
         {
             id: 'sec-formula',
-            title: "The Integral Formula",
+            title: "Cauchy's Integral Formula",
             content: `
-<h2>The Integral Formula</h2>
+<h2>Cauchy's Integral Formula</h2>
 
 <div class="env-block theorem">
     <div class="env-title">Theorem 6.1 (Cauchy's Integral Formula)</div>
     <div class="env-body">
-        <p>Let \\(f\\) be analytic on and inside a positively oriented simple closed contour \\(C\\). For any point \\(z_0\\) inside \\(C\\),</p>
+        <p>Let \\(f\\) be analytic on a simply connected domain \\(D\\), and let \\(\\gamma\\) be a positively oriented simple closed contour in \\(D\\). If \\(z_0\\) lies inside \\(\\gamma\\), then</p>
         \\[
-        f(z_0) = \\frac{1}{2\\pi i} \\oint_C \\frac{f(z)}{z - z_0}\\,dz.
+        f(z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{z - z_0}\\,dz.
         \\]
     </div>
 </div>
 
-<h3>Proof</h3>
+<div class="env-block proof">
+    <div class="env-title">Proof Sketch</div>
+    <div class="env-body">
+        <p>Since \\(f\\) is continuous at \\(z_0\\), for any \\(\\varepsilon > 0\\) there exists \\(\\delta > 0\\) such that \\(|f(z) - f(z_0)| < \\varepsilon\\) whenever \\(|z - z_0| < \\delta\\). Let \\(C_r\\) be a small circle of radius \\(r < \\delta\\) centered at \\(z_0\\).</p>
 
-<p>Since \\(f\\) is analytic inside \\(C\\) and the only obstruction is the simple pole of \\(1/(z - z_0)\\) at \\(z_0\\), we excise a small disk of radius \\(\\varepsilon\\) around \\(z_0\\) bounded by circle \\(C_\\varepsilon\\). By Cauchy's theorem applied to the annular region between \\(C\\) and \\(C_\\varepsilon\\),</p>
+        <p>By the deformation principle (a consequence of Cauchy's theorem), we can replace \\(\\gamma\\) by \\(C_r\\) without changing the integral:</p>
+        \\[
+        \\oint_\\gamma \\frac{f(z)}{z - z_0}\\,dz = \\oint_{C_r} \\frac{f(z)}{z - z_0}\\,dz.
+        \\]
 
-\\[
-\\oint_C \\frac{f(z)}{z - z_0}\\,dz = \\oint_{C_\\varepsilon} \\frac{f(z)}{z - z_0}\\,dz.
-\\]
+        <p>Now decompose the integrand:</p>
+        \\[
+        \\oint_{C_r} \\frac{f(z)}{z - z_0}\\,dz = f(z_0) \\oint_{C_r} \\frac{dz}{z - z_0} + \\oint_{C_r} \\frac{f(z) - f(z_0)}{z - z_0}\\,dz.
+        \\]
 
-<p>Parametrize \\(C_\\varepsilon\\): set \\(z = z_0 + \\varepsilon e^{i\\theta}\\), so \\(dz = i\\varepsilon e^{i\\theta}\\,d\\theta\\). Then</p>
+        <p>The first integral equals \\(2\\pi i\\) (this is the fundamental winding number computation). For the second integral, on \\(C_r\\) we have \\(|z - z_0| = r\\) and \\(|f(z) - f(z_0)| < \\varepsilon\\), so by the ML inequality:</p>
+        \\[
+        \\left|\\oint_{C_r} \\frac{f(z) - f(z_0)}{z - z_0}\\,dz\\right| \\leq \\frac{\\varepsilon}{r} \\cdot 2\\pi r = 2\\pi\\varepsilon.
+        \\]
 
-\\[
-\\oint_{C_\\varepsilon} \\frac{f(z)}{z - z_0}\\,dz = \\int_0^{2\\pi} \\frac{f(z_0 + \\varepsilon e^{i\\theta})}{\\varepsilon e^{i\\theta}} \\cdot i\\varepsilon e^{i\\theta}\\,d\\theta = i\\int_0^{2\\pi} f(z_0 + \\varepsilon e^{i\\theta})\\,d\\theta.
-\\]
+        <p>Since \\(\\varepsilon\\) is arbitrary, the remainder vanishes, giving \\(\\oint_\\gamma \\frac{f(z)}{z-z_0}\\,dz = 2\\pi i\\, f(z_0)\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-<p>As \\(\\varepsilon \\to 0\\), continuity of \\(f\\) gives</p>
-
-\\[
-i\\int_0^{2\\pi} f(z_0 + \\varepsilon e^{i\\theta})\\,d\\theta \\to 2\\pi i\\, f(z_0).
-\\]
-
-<p>Combining: \\(\\oint_C \\frac{f(z)}{z-z_0}\\,dz = 2\\pi i\\, f(z_0)\\), which rearranges to the formula. \\(\\square\\)</p>
-
-<h3>The Winding Number Interpretation</h3>
-
-<p>The formula extends to non-simple contours. If \\(C\\) winds \\(n(C, z_0)\\) times around \\(z_0\\), then</p>
-
-\\[
-\\frac{1}{2\\pi i} \\oint_C \\frac{f(z)}{z - z_0}\\,dz = n(C, z_0)\\, f(z_0).
-\\]
-
-<p>The winding number \\(n(C, z_0) = \\frac{1}{2\\pi i} \\oint_C \\frac{dz}{z - z_0}\\) counts how many times \\(C\\) encircles \\(z_0\\) (with sign: positive = counterclockwise).</p>
-
-<h3>Computing Integrals via the Formula</h3>
+<div class="env-block intuition">
+    <div class="env-title">What the Formula Says</div>
+    <div class="env-body">
+        <p>The value of \\(f\\) at any interior point \\(z_0\\) is a <em>weighted average</em> of \\(f\\) on the boundary, with weights \\(1/(z - z_0)\\). The pole at \\(z_0\\) acts like a "probe": it amplifies contributions from nearby points on the contour and suppresses distant ones. Yet the integral combines all boundary values into exactly \\(f(z_0)\\).</p>
+    </div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Example: Evaluating a contour integral</div>
+    <div class="env-title">Example: Computing an Integral</div>
     <div class="env-body">
         <p>Evaluate \\(\\displaystyle\\oint_{|z|=2} \\frac{e^z}{z - 1}\\,dz\\).</p>
-        <p>Here \\(f(z) = e^z\\) is entire, \\(z_0 = 1\\), and \\(|z_0| = 1 < 2\\), so \\(z_0\\) is inside the contour. By Cauchy's formula,</p>
-        \\[\\oint_{|z|=2} \\frac{e^z}{z-1}\\,dz = 2\\pi i\\, e^1 = 2\\pi i\\, e.\\]
+        <p>Here \\(f(z) = e^z\\) is entire and \\(z_0 = 1\\) lies inside \\(|z| = 2\\). By Cauchy's formula:</p>
+        \\[
+        \\oint_{|z|=2} \\frac{e^z}{z-1}\\,dz = 2\\pi i \\cdot f(1) = 2\\pi i \\cdot e.
+        \\]
     </div>
 </div>
 
-<div class="env-block example">
-    <div class="env-title">Example: Point outside the contour</div>
-    <div class="env-body">
-        <p>Evaluate \\(\\displaystyle\\oint_{|z|=1} \\frac{\\sin z}{z - 3}\\,dz\\).</p>
-        <p>Here \\(z_0 = 3\\) lies outside \\(|z| = 1\\). The integrand \\(\\sin z/(z-3)\\) is analytic inside \\(|z| = 1\\), so by Cauchy's theorem the integral equals \\(0\\).</p>
-    </div>
-</div>
-
-<div class="env-block remark">
-    <div class="env-title">Remark: The Formula as an Operator</div>
-    <div class="env-body">
-        <p>The formula \\(f(z_0) = \\frac{1}{2\\pi i}\\oint_C \\frac{f(z)}{z - z_0}\\,dz\\) can be read as a <em>reproducing kernel</em>: the Cauchy kernel \\(K(z, z_0) = \\frac{1}{z - z_0}\\) "reproduces" analytic functions from their boundary values. This is the complex analogue of Poisson's formula for harmonic functions.</p>
-    </div>
-</div>
+<div class="viz-placeholder" data-viz="viz-cauchy-formula"></div>
 `,
             visualizations: [
                 {
-                    id: 'viz-cauchy-formula-contour',
-                    title: 'Contour Deformation: Why the Integral Is Independent of Contour Shape',
-                    description: 'The contour around z\u2080 can be any simple closed curve enclosing z\u2080. Drag z\u2080 and observe the numerical result remains 2\u03c0i\u00b7f(z\u2080) regardless of contour shape.',
+                    id: 'viz-cauchy-formula',
+                    title: "Cauchy's Integral Formula: Draggable Probe",
+                    description: 'Drag the point z\u2080 inside the contour. The visualization computes the contour integral numerically and compares it to 2\u03C0i f(z\u2080). When z\u2080 is inside the curve, they match; when outside, the integral gives zero.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 400, scale: 80, originX: 300, originY: 200 });
-                        var c = viz.colors;
-                        var z0 = { x: 0.2, y: 0.3 };
-                        var contourType = 0; // 0=circle, 1=square, 2=triangle
-                        var N = 300;
-
-                        VizEngine.createButton(controls, 'Circle', function() { contourType = 0; });
-                        VizEngine.createButton(controls, 'Square', function() { contourType = 1; });
-                        VizEngine.createButton(controls, 'Triangle', function() { contourType = 2; });
-
-                        function f(x, y) { return { x: x*x - y*y + 0.5, y: 2*x*y }; }
-
-                        function cdiv(a, b) {
-                            var d = b.x*b.x + b.y*b.y;
-                            if (d < 1e-20) return { x: 0, y: 0 };
-                            return { x: (a.x*b.x + a.y*b.y)/d, y: (a.y*b.x - a.x*b.y)/d };
-                        }
-                        function cmul(a, b) { return { x: a.x*b.x - a.y*b.y, y: a.x*b.y + a.y*b.x }; }
-
-                        // Get contour point at parameter t in [0,1]
-                        var R = 1.6;
-                        function contourPoint(t) {
-                            var th = 2 * Math.PI * t;
-                            if (contourType === 0) {
-                                return { x: R * Math.cos(th), y: R * Math.sin(th) };
-                            } else if (contourType === 1) {
-                                // Square: perimeter parametrization
-                                var s = (t * 4) % 4;
-                                if (s < 1) return { x: R * (2*s - 1), y: -R };
-                                if (s < 2) return { x: R, y: R * (2*(s-1) - 1) };
-                                if (s < 3) return { x: R * (1 - 2*(s-2)), y: R };
-                                return { x: -R, y: R * (1 - 2*(s-3)) };
-                            } else {
-                                // Triangle
-                                var s2 = (t * 3) % 3;
-                                var verts = [
-                                    { x: 0, y: R },
-                                    { x: R * Math.cos(-Math.PI/6), y: -R * 0.5 },
-                                    { x: -R * Math.cos(-Math.PI/6), y: -R * 0.5 }
-                                ];
-                                var i0 = Math.floor(s2), i1 = (i0 + 1) % 3, u = s2 - i0;
-                                return { x: verts[i0].x*(1-u) + verts[i1].x*u, y: verts[i0].y*(1-u) + verts[i1].y*u };
-                            }
-                        }
-
-                        function numericalIntegral() {
-                            var re = 0, im = 0;
-                            for (var k = 0; k < N; k++) {
-                                var t = k / N, t2 = (k + 1) / N;
-                                var p = contourPoint(t), p2 = contourPoint(t2);
-                                // midpoint
-                                var pm = contourPoint((t + t2) / 2);
-                                var fz = f(pm.x, pm.y);
-                                var denom = { x: pm.x - z0.x, y: pm.y - z0.y };
-                                var ratio = cdiv(fz, denom);
-                                // dz
-                                var dzx = p2.x - p.x, dzy = p2.y - p.y;
-                                var integrand = cmul(ratio, { x: dzx, y: dzy });
-                                re += integrand.x; im += integrand.y;
-                            }
-                            return { x: im / (2 * Math.PI), y: -re / (2 * Math.PI) };
-                        }
-
-                        viz.addDraggable('z0', z0.x, z0.y, c.orange, 8, function(wx, wy) {
-                            // Check inside contour (approximate by radius for circle, just allow broad region)
-                            z0.x = Math.max(-1.2, Math.min(1.2, wx));
-                            z0.y = Math.max(-1.2, Math.min(1.2, wy));
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 60,
+                            originX: 280, originY: 210
                         });
+
+                        // f(z) = z^2 + 1
+                        function fRe(x, y) { return x * x - y * y + 1; }
+                        function fIm(x, y) { return 2 * x * y; }
+
+                        var z0 = viz.addDraggable('z0', 0.5, 0.3, viz.colors.orange, 8);
+
+                        var contourR = 2.0;
+
+                        function computeIntegral(z0x, z0y) {
+                            var N = 2000;
+                            var sumRe = 0, sumIm = 0;
+                            for (var k = 0; k < N; k++) {
+                                var t = 2 * Math.PI * k / N;
+                                var t1 = 2 * Math.PI * (k + 1) / N;
+                                var zx = contourR * Math.cos(t);
+                                var zy = contourR * Math.sin(t);
+                                var dzx = contourR * (Math.cos(t1) - Math.cos(t));
+                                var dzy = contourR * (Math.sin(t1) - Math.sin(t));
+
+                                // f(z) / (z - z0)
+                                var numRe = fRe(zx, zy);
+                                var numIm = fIm(zx, zy);
+                                var denRe = zx - z0x;
+                                var denIm = zy - z0y;
+                                var denMag2 = denRe * denRe + denIm * denIm;
+                                if (denMag2 < 1e-12) continue;
+
+                                // complex division: (numRe + i numIm) / (denRe + i denIm)
+                                var qRe = (numRe * denRe + numIm * denIm) / denMag2;
+                                var qIm = (numIm * denRe - numRe * denIm) / denMag2;
+
+                                // multiply by dz
+                                sumRe += qRe * dzx - qIm * dzy;
+                                sumIm += qIm * dzx + qRe * dzy;
+                            }
+                            return [sumRe, sumIm];
+                        }
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(0.5);
+                            viz.drawGrid(1);
                             viz.drawAxes();
+                            var ctx = viz.ctx;
 
                             // Draw contour
-                            var ctx = viz.ctx;
-                            ctx.strokeStyle = c.blue; ctx.lineWidth = 2.5;
-                            ctx.beginPath();
-                            for (var k = 0; k <= N; k++) {
-                                var p = contourPoint(k / N);
-                                var [sx, sy] = viz.toScreen(p.x, p.y);
-                                k === 0 ? ctx.moveTo(sx, sy) : ctx.lineTo(sx, sy);
-                            }
-                            ctx.stroke();
+                            viz.drawCircle(0, 0, contourR, null, viz.colors.teal, 2);
 
+                            // Direction arrow on contour
+                            var arrowAngle = Math.PI / 4;
+                            var ax = contourR * Math.cos(arrowAngle);
+                            var ay = contourR * Math.sin(arrowAngle);
+                            var tx = -Math.sin(arrowAngle);
+                            var ty = Math.cos(arrowAngle);
+                            var as = 0.15;
+                            viz.drawVector(ax - tx * as, ay - ty * as, ax + tx * as, ay + ty * as, viz.colors.teal, null, 2);
+
+                            var x0 = z0.x, y0 = z0.y;
+                            var inside = (x0 * x0 + y0 * y0) < contourR * contourR;
+
+                            // Compute integral numerically
+                            var integral = computeIntegral(x0, y0);
+                            // Expected: 2*pi*i * f(z0) if inside, 0 if outside
+                            var fz0Re = fRe(x0, y0);
+                            var fz0Im = fIm(x0, y0);
+                            // 2*pi*i * f(z0) = -2*pi*fz0Im + i*2*pi*fz0Re
+                            var expectedRe = inside ? -2 * Math.PI * fz0Im : 0;
+                            var expectedIm = inside ? 2 * Math.PI * fz0Re : 0;
+
+                            // Draw z0
                             viz.drawDraggables();
-                            viz.drawPoint(z0.x, z0.y, c.orange, null, 6);
+                            viz.drawText('z\u2080', x0 + 0.15, y0 + 0.2, viz.colors.orange, 14);
 
-                            var result = numericalIntegral();
-                            var fz0 = f(z0.x, z0.y);
+                            // Info panel
+                            var panelY = 18;
+                            viz.screenText('f(z) = z\u00B2 + 1', viz.width / 2, panelY, viz.colors.white, 14);
 
-                            ctx.fillStyle = '#0c0c2088';
-                            ctx.fillRect(10, 10, 320, 90);
-                            ctx.fillStyle = c.white;
-                            ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-                            ctx.fillText('f(z) = z\u00b2 + 0.5,  z\u2080 = ' + z0.x.toFixed(2) + ' + ' + z0.y.toFixed(2) + 'i', 14, 14);
-                            ctx.fillStyle = c.teal;
-                            ctx.fillText('f(z\u2080) direct: ' + fz0.x.toFixed(4) + ' + ' + fz0.y.toFixed(4) + 'i', 14, 36);
-                            ctx.fillStyle = c.orange;
-                            ctx.fillText('\u222e formula: ' + result.x.toFixed(4) + ' + ' + result.y.toFixed(4) + 'i', 14, 58);
-                            ctx.fillStyle = c.green;
-                            var names = ['Circle', 'Square', 'Triangle'];
-                            ctx.fillText('Contour: ' + names[contourType] + ' (shape does not matter!)', 14, 80);
+                            var z0Str = 'z\u2080 = ' + x0.toFixed(2) + (y0 >= 0 ? ' + ' : ' - ') + Math.abs(y0).toFixed(2) + 'i';
+                            viz.screenText(z0Str, viz.width / 2, panelY + 20, viz.colors.orange, 12);
+
+                            var fStr = 'f(z\u2080) = ' + fz0Re.toFixed(2) + (fz0Im >= 0 ? ' + ' : ' - ') + Math.abs(fz0Im).toFixed(2) + 'i';
+                            viz.screenText(fStr, viz.width / 2, panelY + 38, viz.colors.blue, 12);
+
+                            // Numerical result
+                            var intRe = integral[0], intIm = integral[1];
+                            // Divide by 2*pi*i to get f(z0): (intRe + i*intIm) / (2*pi*i) = intIm/(2*pi) + i*(-intRe/(2*pi))
+                            var recovRe = intIm / (2 * Math.PI);
+                            var recovIm = -intRe / (2 * Math.PI);
+
+                            var recStr = '(1/2\u03C0i)\u222E = ' + recovRe.toFixed(2) + (recovIm >= 0 ? ' + ' : ' - ') + Math.abs(recovIm).toFixed(2) + 'i';
+                            viz.screenText(recStr, viz.width / 2, panelY + 56, viz.colors.teal, 12);
+
+                            if (inside) {
+                                viz.screenText('z\u2080 is INSIDE \u03B3: integral recovers f(z\u2080)', viz.width / 2, viz.height - 20, viz.colors.green, 12);
+                            } else {
+                                viz.screenText('z\u2080 is OUTSIDE \u03B3: integral = 0', viz.width / 2, viz.height - 20, viz.colors.red, 12);
+                            }
                         }
 
-                        viz.animate(draw);
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=3} \\frac{\\cos z}{z - i}\\,dz\\).',
-                    hint: 'Identify \\(f(z)\\) and \\(z_0\\). Check that \\(z_0\\) is inside the contour.',
-                    solution: 'Here \\(f(z) = \\cos z\\) (entire) and \\(z_0 = i\\). Since \\(|i| = 1 < 3\\), we have \\(z_0\\) inside \\(|z|=3\\). By Cauchy\'s formula: \\(\\oint_{|z|=3} \\frac{\\cos z}{z-i}\\,dz = 2\\pi i\\, \\cos(i) = 2\\pi i \\cosh(1)\\).'
+                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=3} \\frac{\\sin z}{z - \\pi}\\,dz\\).',
+                    hint: 'Identify \\(f(z) = \\sin z\\) and \\(z_0 = \\pi\\). Check that \\(z_0\\) is inside the contour.',
+                    solution: 'Since \\(|\\pi| \\approx 3.14 > 3\\), the point \\(z_0 = \\pi\\) lies outside \\(|z| = 3\\). The integrand is analytic inside the contour, so by Cauchy\'s theorem the integral equals \\(0\\).'
                 },
                 {
-                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=2} \\frac{z^2}{z + 3}\\,dz\\).',
-                    hint: 'Where is the pole? Is it inside the contour?',
-                    solution: 'The integrand has a potential singularity at \\(z_0 = -3\\), but \\(|-3| = 3 > 2\\), so \\(z_0\\) is outside \\(|z|=2\\). The function \\(z^2/(z+3)\\) is analytic inside \\(|z|=2\\), so by Cauchy\'s theorem the integral equals \\(0\\).'
-                },
-                {
-                    question: 'Use Cauchy\'s formula to evaluate \\(\\displaystyle\\oint_{|z|=1} \\frac{e^{iz}}{z}\\,dz\\).',
-                    hint: 'Write the integrand as \\(f(z)/z\\) with \\(z_0 = 0\\).',
-                    solution: 'Here \\(f(z) = e^{iz}\\) (entire) and \\(z_0 = 0 \\in \\{|z| < 1\\}\\). Cauchy\'s formula gives \\(\\oint_{|z|=1} \\frac{e^{iz}}{z}\\,dz = 2\\pi i\\, e^{i \\cdot 0} = 2\\pi i\\). This equals \\(\\int_0^{2\\pi} e^{-\\sin\\theta} e^{i(\\cos\\theta - \\theta)}\\,d\\theta\\), separating real and imaginary parts gives the celebrated formula \\(\\int_0^{2\\pi} e^{-\\sin\\theta}\\cos(\\cos\\theta)\\,d\\theta = 2\\pi\\).'
+                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=1} \\frac{z^3 + 2z}{z - i/2}\\,dz\\).',
+                    hint: 'Apply Cauchy\'s formula with \\(f(z) = z^3 + 2z\\) and \\(z_0 = i/2\\).',
+                    solution: 'Here \\(z_0 = i/2\\) is inside \\(|z| = 1\\), and \\(f(z) = z^3 + 2z\\). By Cauchy\'s formula: \\(2\\pi i \\cdot f(i/2) = 2\\pi i \\left[(i/2)^3 + 2(i/2)\\right] = 2\\pi i \\left[-i/8 + i\\right] = 2\\pi i \\cdot \\frac{7i}{8} = -\\frac{7\\pi}{4}\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 3: Derivatives via Integration
+        // SECTION 3: Cauchy's Formula for Derivatives
         // ================================================================
         {
             id: 'sec-derivatives',
-            title: 'Derivatives via Integration',
+            title: "Cauchy's Formula for Derivatives",
             content: `
-<h2>Derivatives via Integration</h2>
+<h2>Cauchy's Formula for Derivatives</h2>
 
-<div class="env-block intuition">
-    <div class="env-title">The Key Idea</div>
-    <div class="env-body">
-        <p>Cauchy's formula expresses \\(f(z_0)\\) as an integral involving \\(1/(z - z_0)\\). What happens if we differentiate this integral with respect to \\(z_0\\)? Differentiating under the integral sign is valid (the integrand is smooth in \\(z_0\\) away from \\(C\\)), and it produces an integral formula for \\(f'(z_0)\\), \\(f''(z_0)\\), and every higher derivative.</p>
-    </div>
-</div>
+<p>One of the most striking consequences of Cauchy's integral formula is that analytic functions are infinitely differentiable, and every derivative is itself given by a contour integral.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 6.2 (Cauchy's Differentiation Formula)</div>
+    <div class="env-title">Theorem 6.2 (Cauchy's Derivative Formula)</div>
     <div class="env-body">
-        <p>Under the same hypotheses as Theorem 6.1, \\(f\\) has derivatives of all orders at \\(z_0\\), given by</p>
+        <p>Let \\(f\\) be analytic on a simply connected domain \\(D\\), let \\(\\gamma\\) be a positively oriented simple closed contour in \\(D\\), and let \\(z_0\\) lie inside \\(\\gamma\\). Then \\(f\\) has derivatives of all orders at \\(z_0\\), and</p>
         \\[
-        f^{(n)}(z_0) = \\frac{n!}{2\\pi i} \\oint_C \\frac{f(z)}{(z - z_0)^{n+1}}\\,dz, \\qquad n = 0, 1, 2, \\ldots
+        f^{(n)}(z_0) = \\frac{n!}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{(z - z_0)^{n+1}}\\,dz, \\qquad n = 0, 1, 2, \\ldots
         \\]
     </div>
 </div>
 
-<h3>Proof Sketch</h3>
-
-<p>Differentiate the Cauchy formula \\(n\\) times with respect to \\(z_0\\):</p>
-
-\\[
-\\frac{d^n}{dz_0^n} \\frac{1}{z - z_0} = \\frac{n!}{(z - z_0)^{n+1}}.
-\\]
-
-<p>Interchanging differentiation and integration (justified by uniform convergence of the integrand in \\(z_0\\) away from \\(C\\)) gives the result. \\(\\square\\)</p>
-
-<h3>Consequences</h3>
-
-<p>This theorem has a remarkable corollary:</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Corollary (Analyticity implies infinite differentiability)</div>
+<div class="env-block proof">
+    <div class="env-title">Proof Idea (Differentiation Under the Integral Sign)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic (complex differentiable) in a domain \\(D\\), then \\(f\\) possesses derivatives of all orders in \\(D\\), and each derivative is itself analytic.</p>
+        <p>Starting from Cauchy's formula \\(f(z_0) = \\frac{1}{2\\pi i}\\oint_\\gamma \\frac{f(z)}{z-z_0}\\,dz\\), we differentiate with respect to \\(z_0\\). Since \\(z_0\\) appears only in the denominator and the integral is over a fixed contour, we can differentiate under the integral sign:</p>
+        \\[
+        f'(z_0) = \\frac{1}{2\\pi i}\\oint_\\gamma \\frac{\\partial}{\\partial z_0}\\left[\\frac{f(z)}{z - z_0}\\right]dz = \\frac{1}{2\\pi i}\\oint_\\gamma \\frac{f(z)}{(z-z_0)^2}\\,dz.
+        \\]
+        <p>Repeating \\(n\\) times and tracking the combinatorial factors yields the general formula. The rigorous justification uses uniform convergence of difference quotients on the contour.</p>
     </div>
+    <div class="qed">&marker;</div>
 </div>
 
-<p>This is in dramatic contrast with real analysis, where a once-differentiable function need not be twice differentiable. Complex differentiability is so rigid that it automatically implies smoothness to all orders.</p>
+<div class="env-block remark">
+    <div class="env-title">Analyticity Implies Smoothness</div>
+    <div class="env-body">
+        <p>In real analysis, a function can be differentiable once but not twice. In complex analysis, a single complex derivative forces all higher derivatives to exist. This is because the derivative formula shows \\(f^{(n)}(z_0)\\) is itself an integral of \\(f\\) (which is continuous), hence continuous, hence analytic, hence again differentiable. The bootstrap never stops.</p>
+    </div>
+</div>
 
 <div class="env-block example">
-    <div class="env-title">Example: Second derivative formula</div>
+    <div class="env-title">Example: Higher-Order Integral</div>
     <div class="env-body">
         <p>Evaluate \\(\\displaystyle\\oint_{|z|=2} \\frac{e^z}{(z-1)^3}\\,dz\\).</p>
-        <p>Here \\(f(z) = e^z\\), \\(z_0 = 1\\), \\(n = 2\\). Since \\(z_0\\) is inside \\(|z| = 2\\):</p>
-        \\[\\oint_{|z|=2} \\frac{e^z}{(z-1)^3}\\,dz = \\frac{2\\pi i}{2!}\\, f''(1) = \\pi i\\, e.\\]
+        <p>With \\(f(z) = e^z\\), \\(z_0 = 1\\), \\(n = 2\\):</p>
+        \\[
+        \\oint_{|z|=2} \\frac{e^z}{(z-1)^3}\\,dz = \\frac{2\\pi i}{2!} f''(1) = \\frac{2\\pi i}{2} \\cdot e = \\pi i \\, e.
+        \\]
     </div>
 </div>
 
-<h3>Cauchy's Estimate</h3>
+<div class="env-block theorem">
+    <div class="env-title">Corollary 6.3 (Cauchy's Inequality)</div>
+    <div class="env-body">
+        <p>If \\(f\\) is analytic on \\(|z - z_0| \\leq R\\) and \\(|f(z)| \\leq M\\) on \\(|z - z_0| = R\\), then</p>
+        \\[
+        |f^{(n)}(z_0)| \\leq \\frac{n! \\, M}{R^n}.
+        \\]
+    </div>
+</div>
 
-<p>From the differentiation formula, we can bound derivatives. If \\(|f(z)| \\leq M\\) on a circle of radius \\(r\\) centered at \\(z_0\\),</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Apply the ML inequality to the derivative formula with \\(\\gamma = C_R\\) (circle of radius \\(R\\)):</p>
+        \\[
+        |f^{(n)}(z_0)| = \\frac{n!}{2\\pi} \\left|\\oint_{C_R} \\frac{f(z)}{(z-z_0)^{n+1}}\\,dz\\right| \\leq \\frac{n!}{2\\pi} \\cdot \\frac{M}{R^{n+1}} \\cdot 2\\pi R = \\frac{n!\\,M}{R^n}.
+        \\]
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
-\\[
-|f^{(n)}(z_0)| \\leq \\frac{n!\\, M}{r^n}.
-\\]
-
-<p>This <strong>Cauchy estimate</strong> is sharp and has far-reaching consequences, including Liouville's theorem.</p>
+<div class="viz-placeholder" data-viz="viz-derivative-formula"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-derivative-formula',
-                    title: 'n-th Derivative via Contour Integral',
-                    description: 'Use the slider to choose n. The n-th derivative f\u207f(z\u2080) = n!/(2\u03c0i) \u222e f(z)/(z\u2212z\u2080)\u207f\u207a\u00b9 dz is computed numerically and compared to the exact value.',
+                    title: "Derivative Formula: Adjustable Order",
+                    description: 'Use the slider to choose the derivative order n. The visualization numerically computes the contour integral for f^(n)(z\u2080) and compares it to the exact value.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 380, scale: 80, originX: 300, originY: 190 });
-                        var c = viz.colors;
-                        var nDeriv = 0;
-                        var z0 = { x: 0.3, y: 0.2 };
-                        var R = 1.8;
-                        var N = 400;
-
-                        VizEngine.createSlider(controls, 'n (derivative order)', 0, 5, 0, 1, function(v) {
-                            nDeriv = Math.round(v);
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 60,
+                            originX: 280, originY: 240
                         });
 
-                        function cmul(a, b) { return { x: a.x*b.x - a.y*b.y, y: a.x*b.y + a.y*b.x }; }
-                        function cdiv(a, b) {
-                            var d = b.x*b.x + b.y*b.y;
-                            if (d < 1e-20) return { x: 0, y: 0 };
-                            return { x: (a.x*b.x + a.y*b.y)/d, y: (a.y*b.x - a.x*b.y)/d };
-                        }
-                        function cpow(z, n) {
-                            // z^n via repeated multiply
-                            if (n === 0) return { x: 1, y: 0 };
-                            var r = { x: 1, y: 0 };
-                            for (var k = 0; k < n; k++) r = cmul(r, z);
+                        var nOrder = 0;
+                        var contourR = 1.5;
+
+                        VizEngine.createSlider(controls, 'n (derivative order)', 0, 5, 0, 1, function(v) {
+                            nOrder = Math.round(v);
+                            draw();
+                        });
+
+                        // f(z) = e^z, all derivatives = e^z
+                        function fRe(x, y) { return Math.exp(x) * Math.cos(y); }
+                        function fIm(x, y) { return Math.exp(x) * Math.sin(y); }
+
+                        function factorial(n) {
+                            var r = 1;
+                            for (var i = 2; i <= n; i++) r *= i;
                             return r;
                         }
 
-                        // f(z) = e^z, exact n-th derivative is also e^z
-                        function f(x, y) {
-                            var er = Math.exp(x);
-                            return { x: er * Math.cos(y), y: er * Math.sin(y) };
-                        }
-
-                        function factorial(n) {
-                            var r = 1; for (var k = 2; k <= n; k++) r *= k; return r;
-                        }
-
-                        function computeIntegral(n) {
-                            var re = 0, im = 0;
+                        function computeDerivIntegral(z0x, z0y, n) {
+                            var N = 3000;
+                            var sumRe = 0, sumIm = 0;
                             for (var k = 0; k < N; k++) {
                                 var t = 2 * Math.PI * k / N;
-                                var dt = 2 * Math.PI / N;
-                                var zx = R * Math.cos(t), zy = R * Math.sin(t);
-                                var fz = f(zx, zy);
-                                var denom = cpow({ x: zx - z0.x, y: zy - z0.y }, n + 1);
-                                var ratio = cdiv(fz, denom);
-                                var dzx = -R * Math.sin(t) * dt;
-                                var dzy =  R * Math.cos(t) * dt;
-                                var integ = cmul(ratio, { x: dzx, y: dzy });
-                                re += integ.x; im += integ.y;
-                            }
-                            // multiply by n! / (2pi i) = n! * im/(2pi), -n! * re/(2pi)
-                            var fac = factorial(n);
-                            return { x: fac * im / (2 * Math.PI), y: -fac * re / (2 * Math.PI) };
-                        }
+                                var t1 = 2 * Math.PI * (k + 1) / N;
+                                var zx = z0x + contourR * Math.cos(t);
+                                var zy = z0y + contourR * Math.sin(t);
+                                var dzx = contourR * (Math.cos(t1) - Math.cos(t));
+                                var dzy = contourR * (Math.sin(t1) - Math.sin(t));
 
-                        viz.addDraggable('z0', z0.x, z0.y, c.orange, 8, function(wx, wy) {
-                            if (Math.sqrt(wx*wx + wy*wy) < R - 0.15) { z0.x = wx; z0.y = wy; }
-                        });
+                                // f(z) / (z - z0)^(n+1)
+                                var fR = fRe(zx, zy);
+                                var fI = fIm(zx, zy);
+                                var dR = zx - z0x;
+                                var dI = zy - z0y;
+
+                                // (z - z0)^(n+1): compute as polar power
+                                var rr = Math.sqrt(dR * dR + dI * dI);
+                                var th = Math.atan2(dI, dR);
+                                var rn = Math.pow(rr, n + 1);
+                                var tn = (n + 1) * th;
+                                var powR = rn * Math.cos(tn);
+                                var powI = rn * Math.sin(tn);
+
+                                // f(z) / pow
+                                var pm2 = powR * powR + powI * powI;
+                                if (pm2 < 1e-20) continue;
+                                var qR = (fR * powR + fI * powI) / pm2;
+                                var qI = (fI * powR - fR * powI) / pm2;
+
+                                sumRe += qR * dzx - qI * dzy;
+                                sumIm += qI * dzx + qR * dzy;
+                            }
+                            // multiply by n! / (2*pi*i)
+                            // division by 2*pi*i: (a + bi) / (2*pi*i) = b/(2*pi) - i*a/(2*pi)... wait
+                            // n!/(2*pi*i) * integral: the integral is sumRe + i*sumIm
+                            // multiply by n!: nf * (sumRe + i*sumIm)
+                            // then divide by 2*pi*i: (X + iY)/(2*pi*i) = Y/(2*pi) + i*(-X/(2*pi))
+                            var nf = factorial(n);
+                            var X = nf * sumRe;
+                            var Y = nf * sumIm;
+                            return [Y / (2 * Math.PI), -X / (2 * Math.PI)];
+                        }
 
                         function draw() {
                             viz.clear();
-                            viz.drawGrid(0.5);
+                            viz.drawGrid(1);
                             viz.drawAxes();
-                            viz.drawCircle(0, 0, R, null, c.blue, 2.5);
-                            viz.drawDraggables();
 
-                            // Highlight integrand (z - z0)^{n+1} modulus on contour
-                            var nA = 80;
-                            for (var k = 0; k < nA; k++) {
-                                var t = 2 * Math.PI * k / nA;
-                                var zx = R * Math.cos(t), zy = R * Math.sin(t);
-                                var dz = { x: zx - z0.x, y: zy - z0.y };
-                                var denom_abs = Math.sqrt(dz.x*dz.x + dz.y*dz.y);
-                                var magnitude = 1 / Math.pow(denom_abs, nDeriv + 1);
-                                // Dot scaled by integrand magnitude
-                                var sr = Math.min(6, magnitude * 0.3 + 1);
-                                var [sx, sy] = viz.toScreen(zx, zy);
-                                viz.ctx.fillStyle = c.teal + '99';
-                                viz.ctx.beginPath();
-                                viz.ctx.arc(sx, sy, sr, 0, Math.PI * 2);
-                                viz.ctx.fill();
-                            }
+                            var z0x = 0.5, z0y = 0;
 
-                            var result = computeIntegral(nDeriv);
-                            var exact = f(z0.x, z0.y); // f^(n) = f for e^z
+                            // Draw contour
+                            viz.drawCircle(z0x, z0y, contourR, null, viz.colors.teal, 2);
+                            viz.drawPoint(z0x, z0y, viz.colors.orange, 'z\u2080', 6);
 
+                            // Exact derivative of e^z at z0: it's e^z0 for all n
+                            var exactRe = fRe(z0x, z0y);
+                            var exactIm = fIm(z0x, z0y);
+
+                            // Numerical result
+                            var numResult = computeDerivIntegral(z0x, z0y, nOrder);
+
+                            // Info panel
+                            var py = 18;
+                            viz.screenText('f(z) = e^z,  z\u2080 = 0.5', viz.width / 2, py, viz.colors.white, 14);
+                            viz.screenText('Derivative order n = ' + nOrder, viz.width / 2, py + 22, viz.colors.orange, 13);
+                            viz.screenText('f' + (nOrder > 0 ? '^(' + nOrder + ')' : '') + '(z\u2080) = e^{0.5} for all n (since f = e^z)', viz.width / 2, py + 42, viz.colors.text, 11);
+
+                            var exactStr = 'Exact: ' + exactRe.toFixed(4) + (exactIm >= 0 ? ' + ' : ' - ') + Math.abs(exactIm).toFixed(4) + 'i';
+                            var numStr = 'Numerical: ' + numResult[0].toFixed(4) + (numResult[1] >= 0 ? ' + ' : ' - ') + Math.abs(numResult[1]).toFixed(4) + 'i';
+
+                            viz.screenText(exactStr, viz.width / 2, viz.height - 50, viz.colors.blue, 13);
+                            viz.screenText(numStr, viz.width / 2, viz.height - 30, viz.colors.teal, 13);
+
+                            var errRe = Math.abs(numResult[0] - exactRe);
+                            var errIm = Math.abs(numResult[1] - exactIm);
+                            var err = Math.sqrt(errRe * errRe + errIm * errIm);
+                            viz.screenText('|error| = ' + err.toExponential(2), viz.width / 2, viz.height - 10, viz.colors.text, 11);
+
+                            // Draw integrand magnitude around contour
                             var ctx = viz.ctx;
-                            ctx.fillStyle = '#0c0c2088';
-                            ctx.fillRect(10, 10, 340, 110);
-                            ctx.fillStyle = c.white;
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-                            ctx.fillText('f(z) = e\u1d61,  z\u2080 = ' + z0.x.toFixed(3) + ' + ' + z0.y.toFixed(3) + 'i', 14, 14);
-                            ctx.fillText('n = ' + nDeriv, 14, 36);
-                            ctx.fillStyle = c.teal;
-                            ctx.fillText('f\u207f(z\u2080) exact: ' + exact.x.toFixed(5) + ' + ' + exact.y.toFixed(5) + 'i', 14, 58);
-                            ctx.fillStyle = c.orange;
-                            ctx.fillText('\u222e formula: ' + result.x.toFixed(5) + ' + ' + result.y.toFixed(5) + 'i', 14, 80);
-                            ctx.fillStyle = c.green;
-                            var err = Math.sqrt((result.x - exact.x)**2 + (result.y - exact.y)**2);
-                            ctx.fillText('Error: ' + err.toExponential(2), 14, 102);
+                            ctx.strokeStyle = viz.colors.purple;
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            var Npts = 300;
+                            for (var k = 0; k <= Npts; k++) {
+                                var t = 2 * Math.PI * k / Npts;
+                                var zx = z0x + contourR * Math.cos(t);
+                                var zy = z0y + contourR * Math.sin(t);
+                                var fR = fRe(zx, zy);
+                                var fI = fIm(zx, zy);
+                                var mag = Math.sqrt(fR * fR + fI * fI);
+                                var rr = contourR + mag * 0.1 / Math.pow(contourR, nOrder);
+                                var px = z0x + rr * Math.cos(t);
+                                var ppy = z0y + rr * Math.sin(t);
+                                var sc = viz.toScreen(px, ppy);
+                                if (k === 0) ctx.moveTo(sc[0], sc[1]);
+                                else ctx.lineTo(sc[0], sc[1]);
+                            }
+                            ctx.stroke();
+                            viz.screenText('|f| on contour', viz.width - 80, 80, viz.colors.purple, 10);
                         }
 
-                        viz.animate(draw);
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=3} \\frac{\\sin z}{(z - \\pi/2)^4}\\,dz\\).',
-                    hint: 'Use the differentiation formula with \\(n = 3\\). Recall \\((\\sin z)^{(3)} = -\\cos z\\).',
-                    solution: 'With \\(f(z) = \\sin z\\), \\(z_0 = \\pi/2\\), \\(n = 3\\): \\(\\oint = \\frac{2\\pi i}{3!} f^{(3)}(\\pi/2) = \\frac{\\pi i}{3}(-\\cos(\\pi/2)) = 0\\).'
+                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=1} \\frac{\\cos z}{z^4}\\,dz\\).',
+                    hint: 'Write \\(1/z^4 = 1/(z - 0)^4\\). Apply the derivative formula with \\(n = 3\\) and \\(z_0 = 0\\).',
+                    solution: 'With \\(f(z) = \\cos z\\), \\(z_0 = 0\\), \\(n = 3\\): the integral equals \\(\\frac{2\\pi i}{3!} f^{(3)}(0) = \\frac{2\\pi i}{6} \\cdot \\sin(0) = 0\\), since \\(f^{(3)}(z) = \\sin z\\) and \\(\\sin(0) = 0\\).'
                 },
                 {
-                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=2} \\frac{z^3 + 1}{(z - 1)^2}\\,dz\\).',
-                    hint: 'Use the \\(n=1\\) formula: result is \\(2\\pi i f\'(1)\\).',
-                    solution: 'With \\(f(z) = z^3 + 1\\) and \\(z_0 = 1\\) (inside \\(|z|=2\\)), \\(f\'(z) = 3z^2\\), \\(f\'(1) = 3\\). So \\(\\oint = 2\\pi i \\cdot 3 = 6\\pi i\\).'
-                },
-                {
-                    question: 'Prove Cauchy\'s estimate: if \\(|f(z)| \\leq M\\) on \\(|z - z_0| = r\\), then \\(|f^{(n)}(z_0)| \\leq n! M / r^n\\).',
-                    hint: 'Apply the ML inequality to the differentiation formula with the circle of radius \\(r\\) as contour.',
-                    solution: 'By the differentiation formula, \\(f^{(n)}(z_0) = \\frac{n!}{2\\pi i}\\oint_{|z-z_0|=r} \\frac{f(z)}{(z-z_0)^{n+1}}\\,dz\\). By the ML inequality: \\(|f^{(n)}(z_0)| \\leq \\frac{n!}{2\\pi} \\cdot \\frac{M}{r^{n+1}} \\cdot 2\\pi r = \\frac{n! M}{r^n}\\). \\(\\square\\)'
+                    question: 'Use Cauchy\'s inequality to show that if \\(f\\) is entire and \\(|f(z)| \\leq A + B|z|^k\\) for some constants \\(A, B\\) and integer \\(k \\geq 0\\), then \\(f\\) is a polynomial of degree at most \\(k\\).',
+                    hint: 'Apply Cauchy\'s inequality for \\(f^{(n)}(0)\\) with a circle of radius \\(R\\). On this circle, \\(|f(z)| \\leq A + BR^k\\). Let \\(R \\to \\infty\\) for \\(n > k\\).',
+                    solution: 'By Cauchy\'s inequality with \\(z_0 = 0\\) and radius \\(R\\): \\(|f^{(n)}(0)| \\leq \\frac{n!(A + BR^k)}{R^n}\\). For \\(n > k\\), this bound tends to 0 as \\(R \\to \\infty\\), so \\(f^{(n)}(0) = 0\\) for all \\(n > k\\). Since \\(f\\) is entire, its Taylor series converges everywhere, and all coefficients beyond degree \\(k\\) vanish. Thus \\(f\\) is a polynomial of degree \\(\\leq k\\).'
                 }
             ]
         },
@@ -627,124 +472,135 @@ i\\int_0^{2\\pi} f(z_0 + \\varepsilon e^{i\\theta})\\,d\\theta \\to 2\\pi i\\, f
         // ================================================================
         {
             id: 'sec-mean-value',
-            title: 'Mean Value Property',
+            title: 'The Mean Value Property',
             content: `
-<h2>Mean Value Property</h2>
+<h2>The Mean Value Property</h2>
+
+<p>A beautiful special case of Cauchy's formula arises when we take \\(\\gamma\\) to be a circle centered at \\(z_0\\).</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 6.3 (Mean Value Property)</div>
+    <div class="env-title">Theorem 6.4 (Mean Value Property)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic in a disk \\(|z - z_0| < R\\), then for any \\(0 < r < R\\),</p>
+        <p>If \\(f\\) is analytic on an open set containing the closed disk \\(\\overline{D}(z_0, R)\\), then</p>
         \\[
-        f(z_0) = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(z_0 + r e^{i\\theta})\\,d\\theta.
+        f(z_0) = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(z_0 + Re^{i\\theta})\\,d\\theta.
         \\]
-        <p>That is, \\(f(z_0)\\) equals the average of \\(f\\) over any circle centered at \\(z_0\\).</p>
+        <p>In words: the value of \\(f\\) at the center of any circle equals the average of \\(f\\) on that circle.</p>
     </div>
 </div>
 
-<h3>Proof</h3>
-
-<p>Apply Cauchy's formula with the circle \\(C = \\{|z - z_0| = r\\}\\). Parametrize \\(z = z_0 + re^{i\\theta}\\), \\(dz = ire^{i\\theta}\\,d\\theta\\):</p>
-
-\\[
-f(z_0) = \\frac{1}{2\\pi i} \\int_0^{2\\pi} \\frac{f(z_0 + re^{i\\theta})}{re^{i\\theta}} \\cdot ire^{i\\theta}\\,d\\theta = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(z_0 + re^{i\\theta})\\,d\\theta. \\quad\\square
-\\]
-
-<h3>Real and Imaginary Parts</h3>
-
-<p>Writing \\(f = u + iv\\), the mean value property holds separately for \\(u\\) and \\(v\\):</p>
-
-\\[
-u(x_0, y_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(x_0 + r\\cos\\theta, y_0 + r\\sin\\theta)\\,d\\theta.
-\\]
-
-<p>This shows that the real part of any analytic function (i.e., any harmonic function) satisfies the mean value property. This is a fundamental property of harmonic functions and characterizes them completely in many contexts.</p>
-
-<h3>Interpretation</h3>
-
-<p>The mean value property says analytic functions have no "peaks" or "valleys" in their interiors: every value is the balanced average of its neighborhood. This is the geometric seed from which the maximum modulus principle grows.</p>
-
-<div class="env-block remark">
-    <div class="env-title">Connection to Physics</div>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
     <div class="env-body">
-        <p>The mean value property is the mathematical basis for the physical fact that heat distribution in a conductor (which satisfies the heat equation, and in steady state the Laplace equation) has no interior hot spots: the temperature at any point equals the average temperature on any circle around it.</p>
+        <p>Parametrize \\(\\gamma\\) as \\(z = z_0 + Re^{i\\theta}\\) for \\(\\theta \\in [0, 2\\pi]\\). Then \\(dz = iRe^{i\\theta}\\,d\\theta\\) and \\(z - z_0 = Re^{i\\theta}\\). Cauchy's formula gives:</p>
+        \\[
+        f(z_0) = \\frac{1}{2\\pi i} \\oint_\\gamma \\frac{f(z)}{z - z_0}\\,dz = \\frac{1}{2\\pi i} \\int_0^{2\\pi} \\frac{f(z_0 + Re^{i\\theta})}{Re^{i\\theta}} \\cdot iRe^{i\\theta}\\,d\\theta = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(z_0 + Re^{i\\theta})\\,d\\theta.
+        \\]
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block intuition">
+    <div class="env-title">No Local Extrema Without Global Consequences</div>
+    <div class="env-body">
+        <p>The mean value property means the center value is an average. An average cannot exceed all the values being averaged (unless they are all equal). This observation directly leads to the maximum modulus principle in the next section.</p>
     </div>
 </div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Harmonic Functions</div>
+    <div class="env-body">
+        <p>If \\(f = u + iv\\) is analytic, then both \\(u\\) and \\(v\\) (real and imaginary parts) separately satisfy the mean value property:</p>
+        \\[
+        u(x_0, y_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(x_0 + R\\cos\\theta,\\, y_0 + R\\sin\\theta)\\,d\\theta.
+        \\]
+        <p>This is exactly the mean value property for harmonic functions. Indeed, \\(u\\) and \\(v\\) are harmonic (they satisfy Laplace's equation \\(\\nabla^2 u = 0\\)), and the mean value property characterizes harmonic functions.</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-mean-value"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-mean-value',
-                    title: 'Mean Value Property: Live Averaging',
-                    description: 'Drag the center z\u2080. The animated dot samples f(z\u2080 + re^{i\u03b8}) as \u03b8 sweeps 0 to 2\u03c0. The running average converges to f(z\u2080), shown at the center.',
+                    title: 'Mean Value Property: Sampling the Circle',
+                    description: 'Watch as sample points on a circle are averaged to approximate f(z\u2080). As more points are used, the average converges to the exact center value. The function shown is f(z) = z\u00B2 + 1.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 400, scale: 70, originX: 300, originY: 200 });
-                        var c = viz.colors;
-                        var z0 = { x: 0.5, y: 0.3 };
-                        var r = 1.2;
-                        VizEngine.createSlider(controls, 'radius r', 0.3, 2.0, r, 0.05, function(v) { r = v; });
-
-                        function f(x, y) {
-                            // f(z) = z^2 + z, nicely interesting
-                            return { x: x*x - y*y + x, y: 2*x*y + y };
-                        }
-
-                        viz.addDraggable('z0', z0.x, z0.y, c.orange, 9, function(wx, wy) {
-                            z0.x = wx; z0.y = wy;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 55,
+                            originX: 280, originY: 230
                         });
 
+                        var R = 1.5;
+                        var animPhase = 0;
+                        var numSamples = 8;
+
+                        VizEngine.createSlider(controls, 'Samples', 4, 64, numSamples, 1, function(v) {
+                            numSamples = Math.round(v);
+                        });
+                        VizEngine.createSlider(controls, 'Radius R', 0.5, 2.5, R, 0.1, function(v) {
+                            R = v;
+                        });
+
+                        var z0x = 0.5, z0y = 0.3;
+
+                        // f(z) = z^2 + 1
+                        function fRe(x, y) { return x * x - y * y + 1; }
+                        function fIm(x, y) { return 2 * x * y; }
+
                         function draw(t) {
+                            animPhase = t * 0.001;
                             viz.clear();
-                            viz.drawGrid(0.5);
+                            viz.drawGrid(1);
                             viz.drawAxes();
 
                             // Draw circle
-                            viz.drawCircle(z0.x, z0.y, r, null, c.blue + '88', 1.5);
+                            viz.drawCircle(z0x, z0y, R, null, viz.colors.teal + '88', 1.5);
+                            viz.drawPoint(z0x, z0y, viz.colors.orange, 'z\u2080', 6);
 
-                            // Animate sampling
-                            var theta = (t / 1800) % (2 * Math.PI);
-                            var nSamples = 80;
-                            var sumRe = 0, sumIm = 0, count = 0;
+                            // Sample points
+                            var avgRe = 0, avgIm = 0;
+                            var activeSamples = Math.min(numSamples, Math.floor(numSamples * ((Math.sin(animPhase * 0.5) + 1) / 2 * 0.5 + 0.5) + numSamples * 0.5));
+                            activeSamples = numSamples;
 
-                            // Draw all sample dots
-                            for (var k = 0; k < nSamples; k++) {
-                                var th = 2 * Math.PI * k / nSamples;
-                                var zx = z0.x + r * Math.cos(th);
-                                var zy = z0.y + r * Math.sin(th);
-                                var fz = f(zx, zy);
-                                sumRe += fz.x; sumIm += fz.y; count++;
-                                var alpha = th <= theta ? 'cc' : '33';
-                                var [sx, sy] = viz.toScreen(zx, zy);
-                                viz.ctx.fillStyle = c.teal + alpha;
-                                viz.ctx.beginPath();
-                                viz.ctx.arc(sx, sy, 3, 0, Math.PI * 2);
-                                viz.ctx.fill();
+                            for (var k = 0; k < activeSamples; k++) {
+                                var theta = 2 * Math.PI * k / activeSamples + animPhase * 0.3;
+                                var sx = z0x + R * Math.cos(theta);
+                                var sy = z0y + R * Math.sin(theta);
+                                var fR = fRe(sx, sy);
+                                var fI = fIm(sx, sy);
+                                avgRe += fR;
+                                avgIm += fI;
+
+                                // Draw sample point
+                                var pulse = 0.5 + 0.5 * Math.sin(animPhase * 2 + k * 0.5);
+                                var pr = 3 + pulse * 2;
+                                viz.drawPoint(sx, sy, viz.colors.blue, null, pr);
+
+                                // Draw line from sample to center (faint)
+                                viz.drawSegment(z0x, z0y, sx, sy, viz.colors.blue + '22', 0.5);
                             }
 
-                            // Moving sample point
-                            var sampX = z0.x + r * Math.cos(theta);
-                            var sampY = z0.y + r * Math.sin(theta);
-                            viz.drawPoint(sampX, sampY, c.yellow, null, 6);
+                            avgRe /= activeSamples;
+                            avgIm /= activeSamples;
 
-                            // Draw z0
-                            viz.drawDraggables();
-                            var fz0 = f(z0.x, z0.y);
-                            var avg = { x: sumRe / count, y: sumIm / count };
+                            // Exact f(z0)
+                            var exactRe = fRe(z0x, z0y);
+                            var exactIm = fIm(z0x, z0y);
 
                             // Info
-                            var ctx = viz.ctx;
-                            ctx.fillStyle = '#0c0c2088';
-                            ctx.fillRect(10, 10, 330, 96);
-                            ctx.fillStyle = c.white;
-                            ctx.font = '13px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-                            ctx.fillText('f(z) = z\u00b2 + z,  r = ' + r.toFixed(2), 14, 14);
-                            ctx.fillStyle = c.teal;
-                            ctx.fillText('Average of f on circle: ' + avg.x.toFixed(4) + ' + ' + avg.y.toFixed(4) + 'i', 14, 36);
-                            ctx.fillStyle = c.orange;
-                            ctx.fillText('f(z\u2080) directly: ' + fz0.x.toFixed(4) + ' + ' + fz0.y.toFixed(4) + 'i', 14, 58);
-                            ctx.fillStyle = c.green;
-                            var err = Math.sqrt((avg.x - fz0.x)**2 + (avg.y - fz0.y)**2);
-                            ctx.fillText('Error: ' + err.toExponential(2) + '  (\u03b8 = ' + (theta / Math.PI).toFixed(2) + '\u03c0)', 14, 80);
+                            var py = 16;
+                            viz.screenText('f(z) = z\u00B2 + 1', viz.width / 2, py, viz.colors.white, 14);
+                            viz.screenText('Mean Value Property: f(z\u2080) = average of f on circle', viz.width / 2, py + 20, viz.colors.text, 11);
+
+                            var exactStr = 'f(z\u2080) = ' + exactRe.toFixed(4) + (exactIm >= 0 ? '+' : '') + exactIm.toFixed(4) + 'i';
+                            var avgStr = 'Average (' + activeSamples + ' pts) = ' + avgRe.toFixed(4) + (avgIm >= 0 ? '+' : '') + avgIm.toFixed(4) + 'i';
+
+                            viz.screenText(exactStr, viz.width / 2, viz.height - 40, viz.colors.orange, 13);
+                            viz.screenText(avgStr, viz.width / 2, viz.height - 20, viz.colors.blue, 13);
+
+                            var err = Math.sqrt((avgRe - exactRe) ** 2 + (avgIm - exactIm) ** 2);
+                            viz.screenText('|error| = ' + err.toExponential(2), viz.width / 2, viz.height - 2, viz.colors.text, 10);
                         }
 
                         viz.animate(draw);
@@ -754,14 +610,14 @@ u(x_0, y_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(x_0 + r\\cos\\theta, y_0 + r\\si
             ],
             exercises: [
                 {
-                    question: 'Use the mean value property to show that if \\(f\\) is analytic in \\(|z| < 1\\) and continuous on \\(|z| \\leq 1\\) with \\(f = 0\\) on \\(|z| = 1\\), then \\(f \\equiv 0\\).',
-                    hint: 'Apply the mean value property at \\(z_0 = 0\\), then use it recursively or invoke the maximum principle.',
-                    solution: 'By the mean value property at the origin: \\(f(0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} f(e^{i\\theta})\\,d\\theta = 0\\) since \\(f = 0\\) on \\(|z|=1\\). More generally, for any interior point, we can grow the circle until it hits the boundary where \\(f = 0\\), giving \\(f = 0\\) everywhere. (Alternatively: the maximum modulus principle shows \\(|f| \\leq \\max_{|z|=1} |f| = 0\\).)'
+                    question: 'If \\(f\\) is analytic and \\(\\text{Re}\\,f(z_0) \\geq \\text{Re}\\,f(z)\\) for all \\(z\\) in a disk around \\(z_0\\), what can you conclude about \\(f\\)?',
+                    hint: 'Apply the mean value property to \\(u = \\text{Re}\\,f\\). If \\(u(z_0)\\) is at least as large as all nearby values, what does the averaging property force?',
+                    solution: 'By the mean value property, \\(u(z_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(z_0 + re^{i\\theta})\\,d\\theta\\) for all small \\(r\\). Since \\(u(z_0) \\geq u(z_0 + re^{i\\theta})\\) everywhere, the only way the average can equal the maximum is if \\(u\\) is constant on every such circle. By continuity, \\(u\\) is constant on the disk, and since \\(u\\) is harmonic, \\(f\\) must be constant on the disk.'
                 },
                 {
-                    question: 'If \\(f\\) is analytic and \\(|f(z)| \\leq 1\\) for \\(|z| \\leq 2\\) with \\(f(0) = 1\\), what can you conclude about \\(f\\)?',
-                    hint: 'Use the maximum modulus principle together with the boundary value.',
-                    solution: 'Since \\(|f(z)| \\leq 1\\) everywhere and \\(|f(0)| = 1\\), the maximum of \\(|f|\\) is attained at an interior point \\(z_0 = 0\\). By the maximum modulus principle, \\(f\\) must be constant: \\(f \\equiv 1\\).'
+                    question: 'Let \\(f(z) = e^z\\). Verify the mean value property directly by computing \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} e^{Re^{i\\theta}}\\,d\\theta\\) and showing it equals \\(f(0) = 1\\).',
+                    hint: 'Use the power series \\(e^w = \\sum_{n=0}^\\infty w^n/n!\\) and the fact that \\(\\int_0^{2\\pi} e^{in\\theta}\\,d\\theta = 0\\) for \\(n \\neq 0\\).',
+                    solution: 'Write \\(e^{Re^{i\\theta}} = \\sum_{n=0}^\\infty \\frac{R^n e^{in\\theta}}{n!}\\). Integrating term by term: \\(\\frac{1}{2\\pi}\\int_0^{2\\pi} e^{in\\theta}d\\theta = \\delta_{n0}\\). So the average equals the \\(n=0\\) term, which is \\(R^0/0! = 1 = e^0 = f(0)\\).'
                 }
             ]
         },
@@ -771,299 +627,399 @@ u(x_0, y_0) = \\frac{1}{2\\pi}\\int_0^{2\\pi} u(x_0 + r\\cos\\theta, y_0 + r\\si
         // ================================================================
         {
             id: 'sec-maximum',
-            title: 'Maximum Modulus Principle',
+            title: 'The Maximum Modulus Principle',
             content: `
-<h2>Maximum Modulus Principle</h2>
+<h2>The Maximum Modulus Principle</h2>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 6.4 (Maximum Modulus Principle)</div>
+    <div class="env-title">Theorem 6.5 (Maximum Modulus Principle)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic and non-constant in a domain \\(D\\), then \\(|f(z)|\\) has no local maximum in \\(D\\). Equivalently, if \\(D\\) is a bounded domain and \\(f\\) is continuous on \\(\\overline{D}\\), then</p>
-        \\[\\max_{z \\in \\overline{D}} |f(z)| = \\max_{z \\in \\partial D} |f(z)|.\\]
-        <p>The maximum of \\(|f|\\) is attained on the boundary.</p>
+        <p>Let \\(f\\) be analytic and non-constant on a connected open set \\(D\\). Then \\(|f|\\) has no local maximum in \\(D\\). That is, for every \\(z_0 \\in D\\), there exist points \\(z\\) arbitrarily close to \\(z_0\\) with \\(|f(z)| > |f(z_0)|\\).</p>
     </div>
 </div>
 
-<h3>Proof via Mean Value Property</h3>
-
-<p>Suppose \\(|f(z_0)| = M\\) is a local maximum at an interior point \\(z_0\\). For small \\(r\\), the mean value property gives</p>
-
-\\[
-f(z_0) = \\frac{1}{2\\pi} \\int_0^{2\\pi} f(z_0 + re^{i\\theta})\\,d\\theta.
-\\]
-
-<p>Taking moduli and using the triangle inequality,</p>
-
-\\[
-M = |f(z_0)| \\leq \\frac{1}{2\\pi}\\int_0^{2\\pi} |f(z_0 + re^{i\\theta})|\\,d\\theta \\leq M.
-\\]
-
-<p>Equality holds throughout, which forces \\(|f(z_0 + re^{i\\theta})| = M\\) for all \\(\\theta\\). Since \\(r\\) was arbitrary, \\(|f| \\equiv M\\) in a neighborhood of \\(z_0\\), and by the identity theorem \\(f\\) is constant. \\(\\square\\)</p>
-
-<h3>Minimum Modulus Principle</h3>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Suppose for contradiction that \\(|f(z_0)|\\) is a local maximum: \\(|f(z)| \\leq |f(z_0)|\\) for all \\(z\\) in some disk \\(D(z_0, r)\\). By the mean value property, for any \\(0 < \\rho < r\\):</p>
+        \\[
+        |f(z_0)| = \\left|\\frac{1}{2\\pi}\\int_0^{2\\pi} f(z_0 + \\rho e^{i\\theta})\\,d\\theta\\right| \\leq \\frac{1}{2\\pi}\\int_0^{2\\pi} |f(z_0 + \\rho e^{i\\theta})|\\,d\\theta \\leq |f(z_0)|.
+        \\]
+        <p>All inequalities are equalities. The first inequality (triangle inequality for integrals) is strict unless all values \\(f(z_0 + \\rho e^{i\\theta})\\) point in the same direction in the complex plane. The second inequality is strict unless \\(|f| = |f(z_0)|\\) everywhere on the circle. Together, these force \\(f\\) to be constant on every circle, hence constant on \\(D(z_0, r)\\). By the identity theorem, \\(f\\) is constant on all of \\(D\\), contradicting our assumption.</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 6.5 (Minimum Modulus Principle)</div>
+    <div class="env-title">Corollary 6.6 (Maximum on Boundary)</div>
     <div class="env-body">
-        <p>If \\(f\\) is analytic and non-vanishing in a domain \\(D\\), then \\(|f(z)|\\) has no local minimum in \\(D\\). The minimum of \\(|f|\\) over \\(\\overline{D}\\) is attained on \\(\\partial D\\).</p>
+        <p>If \\(f\\) is analytic on a bounded domain \\(D\\) and continuous on \\(\\overline{D}\\), then \\(|f|\\) attains its maximum on the boundary \\(\\partial D\\).</p>
     </div>
 </div>
 
-<p>This follows by applying the maximum principle to \\(1/f\\), which is analytic when \\(f \\neq 0\\).</p>
+<div class="env-block intuition">
+    <div class="env-title">Physical Analogy</div>
+    <div class="env-body">
+        <p>Think of \\(|f(z)|\\) as temperature. The maximum modulus principle says that in steady-state heat flow (governed by Laplace's equation, which harmonic functions satisfy), the hottest point in a region is always on the boundary. You cannot have a "hot spot" in the interior without a heat source, and analyticity precludes interior sources.</p>
+    </div>
+</div>
 
-<h3>Schwarz's Lemma (a taste)</h3>
+<div class="env-block example">
+    <div class="env-title">Example</div>
+    <div class="env-body">
+        <p>Let \\(f(z) = z^2 - 2z + 3\\) on the closed disk \\(|z| \\leq 2\\). Where does \\(|f|\\) achieve its maximum?</p>
+        <p>By the maximum modulus principle, the maximum is on \\(|z| = 2\\). We parametrize: \\(z = 2e^{i\\theta}\\), and</p>
+        \\[
+        |f(2e^{i\\theta})| = |4e^{2i\\theta} - 4e^{i\\theta} + 3|.
+        \\]
+        <p>The maximum of this expression over \\(\\theta \\in [0, 2\\pi]\\) gives the maximum modulus, which is achieved on the boundary, never in the interior.</p>
+    </div>
+</div>
 
-<p>As a sample application, if \\(f\\) is analytic with \\(|f(z)| \\leq 1\\) on \\(|z| < 1\\) and \\(f(0) = 0\\), then the maximum modulus principle applied to \\(f(z)/z\\) shows \\(|f(z)| \\leq |z|\\). The analytic function cannot grow faster than the identity map from the disk to itself.</p>
+<div class="viz-placeholder" data-viz="viz-maximum-modulus"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-maximum-modulus',
-                    title: '|f(z)| Heatmap: Maximum Is Always on the Boundary',
-                    description: 'Heatmap of |f(z)| for an analytic function. Choose different functions and verify that the maximum (brightest region) always lies on or outside the boundary disk.',
+                    title: 'Maximum Modulus Principle: |f| Heatmap',
+                    description: 'A heatmap of |f(z)| for an analytic function. The maximum (brightest region) always occurs on or outside the boundary of any disk, never in the interior. The contour shows a circle; notice the max is on the boundary.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 400, scale: 70, originX: 300, originY: 200 });
-                        var c = viz.colors;
-                        var fChoice = 0;
-                        var R = 2.5;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 70,
+                            originX: 280, originY: 210
+                        });
 
-                        VizEngine.createButton(controls, 'z\u00b2 + 1', function() { fChoice = 0; });
-                        VizEngine.createButton(controls, 'e\u1d61', function() { fChoice = 1; });
-                        VizEngine.createButton(controls, 'sin(z)', function() { fChoice = 2; });
-                        VizEngine.createButton(controls, 'z\u00b3 \u2212 z', function() { fChoice = 3; });
+                        var funcChoice = 0;
+                        var funcs = [
+                            { name: 'z\u00B2 + 1', f: function(x, y) { var re = x*x - y*y + 1; var im = 2*x*y; return Math.sqrt(re*re + im*im); } },
+                            { name: 'e^z', f: function(x, y) { return Math.exp(x); } },
+                            { name: 'z\u00B3 - z', f: function(x, y) { var r = x*x*x - 3*x*y*y - x; var im = 3*x*x*y - y*y*y - y; return Math.sqrt(r*r + im*im); } },
+                            { name: 'sin(z)', f: function(x, y) { var r = Math.sin(x)*Math.cosh(y); var im = Math.cos(x)*Math.sinh(y); return Math.sqrt(r*r + im*im); } }
+                        ];
 
-                        function evalF(x, y) {
-                            if (fChoice === 0) { // z^2 + 1
-                                return Math.sqrt((x*x - y*y + 1)**2 + (2*x*y)**2);
-                            } else if (fChoice === 1) { // e^z
-                                return Math.exp(x);
-                            } else if (fChoice === 2) { // sin(z)
-                                return Math.sqrt(Math.sin(x)**2 * Math.cosh(y)**2 + Math.cos(x)**2 * Math.sinh(y)**2);
-                            } else { // z^3 - z
-                                var a = x*x*x - 3*x*y*y - x;
-                                var b = 3*x*x*y - y*y*y - y;
-                                return Math.sqrt(a*a + b*b);
-                            }
-                        }
+                        var circR = 1.5;
+                        var circX = 0, circY = 0;
 
-                        var fNames = ['f(z) = z\u00b2 + 1', 'f(z) = e\u1d61', 'f(z) = sin(z)', 'f(z) = z\u00b3 \u2212 z'];
+                        VizEngine.createSlider(controls, 'Function', 0, 3, 0, 1, function(v) {
+                            funcChoice = Math.round(v);
+                            draw();
+                        });
+                        VizEngine.createSlider(controls, 'Circle radius', 0.5, 3, circR, 0.1, function(v) {
+                            circR = v;
+                            draw();
+                        });
 
                         function draw() {
-                            viz.clear();
-                            var xR = [-R, R], yR = [-R * (viz.height/viz.width), R * (viz.height/viz.width)];
-                            viz.drawHeatmap(function(x, y) { return evalF(x, y); }, xR, yR, 'inferno');
-                            viz.drawGrid(0.5);
-                            viz.drawAxes();
-                            // Boundary circle for reference
-                            viz.drawCircle(0, 0, 2.0, null, c.blue, 2);
-                            viz.screenText(fNames[fChoice] + '  — max |f| is on the boundary circle', viz.width/2, viz.height - 14, c.white, 12);
-                        }
+                            var xRange = [-4, 4];
+                            var yRange = [-3, 3];
 
-                        viz.animate(draw);
+                            viz.drawHeatmap(funcs[funcChoice].f, xRange, yRange, 'inferno');
+
+                            // Overlay circle
+                            var ctx = viz.ctx;
+                            var sc = viz.toScreen(circX, circY);
+                            ctx.strokeStyle = '#ffffff';
+                            ctx.lineWidth = 2;
+                            ctx.setLineDash([6, 4]);
+                            ctx.beginPath();
+                            ctx.arc(sc[0], sc[1], circR * viz.scale, 0, Math.PI * 2);
+                            ctx.stroke();
+                            ctx.setLineDash([]);
+
+                            // Find max on boundary vs interior (sample)
+                            var maxBdy = 0, maxInt = 0;
+                            var maxBdyAngle = 0;
+                            var fn = funcs[funcChoice].f;
+                            for (var k = 0; k < 1000; k++) {
+                                var theta = 2 * Math.PI * k / 1000;
+                                var val = fn(circX + circR * Math.cos(theta), circY + circR * Math.sin(theta));
+                                if (val > maxBdy) { maxBdy = val; maxBdyAngle = theta; }
+                            }
+                            // sample interior
+                            for (var i = 0; i < 50; i++) {
+                                for (var j = 0; j < 50; j++) {
+                                    var sx = circX - circR + 2 * circR * i / 49;
+                                    var sy = circY - circR + 2 * circR * j / 49;
+                                    if ((sx - circX) * (sx - circX) + (sy - circY) * (sy - circY) >= circR * circR) continue;
+                                    var v = fn(sx, sy);
+                                    if (v > maxInt) maxInt = v;
+                                }
+                            }
+
+                            // Mark max on boundary
+                            var mxPt = [circX + circR * Math.cos(maxBdyAngle), circY + circR * Math.sin(maxBdyAngle)];
+                            viz.drawPoint(mxPt[0], mxPt[1], viz.colors.white, 'max', 5);
+
+                            // Info
+                            viz.screenText('f(z) = ' + funcs[funcChoice].name, viz.width / 2, 16, viz.colors.white, 14);
+                            viz.screenText('max|f| on boundary: ' + maxBdy.toFixed(3), viz.width / 2, viz.height - 36, viz.colors.white, 12);
+                            viz.screenText('max|f| in interior: ' + maxInt.toFixed(3), viz.width / 2, viz.height - 18, viz.colors.yellow, 12);
+
+                            if (maxBdy >= maxInt - 0.01) {
+                                viz.screenText('Boundary \u2265 Interior (as expected)', viz.width / 2, viz.height - 2, viz.colors.green, 10);
+                            }
+                        }
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Let \\(f(z) = z^2\\) on the square \\(|\\text{Re}(z)| \\leq 1,\\ |\\text{Im}(z)| \\leq 1\\). Where is the maximum of \\(|f|\\) attained?',
-                    hint: 'On the boundary of the square, \\(|z^2| = |z|^2\\). Maximize \\(|z|^2\\) on the boundary.',
-                    solution: 'Since \\(f\\) is non-constant and analytic, the max of \\(|z^2|\\) is on the boundary. On the boundary, \\(|z|^2 = x^2 + y^2\\) is maximized at the corners \\(z = \\pm 1 \\pm i\\), where \\(|z|^2 = 2\\). So \\(\\max|f| = 2\\), attained at the four corners.'
+                    question: 'Let \\(p(z)\\) be a non-constant polynomial and \\(D = \\{z : |z| \\leq R\\}\\). Show that \\(\\min_{z \\in D} |p(z)|\\) is attained on \\(|z| = R\\) or at a zero of \\(p\\) in the interior.',
+                    hint: 'Apply the maximum modulus principle to \\(1/p(z)\\), which is analytic wherever \\(p(z) \\neq 0\\).',
+                    solution: 'If \\(p\\) has no zeros in \\(D\\), then \\(1/p\\) is analytic on \\(D\\). By the maximum modulus principle, \\(|1/p|\\) achieves its max on \\(\\partial D\\), which means \\(|p|\\) achieves its min on \\(\\partial D\\). If \\(p\\) has a zero in \\(D\\), then the minimum of \\(|p|\\) is 0, achieved at that zero.'
                 },
                 {
-                    question: 'Suppose \\(f\\) is analytic on \\(\\overline{\\mathbb{D}}\\) and \\(|f(z)| = 1\\) for all \\(z\\) with \\(|z| = 1\\). Must \\(|f| \\leq 1\\) in the interior?',
-                    hint: 'Apply the maximum modulus principle.',
-                    solution: 'Yes. Since \\(f\\) is analytic, \\(\\max_{|z| \\leq 1} |f(z)| = \\max_{|z|=1} |f(z)| = 1\\). So \\(|f(z)| \\leq 1\\) for all \\(|z| \\leq 1\\). By the minimum modulus principle (if \\(f\\) has no zeros in the interior), \\(|f| \\geq 1\\) as well, forcing \\(|f| \\equiv 1\\) and \\(f\\) a Blaschke product (a finite product of Mobius transformations mapping \\(\\mathbb{D}\\) to \\(\\mathbb{D}\\)).'
+                    question: 'Prove the minimum modulus principle: if \\(f\\) is analytic, non-constant, and \\(f(z) \\neq 0\\) on a domain \\(D\\), then \\(|f|\\) has no local minimum in \\(D\\).',
+                    hint: 'Consider \\(g(z) = 1/f(z)\\).',
+                    solution: 'Since \\(f\\) is non-vanishing and analytic on \\(D\\), \\(g = 1/f\\) is analytic on \\(D\\). A local minimum of \\(|f|\\) at \\(z_0\\) would be a local maximum of \\(|g| = 1/|f|\\) at \\(z_0\\). By the maximum modulus principle, \\(g\\) (hence \\(f\\)) would be constant, contradicting our assumption.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 6: Bridge — Liouville & FTA
+        // SECTION 6: Liouville's Theorem and the Fundamental Theorem of Algebra
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Liouville & The Fundamental Theorem',
+            title: "Liouville's Theorem and the Fundamental Theorem of Algebra",
             content: `
-<h2>Liouville and the Fundamental Theorem of Algebra</h2>
+<h2>Liouville's Theorem and the Fundamental Theorem of Algebra</h2>
 
-<p>Two celebrated theorems follow directly from Cauchy's estimates. They illustrate how complex analysis constrains global behavior from local hypotheses.</p>
-
-<h3>Liouville's Theorem</h3>
+<p>We now harvest two of the most celebrated consequences of Cauchy's machinery. Both are remarkably short proofs of deep results.</p>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 6.6 (Liouville's Theorem)</div>
+    <div class="env-title">Theorem 6.7 (Liouville's Theorem)</div>
     <div class="env-body">
         <p>Every bounded entire function is constant.</p>
-        <p>That is, if \\(f\\) is analytic on all of \\(\\mathbb{C}\\) and \\(|f(z)| \\leq M\\) for all \\(z\\), then \\(f\\) is constant.</p>
+        <p>That is, if \\(f\\) is analytic on all of \\(\\mathbb{C}\\) and there exists \\(M > 0\\) with \\(|f(z)| \\leq M\\) for all \\(z\\), then \\(f\\) is a constant function.</p>
     </div>
 </div>
 
-<h3>Proof</h3>
-
-<p>By Cauchy's estimate with a circle of radius \\(R\\) centered at any point \\(z_0\\):</p>
-
-\\[
-|f'(z_0)| \\leq \\frac{M}{R}.
-\\]
-
-<p>Since \\(R\\) can be taken arbitrarily large (\\(f\\) is entire), we get \\(f'(z_0) = 0\\) for every \\(z_0\\). Hence \\(f\\) is constant. \\(\\square\\)</p>
-
-<p>This is a profound statement: over the reals, \\(\\sin x\\) is bounded but non-constant. Over the complex numbers, this is impossible for an entire function.</p>
-
-<h3>The Fundamental Theorem of Algebra</h3>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 6.7 (Fundamental Theorem of Algebra)</div>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
     <div class="env-body">
-        <p>Every non-constant polynomial \\(p(z)\\) with complex coefficients has at least one root in \\(\\mathbb{C}\\).</p>
+        <p>By Cauchy's inequality (Corollary 6.3) with \\(n = 1\\), for any \\(z_0\\) and any \\(R > 0\\):</p>
+        \\[
+        |f'(z_0)| \\leq \\frac{M}{R}.
+        \\]
+        <p>Since \\(f\\) is entire, we can take \\(R\\) as large as we please. Letting \\(R \\to \\infty\\) gives \\(|f'(z_0)| = 0\\) for every \\(z_0\\). Therefore \\(f' \\equiv 0\\), so \\(f\\) is constant.</p>
     </div>
+    <div class="qed">&marker;</div>
 </div>
-
-<h3>Proof via Liouville</h3>
-
-<p>Suppose \\(p(z) \\neq 0\\) for all \\(z \\in \\mathbb{C}\\). Then \\(g(z) = 1/p(z)\\) is entire. As \\(|z| \\to \\infty\\), \\(|p(z)| \\to \\infty\\), so \\(|g(z)| \\to 0\\). In particular, \\(g\\) is bounded. By Liouville, \\(g\\) (and hence \\(p\\)) is constant, contradicting our assumption that \\(p\\) is non-constant. \\(\\square\\)</p>
-
-<p>From this it follows by induction that every degree-\\(n\\) polynomial factors as</p>
-
-\\[
-p(z) = a_n(z - z_1)(z - z_2) \\cdots (z - z_n)
-\\]
-
-<p>for roots \\(z_1, \\ldots, z_n \\in \\mathbb{C}\\) (counted with multiplicity).</p>
-
-<h3>Why Entire Functions Cannot Be Bounded Without Being Constant</h3>
-
-<p>Intuitively: an analytic function is completely determined by its values on any open set (identity theorem). If it is bounded, Cauchy's estimates force all derivatives to be zero at every point, leaving only constants.</p>
 
 <div class="env-block remark">
-    <div class="env-title">Historical Note</div>
+    <div class="env-title">Contrast with Real Analysis</div>
     <div class="env-body">
-        <p>The fundamental theorem of algebra was stated by Gauss in his 1799 doctoral dissertation, where he gave the first rigorous proof (though with gaps filled in later). The clean proof via Liouville is due to Cauchy's later development of complex function theory. Mathematicians had suspected the result since the 17th century but lacked the tools to prove it cleanly.</p>
+        <p>There is no real analogue: \\(\\sin x\\) is bounded and infinitely differentiable on \\(\\mathbb{R}\\), but certainly not constant. Liouville's theorem shows that complex analyticity is enormously more restrictive than real smoothness.</p>
     </div>
 </div>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 6.8 (Fundamental Theorem of Algebra)</div>
+    <div class="env-body">
+        <p>Every non-constant polynomial \\(p(z) = a_n z^n + \\cdots + a_1 z + a_0\\) (with \\(a_n \\neq 0\\), \\(n \\geq 1\\)) has at least one root in \\(\\mathbb{C}\\).</p>
+    </div>
+</div>
+
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>Suppose for contradiction that \\(p(z) \\neq 0\\) for all \\(z \\in \\mathbb{C}\\). Then \\(g(z) = 1/p(z)\\) is entire. Since \\(|p(z)| \\to \\infty\\) as \\(|z| \\to \\infty\\) (the leading term dominates), we have \\(|g(z)| \\to 0\\) as \\(|z| \\to \\infty\\). In particular, \\(g\\) is bounded. By Liouville's theorem, \\(g\\) is constant, which forces \\(p\\) to be constant, contradicting \\(n \\geq 1\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block intuition">
+    <div class="env-title">The Chain of Implications</div>
+    <div class="env-body">
+        <p>Trace the logical chain that makes this proof work:</p>
+        <ol>
+            <li>Cauchy's integral formula recovers \\(f(z_0)\\) from boundary values.</li>
+            <li>Differentiating under the integral gives the derivative formula.</li>
+            <li>The ML inequality applied to the derivative formula gives Cauchy's inequality.</li>
+            <li>Cauchy's inequality with \\(R \\to \\infty\\) gives Liouville's theorem.</li>
+            <li>Liouville's theorem applied to \\(1/p(z)\\) gives the Fundamental Theorem of Algebra.</li>
+        </ol>
+        <p>A single integral formula, combined with one inequality, proves that every polynomial has a complex root. This is the power of complex analysis.</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Entire Functions with Polynomial Growth</div>
+    <div class="env-body">
+        <p>Combine Liouville's theorem with Cauchy's inequality: if \\(f\\) is entire and \\(|f(z)| \\leq C|z|^n\\) for large \\(|z|\\), then \\(f\\) is a polynomial of degree \\(\\leq n\\). (We proved this in the exercises for Section 3.)</p>
+        <p>In particular, an entire function that grows slower than any polynomial must be constant. Growth rate completely determines the "polynomial complexity" of entire functions.</p>
+    </div>
+</div>
+
+<div class="viz-placeholder" data-viz="viz-liouville"></div>
+<div class="viz-placeholder" data-viz="viz-fta"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-liouville',
                     title: "Liouville's Theorem: Bounded Entire Functions",
-                    description: 'Domain coloring of e\u1d61 (unbounded, grows as Re(z) \u2192 +\u221e) versus 1/(1+z\u00b2) (bounded on real line but not entire). Entire and bounded must be constant.',
+                    description: 'Explore bounded entire functions. The only bounded entire functions are constants. This visualization shows |f(z)| for various entire functions and highlights why non-constant ones must be unbounded.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 380, scale: 60, originX: 300, originY: 190 });
-                        var c = viz.colors;
-                        var fChoice = 0;
-                        var fDefs = [
-                            { label: 'e\u1d61 (unbounded entire)', fn: function(x, y) { var er = Math.exp(x); return [er*Math.cos(y), er*Math.sin(y)]; } },
-                            { label: 'sin(z) (unbounded entire)', fn: function(x, y) { return [Math.sin(x)*Math.cosh(y), Math.cos(x)*Math.sinh(y)]; } },
-                            { label: '1/(1+z\u00b2) (bounded on R, not entire)', fn: function(x, y) {
-                                var ax = 1 - x*x + y*y, ay = -2*x*y;
-                                // 1+z^2: re = 1+x^2-y^2, im = 2xy
-                                var bx = 1 + x*x - y*y, by = 2*x*y;
-                                var d = bx*bx + by*by;
-                                if (d < 1e-10) return [0, 0];
-                                return [(ax*bx + ay*by)/d, (ay*bx - ax*by)/d];
-                            }},
-                            { label: 'z\u00b2 + 2z + 2 (polynomial, unbounded)', fn: function(x, y) {
-                                return [x*x - y*y + 2*x + 2, 2*x*y + 2*y];
-                            }}
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 400, scale: 50,
+                            originX: 280, originY: 200
+                        });
+
+                        var funcChoice = 0;
+                        var funcs = [
+                            { name: 'f(z) = 3 (constant, bounded)', bounded: true,
+                              f: function(x, y) { return 3; } },
+                            { name: 'f(z) = e^z (unbounded)', bounded: false,
+                              f: function(x, y) { return Math.exp(x); } },
+                            { name: 'f(z) = sin(z) (unbounded!)', bounded: false,
+                              f: function(x, y) { return Math.sqrt(Math.sin(x)*Math.sin(x)*Math.cosh(y)*Math.cosh(y) + Math.cos(x)*Math.cos(x)*Math.sinh(y)*Math.sinh(y)); } },
+                            { name: 'f(z) = z\u00B2 (unbounded)', bounded: false,
+                              f: function(x, y) { var re = x*x - y*y; var im = 2*x*y; return Math.sqrt(re*re + im*im); } }
                         ];
 
-                        fDefs.forEach(function(fd, i) {
-                            VizEngine.createButton(controls, fd.label.split(' ')[0], function() { fChoice = i; });
+                        VizEngine.createSlider(controls, 'Function', 0, 3, 0, 1, function(v) {
+                            funcChoice = Math.round(v);
+                            draw();
                         });
 
                         function draw() {
-                            viz.clear();
-                            var range = 3;
-                            viz.drawDomainColoring(function(re, im) { return fDefs[fChoice].fn(re, im); },
-                                [-range, range], [-range * (viz.height / viz.width), range * (viz.height / viz.width)]);
-                            viz.drawAxes();
-                            viz.screenText(fDefs[fChoice].label, viz.width/2, viz.height - 14, c.white, 12);
-                            viz.screenText('Domain coloring: hue = arg(f), brightness = |f|', viz.width/2, 14, c.text, 11);
-                        }
+                            var xR = [-5.5, 5.5];
+                            var yR = [-4, 4];
+                            viz.drawHeatmap(funcs[funcChoice].f, xR, yR, 'viridis');
 
-                        viz.animate(draw);
+                            viz.screenText(funcs[funcChoice].name, viz.width / 2, 18, viz.colors.white, 13);
+
+                            // Show circles of increasing radius with max|f|
+                            var ctx = viz.ctx;
+                            var radii = [1, 2, 3, 4];
+                            for (var ri = 0; ri < radii.length; ri++) {
+                                var R = radii[ri];
+                                var sc = viz.toScreen(0, 0);
+                                ctx.strokeStyle = '#ffffff44';
+                                ctx.lineWidth = 1;
+                                ctx.beginPath();
+                                ctx.arc(sc[0], sc[1], R * viz.scale, 0, Math.PI * 2);
+                                ctx.stroke();
+
+                                // Max on this circle
+                                var maxV = 0;
+                                for (var k = 0; k < 200; k++) {
+                                    var t = 2 * Math.PI * k / 200;
+                                    var v = funcs[funcChoice].f(R * Math.cos(t), R * Math.sin(t));
+                                    if (v > maxV) maxV = v;
+                                }
+                                viz.screenText('R=' + R + ': max=' + maxV.toFixed(1), viz.width - 80, 50 + ri * 18, viz.colors.white, 10);
+                            }
+
+                            if (funcs[funcChoice].bounded) {
+                                viz.screenText('Bounded + Entire = Constant (Liouville)', viz.width / 2, viz.height - 14, viz.colors.green, 12);
+                            } else {
+                                viz.screenText('Non-constant entire \u21D2 unbounded (as Liouville requires)', viz.width / 2, viz.height - 14, viz.colors.yellow, 12);
+                            }
+                        }
+                        draw();
                         return viz;
                     }
                 },
                 {
                     id: 'viz-fta',
-                    title: 'Fundamental Theorem of Algebra: Polynomials Must Have Roots',
-                    description: 'Domain coloring of a polynomial. All colors must appear (winding number argument), so zeros exist. Watch how colors wrap around each root.',
+                    title: 'Fundamental Theorem of Algebra: Polynomial Zeros via Domain Coloring',
+                    description: 'Domain coloring of a polynomial p(z). Zeros appear as points where all colors meet (the argument cycles through all values). A degree-n polynomial always has exactly n zeros (counted with multiplicity).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 600, height: 380, scale: 60, originX: 300, originY: 190 });
-                        var c = viz.colors;
-                        var degree = 3;
-                        // Coefficients: p(z) = z^n + c_{n-1} z^{n-1} + ... + c_0, chosen for interesting roots
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 50,
+                            originX: 280, originY: 210
+                        });
+
+                        var polyChoice = 0;
                         var polys = [
-                            { label: 'z\u00b2 \u2212 1', fn: function(x, y) { return [x*x - y*y - 1, 2*x*y]; } },
-                            { label: 'z\u00b3 \u2212 z', fn: function(x, y) { var a = x*x*x - 3*x*y*y - x, b = 3*x*x*y - y*y*y - y; return [a, b]; } },
-                            { label: 'z\u2074 \u2212 1', fn: function(x, y) {
-                                var a = x*x - y*y, b = 2*x*y;
-                                var re = a*a - b*b - 1, im = 2*a*b;
-                                return [re, im];
-                            }},
-                            { label: 'z\u00b3 + iz + 1', fn: function(x, y) {
-                                // z^3 = (x^3 - 3xy^2) + i(3x^2y - y^3)
-                                // iz = -y + ix
-                                var re = x*x*x - 3*x*y*y - y + 1;
-                                var im = 3*x*x*y - y*y*y + x;
-                                return [re, im];
-                            }}
+                            { name: 'z\u00B2 - 1 (roots: \u00B11)', zeros: [[1,0],[-1,0]],
+                              f: function(re, im) { return [re*re - im*im - 1, 2*re*im]; } },
+                            { name: 'z\u00B3 - 1 (cube roots of unity)', zeros: [[1,0],[-0.5, Math.sqrt(3)/2],[-0.5,-Math.sqrt(3)/2]],
+                              f: function(re, im) {
+                                  var r2 = re*re - im*im;
+                                  var i2 = 2*re*im;
+                                  return [re*r2 - im*i2 - 1, re*i2 + im*r2];
+                              }},
+                            { name: 'z\u2074 + 1 (4 roots)', zeros: [],
+                              f: function(re, im) {
+                                  var r2 = re*re - im*im; var i2 = 2*re*im;
+                                  var r4 = r2*r2 - i2*i2; var i4 = 2*r2*i2;
+                                  return [r4 + 1, i4];
+                              }},
+                            { name: 'z\u2075 - z (5 roots)', zeros: [[0,0],[1,0],[-1,0],[0,1],[0,-1]],
+                              f: function(re, im) {
+                                  var r2 = re*re - im*im; var i2 = 2*re*im;
+                                  var r3 = re*r2 - im*i2; var i3 = re*i2 + im*r2;
+                                  var r4 = r2*r2 - i2*i2; var i4 = 2*r2*i2;
+                                  var r5 = re*r4 - im*i4; var i5 = re*i4 + im*r4;
+                                  return [r5 - re, i5 - im];
+                              }}
                         ];
 
-                        polys.forEach(function(p) {
-                            VizEngine.createButton(controls, p.label, function() {
-                                degree = polys.indexOf(p);
-                            });
+                        // Compute roots of z^4 + 1
+                        for (var k = 0; k < 4; k++) {
+                            var angle = (Math.PI + 2 * Math.PI * k) / 4;
+                            polys[2].zeros.push([Math.cos(angle), Math.sin(angle)]);
+                        }
+
+                        VizEngine.createSlider(controls, 'Polynomial', 0, 3, 0, 1, function(v) {
+                            polyChoice = Math.round(v);
+                            draw();
                         });
 
                         function draw() {
-                            viz.clear();
-                            var range = 2.5;
-                            viz.drawDomainColoring(
-                                function(re, im) { return polys[degree].fn(re, im); },
-                                [-range, range], [-range * viz.height / viz.width, range * viz.height / viz.width]
-                            );
-                            viz.drawAxes();
-                            viz.screenText(polys[degree].label + '  \u2014 black dots = zeros', viz.width/2, viz.height - 14, c.white, 12);
-                            viz.screenText('Every non-constant polynomial has at least one zero in \u2102', viz.width/2, 14, c.text, 11);
-                        }
+                            var xR = [-3, 3];
+                            var yR = [-3, 3];
+                            viz.drawDomainColoring(polys[polyChoice].f, xR, yR);
 
-                        viz.animate(draw);
+                            // Mark zeros
+                            var zeros = polys[polyChoice].zeros;
+                            for (var i = 0; i < zeros.length; i++) {
+                                var zr = zeros[i][0], zi = zeros[i][1];
+                                // Convert to screen via proportion
+                                var px = (zr - xR[0]) / (xR[1] - xR[0]) * viz.width;
+                                var py = (1 - (zi - yR[0]) / (yR[1] - yR[0])) * viz.height;
+                                var ctx = viz.ctx;
+                                ctx.strokeStyle = '#ffffff';
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.arc(px, py, 8, 0, Math.PI * 2);
+                                ctx.stroke();
+                            }
+
+                            viz.screenText('p(z) = ' + polys[polyChoice].name, viz.width / 2, 16, viz.colors.white, 14);
+                            viz.screenText('Zeros circled in white. All colors meet at each zero.', viz.width / 2, viz.height - 14, viz.colors.white, 11);
+                            viz.screenText(zeros.length + ' zero(s) (FTA guarantees \u2265 1)', viz.width / 2, viz.height - 32, viz.colors.yellow, 11);
+                        }
+                        draw();
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Use Liouville\'s theorem to prove that if \\(f\\) is entire and \\(|f(z)| \\leq A|z|^n + B\\) for all \\(z\\), then \\(f\\) is a polynomial of degree at most \\(n\\).',
-                    hint: 'Apply Cauchy\'s estimate to \\(f^{(n+1)}\\) using a circle of radius \\(R\\) and let \\(R \\to \\infty\\).',
-                    solution: 'By Cauchy\'s estimate: \\(|f^{(n+1)}(z_0)| \\leq \\frac{(n+1)! M_R}{R^{n+1}}\\) where \\(M_R = \\max_{|z|=R} |f(z)| \\leq A R^n + B\\). So \\(|f^{(n+1)}(z_0)| \\leq \\frac{(n+1)!(AR^n + B)}{R^{n+1}} \\to 0\\) as \\(R \\to \\infty\\). Hence \\(f^{(n+1)} \\equiv 0\\), so \\(f\\) is a polynomial of degree at most \\(n\\). \\(\\square\\)'
+                    question: 'Show that if \\(f\\) is entire and \\(\\text{Re}\\,f(z) \\leq M\\) for all \\(z\\), then \\(f\\) is constant.',
+                    hint: 'Consider \\(g(z) = e^{f(z)}\\). Show that \\(g\\) is entire and bounded.',
+                    solution: 'Let \\(g(z) = e^{f(z)}\\). Then \\(g\\) is entire and \\(|g(z)| = e^{\\text{Re}\\,f(z)} \\leq e^M\\). By Liouville\'s theorem, \\(g\\) is constant. Since the exponential function is injective on any horizontal strip of height \\(< 2\\pi\\), \\(f\\) must also be constant. (Alternatively: \\(g\' = f\'g = 0\\) and \\(g \\neq 0\\) implies \\(f\' = 0\\).)'
                 },
                 {
-                    question: 'Prove the fundamental theorem of algebra for degree 2: every \\(z^2 + bz + c = 0\\) has a solution in \\(\\mathbb{C}\\).',
-                    hint: 'Use the quadratic formula: \\(z = \\frac{-b \\pm \\sqrt{b^2 - 4c}}{2}\\). Show that every complex number has a square root.',
-                    solution: 'Every complex number \\(w \\neq 0\\) has a square root: if \\(w = re^{i\\theta}\\), then \\(\\sqrt{w} = \\sqrt{r}\\,e^{i\\theta/2}\\). So \\(\\sqrt{b^2 - 4c}\\) exists in \\(\\mathbb{C}\\), and \\(z = (-b \\pm \\sqrt{b^2 - 4c})/2\\) gives two roots in \\(\\mathbb{C}\\). (For higher degree one appeals to Liouville; the degree-2 case admits this elementary argument.)'
+                    question: 'Prove that a polynomial of degree \\(n \\geq 1\\) has exactly \\(n\\) roots in \\(\\mathbb{C}\\), counted with multiplicity.',
+                    hint: 'Use the FTA to find one root \\(z_1\\), factor \\(p(z) = (z - z_1)q(z)\\) where \\(\\deg q = n-1\\), and apply induction.',
+                    solution: 'By the FTA, \\(p\\) has a root \\(z_1\\). The polynomial division theorem gives \\(p(z) = (z-z_1)q(z)\\) with \\(\\deg q = n-1\\). If \\(n-1 \\geq 1\\), apply the FTA to \\(q\\) to get another root. Inducting, after \\(n\\) steps we have \\(p(z) = a_n(z-z_1)(z-z_2)\\cdots(z-z_n)\\), giving exactly \\(n\\) roots (not necessarily distinct).'
                 },
                 {
-                    question: 'Why does Liouville\'s theorem fail for real analysis? Give an explicit example.',
-                    hint: 'Exhibit a bounded non-constant smooth function on \\(\\mathbb{R}\\).',
-                    solution: 'The function \\(f(x) = \\sin x\\) is smooth, bounded (\\(|f| \\leq 1\\)), and non-constant on \\(\\mathbb{R}\\). It fails to be entire: as a complex function \\(\\sin z\\), it is unbounded (\\(|\\sin(iy)| = \\sinh y \\to \\infty\\)). The key is that the Cauchy estimate argument uses circles of arbitrarily large radius in \\(\\mathbb{C}\\), not just on the real line.'
+                    question: 'Let \\(f\\) be entire with \\(|f(z)| \\geq 1\\) for all \\(z\\). Show that \\(f\\) is constant.',
+                    hint: 'Consider \\(1/f(z)\\).',
+                    solution: 'Since \\(|f(z)| \\geq 1 > 0\\), \\(f\\) has no zeros, so \\(g = 1/f\\) is entire. Also \\(|g(z)| = 1/|f(z)| \\leq 1\\), so \\(g\\) is bounded. By Liouville\'s theorem, \\(g\\) is constant, hence \\(f\\) is constant.'
                 },
                 {
-                    question: 'Verify Liouville\'s theorem directly for \\(f(z) = e^{iz}\\): show it is not bounded on \\(\\mathbb{C}\\).',
-                    hint: 'Evaluate \\(|e^{iz}|\\) along the imaginary axis \\(z = iy\\) for \\(y \\to -\\infty\\).',
-                    solution: 'On the imaginary axis, \\(f(iy) = e^{i(iy)} = e^{-y}\\). As \\(y \\to -\\infty\\), \\(e^{-y} \\to +\\infty\\). So \\(|e^{iz}|\\) is unbounded on \\(\\mathbb{C}\\), consistent with Liouville: an entire function with no zeros and no bound that would force it to be constant.'
-                },
-                {
-                    question: 'Evaluate \\(\\displaystyle\\oint_{|z|=5} \\frac{z^4 - 3z^2 + 1}{(z-2)^3}\\,dz\\).',
-                    hint: 'Use the differentiation formula with \\(n = 2\\).',
-                    solution: 'Let \\(f(z) = z^4 - 3z^2 + 1\\), \\(z_0 = 2\\) (inside \\(|z|=5\\)), \\(n=2\\). Then \\(f\'(z) = 4z^3 - 6z\\), \\(f\'\'(z) = 12z^2 - 6\\), \\(f\'\'(2) = 48 - 6 = 42\\). So \\(\\oint = \\frac{2\\pi i}{2!} \\cdot 42 = 42\\pi i\\).'
-                },
-                {
-                    question: 'State and prove the open mapping theorem as a consequence of the maximum modulus principle.',
-                    hint: 'A non-constant analytic function maps open sets to open sets. Use the fact that if \\(f(z_0)\\) were a boundary point of \\(f(D)\\), then \\(|f - f(z_0)|\\) would have a local minimum there.',
-                    solution: 'Suppose \\(f\\) is non-constant analytic on an open set \\(D\\), and let \\(U \\subset D\\) be open. Take \\(w_0 = f(z_0) \\in f(U)\\). Consider \\(g(z) = f(z) - w_0\\). By the minimum modulus principle (since \\(g(z_0) = 0\\) means \\(g\\) has a zero at \\(z_0\\), so minimum of \\(|g|\\) is 0), all values near 0 are attained, i.e., all \\(w\\) near \\(w_0\\) are in \\(f(U)\\). Thus \\(f(U)\\) is open. \\(\\square\\)'
+                    question: 'Show that there is no entire function \\(f\\) satisfying \\(f(1/n) = 1/n^2\\) for \\(n = 1, 2, 3, \\ldots\\) and \\(f(0) = 1\\).',
+                    hint: 'Consider \\(g(z) = f(z) - z^2\\). What does the identity theorem say about the zeros of \\(g\\)?',
+                    solution: 'Define \\(g(z) = f(z) - z^2\\). Then \\(g(1/n) = f(1/n) - 1/n^2 = 0\\) for all \\(n \\geq 1\\). The sequence \\(1/n \\to 0\\), so the zeros of \\(g\\) accumulate at 0. By the identity theorem, \\(g \\equiv 0\\), i.e., \\(f(z) = z^2\\). But then \\(f(0) = 0 \\neq 1\\), a contradiction. So no such entire \\(f\\) exists.'
                 }
             ]
         }
