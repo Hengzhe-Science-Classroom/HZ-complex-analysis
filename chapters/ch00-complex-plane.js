@@ -15,153 +15,61 @@ window.CHAPTERS.push({
 <h2>Why Complex Numbers?</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Unavoidable Square Root</div>
+    <div class="env-title">A Problem That Demands the Impossible</div>
     <div class="env-body">
-        <p>In 1545, Gerolamo Cardano published his formula for solving cubic equations \\(x^3 + px + q = 0\\). It worked beautifully for many cases. But for the equation \\(x^3 - 15x - 4 = 0\\), his formula produced intermediate terms involving \\(\\sqrt{-121}\\). The equation has three real solutions (\\(x = 4, -2 \\pm \\sqrt{3}\\)), yet the path to those solutions passes through "impossible" square roots. You cannot avoid them. This was the first hint that \\(\\sqrt{-1}\\) was not just a curiosity, but a necessity.</p>
+        <p>Consider the cubic equation \\(x^3 = 15x + 4\\). In the sixteenth century, Gerolamo Cardano's formula for the cubic yields</p>
+        \\[x = \\sqrt[3]{2 + \\sqrt{-121}} + \\sqrt[3]{2 - \\sqrt{-121}}.\\]
+        <p>This expression involves the square root of a <em>negative number</em>, which has no meaning among real numbers. Yet the equation has the perfectly real solution \\(x = 4\\). Rafael Bombelli (1572) showed that if you simply <strong>trust the algebra</strong> and manipulate \\(\\sqrt{-121}\\) as if it were an honest number, you arrive at \\(x = 4\\). The "impossible" numbers cancel, leaving truth behind.</p>
+        <p>Complex numbers were not invented for abstract pleasure. They were forced into existence by the demand that algebra work.</p>
     </div>
 </div>
 
-<p>The real numbers \\(\\mathbb{R}\\) are in many ways complete. They can represent any point on a line, any ratio, any limit of rationals. Yet one simple polynomial equation they cannot solve is \\(x^2 + 1 = 0\\). No real number squares to \\(-1\\).</p>
-
-<p>This is not merely an inconvenience. The <em>Fundamental Theorem of Algebra</em> — a central theorem of this course — states that every polynomial of degree \\(n\\) with complex coefficients has exactly \\(n\\) roots in \\(\\mathbb{C}\\) (counting multiplicity). For this to hold, we need a number system larger than \\(\\mathbb{R}\\).</p>
-
-<h3>The Cubic and the Birth of \\(i\\)</h3>
-
-<p>Cardano's formula for \\(x^3 + px + q = 0\\) gives</p>
-\\[
-x = \\sqrt[3]{-\\tfrac{q}{2} + \\sqrt{\\tfrac{q^2}{4} + \\tfrac{p^3}{27}}} + \\sqrt[3]{-\\tfrac{q}{2} - \\sqrt{\\tfrac{q^2}{4} + \\tfrac{p^3}{27}}}.
-\\]
-
-<p>When the discriminant \\(\\Delta = \\tfrac{q^2}{4} + \\tfrac{p^3}{27}\\) is negative (the "casus irreducibilis"), both cube-root terms involve square roots of negative numbers, yet the sum is real. Rafael Bombelli in 1572 showed how to make sense of this by treating \\(\\sqrt{-1}\\) as a formal symbol that obeys the usual rules of algebra, plus \\(i^2 = -1\\).</p>
+<p>The real number line \\(\\mathbb{R}\\) is algebraically incomplete: not every polynomial with real coefficients has a real root. The simplest offender is \\(x^2 + 1 = 0\\). We <strong>define</strong> a new number \\(i\\) satisfying \\(i^2 = -1\\) and build the complex numbers from there.</p>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.1 (Complex Numbers)</div>
+    <div class="env-title">Definition (The Complex Numbers)</div>
     <div class="env-body">
-        <p>The <strong>complex numbers</strong> \\(\\mathbb{C}\\) are expressions of the form</p>
-        \\[z = a + bi, \\quad a, b \\in \\mathbb{R},\\]
-        <p>where \\(i\\) is a symbol satisfying \\(i^2 = -1\\). We call \\(a = \\operatorname{Re}(z)\\) the <strong>real part</strong> and \\(b = \\operatorname{Im}(z)\\) the <strong>imaginary part</strong>. Two complex numbers are equal if and only if their real and imaginary parts are both equal.</p>
+        <p>The set of <strong>complex numbers</strong> is</p>
+        \\[\\mathbb{C} = \\{a + bi : a, b \\in \\mathbb{R}\\},\\]
+        <p>where \\(i^2 = -1\\). For \\(z = a + bi\\), we call \\(a = \\operatorname{Re}(z)\\) the <strong>real part</strong> and \\(b = \\operatorname{Im}(z)\\) the <strong>imaginary part</strong>.</p>
     </div>
 </div>
 
-<p>The word "imaginary" is historical and slightly unfortunate: complex numbers are no less real (in the philosophical sense) than negative numbers or irrationals. They are simply elements of a larger, two-dimensional number system.</p>
+<p>The word "imaginary" is an unfortunate historical relic (coined by Descartes as a term of derision). Complex numbers are no less "real" than real numbers; both are mathematical constructions. The real numbers are the special case \\(b = 0\\).</p>
 
-<h3>Why the Plane?</h3>
+<h3>The Fundamental Theorem of Algebra</h3>
 
-<p>Writing \\(z = a + bi\\) pairs a complex number with a point \\((a, b)\\) in the plane. This is not just a notational trick. Addition of complex numbers becomes vector addition in the plane. Multiplication introduces rotation and scaling. The geometry of the plane and the algebra of complex numbers become two languages describing the same structure.</p>
+<p>The deepest justification for \\(\\mathbb{C}\\) is that it is <strong>algebraically closed</strong>: every non-constant polynomial with complex coefficients has a root in \\(\\mathbb{C}\\). This is the Fundamental Theorem of Algebra, first rigorously proved by Gauss (1799).</p>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 0.1 (Fundamental Theorem of Algebra)</div>
+    <div class="env-body">
+        <p>Every polynomial \\(p(z) = a_n z^n + \\cdots + a_1 z + a_0\\) with \\(a_n \\neq 0\\) and \\(n \\geq 1\\) has at least one root in \\(\\mathbb{C}\\). Consequently, \\(p(z)\\) factors completely as</p>
+        \\[p(z) = a_n(z - z_1)(z - z_2) \\cdots (z - z_n),\\]
+        <p>where \\(z_1, \\ldots, z_n \\in \\mathbb{C}\\) (not necessarily distinct).</p>
+    </div>
+</div>
+
+<p>We will prove this theorem later using complex analysis (specifically, Liouville's theorem). For now, it serves as motivation: \\(\\mathbb{C}\\) is the natural arena for polynomial algebra, and complex analysis is the study of functions on this arena.</p>
 
 <div class="env-block remark">
-    <div class="env-title">Historical Note: The Argand Diagram</div>
+    <div class="env-title">Historical Note</div>
     <div class="env-body">
-        <p>The geometric interpretation was independently discovered by Caspar Wessel (1799), Jean-Robert Argand (1806), and Carl Friedrich Gauss (who used it extensively but published later). Gauss legitimized complex numbers by calling them <em>complex numbers of the second kind</em> and demonstrating their indispensability for number theory. The plane representation is still called the <em>Argand diagram</em>.</p>
+        <p>Cardano published his <em>Ars Magna</em> in 1545, containing the cubic formula (actually discovered by Tartaglia). Bombelli's <em>L'Algebra</em> (1572) was the first systematic treatment of complex arithmetic. Euler introduced the notation \\(i\\) for \\(\\sqrt{-1}\\) in 1777, and Gauss coined the term "complex number" and gave \\(\\mathbb{C}\\) its geometric interpretation.</p>
     </div>
 </div>
-
-<div class="viz-placeholder" data-viz="viz-complex-arithmetic"></div>
 `,
-            visualizations: [
-                {
-                    id: 'viz-complex-arithmetic',
-                    title: 'Argand Diagram: Addition and Multiplication',
-                    description: 'Drag z\u2081 (blue) and z\u2082 (teal) to explore. Toggle between addition (parallelogram law) and multiplication (rotation + scaling). The result is shown in orange.',
-                    setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 60 });
-
-                        var z1 = { x: 2, y: 1 };
-                        var z2 = { x: 1, y: 2 };
-                        var mode = 'add';
-
-                        var modeBtn = VizEngine.createButton(controls, 'Mode: Addition', function() {
-                            mode = (mode === 'add') ? 'mul' : 'add';
-                            modeBtn.textContent = 'Mode: ' + (mode === 'add' ? 'Addition' : 'Multiplication');
-                            draw();
-                        });
-
-                        var d1 = viz.addDraggable('z1', z1.x, z1.y, viz.colors.blue, 8, function(x, y) {
-                            z1.x = x; z1.y = y; draw();
-                        });
-                        var d2 = viz.addDraggable('z2', z2.x, z2.y, viz.colors.teal, 8, function(x, y) {
-                            z2.x = x; z2.y = y; draw();
-                        });
-
-                        function complexMul(a, b, c, d) { return [a*c - b*d, a*d + b*c]; }
-
-                        function draw() {
-                            viz.clear();
-                            viz.drawGrid();
-                            viz.drawAxes();
-
-                            var ctx = viz.ctx;
-                            var ax = d1.x, ay = d1.y;
-                            var bx = d2.x, by = d2.y;
-
-                            if (mode === 'add') {
-                                // Parallelogram
-                                var rx = ax + bx, ry = ay + by;
-                                ctx.strokeStyle = viz.colors.blue + '33';
-                                ctx.lineWidth = 1;
-                                ctx.setLineDash([4,4]);
-                                var [sx1,sy1] = viz.toScreen(ax,ay), [sx2,sy2] = viz.toScreen(bx,by);
-                                var [srx,sry] = viz.toScreen(rx,ry);
-                                ctx.beginPath(); ctx.moveTo(sx2,sy2); ctx.lineTo(srx,sry); ctx.stroke();
-                                ctx.beginPath(); ctx.moveTo(sx1,sy1); ctx.lineTo(srx,sry); ctx.stroke();
-                                ctx.setLineDash([]);
-
-                                viz.drawVector(0, 0, ax, ay, viz.colors.blue, 'z\u2081', 2.5);
-                                viz.drawVector(0, 0, bx, by, viz.colors.teal, 'z\u2082', 2.5);
-                                viz.drawVector(0, 0, rx, ry, viz.colors.orange, 'z\u2081+z\u2082', 2.5);
-
-                                viz.screenText(
-                                    'z\u2081 = ' + ax.toFixed(2) + ' + ' + ay.toFixed(2) + 'i   ' +
-                                    'z\u2082 = ' + bx.toFixed(2) + ' + ' + by.toFixed(2) + 'i   ' +
-                                    'Sum = ' + rx.toFixed(2) + ' + ' + ry.toFixed(2) + 'i',
-                                    viz.width/2, viz.height - 18, viz.colors.white, 11
-                                );
-                            } else {
-                                var [rx2, ry2] = complexMul(ax, ay, bx, by);
-                                var r1 = Math.sqrt(ax*ax+ay*ay), r2 = Math.sqrt(bx*bx+by*by);
-                                var rr = r1*r2;
-                                var arg1 = Math.atan2(ay,ax), arg2 = Math.atan2(by,bx);
-                                var argr = arg1+arg2;
-
-                                // Draw angle arcs
-                                ctx.strokeStyle = viz.colors.blue + '55';
-                                ctx.lineWidth = 1.5;
-                                ctx.beginPath();
-                                ctx.arc(viz.originX, viz.originY, 28, -arg1, 0, arg1 < 0);
-                                ctx.stroke();
-                                ctx.strokeStyle = viz.colors.teal + '55';
-                                ctx.beginPath();
-                                ctx.arc(viz.originX, viz.originY, 20, -arg2, 0, arg2 < 0);
-                                ctx.stroke();
-
-                                viz.drawVector(0, 0, ax, ay, viz.colors.blue, 'z\u2081', 2.5);
-                                viz.drawVector(0, 0, bx, by, viz.colors.teal, 'z\u2082', 2.5);
-                                viz.drawVector(0, 0, rx2, ry2, viz.colors.orange, 'z\u2081\u00B7z\u2082', 2.5);
-
-                                viz.screenText(
-                                    '|z\u2081|=' + r1.toFixed(2) + '  |z\u2082|=' + r2.toFixed(2) + '  |product|=' + rr.toFixed(2) +
-                                    '  \u2220z\u2081=' + (arg1*180/Math.PI).toFixed(1) + '\u00B0  \u2220z\u2082=' + (arg2*180/Math.PI).toFixed(1) + '\u00B0  \u2220product=' + (argr*180/Math.PI).toFixed(1) + '\u00B0',
-                                    viz.width/2, viz.height - 18, viz.colors.white, 10
-                                );
-                            }
-
-                            viz.drawDraggables();
-                        }
-                        draw();
-                        return viz;
-                    }
-                }
-            ],
+            visualizations: [],
             exercises: [
                 {
-                    question: 'Verify Cardano\'s formula for \\(x^3 - 15x - 4 = 0\\): the formula gives \\(x = \\sqrt[3]{2 + 11i} + \\sqrt[3]{2 - 11i}\\). Show that if \\(\\sqrt[3]{2+11i} = 2+i\\), then \\(x = 4\\) is a solution.',
-                    hint: 'Compute \\((2+i)^3\\) directly. Then add \\((2+i) + (2-i)\\).',
-                    solution: '\\((2+i)^3 = 8 + 12i + 6i^2 + i^3 = 8 + 12i - 6 - i = 2 + 11i\\). So \\(\\sqrt[3]{2+11i} = 2+i\\) and \\(\\sqrt[3]{2-11i} = 2-i\\). Their sum is \\((2+i)+(2-i) = 4\\). Check: \\(4^3 - 15(4) - 4 = 64 - 60 - 4 = 0\\). \\(\\checkmark\\)'
+                    question: 'Verify Bombelli\'s claim: show that \\((2 + i)^3 = 2 + 11i\\) and \\((2 - i)^3 = 2 - 11i\\), and conclude that \\(\\sqrt[3]{2 + \\sqrt{-121}} + \\sqrt[3]{2 - \\sqrt{-121}} = 4\\).',
+                    hint: 'Expand \\((2+i)^3\\) using the binomial theorem (or directly). Then note \\(\\sqrt{-121} = 11i\\).',
+                    solution: '\\((2+i)^3 = 8 + 12i + 6i^2 + i^3 = 8 + 12i - 6 - i = 2 + 11i\\). Similarly \\((2-i)^3 = 2 - 11i\\). Since \\(\\sqrt{-121} = 11i\\), the cube roots are \\(2+i\\) and \\(2-i\\), and their sum is \\(4\\).'
                 },
                 {
-                    question: 'Are \\(3 + 4i\\) and \\(4 + 3i\\) equal? What is the real part and imaginary part of each?',
-                    hint: 'Two complex numbers are equal iff both real and imaginary parts match.',
-                    solution: 'No. \\(\\operatorname{Re}(3+4i) = 3\\), \\(\\operatorname{Im}(3+4i) = 4\\); \\(\\operatorname{Re}(4+3i) = 4\\), \\(\\operatorname{Im}(4+3i) = 3\\). Since the real parts differ, \\(3+4i \\ne 4+3i\\).'
+                    question: 'Find all complex numbers \\(z\\) such that \\(z^2 = -5 + 12i\\).',
+                    hint: 'Write \\(z = a + bi\\) and expand \\(z^2 = (a^2 - b^2) + 2abi\\). Match real and imaginary parts.',
+                    solution: 'Setting \\(a^2 - b^2 = -5\\) and \\(2ab = 12\\), so \\(b = 6/a\\). Substituting: \\(a^2 - 36/a^2 = -5\\), giving \\(a^4 + 5a^2 - 36 = 0\\), so \\(a^2 = 4\\), hence \\(a = \\pm 2\\). Then \\(b = \\pm 3\\). The solutions are \\(z = 2 + 3i\\) and \\(z = -2 - 3i\\).'
                 }
             ]
         },
@@ -176,102 +84,165 @@ x = \\sqrt[3]{-\\tfrac{q}{2} + \\sqrt{\\tfrac{q^2}{4} + \\tfrac{p^3}{27}}} + \\s
 <h2>Algebra of Complex Numbers</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Key Insight</div>
+    <div class="env-title">Arithmetic as Coordinate Geometry</div>
     <div class="env-body">
-        <p>Complex arithmetic is just polynomial arithmetic with the single rule \\(i^2 = -1\\). You already know how to add, multiply, and factor polynomials. Apply those rules to expressions \\(a + bi\\), replace \\(i^2\\) by \\(-1\\) whenever it appears, and you have complex arithmetic. Nothing more is required.</p>
+        <p>Addition of complex numbers is just vector addition in \\(\\mathbb{R}^2\\). Multiplication is more interesting: it involves both scaling and rotation, as we will see in the next section. For now, the rule is simple: multiply out and use \\(i^2 = -1\\).</p>
     </div>
 </div>
 
-<h3>Addition and Subtraction</h3>
+<h3>Basic Operations</h3>
 
-<p>Addition is component-wise:</p>
-\\[
-(a+bi) + (c+di) = (a+c) + (b+d)i.
-\\]
-
-<p>Geometrically, this is vector addition in the plane: the sum \\(z_1 + z_2\\) is the fourth vertex of the parallelogram with adjacent sides \\(z_1\\) and \\(z_2\\).</p>
-
-<h3>Multiplication</h3>
-
-<p>Multiplication follows the distributive law with \\(i^2 = -1\\):</p>
-\\[
-(a+bi)(c+di) = ac + adi + bci + bdi^2 = (ac - bd) + (ad+bc)i.
-\\]
-
-<div class="env-block example">
-    <div class="env-title">Example</div>
-    <div class="env-body">
-        <p>\\((2+3i)(1-i) = 2 - 2i + 3i - 3i^2 = 2 + i + 3 = 5 + i.\\)</p>
-    </div>
-</div>
-
-<h3>Complex Conjugate</h3>
+<p>Let \\(z = a + bi\\) and \\(w = c + di\\). The arithmetic operations are:</p>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.2 (Complex Conjugate)</div>
+    <div class="env-title">Definition (Complex Arithmetic)</div>
     <div class="env-body">
-        <p>The <strong>complex conjugate</strong> of \\(z = a + bi\\) is \\(\\bar{z} = a - bi\\). It reflects \\(z\\) across the real axis.</p>
+        <ul>
+            <li><strong>Addition:</strong> \\(z + w = (a + c) + (b + d)i\\)</li>
+            <li><strong>Multiplication:</strong> \\(zw = (ac - bd) + (ad + bc)i\\)</li>
+            <li><strong>Conjugate:</strong> \\(\\bar{z} = a - bi\\)</li>
+            <li><strong>Modulus:</strong> \\(|z| = \\sqrt{a^2 + b^2} = \\sqrt{z\\bar{z}}\\)</li>
+            <li><strong>Division:</strong> \\(\\displaystyle\\frac{z}{w} = \\frac{z\\bar{w}}{|w|^2} = \\frac{(ac+bd) + (bc-ad)i}{c^2+d^2}\\) for \\(w \\neq 0\\)</li>
+        </ul>
     </div>
 </div>
 
-<p>Key properties: \\(\\overline{z+w} = \\bar{z}+\\bar{w}\\), \\(\\overline{zw} = \\bar{z}\\bar{w}\\), \\(z+\\bar{z} = 2\\operatorname{Re}(z)\\), \\(z\\bar{z} = a^2+b^2 \\geq 0\\).</p>
+<p>With these operations, \\(\\mathbb{C}\\) is a <strong>field</strong>: addition and multiplication satisfy all the usual laws (commutativity, associativity, distributivity), and every nonzero element has a multiplicative inverse.</p>
 
-<h3>Modulus (Absolute Value)</h3>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 0.3 (Modulus)</div>
-    <div class="env-body">
-        <p>The <strong>modulus</strong> (or absolute value) of \\(z = a+bi\\) is</p>
-        \\[|z| = \\sqrt{a^2 + b^2} = \\sqrt{z\\bar{z}}.\\]
-        <p>It is the Euclidean distance from \\(z\\) to the origin.</p>
-    </div>
-</div>
-
-<p>The modulus satisfies \\(|zw| = |z||w|\\) and \\(|z/w| = |z|/|w|\\) (for \\(w \\ne 0\\)).</p>
-
-<h3>Division</h3>
-
-<p>To divide, multiply numerator and denominator by the conjugate of the denominator:</p>
-\\[
-\\frac{a+bi}{c+di} = \\frac{(a+bi)(c-di)}{(c+di)(c-di)} = \\frac{(ac+bd) + (bc-ad)i}{c^2+d^2}.
-\\]
-
-<h3>Triangle Inequality</h3>
+<h3>Properties of the Conjugate and Modulus</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 0.1 (Triangle Inequality)</div>
+    <div class="env-title">Theorem 0.2 (Conjugate and Modulus Properties)</div>
     <div class="env-body">
-        <p>For any \\(z, w \\in \\mathbb{C}\\),</p>
+        <p>For all \\(z, w \\in \\mathbb{C}\\):</p>
+        <ol>
+            <li>\\(\\overline{z + w} = \\bar{z} + \\bar{w}\\) and \\(\\overline{zw} = \\bar{z}\\bar{w}\\)</li>
+            <li>\\(z\\bar{z} = |z|^2\\)</li>
+            <li>\\(\\operatorname{Re}(z) = \\frac{z + \\bar{z}}{2}\\), \\(\\operatorname{Im}(z) = \\frac{z - \\bar{z}}{2i}\\)</li>
+            <li>\\(|zw| = |z||w|\\) (multiplicativity)</li>
+            <li>\\(\\bar{\\bar{z}} = z\\)</li>
+            <li>\\(z \\in \\mathbb{R}\\) if and only if \\(z = \\bar{z}\\)</li>
+        </ol>
+    </div>
+</div>
+
+<h3>The Triangle Inequality</h3>
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 0.3 (Triangle Inequality)</div>
+    <div class="env-body">
+        <p>For all \\(z, w \\in \\mathbb{C}\\):</p>
         \\[|z + w| \\leq |z| + |w|.\\]
-        <p>Equality holds if and only if \\(z\\) and \\(w\\) point in the same direction, i.e., \\(w = tz\\) for some \\(t \\geq 0\\).</p>
+        <p>Equality holds if and only if one of \\(z, w\\) is a non-negative real multiple of the other.</p>
     </div>
 </div>
 
 <div class="env-block proof">
     <div class="env-title">Proof</div>
     <div class="env-body">
-        <p>We have \\(|z+w|^2 = (z+w)\\overline{(z+w)} = z\\bar{z} + z\\bar{w} + \\bar{z}w + w\\bar{w} = |z|^2 + 2\\operatorname{Re}(z\\bar{w}) + |w|^2\\). Since \\(\\operatorname{Re}(\\xi) \\leq |\\xi|\\) for any \\(\\xi\\), we get \\(|z+w|^2 \\leq |z|^2 + 2|z\\bar{w}| + |w|^2 = (|z|+|w|)^2\\). Taking square roots gives the result. \\(\\square\\)</p>
+        <p>We have \\(|z + w|^2 = (z+w)\\overline{(z+w)} = (z+w)(\\bar{z}+\\bar{w}) = |z|^2 + z\\bar{w} + \\bar{z}w + |w|^2\\).</p>
+        <p>Now \\(z\\bar{w} + \\bar{z}w = z\\bar{w} + \\overline{z\\bar{w}} = 2\\operatorname{Re}(z\\bar{w}) \\leq 2|z\\bar{w}| = 2|z||w|\\).</p>
+        <p>Therefore \\(|z+w|^2 \\leq |z|^2 + 2|z||w| + |w|^2 = (|z| + |w|)^2\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
+
+<div class="env-block corollary">
+    <div class="env-title">Corollary (Reverse Triangle Inequality)</div>
+    <div class="env-body">
+        <p>\\(\\big||z| - |w|\\big| \\leq |z - w|\\).</p>
     </div>
 </div>
 
-<p>A useful variant is the <em>reverse triangle inequality</em>: \\(\\big||z|-|w|\\big| \\leq |z-w|\\).</p>
+<div class="viz-placeholder" data-viz="viz-complex-arithmetic"></div>
 `,
-            visualizations: [],
+            visualizations: [
+                {
+                    id: 'viz-complex-arithmetic',
+                    title: 'Complex Arithmetic Explorer',
+                    description: 'Drag z\u2081 and z\u2082 to see their sum and product in the complex plane. The sum follows the parallelogram law (vector addition). The product combines magnitudes and angles.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 50
+                        });
+
+                        var z1 = viz.addDraggable('z1', 2, 1, viz.colors.blue);
+                        var z2 = viz.addDraggable('z2', -1, 2, viz.colors.teal);
+
+                        var mode = 'both';
+                        VizEngine.createButton(controls, 'Sum', function() { mode = 'sum'; });
+                        VizEngine.createButton(controls, 'Product', function() { mode = 'product'; });
+                        VizEngine.createButton(controls, 'Both', function() { mode = 'both'; });
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var ctx = viz.ctx;
+
+                            // Label axes
+                            viz.drawText('Re', (viz.width - viz.originX) / viz.scale - 0.3, -0.5, viz.colors.text, 12);
+                            viz.drawText('Im', 0.4, (viz.originY) / viz.scale - 0.3, viz.colors.text, 12);
+
+                            var a = z1.x, b = z1.y;
+                            var c = z2.x, d = z2.y;
+
+                            // Sum
+                            var sx = a + c, sy = b + d;
+                            // Product
+                            var px = a * c - b * d, py = a * d + b * c;
+
+                            // Draw z1 and z2
+                            viz.drawVector(0, 0, a, b, viz.colors.blue, 'z\u2081');
+                            viz.drawVector(0, 0, c, d, viz.colors.teal, 'z\u2082');
+
+                            if (mode === 'sum' || mode === 'both') {
+                                // Parallelogram for sum
+                                viz.drawSegment(a, b, sx, sy, viz.colors.teal + '66', 1, true);
+                                viz.drawSegment(c, d, sx, sy, viz.colors.blue + '66', 1, true);
+                                viz.drawVector(0, 0, sx, sy, viz.colors.orange, 'z\u2081+z\u2082');
+                                viz.drawPoint(sx, sy, viz.colors.orange, null, 4);
+                            }
+
+                            if (mode === 'product' || mode === 'both') {
+                                viz.drawVector(0, 0, px, py, viz.colors.purple, 'z\u2081z\u2082');
+                                viz.drawPoint(px, py, viz.colors.purple, null, 4);
+                            }
+
+                            viz.drawDraggables();
+
+                            // Info panel
+                            var infoY = 18;
+                            var fmt = function(x, y) {
+                                var sign = y >= 0 ? '+' : '\u2212';
+                                return x.toFixed(2) + ' ' + sign + ' ' + Math.abs(y).toFixed(2) + 'i';
+                            };
+                            viz.screenText('z\u2081 = ' + fmt(a, b), 100, infoY, viz.colors.blue, 12, 'center');
+                            viz.screenText('z\u2082 = ' + fmt(c, d), 280, infoY, viz.colors.teal, 12, 'center');
+
+                            if (mode === 'sum' || mode === 'both') {
+                                viz.screenText('z\u2081+z\u2082 = ' + fmt(sx, sy), 460, infoY, viz.colors.orange, 12, 'center');
+                            }
+                            if (mode === 'product' || mode === 'both') {
+                                viz.screenText('z\u2081z\u2082 = ' + fmt(px, py), 460, infoY + 16, viz.colors.purple, 12, 'center');
+                            }
+
+                            // Show moduli
+                            var m1 = Math.sqrt(a*a + b*b), m2 = Math.sqrt(c*c + d*d);
+                            viz.screenText('|z\u2081| = ' + m1.toFixed(2) + ',  |z\u2082| = ' + m2.toFixed(2) + ',  |z\u2081||z\u2082| = ' + (m1*m2).toFixed(2), viz.width / 2, viz.height - 12, viz.colors.text, 11, 'center');
+                        }
+
+                        viz.animate(function() { draw(); });
+                        return viz;
+                    }
+                }
+            ],
             exercises: [
                 {
-                    question: 'Compute \\((3-2i)^2\\) and \\(\\frac{1+i}{1-i}\\).',
-                    hint: 'For the quotient, multiply top and bottom by \\(1+i\\).',
-                    solution: '\\((3-2i)^2 = 9 - 12i + 4i^2 = 9 - 12i - 4 = 5 - 12i\\). For the quotient: \\(\\frac{(1+i)^2}{(1-i)(1+i)} = \\frac{1+2i-1}{1+1} = \\frac{2i}{2} = i\\).'
-                },
-                {
-                    question: 'Show that \\(|z_1 z_2| = |z_1||z_2|\\) for all \\(z_1, z_2 \\in \\mathbb{C}\\).',
-                    hint: 'Use \\(|z|^2 = z\\bar{z}\\) and the property \\(\\overline{z_1 z_2} = \\bar{z}_1\\bar{z}_2\\).',
-                    solution: '\\(|z_1 z_2|^2 = (z_1 z_2)\\overline{(z_1 z_2)} = z_1 z_2 \\bar{z}_1 \\bar{z}_2 = (z_1\\bar{z}_1)(z_2\\bar{z}_2) = |z_1|^2|z_2|^2\\). Taking square roots: \\(|z_1 z_2| = |z_1||z_2|\\). \\(\\square\\)'
-                },
-                {
-                    question: 'Prove the reverse triangle inequality: \\(\\big||z|-|w|\\big| \\leq |z-w|\\).',
-                    hint: 'Apply the triangle inequality to \\(z = (z-w) + w\\).',
-                    solution: 'By the triangle inequality, \\(|z| = |(z-w)+w| \\leq |z-w|+|w|\\), so \\(|z|-|w| \\leq |z-w|\\). By symmetry (swap \\(z\\) and \\(w\\)), \\(|w|-|z| \\leq |w-z| = |z-w|\\). Combining: \\(\\big||z|-|w|\\big| \\leq |z-w|\\). \\(\\square\\)'
+                    question: 'Let \\(z = 3 + 4i\\). Compute \\(|z|\\), \\(\\bar{z}\\), \\(z\\bar{z}\\), and \\(1/z\\).',
+                    hint: 'Recall \\(1/z = \\bar{z}/|z|^2\\).',
+                    solution: '\\(|z| = \\sqrt{9+16} = 5\\). \\(\\bar{z} = 3 - 4i\\). \\(z\\bar{z} = |z|^2 = 25\\). \\(1/z = \\bar{z}/25 = (3-4i)/25 = 3/25 - 4i/25\\).'
                 }
             ]
         },
@@ -286,46 +257,65 @@ x = \\sqrt[3]{-\\tfrac{q}{2} + \\sqrt{\\tfrac{q^2}{4} + \\tfrac{p^3}{27}}} + \\s
 <h2>Geometric Interpretation</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">Numbers as Points, Multiplication as Rotation</div>
+    <div class="env-title">The Argand Plane</div>
     <div class="env-body">
-        <p>Every complex number is a point in the plane. The real axis is the \\(x\\)-axis; the imaginary axis is the \\(y\\)-axis. But unlike ordinary coordinates, there is an algebraic structure on these points: multiplication by \\(i\\) rotates any point by \\(90^\\circ\\) counterclockwise. This single fact explains why complex numbers are tailor-made for studying angles and rotations.</p>
+        <p>Jean-Robert Argand (1806) and Caspar Wessel (1799, independently) realized that complex numbers are naturally represented as points in a plane: \\(z = a + bi\\) corresponds to the point \\((a, b)\\). The horizontal axis is the real axis, the vertical axis is the imaginary axis, and every complex number has a unique geometric address.</p>
     </div>
 </div>
-
-<h3>The Argand Diagram</h3>
-
-<p>We identify \\(z = a+bi\\) with the point \\((a,b)\\) in the <strong>complex plane</strong> (also called the <strong>Argand diagram</strong>). The horizontal axis is the <em>real axis</em> and the vertical axis is the <em>imaginary axis</em>.</p>
 
 <h3>Polar Form</h3>
 
-<p>Every nonzero complex number can be written in polar form using its distance from the origin (modulus) and its angle from the positive real axis (argument):</p>
+<p>Any nonzero \\(z \\in \\mathbb{C}\\) can be written in <strong>polar form</strong>:</p>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.4 (Polar Form)</div>
+    <div class="env-title">Definition (Polar Form)</div>
     <div class="env-body">
-        <p>For \\(z = a+bi \\ne 0\\), write \\(a = r\\cos\\theta\\) and \\(b = r\\sin\\theta\\) where \\(r = |z| \\geq 0\\) and \\(\\theta = \\arg z\\). Then</p>
-        \\[z = r(\\cos\\theta + i\\sin\\theta).\\]
-        <p>The angle \\(\\theta\\) is determined up to multiples of \\(2\\pi\\). The <strong>principal argument</strong> \\(\\operatorname{Arg}(z)\\) takes values in \\((-\\pi, \\pi]\\).</p>
+        \\[z = r(\\cos\\theta + i\\sin\\theta),\\]
+        <p>where \\(r = |z|\\) is the <strong>modulus</strong> (distance from the origin) and \\(\\theta = \\arg(z)\\) is the <strong>argument</strong> (angle from the positive real axis, measured counterclockwise). The argument is determined up to multiples of \\(2\\pi\\); the <strong>principal argument</strong> \\(\\operatorname{Arg}(z) \\in (-\\pi, \\pi]\\) is the unique choice in that interval.</p>
     </div>
 </div>
 
-<p>Polar form makes multiplication transparent:</p>
-\\[
-r_1(\\cos\\theta_1+i\\sin\\theta_1) \\cdot r_2(\\cos\\theta_2+i\\sin\\theta_2) = r_1 r_2 (\\cos(\\theta_1+\\theta_2)+i\\sin(\\theta_1+\\theta_2)).
-\\]
+<h3>Multiplication as Rotation and Scaling</h3>
 
-<p>Multiplying two complex numbers: <strong>multiply the moduli, add the arguments</strong>. In particular, multiplying by \\(e^{i\\alpha}\\) (a unit complex number at angle \\(\\alpha\\)) is pure rotation by \\(\\alpha\\).</p>
+<p>The geometric meaning of multiplication becomes transparent in polar form. If \\(z_1 = r_1(\\cos\\theta_1 + i\\sin\\theta_1)\\) and \\(z_2 = r_2(\\cos\\theta_2 + i\\sin\\theta_2)\\), then</p>
+
+\\[z_1 z_2 = r_1 r_2 \\big[\\cos(\\theta_1 + \\theta_2) + i\\sin(\\theta_1 + \\theta_2)\\big].\\]
+
+<div class="env-block theorem">
+    <div class="env-title">Theorem 0.4 (Geometric Interpretation of Multiplication)</div>
+    <div class="env-body">
+        <p>Multiplying by \\(w\\) is the geometric operation of:</p>
+        <ol>
+            <li><strong>Scaling</strong> distances by \\(|w|\\), and</li>
+            <li><strong>Rotating</strong> by \\(\\arg(w)\\).</li>
+        </ol>
+        <p>In particular, multiplying by \\(i\\) rotates by \\(\\pi/2\\) counterclockwise.</p>
+    </div>
+</div>
+
+<p>This is why complex multiplication is so geometrically rich: every multiplication is a <strong>spiral similarity</strong>, combining rotation with dilation. Conjugation \\(z \\mapsto \\bar{z}\\) is reflection across the real axis.</p>
+
+<div class="env-block example">
+    <div class="env-title">Example: Rotation by \\(\\pi/4\\)</div>
+    <div class="env-body">
+        <p>To rotate the point \\(z = 3 + i\\) by \\(\\pi/4\\) counterclockwise about the origin, multiply by \\(w = \\cos(\\pi/4) + i\\sin(\\pi/4) = \\frac{1+i}{\\sqrt{2}}\\):</p>
+        \\[wz = \\frac{(1+i)(3+i)}{\\sqrt{2}} = \\frac{3 + i + 3i + i^2}{\\sqrt{2}} = \\frac{2 + 4i}{\\sqrt{2}} = \\sqrt{2} + 2\\sqrt{2}\\,i.\\]
+    </div>
+</div>
 
 <div class="viz-placeholder" data-viz="viz-polar-form"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-polar-form',
-                    title: 'Polar Form and Argument',
-                    description: 'Drag z to any position. The visualization shows |z|, arg(z), and the polar decomposition. Watch the argument sweep as you move z around the origin.',
+                    title: 'Polar Form Explorer',
+                    description: 'Drag z to see its Cartesian and polar representations simultaneously. The arc shows the argument; the radius shows the modulus.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 60 });
-                        var zpt = viz.addDraggable('z', 2, 1.5, viz.colors.blue, 9, function() { draw(); });
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 50
+                        });
+
+                        var zd = viz.addDraggable('z', 2, 1.5, viz.colors.blue);
 
                         function draw() {
                             viz.clear();
@@ -333,71 +323,68 @@ r_1(\\cos\\theta_1+i\\sin\\theta_1) \\cdot r_2(\\cos\\theta_2+i\\sin\\theta_2) =
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
-                            var x = zpt.x, y = zpt.y;
-                            var r = Math.sqrt(x*x + y*y);
+                            var x = zd.x, y = zd.y;
+                            var r = Math.sqrt(x * x + y * y);
                             var theta = Math.atan2(y, x);
-                            var deg = theta * 180 / Math.PI;
 
-                            // Angle arc
-                            if (r > 0.05) {
-                                ctx.strokeStyle = viz.colors.yellow + 'aa';
+                            // Draw modulus line
+                            viz.drawVector(0, 0, x, y, viz.colors.blue, 'z');
+
+                            // Draw projections (dashed)
+                            viz.drawSegment(x, 0, x, y, viz.colors.text + '55', 1, true);
+                            viz.drawSegment(0, 0, x, 0, viz.colors.text + '55', 1, true);
+
+                            // Draw angle arc
+                            if (r > 0.1) {
+                                var arcR = Math.min(30, r * viz.scale * 0.4);
+                                var [ox, oy] = viz.toScreen(0, 0);
+                                ctx.strokeStyle = viz.colors.orange;
                                 ctx.lineWidth = 2;
                                 ctx.beginPath();
-                                ctx.arc(viz.originX, viz.originY, 34, -theta, 0, theta < 0);
+                                ctx.arc(ox, oy, arcR, -theta, 0); // screen coords: y is flipped
                                 ctx.stroke();
 
                                 // Angle label
-                                var midA = theta / 2;
-                                var lx = viz.originX + 48 * Math.cos(midA);
-                                var ly = viz.originY - 48 * Math.sin(midA);
-                                viz.screenText('\u03b8', lx, ly, viz.colors.yellow, 13);
+                                var labelAngle = -theta / 2;
+                                ctx.fillStyle = viz.colors.orange;
+                                ctx.font = '12px -apple-system,sans-serif';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('\u03B8', ox + (arcR + 14) * Math.cos(labelAngle), oy + (arcR + 14) * Math.sin(labelAngle));
                             }
 
-                            // Dashed lines for real and imaginary components
-                            ctx.strokeStyle = viz.colors.blue + '55';
-                            ctx.lineWidth = 1; ctx.setLineDash([4,3]);
-                            var [sx, sy] = viz.toScreen(x, y);
-                            var [sx0, sy0] = viz.toScreen(x, 0);
-                            var [sx1, sy1] = viz.toScreen(0, y);
-                            ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx0, sy0); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx1, sy1); ctx.stroke();
-                            ctx.setLineDash([]);
-
-                            // Modulus line
-                            viz.drawVector(0, 0, x, y, viz.colors.blue, 'z', 2.5);
-
-                            // Labels on axes
-                            viz.drawPoint(x, 0, viz.colors.teal, null, 4);
-                            viz.drawText('a='+x.toFixed(2), x, -0.35, viz.colors.teal, 11);
-                            viz.drawPoint(0, y, viz.colors.orange, null, 4);
-                            ctx.fillStyle = viz.colors.orange; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            var [,slby] = viz.toScreen(0,y);
-                            ctx.fillText('b='+y.toFixed(2), viz.originX + 6, slby);
+                            // Modulus label
+                            if (r > 0.2) {
+                                var mx = x / 2, my = y / 2;
+                                var [smx, smy] = viz.toScreen(mx, my);
+                                var perpAngle = theta + Math.PI / 2;
+                                ctx.fillStyle = viz.colors.teal;
+                                ctx.font = '12px -apple-system,sans-serif';
+                                ctx.textAlign = 'center';
+                                ctx.textBaseline = 'middle';
+                                ctx.fillText('r = |z|', smx + 18 * Math.cos(perpAngle), smy - 18 * Math.sin(perpAngle));
+                            }
 
                             viz.drawDraggables();
 
-                            viz.screenText(
-                                '|z| = ' + r.toFixed(3) + '   arg(z) = ' + deg.toFixed(1) + '\u00b0' +
-                                '   z = ' + r.toFixed(2) + '(cos ' + deg.toFixed(1) + '\u00b0 + i\u00b7sin ' + deg.toFixed(1) + '\u00b0)',
-                                viz.width/2, viz.height - 18, viz.colors.white, 11
-                            );
+                            // Info
+                            var sign = y >= 0 ? '+' : '\u2212';
+                            var degVal = (theta * 180 / Math.PI);
+                            viz.screenText('z = ' + x.toFixed(2) + ' ' + sign + ' ' + Math.abs(y).toFixed(2) + 'i', viz.width / 2, 16, viz.colors.white, 13, 'center');
+                            viz.screenText('|z| = ' + r.toFixed(3) + '     arg(z) = ' + theta.toFixed(3) + ' rad (' + degVal.toFixed(1) + '\u00B0)', viz.width / 2, 36, viz.colors.teal, 12, 'center');
+                            viz.screenText('z = ' + r.toFixed(3) + '(cos ' + theta.toFixed(3) + ' + i sin ' + theta.toFixed(3) + ')', viz.width / 2, viz.height - 12, viz.colors.orange, 11, 'center');
                         }
-                        draw();
+
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Convert \\(z = -1 + i\\) to polar form. What is \\(|z|\\) and \\(\\operatorname{Arg}(z)\\)?',
-                    hint: 'Plot the point \\((-1,1)\\) and use \\(\\tan\\theta = b/a\\) carefully, noting which quadrant you are in.',
-                    solution: '\\(|z| = \\sqrt{(-1)^2 + 1^2} = \\sqrt{2}\\). The point is in the second quadrant (negative real, positive imaginary), so \\(\\operatorname{Arg}(z) = \\pi - \\arctan(1) = \\pi - \\pi/4 = 3\\pi/4\\). Thus \\(z = \\sqrt{2}(\\cos(3\\pi/4) + i\\sin(3\\pi/4))\\).'
-                },
-                {
-                    question: 'Use polar form to compute \\((1+i)^8\\).',
-                    hint: 'First convert \\(1+i\\) to polar form, then raise modulus to the 8th power and multiply the argument by 8.',
-                    solution: '\\(1+i = \\sqrt{2}\\,e^{i\\pi/4}\\). Then \\((1+i)^8 = (\\sqrt{2})^8 e^{i\\cdot 8\\cdot\\pi/4} = 16 e^{2\\pi i} = 16 \\cdot 1 = 16\\).'
+                    question: 'Express \\(z = -1 + i\\) in polar form. What is \\(\\operatorname{Arg}(z)\\)?',
+                    hint: 'Compute \\(|z|\\) and identify the quadrant to find the angle.',
+                    solution: '\\(|z| = \\sqrt{1+1} = \\sqrt{2}\\). The point \\((-1,1)\\) is in the second quadrant, so \\(\\theta = \\pi - \\pi/4 = 3\\pi/4\\). Thus \\(z = \\sqrt{2}\\,(\\cos(3\\pi/4) + i\\sin(3\\pi/4))\\) and \\(\\operatorname{Arg}(z) = 3\\pi/4\\).'
                 }
             ]
         },
@@ -412,68 +399,94 @@ r_1(\\cos\\theta_1+i\\sin\\theta_1) \\cdot r_2(\\cos\\theta_2+i\\sin\\theta_2) =
 <h2>The Exponential Form</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">The Most Beautiful Formula in Mathematics</div>
+    <div class="env-title">Euler's Most Beautiful Formula</div>
     <div class="env-body">
-        <p>Euler's formula \\(e^{i\\theta} = \\cos\\theta + i\\sin\\theta\\) unifies exponentials and trigonometry. At \\(\\theta = \\pi\\) it gives \\(e^{i\\pi} + 1 = 0\\), linking \\(e\\), \\(i\\), \\(\\pi\\), \\(0\\), and \\(1\\) in a single equation. But more practically: it turns the cumbersome rules for multiplying sines and cosines into a single, elegant rule for multiplying exponentials.</p>
+        <p>Leonhard Euler (1748) discovered one of the most remarkable identities in all of mathematics: \\(e^{i\\theta} = \\cos\\theta + i\\sin\\theta\\). This links the exponential function (from calculus) to trigonometry (from geometry) through the imaginary unit (from algebra). Three seemingly unrelated branches of mathematics fused into a single formula.</p>
     </div>
 </div>
 
-<h3>Euler's Formula</h3>
-
-<div class="env-block theorem">
-    <div class="env-title">Theorem 0.2 (Euler's Formula)</div>
+<div class="env-block definition">
+    <div class="env-title">Definition (Euler's Formula)</div>
     <div class="env-body">
-        <p>For all \\(\\theta \\in \\mathbb{R}\\),</p>
+        <p>For any real \\(\\theta\\):</p>
         \\[e^{i\\theta} = \\cos\\theta + i\\sin\\theta.\\]
+        <p>Setting \\(\\theta = \\pi\\) yields <strong>Euler's identity</strong>: \\(e^{i\\pi} + 1 = 0\\).</p>
     </div>
 </div>
 
-<div class="env-block proof">
-    <div class="env-title">Derivation (via Power Series)</div>
-    <div class="env-body">
-        <p>Define \\(e^z = \\sum_{n=0}^\\infty z^n/n!\\) for complex \\(z\\). Substituting \\(z = i\\theta\\) and separating real and imaginary parts using \\(i^{2k} = (-1)^k\\):</p>
-        \\[e^{i\\theta} = \\sum_{k=0}^\\infty \\frac{(i\\theta)^n}{n!} = \\underbrace{\\sum_{k=0}^\\infty \\frac{(-1)^k \\theta^{2k}}{(2k)!}}_{\\cos\\theta} + i\\underbrace{\\sum_{k=0}^\\infty \\frac{(-1)^k \\theta^{2k+1}}{(2k+1)!}}_{\\sin\\theta}.\\]
-    </div>
-</div>
+<p>With Euler's formula, every complex number has an <strong>exponential form</strong>:</p>
+\\[z = re^{i\\theta}, \\quad r = |z|, \\; \\theta = \\arg(z).\\]
 
-<p>With Euler's formula, every complex number writes as \\(z = re^{i\\theta}\\), and multiplication becomes:</p>
-\\[r_1 e^{i\\theta_1} \\cdot r_2 e^{i\\theta_2} = r_1 r_2 \\, e^{i(\\theta_1+\\theta_2)}.\\]
+<p>Multiplication becomes trivially clear: \\(r_1 e^{i\\theta_1} \\cdot r_2 e^{i\\theta_2} = r_1 r_2 \\, e^{i(\\theta_1 + \\theta_2)}\\). Moduli multiply; arguments add.</p>
 
 <h3>De Moivre's Theorem</h3>
 
 <div class="env-block theorem">
-    <div class="env-title">Theorem 0.3 (De Moivre)</div>
+    <div class="env-title">Theorem 0.5 (De Moivre's Theorem)</div>
     <div class="env-body">
-        <p>For \\(n \\in \\mathbb{Z}\\) and \\(\\theta \\in \\mathbb{R}\\),</p>
+        <p>For any integer \\(n\\) and real \\(\\theta\\):</p>
         \\[(\\cos\\theta + i\\sin\\theta)^n = \\cos(n\\theta) + i\\sin(n\\theta).\\]
+        <p>Equivalently, \\((e^{i\\theta})^n = e^{in\\theta}\\).</p>
     </div>
 </div>
 
-<p>This is immediate from Euler's formula: \\((e^{i\\theta})^n = e^{in\\theta}\\). It is a powerful tool for deriving trigonometric identities.</p>
+<div class="env-block proof">
+    <div class="env-title">Proof</div>
+    <div class="env-body">
+        <p>For positive \\(n\\), this is immediate from the multiplication rule for polar forms (induction on \\(n\\)). For \\(n = 0\\), both sides equal 1. For negative \\(n\\), use \\((e^{i\\theta})^{-1} = e^{-i\\theta}\\).</p>
+    </div>
+    <div class="qed">&marker;</div>
+</div>
 
 <h3>Roots of Unity</h3>
 
-<p>The equation \\(z^n = 1\\) has exactly \\(n\\) solutions in \\(\\mathbb{C}\\):</p>
-\\[
-z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\quad k = 0, 1, \\ldots, n-1.
-\\]
+<p>De Moivre's theorem lets us find all \\(n\\)th roots of any complex number. The \\(n\\)th roots of <strong>unity</strong> (roots of \\(z^n = 1\\)) are especially important.</p>
 
-<p>These are the <strong>\\(n\\)th roots of unity</strong>. They lie on the unit circle, equally spaced at angles \\(2\\pi/n\\) apart, forming a regular \\(n\\)-gon.</p>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 0.6 (Roots of Unity)</div>
+    <div class="env-body">
+        <p>The \\(n\\)th roots of unity are</p>
+        \\[\\omega_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\quad k = 0, 1, \\ldots, n-1.\\]
+        <p>They form the vertices of a regular \\(n\\)-gon inscribed in the unit circle. If \\(\\omega = e^{2\\pi i/n}\\) is a <strong>primitive</strong> \\(n\\)th root of unity, then the roots are \\(1, \\omega, \\omega^2, \\ldots, \\omega^{n-1}\\).</p>
+    </div>
+</div>
+
+<div class="env-block corollary">
+    <div class="env-title">Corollary (Sum of Roots of Unity)</div>
+    <div class="env-body">
+        <p>\\(\\displaystyle\\sum_{k=0}^{n-1} \\omega^k = 0\\) for \\(n \\geq 2\\). Geometrically, the vertices of a regular polygon centered at the origin balance out.</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example: Cube Roots of \\(8i\\)</div>
+    <div class="env-body">
+        <p>Write \\(8i = 8e^{i\\pi/2}\\). The cube roots are \\(z_k = 2 e^{i(\\pi/6 + 2\\pi k/3)}\\) for \\(k = 0, 1, 2\\):</p>
+        <ul>
+            <li>\\(z_0 = 2e^{i\\pi/6} = \\sqrt{3} + i\\)</li>
+            <li>\\(z_1 = 2e^{i5\\pi/6} = -\\sqrt{3} + i\\)</li>
+            <li>\\(z_2 = 2e^{i3\\pi/2} = -2i\\)</li>
+        </ul>
+    </div>
+</div>
 
 <div class="viz-placeholder" data-viz="viz-euler-formula"></div>
 <div class="viz-placeholder" data-viz="viz-roots-of-unity"></div>
+<div class="viz-placeholder" data-viz="viz-de-moivre"></div>
 `,
             visualizations: [
                 {
                     id: 'viz-euler-formula',
-                    title: "Euler's Formula: e^{i\u03b8} on the Unit Circle",
-                    description: 'Drag the \u03b8 slider. The point e^{i\u03b8} traces the unit circle. The real part (cos \u03b8) and imaginary part (sin \u03b8) are shown as projections.',
+                    title: 'Euler\'s Formula: e^{i\u03B8} Traces the Unit Circle',
+                    description: 'As \u03B8 varies, e^{i\u03B8} traces the unit circle. The real part is cos\u03B8 and the imaginary part is sin\u03B8. Slide \u03B8 to see the connection.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 80 });
-                        var theta = 0.8;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 80
+                        });
 
-                        VizEngine.createSlider(controls, '\u03b8 (rad)', -Math.PI, Math.PI, theta, 0.01, function(v) {
-                            theta = v; draw();
+                        var theta = 0.8;
+                        VizEngine.createSlider(controls, '\u03B8', -3.14, 3.14, theta, 0.01, function(v) {
+                            theta = v;
                         });
 
                         function draw() {
@@ -482,170 +495,275 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
                             viz.drawAxes();
 
                             var ctx = viz.ctx;
-                            var cx = Math.cos(theta), cy = Math.sin(theta);
 
                             // Unit circle
-                            viz.drawCircle(0, 0, 1, null, viz.colors.axis + 'aa', 1.5);
+                            viz.drawCircle(0, 0, 1, null, viz.colors.text + '44', 1);
 
-                            // Filled arc
-                            ctx.fillStyle = viz.colors.yellow + '22';
+                            // The point e^{i*theta}
+                            var x = Math.cos(theta), y = Math.sin(theta);
+
+                            // Draw cos and sin projections
+                            viz.drawSegment(x, 0, x, y, viz.colors.orange, 2, true);
+                            viz.drawSegment(0, 0, x, 0, viz.colors.teal, 2);
+                            viz.drawPoint(x, 0, viz.colors.teal, null, 3);
+
+                            // Angle arc
+                            var [ox, oy] = viz.toScreen(0, 0);
+                            var arcR = 25;
+                            ctx.strokeStyle = viz.colors.yellow;
+                            ctx.lineWidth = 2;
                             ctx.beginPath();
-                            ctx.moveTo(viz.originX, viz.originY);
-                            ctx.arc(viz.originX, viz.originY, viz.scale, -theta, 0, theta < 0);
-                            ctx.closePath(); ctx.fill();
+                            if (theta >= 0) {
+                                ctx.arc(ox, oy, arcR, 0, -theta, true);
+                            } else {
+                                ctx.arc(ox, oy, arcR, 0, -theta, false);
+                            }
+                            ctx.stroke();
 
-                            // cos/sin dashed lines
-                            ctx.setLineDash([4,3]);
-                            ctx.strokeStyle = viz.colors.teal + 'aa'; ctx.lineWidth = 1.5;
-                            var [sx, sy] = viz.toScreen(cx, cy);
-                            var [sx0, sy0] = viz.toScreen(cx, 0);
-                            var [sx1, sy1] = viz.toScreen(0, cy);
-                            ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx0, sy0); ctx.stroke();
-                            ctx.beginPath(); ctx.moveTo(sx, sy); ctx.lineTo(sx1, sy1); ctx.stroke();
-                            ctx.setLineDash([]);
+                            // Radius vector
+                            viz.drawVector(0, 0, x, y, viz.colors.blue);
+                            viz.drawPoint(x, y, viz.colors.blue, null, 5);
 
-                            // Projections on axes
-                            ctx.strokeStyle = viz.colors.teal; ctx.lineWidth = 3;
-                            var [ox,oy] = viz.toScreen(0,0);
-                            ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(sx0,sy0); ctx.stroke();
-                            ctx.strokeStyle = viz.colors.orange; ctx.lineWidth = 3;
-                            ctx.beginPath(); ctx.moveTo(ox,oy); ctx.lineTo(sx1,sy1); ctx.stroke();
+                            // Trace the full path up to theta
+                            ctx.strokeStyle = viz.colors.purple + '88';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            var steps = Math.abs(Math.round(theta * 40));
+                            for (var i = 0; i <= steps; i++) {
+                                var t = theta * i / steps;
+                                var [sx, sy] = viz.toScreen(Math.cos(t), Math.sin(t));
+                                if (i === 0) ctx.moveTo(sx, sy);
+                                else ctx.lineTo(sx, sy);
+                            }
+                            ctx.stroke();
 
                             // Labels
-                            viz.screenText('cos\u03b8', (ox + sx0)/2, sy0 + 16, viz.colors.teal, 12);
-                            viz.screenText('sin\u03b8', sx1 - 36, (oy + sy1)/2, viz.colors.orange, 12);
+                            viz.drawText('cos\u03B8', x / 2, -0.2, viz.colors.teal, 12);
+                            viz.drawText('sin\u03B8', x + 0.25, y / 2, viz.colors.orange, 12);
+                            viz.drawText('e^{i\u03B8}', x + 0.15, y + 0.18, viz.colors.blue, 13);
 
-                            viz.drawVector(0, 0, cx, cy, viz.colors.blue, 'e^{i\u03b8}', 2.5);
-                            viz.drawDraggables();
-
-                            // Angle label
-                            var midA = theta/2;
-                            var lx = viz.originX + 50 * Math.cos(midA);
-                            var ly = viz.originY - 50 * Math.sin(midA);
-                            viz.screenText('\u03b8', lx, ly, viz.colors.yellow, 13);
-
-                            viz.screenText(
-                                '\u03b8 = ' + theta.toFixed(3) + ' rad = ' + (theta*180/Math.PI).toFixed(1) + '\u00b0' +
-                                '   cos\u03b8 = ' + cx.toFixed(3) + '   sin\u03b8 = ' + cy.toFixed(3),
-                                viz.width/2, viz.height - 18, viz.colors.white, 11
-                            );
+                            // Info
+                            viz.screenText('\u03B8 = ' + theta.toFixed(2) + ' rad', viz.width / 2, 16, viz.colors.yellow, 13);
+                            viz.screenText('e^{i\u03B8} = ' + x.toFixed(3) + ' + ' + y.toFixed(3) + 'i', viz.width / 2, 36, viz.colors.blue, 12);
+                            viz.screenText('cos\u03B8 = ' + x.toFixed(3) + '     sin\u03B8 = ' + y.toFixed(3), viz.width / 2, viz.height - 12, viz.colors.text, 11);
                         }
-                        draw();
+
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 },
                 {
                     id: 'viz-roots-of-unity',
-                    title: 'nth Roots of Unity',
-                    description: 'Adjust n to see the nth roots of unity. They lie evenly spaced on the unit circle, forming a regular n-gon.',
+                    title: 'Roots of Unity',
+                    description: 'The nth roots of unity form a regular n-gon on the unit circle. Slide n to see the pattern. Notice: their sum is always 0 (the centroid is the origin).',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 85 });
-                        var n = 6;
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 100
+                        });
 
+                        var n = 5;
                         VizEngine.createSlider(controls, 'n', 2, 12, n, 1, function(v) {
-                            n = Math.round(v); draw();
+                            n = Math.round(v);
                         });
 
                         function draw() {
                             viz.clear();
                             viz.drawGrid();
                             viz.drawAxes();
-                            viz.drawCircle(0, 0, 1, null, viz.colors.axis + '88', 1.5);
 
                             var ctx = viz.ctx;
-                            var pts = [];
+
+                            // Unit circle
+                            viz.drawCircle(0, 0, 1, null, viz.colors.text + '44', 1);
+
+                            // Draw polygon
+                            var points = [];
                             for (var k = 0; k < n; k++) {
-                                var ang = 2 * Math.PI * k / n;
-                                pts.push([Math.cos(ang), Math.sin(ang)]);
+                                var angle = 2 * Math.PI * k / n;
+                                points.push([Math.cos(angle), Math.sin(angle)]);
                             }
 
-                            // Polygon
-                            ctx.strokeStyle = viz.colors.purple + '88'; ctx.lineWidth = 1.5;
-                            ctx.beginPath();
-                            var [sx0,sy0] = viz.toScreen(pts[0][0], pts[0][1]);
-                            ctx.moveTo(sx0,sy0);
-                            for (var j = 1; j < n; j++) {
-                                var [sxj, syj] = viz.toScreen(pts[j][0], pts[j][1]);
-                                ctx.lineTo(sxj, syj);
-                            }
-                            ctx.closePath(); ctx.stroke();
-                            ctx.fillStyle = viz.colors.purple + '18'; ctx.fill();
-
-                            // Points and labels
+                            // Draw polygon edges
                             for (var k = 0; k < n; k++) {
-                                var ang = 2 * Math.PI * k / n;
-                                var px = Math.cos(ang), py = Math.sin(ang);
-                                viz.drawPoint(px, py, viz.colors.yellow, null, 5);
-                                var lx = viz.originX + (viz.scale + 20) * Math.cos(ang);
-                                var ly = viz.originY - (viz.scale + 20) * Math.sin(ang);
-                                ctx.fillStyle = viz.colors.text; ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
-                                ctx.fillText('k=' + k, lx, ly);
+                                var next = (k + 1) % n;
+                                viz.drawSegment(points[k][0], points[k][1], points[next][0], points[next][1], viz.colors.purple + '88', 1.5);
                             }
 
-                            viz.screenText(
-                                'z^' + n + ' = 1   \u2192  ' + n + ' roots:  z_k = e^{2\u03c0ik/' + n + '}, k = 0,...,' + (n-1),
-                                viz.width/2, viz.height - 18, viz.colors.white, 11
-                            );
+                            // Draw radii and points
+                            var rootColors = [viz.colors.blue, viz.colors.teal, viz.colors.orange, viz.colors.green, viz.colors.purple, viz.colors.red, viz.colors.yellow, viz.colors.pink, viz.colors.blue, viz.colors.teal, viz.colors.orange, viz.colors.green];
+                            for (var k = 0; k < n; k++) {
+                                var x = points[k][0], y = points[k][1];
+                                var col = rootColors[k % rootColors.length];
+                                viz.drawSegment(0, 0, x, y, col + '55', 1, true);
+                                viz.drawPoint(x, y, col, '\u03C9' + (k > 0 ? '\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079'.charAt(k) || k : '\u2070'), 5);
+                            }
+
+                            // Title
+                            viz.screenText(n + 'th roots of unity: z' + '\u207F'.replace('\u207F', '') + ' = 1', viz.width / 2, 16, viz.colors.white, 14);
+
+                            // Show sum = 0
+                            var sumX = 0, sumY = 0;
+                            for (var k = 0; k < n; k++) { sumX += points[k][0]; sumY += points[k][1]; }
+                            viz.screenText('\u03A3 \u03C9\u1D4F = ' + sumX.toFixed(6) + ' + ' + sumY.toFixed(6) + 'i \u2248 0', viz.width / 2, viz.height - 12, viz.colors.teal, 11);
                         }
-                        draw();
+
+                        viz.animate(function() { draw(); });
+                        return viz;
+                    }
+                },
+                {
+                    id: 'viz-de-moivre',
+                    title: 'De Moivre\'s Theorem',
+                    description: 'See how raising (cos\u03B8 + i sin\u03B8) to the nth power multiplies the angle by n. Adjust n and \u03B8 to explore.',
+                    setup: function(body, controls) {
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 80
+                        });
+
+                        var nVal = 3;
+                        var theta = 0.5;
+
+                        VizEngine.createSlider(controls, 'n', 1, 8, nVal, 1, function(v) { nVal = Math.round(v); });
+                        VizEngine.createSlider(controls, '\u03B8', 0, 6.28, theta, 0.01, function(v) { theta = v; });
+
+                        function draw() {
+                            viz.clear();
+                            viz.drawGrid();
+                            viz.drawAxes();
+
+                            var ctx = viz.ctx;
+
+                            // Unit circle
+                            viz.drawCircle(0, 0, 1, null, viz.colors.text + '33', 1);
+
+                            // Original point
+                            var x1 = Math.cos(theta), y1 = Math.sin(theta);
+                            viz.drawVector(0, 0, x1, y1, viz.colors.blue, 'z');
+
+                            // Draw all intermediate powers
+                            for (var k = 2; k <= nVal; k++) {
+                                var xk = Math.cos(k * theta), yk = Math.sin(k * theta);
+                                var alpha = 0.3 + 0.7 * (k / nVal);
+                                var col = k === nVal ? viz.colors.orange : viz.colors.teal;
+                                viz.drawSegment(0, 0, xk, yk, col + Math.round(alpha * 99).toString(16).padStart(2, '0'), 1.5, k < nVal);
+                                viz.drawPoint(xk, yk, col, 'z' + '\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078'.charAt(k-1), 4);
+                            }
+
+                            // Angle arcs
+                            var [ox, oy] = viz.toScreen(0, 0);
+                            // Original angle
+                            ctx.strokeStyle = viz.colors.blue + '88';
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.arc(ox, oy, 20, 0, -theta, theta > 0);
+                            ctx.stroke();
+
+                            // Result angle
+                            var nTheta = nVal * theta;
+                            ctx.strokeStyle = viz.colors.orange + '88';
+                            ctx.lineWidth = 2;
+                            ctx.beginPath();
+                            ctx.arc(ox, oy, 30, 0, -nTheta, nTheta > 0);
+                            ctx.stroke();
+
+                            // Info
+                            viz.screenText('z = e^{i\u00B7' + theta.toFixed(2) + '}', 120, 16, viz.colors.blue, 13);
+                            viz.screenText('z' + '\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078'.charAt(nVal-1) + ' = e^{i\u00B7' + (nVal * theta).toFixed(2) + '}', 400, 16, viz.colors.orange, 13);
+                            viz.screenText('\u03B8 = ' + theta.toFixed(2) + ' rad     n\u03B8 = ' + (nVal * theta).toFixed(2) + ' rad', viz.width / 2, viz.height - 12, viz.colors.text, 11);
+                        }
+
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Use de Moivre\'s theorem to derive the double-angle formulas: \\(\\cos(2\\theta) = \\cos^2\\theta - \\sin^2\\theta\\) and \\(\\sin(2\\theta) = 2\\sin\\theta\\cos\\theta\\).',
-                    hint: 'Expand \\((\\cos\\theta + i\\sin\\theta)^2\\) directly and compare real and imaginary parts with \\(\\cos(2\\theta) + i\\sin(2\\theta)\\).',
-                    solution: '\\((\\cos\\theta+i\\sin\\theta)^2 = \\cos^2\\theta + 2i\\cos\\theta\\sin\\theta + i^2\\sin^2\\theta = (\\cos^2\\theta - \\sin^2\\theta) + i(2\\sin\\theta\\cos\\theta)\\). By de Moivre, this equals \\(\\cos(2\\theta) + i\\sin(2\\theta)\\). Equating real and imaginary parts gives the formulas. \\(\\square\\)'
+                    question: 'Use De Moivre\'s theorem to derive formulas for \\(\\cos(3\\theta)\\) and \\(\\sin(3\\theta)\\) in terms of \\(\\cos\\theta\\) and \\(\\sin\\theta\\).',
+                    hint: 'Expand \\((\\cos\\theta + i\\sin\\theta)^3\\) using the binomial theorem, then match real and imaginary parts.',
+                    solution: '\\((c + is)^3 = c^3 + 3c^2(is) + 3c(is)^2 + (is)^3 = (c^3 - 3cs^2) + i(3c^2s - s^3)\\) where \\(c = \\cos\\theta, s = \\sin\\theta\\). By De Moivre, this equals \\(\\cos(3\\theta) + i\\sin(3\\theta)\\). So \\(\\cos(3\\theta) = \\cos^3\\theta - 3\\cos\\theta\\sin^2\\theta = 4\\cos^3\\theta - 3\\cos\\theta\\) and \\(\\sin(3\\theta) = 3\\cos^2\\theta\\sin\\theta - \\sin^3\\theta = 3\\sin\\theta - 4\\sin^3\\theta\\).'
                 },
                 {
-                    question: 'Find all cube roots of \\(-8\\).',
-                    hint: 'Write \\(-8 = 8e^{i\\pi}\\) and find three values of \\(z = 2e^{i(\\pi + 2\\pi k)/3}\\) for \\(k=0,1,2\\).',
-                    solution: 'We need \\(z^3 = -8 = 8e^{i\\pi}\\). So \\(z = 2e^{i(\\pi/3 + 2\\pi k/3)}\\) for \\(k=0,1,2\\). The three roots are: \\(k=0\\): \\(2e^{i\\pi/3} = 1+i\\sqrt{3}\\); \\(k=1\\): \\(2e^{i\\pi} = -2\\); \\(k=2\\): \\(2e^{i5\\pi/3} = 1-i\\sqrt{3}\\).'
+                    question: 'Find all five 5th roots of \\(-1\\).',
+                    hint: 'Write \\(-1 = e^{i\\pi}\\) and find \\(z^5 = e^{i\\pi}\\).',
+                    solution: 'The 5th roots are \\(z_k = e^{i(\\pi + 2\\pi k)/5}\\) for \\(k = 0,1,2,3,4\\), i.e., \\(e^{i\\pi/5}, e^{i3\\pi/5}, e^{i\\pi} = -1, e^{i7\\pi/5}, e^{i9\\pi/5}\\). These are 5 equally spaced points on the unit circle, rotated by \\(\\pi/5\\) from the standard 5th roots of unity.'
                 },
                 {
-                    question: 'Verify Euler\'s formula at \\(\\theta = \\pi/2\\) and \\(\\theta = \\pi\\).',
-                    hint: 'Substitute into \\(e^{i\\theta} = \\cos\\theta + i\\sin\\theta\\) and evaluate.',
-                    solution: 'At \\(\\theta=\\pi/2\\): \\(e^{i\\pi/2} = \\cos(\\pi/2)+i\\sin(\\pi/2) = 0 + i\\cdot 1 = i\\). Check: \\(i^2=-1=e^{i\\pi}\\). At \\(\\theta=\\pi\\): \\(e^{i\\pi} = \\cos\\pi + i\\sin\\pi = -1 + 0 = -1\\), giving the famous identity \\(e^{i\\pi}+1=0\\).'
+                    question: 'Show that \\(\\sum_{k=0}^{n-1} \\cos(2\\pi k/n) = 0\\) and \\(\\sum_{k=0}^{n-1} \\sin(2\\pi k/n) = 0\\) for \\(n \\geq 2\\).',
+                    hint: 'These are the real and imaginary parts of \\(\\sum_{k=0}^{n-1} e^{2\\pi i k/n}\\). Use the geometric series formula.',
+                    solution: 'Let \\(\\omega = e^{2\\pi i/n}\\). Then \\(\\sum_{k=0}^{n-1} \\omega^k = \\frac{\\omega^n - 1}{\\omega - 1} = \\frac{1-1}{\\omega-1} = 0\\) since \\(\\omega \\neq 1\\) for \\(n \\geq 2\\). Taking real and imaginary parts gives both sums equal to zero.'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 5: Topology of the Complex Plane
+        // SECTION 5: Topology of C
         // ================================================================
         {
             id: 'sec-topology',
-            title: 'Topology of the Complex Plane',
+            title: 'Topology of \u2102',
             content: `
-<h2>Topology of the Complex Plane</h2>
+<h2>Topology of \\(\\mathbb{C}\\)</h2>
 
 <div class="env-block intuition">
     <div class="env-title">Why Topology?</div>
     <div class="env-body">
-        <p>Complex analysis is profoundly sensitive to the shape of the domain. A function that is analytic on a disk behaves very differently from one analytic on an annulus. Contour integration depends on whether a closed curve can be contracted to a point. Before studying functions, we must understand what kinds of regions they live on. Topology gives us the vocabulary: open, closed, connected, simply connected.</p>
-    </div>
-</div>
-
-<h3>Open Disks and Neighborhoods</h3>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 0.5 (Open Disk)</div>
-    <div class="env-body">
-        <p>The <strong>open disk</strong> of radius \\(r > 0\\) centered at \\(z_0\\) is</p>
-        \\[D(z_0, r) = \\{z \\in \\mathbb{C} : |z - z_0| < r\\}.\\]
-        <p>It is also called the <strong>\\(r\\)-neighborhood</strong> of \\(z_0\\).</p>
+        <p>Complex analysis is not just algebra; it is profoundly geometric. The theorems of the subject (Cauchy's theorem, the residue theorem, analytic continuation) depend on the <em>shape</em> of the domains on which functions are defined. We need a precise language for "nearness," "openness," and "connectivity" in the plane.</p>
     </div>
 </div>
 
 <h3>Open and Closed Sets</h3>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.6 (Open and Closed Sets)</div>
+    <div class="env-title">Definition (Open Disk)</div>
     <div class="env-body">
-        <p>A set \\(U \\subseteq \\mathbb{C}\\) is <strong>open</strong> if for every \\(z \\in U\\) there exists \\(r > 0\\) such that \\(D(z, r) \\subseteq U\\). Every point of an open set has an entire neighborhood contained in the set.</p>
-        <p>A set \\(F\\) is <strong>closed</strong> if its complement \\(\\mathbb{C} \\setminus F\\) is open, equivalently, if \\(F\\) contains all its limit points.</p>
+        <p>The <strong>open disk</strong> of radius \\(r > 0\\) centered at \\(z_0\\) is</p>
+        \\[D(z_0, r) = \\{z \\in \\mathbb{C} : |z - z_0| < r\\}.\\]
+        <p>The <strong>closed disk</strong> is \\(\\overline{D}(z_0, r) = \\{z : |z - z_0| \\leq r\\}\\), and the <strong>circle</strong> is \\(C(z_0, r) = \\{z : |z - z_0| = r\\}\\).</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Open Set)</div>
+    <div class="env-body">
+        <p>A set \\(U \\subseteq \\mathbb{C}\\) is <strong>open</strong> if for every \\(z \\in U\\), there exists \\(\\varepsilon > 0\\) such that \\(D(z, \\varepsilon) \\subseteq U\\). Equivalently, every point of \\(U\\) is an interior point.</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Closed Set, Boundary)</div>
+    <div class="env-body">
+        <p>A set \\(F \\subseteq \\mathbb{C}\\) is <strong>closed</strong> if its complement \\(\\mathbb{C} \\setminus F\\) is open. The <strong>boundary</strong> \\(\\partial U\\) of a set \\(U\\) is the set of points \\(z\\) such that every disk \\(D(z, \\varepsilon)\\) intersects both \\(U\\) and \\(\\mathbb{C} \\setminus U\\).</p>
+    </div>
+</div>
+
+<div class="env-block example">
+    <div class="env-title">Example</div>
+    <div class="env-body">
+        <p>The open disk \\(D(0, 1)\\) is open (as the name suggests). Its boundary is the unit circle \\(\\{|z| = 1\\}\\). The closed disk \\(\\overline{D}(0, 1)\\) is closed. The set \\(\\mathbb{C} \\setminus \\{0\\}\\) (the "punctured plane") is open.</p>
+    </div>
+</div>
+
+<h3>Connected and Simply Connected Sets</h3>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Connected)</div>
+    <div class="env-body">
+        <p>An open set \\(U\\) is <strong>connected</strong> if it cannot be written as the union of two disjoint nonempty open sets. Equivalently, any two points in \\(U\\) can be joined by a polygonal path lying entirely in \\(U\\).</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Simply Connected)</div>
+    <div class="env-body">
+        <p>A connected open set \\(U\\) is <strong>simply connected</strong> if every closed curve in \\(U\\) can be continuously shrunk to a point within \\(U\\). Informally, \\(U\\) has "no holes."</p>
+    </div>
+</div>
+
+<div class="env-block definition">
+    <div class="env-title">Definition (Domain)</div>
+    <div class="env-body">
+        <p>A <strong>domain</strong> (or <strong>region</strong>) in \\(\\mathbb{C}\\) is a nonempty, connected, open set. Most theorems in complex analysis are stated for functions defined on domains.</p>
     </div>
 </div>
 
@@ -653,39 +771,20 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
     <div class="env-title">Examples</div>
     <div class="env-body">
         <ul>
-            <li>\\(D(z_0, r)\\) (open disk) is open.</li>
-            <li>\\(\\bar{D}(z_0, r) = \\{z : |z-z_0| \\leq r\\}\\) (closed disk) is closed.</li>
-            <li>The upper half-plane \\(\\{z : \\operatorname{Im}(z) > 0\\}\\) is open.</li>
-            <li>\\(\\mathbb{C}\\) itself and \\(\\emptyset\\) are both open and closed ("clopen").</li>
+            <li>The open disk \\(D(0,1)\\) is simply connected.</li>
+            <li>The annulus \\(\\{z : 1 < |z| < 2\\}\\) is connected but <strong>not</strong> simply connected (a loop around the origin cannot be shrunk to a point).</li>
+            <li>\\(\\mathbb{C} \\setminus \\{0\\}\\) is connected but not simply connected.</li>
+            <li>\\(\\mathbb{C} \\setminus (-\\infty, 0]\\) (the plane with the negative real axis removed) is simply connected.</li>
         </ul>
     </div>
 </div>
 
-<h3>Boundary, Interior, Closure</h3>
-
-<p>The <strong>interior</strong> of a set \\(S\\) is the largest open set contained in \\(S\\). The <strong>closure</strong> \\(\\overline{S}\\) is the smallest closed set containing \\(S\\) (equivalently, \\(S\\) together with all its limit points). The <strong>boundary</strong> \\(\\partial S = \\overline{S} \\setminus \\operatorname{int}(S)\\).</p>
-
-<h3>Connected and Simply Connected Sets</h3>
+<h3>Compact Sets</h3>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.7 (Connected and Simply Connected)</div>
+    <div class="env-title">Definition (Bounded, Compact)</div>
     <div class="env-body">
-        <p>An open set \\(U\\) is <strong>connected</strong> if it cannot be written as the disjoint union of two nonempty open sets. Equivalently, any two points in \\(U\\) can be joined by a polygonal path lying entirely in \\(U\\).</p>
-        <p>A connected open set \\(U\\) is <strong>simply connected</strong> if every closed curve in \\(U\\) can be continuously deformed (within \\(U\\)) to a point. Informally: \\(U\\) has no holes.</p>
-    </div>
-</div>
-
-<div class="env-block remark">
-    <div class="env-title">Why Simple Connectivity Matters</div>
-    <div class="env-body">
-        <p>Cauchy's theorem (Chapter 4) will state that for an analytic function \\(f\\), \\(\\oint_\\gamma f(z)\\,dz = 0\\) for every closed curve \\(\\gamma\\) in a simply connected domain. This fails on an annulus (which has a hole): the integral of \\(1/z\\) around the unit circle is \\(2\\pi i \\ne 0\\). The topology of the domain controls the integration theory.</p>
-    </div>
-</div>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 0.8 (Domain)</div>
-    <div class="env-body">
-        <p>A <strong>domain</strong> in complex analysis is a nonempty, connected, open subset of \\(\\mathbb{C}\\). Most functions we study will be defined on domains.</p>
+        <p>A set \\(S \\subseteq \\mathbb{C}\\) is <strong>bounded</strong> if \\(S \\subseteq D(0, R)\\) for some \\(R > 0\\). A set is <strong>compact</strong> if it is both closed and bounded. By the Heine-Borel theorem, a subset of \\(\\mathbb{C}\\) is compact if and only if every open cover has a finite subcover.</p>
     </div>
 </div>
 
@@ -694,27 +793,23 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
             visualizations: [
                 {
                     id: 'viz-topology-demo',
-                    title: 'Topology Demo: Open Disks and Connectedness',
-                    description: 'Click to place open disks (neighborhoods). Toggle mode to see connected vs. disconnected regions. Use Clear to reset.',
+                    title: 'Topology of the Complex Plane',
+                    description: 'Explore open disks, annuli, and connectivity. Toggle between examples to see open sets, closed sets, boundaries, and the difference between simply connected and non-simply connected domains.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 420, scale: 50 });
-                        var disks = [];
-                        var showConnected = false;
-
-                        VizEngine.createButton(controls, 'Toggle Connected', function() {
-                            showConnected = !showConnected; draw();
-                        });
-                        VizEngine.createButton(controls, 'Clear', function() {
-                            disks = []; draw();
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 420, scale: 70
                         });
 
-                        viz.canvas.addEventListener('click', function(e) {
-                            var r = viz.canvas.getBoundingClientRect();
-                            var cx = e.clientX - r.left, cy = e.clientY - r.top;
-                            var [mx, my] = viz.toMath(cx, cy);
-                            disks.push({ x: mx, y: my, r: 0.7 });
-                            draw();
-                        });
+                        var example = 0;
+                        var examples = ['Open disk', 'Closed disk', 'Annulus', 'Punctured plane', 'Slit plane'];
+
+                        VizEngine.createButton(controls, 'Open disk', function() { example = 0; });
+                        VizEngine.createButton(controls, 'Closed disk', function() { example = 1; });
+                        VizEngine.createButton(controls, 'Annulus', function() { example = 2; });
+                        VizEngine.createButton(controls, 'Punctured plane', function() { example = 3; });
+                        VizEngine.createButton(controls, 'Slit plane', function() { example = 4; });
+
+                        var zd = viz.addDraggable('probe', 0.5, 0.5, viz.colors.yellow, 6);
 
                         function draw() {
                             viz.clear();
@@ -722,66 +817,141 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
                             viz.drawAxes();
                             var ctx = viz.ctx;
 
-                            for (var k = 0; k < disks.length; k++) {
-                                var d = disks[k];
-                                // Dashed boundary circle
-                                ctx.strokeStyle = viz.colors.blue + 'cc';
-                                ctx.lineWidth = 1.5; ctx.setLineDash([5,3]);
-                                ctx.beginPath();
-                                var [scx,scy] = viz.toScreen(d.x, d.y);
-                                ctx.arc(scx, scy, d.r * viz.scale, 0, Math.PI*2);
-                                ctx.stroke(); ctx.setLineDash([]);
+                            var zx = zd.x, zy = zd.y;
+                            var dist = Math.sqrt(zx * zx + zy * zy);
+                            var inside = false;
+                            var label = '';
+                            var props = '';
 
+                            if (example === 0) {
+                                // Open disk D(0, 2)
+                                viz.drawCircle(0, 0, 2, viz.colors.blue + '22', viz.colors.blue, 2);
+                                // Boundary is dashed
+                                ctx.setLineDash([6, 4]);
+                                var [ox, oy] = viz.toScreen(0, 0);
+                                ctx.strokeStyle = viz.colors.blue;
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 2 * viz.scale, 0, Math.PI * 2);
+                                ctx.stroke();
+                                ctx.setLineDash([]);
+                                // Re-fill interior
                                 ctx.fillStyle = viz.colors.blue + '22';
                                 ctx.beginPath();
-                                ctx.arc(scx, scy, d.r * viz.scale, 0, Math.PI*2);
+                                ctx.arc(ox, oy, 2 * viz.scale, 0, Math.PI * 2);
                                 ctx.fill();
-
-                                // Center point (open = no filled center)
-                                ctx.strokeStyle = viz.colors.blue; ctx.lineWidth = 2;
+                                inside = dist < 2;
+                                label = 'D(0, 2) = {z : |z| < 2}';
+                                props = 'Open, connected, simply connected, bounded';
+                            } else if (example === 1) {
+                                // Closed disk
+                                viz.drawCircle(0, 0, 2, viz.colors.teal + '22', viz.colors.teal, 2);
+                                inside = dist <= 2;
+                                label = 'D\u0305(0, 2) = {z : |z| \u2264 2}';
+                                props = 'Closed, connected, simply connected, compact';
+                            } else if (example === 2) {
+                                // Annulus
+                                var [ox, oy] = viz.toScreen(0, 0);
+                                // Outer boundary
+                                ctx.strokeStyle = viz.colors.purple;
+                                ctx.lineWidth = 2;
                                 ctx.beginPath();
-                                ctx.arc(scx, scy, 4, 0, Math.PI*2);
+                                ctx.arc(ox, oy, 2 * viz.scale, 0, Math.PI * 2);
                                 ctx.stroke();
-
-                                ctx.fillStyle = viz.colors.text; ctx.font = '10px -apple-system,sans-serif';
-                                ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-                                ctx.fillText('D(' + d.x.toFixed(1) + '+' + d.y.toFixed(1) + 'i, 0.7)', scx, scy - 8);
+                                // Inner boundary
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 1 * viz.scale, 0, Math.PI * 2);
+                                ctx.stroke();
+                                // Fill annulus region
+                                ctx.fillStyle = viz.colors.purple + '22';
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 2 * viz.scale, 0, Math.PI * 2);
+                                ctx.arc(ox, oy, 1 * viz.scale, 0, Math.PI * 2, true);
+                                ctx.fill();
+                                inside = dist > 1 && dist < 2;
+                                label = '{z : 1 < |z| < 2}';
+                                props = 'Open, connected, NOT simply connected';
+                            } else if (example === 3) {
+                                // Punctured plane: C \ {0}
+                                ctx.fillStyle = viz.colors.green + '11';
+                                ctx.fillRect(0, 0, viz.width, viz.height);
+                                // Mark the puncture
+                                var [ox, oy] = viz.toScreen(0, 0);
+                                ctx.fillStyle = viz.colors.bg;
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 4, 0, Math.PI * 2);
+                                ctx.fill();
+                                ctx.strokeStyle = viz.colors.red;
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 5, 0, Math.PI * 2);
+                                ctx.stroke();
+                                inside = dist > 0.001;
+                                label = '\u2102 \\ {0}';
+                                props = 'Open, connected, NOT simply connected, unbounded';
+                            } else if (example === 4) {
+                                // Slit plane: C \ (-inf, 0]
+                                ctx.fillStyle = viz.colors.orange + '11';
+                                ctx.fillRect(0, 0, viz.width, viz.height);
+                                // Draw the slit (negative real axis)
+                                var [ox, oy] = viz.toScreen(0, 0);
+                                ctx.strokeStyle = viz.colors.red;
+                                ctx.lineWidth = 3;
+                                ctx.beginPath();
+                                ctx.moveTo(0, oy);
+                                ctx.lineTo(ox, oy);
+                                ctx.stroke();
+                                // Mark origin as removed
+                                ctx.fillStyle = viz.colors.bg;
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 4, 0, Math.PI * 2);
+                                ctx.fill();
+                                ctx.strokeStyle = viz.colors.red;
+                                ctx.lineWidth = 2;
+                                ctx.beginPath();
+                                ctx.arc(ox, oy, 5, 0, Math.PI * 2);
+                                ctx.stroke();
+                                inside = !(zx <= 0 && Math.abs(zy) < 0.001);
+                                label = '\u2102 \\ (\u2212\u221E, 0]';
+                                props = 'Open, connected, simply connected, unbounded';
                             }
 
-                            if (showConnected && disks.length > 1) {
-                                // Check pairwise overlap and draw connecting lines
-                                for (var a = 0; a < disks.length; a++) {
-                                    for (var b = a+1; b < disks.length; b++) {
-                                        var da = disks[a], db = disks[b];
-                                        var dist = Math.sqrt((da.x-db.x)**2 + (da.y-db.y)**2);
-                                        if (dist < da.r + db.r) {
-                                            var [sax,say] = viz.toScreen(da.x,da.y);
-                                            var [sbx,sby] = viz.toScreen(db.x,db.y);
-                                            ctx.strokeStyle = viz.colors.green; ctx.lineWidth = 2;
-                                            ctx.beginPath(); ctx.moveTo(sax,say); ctx.lineTo(sbx,sby); ctx.stroke();
-                                        }
-                                    }
-                                }
-                                viz.screenText('Green lines = overlapping disks (connected region)', viz.width/2, viz.height-18, viz.colors.green, 11);
-                            } else {
-                                viz.screenText('Click to place open disks. Toggle to check connectivity.', viz.width/2, viz.height-18, viz.colors.text, 11);
+                            // Probe point
+                            viz.drawPoint(zx, zy, inside ? viz.colors.green : viz.colors.red, null, 6);
+
+                            // If inside, show an epsilon disk around probe
+                            if (inside && example <= 2) {
+                                var eps;
+                                if (example === 0) eps = Math.max(0.05, 2 - dist);
+                                else if (example === 1) eps = Math.max(0.05, 2 - dist);
+                                else eps = Math.max(0.05, Math.min(dist - 1, 2 - dist));
+                                eps = Math.min(eps, 0.5);
+                                viz.drawCircle(zx, zy, eps, viz.colors.yellow + '22', viz.colors.yellow + '66', 1);
+                                viz.drawText('\u03B5', zx + eps + 0.08, zy + 0.08, viz.colors.yellow, 10);
                             }
+
+                            viz.drawDraggables();
+
+                            // Labels
+                            viz.screenText(label, viz.width / 2, 16, viz.colors.white, 14);
+                            viz.screenText(props, viz.width / 2, 36, viz.colors.teal, 11);
+
+                            var statusText = inside ? 'Probe is INSIDE the set' : 'Probe is OUTSIDE the set';
+                            var statusColor = inside ? viz.colors.green : viz.colors.red;
+                            viz.screenText(statusText, viz.width / 2, viz.height - 30, statusColor, 12);
+                            viz.screenText('|z| = ' + dist.toFixed(3), viz.width / 2, viz.height - 12, viz.colors.text, 11);
                         }
-                        draw();
+
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'Is the set \\(\\{z \\in \\mathbb{C} : 1 < |z| < 2\\}\\) (an open annulus) open? Connected? Simply connected?',
-                    hint: 'For any point in the annulus, can you find a small open disk contained in the annulus? Can every closed curve be contracted to a point?',
-                    solution: 'Open: yes, for any point \\(z\\) with \\(1 < |z| < 2\\), take \\(r = \\min(|z|-1, 2-|z|)/2 > 0\\); then \\(D(z,r)\\) lies in the annulus. Connected: yes, any two points can be joined by a path staying between the two circles. Simply connected: no. The curve \\(\\gamma(t) = 1.5 e^{it}\\) (a circle of radius 1.5) cannot be contracted to a point while staying in the annulus, because the origin (a hole) is excluded.'
-                },
-                {
-                    question: 'Describe the boundary and closure of \\(D(0,1) = \\{z : |z| < 1\\}\\).',
-                    hint: 'A point is a limit point of \\(D(0,1)\\) if every neighborhood of it intersects \\(D(0,1)\\).',
-                    solution: 'The closure is \\(\\bar{D}(0,1) = \\{z : |z| \\leq 1\\}\\) (the closed unit disk). The boundary is \\(\\partial D(0,1) = \\{z : |z| = 1\\}\\) (the unit circle). Every point on the unit circle is a limit point of the open disk, since any neighborhood of such a point contains points both inside and outside the disk.'
+                    question: 'Prove that the union of any collection of open sets is open, and the intersection of finitely many open sets is open.',
+                    hint: 'For the union: if \\(z\\) is in the union, it is in at least one open set. For the intersection: take the minimum of the finitely many \\(\\varepsilon\\) values.',
+                    solution: 'Union: If \\(z \\in \\bigcup_\\alpha U_\\alpha\\), then \\(z \\in U_\\beta\\) for some \\(\\beta\\), so \\(D(z,\\varepsilon) \\subseteq U_\\beta \\subseteq \\bigcup_\\alpha U_\\alpha\\) for some \\(\\varepsilon > 0\\). Intersection: If \\(z \\in \\bigcap_{j=1}^n U_j\\), then for each \\(j\\) there exists \\(\\varepsilon_j > 0\\) with \\(D(z,\\varepsilon_j) \\subseteq U_j\\). Set \\(\\varepsilon = \\min(\\varepsilon_1,\\ldots,\\varepsilon_n) > 0\\); then \\(D(z,\\varepsilon) \\subseteq \\bigcap_j U_j\\).'
                 }
             ]
         },
@@ -796,51 +966,47 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
 <h2>The Riemann Sphere</h2>
 
 <div class="env-block intuition">
-    <div class="env-title">Compactifying the Plane</div>
+    <div class="env-title">Taming Infinity</div>
     <div class="env-body">
-        <p>The complex plane has a defect: it has no "point at infinity." Sequences like \\(z_n = n\\) diverge, but they go "off the edge" of the plane in a perfectly definite direction. It would be geometrically cleaner to wrap the plane up into a sphere and declare that all sequences diverging to infinity converge to a single point, the <em>north pole</em>. This is the Riemann sphere, and it makes the extended complex plane into a compact space with no boundary.</p>
+        <p>In real analysis, \\(\\pm\\infty\\) are informal shorthands. In complex analysis, we can do something remarkable: add a single "point at infinity" \\(\\infty\\) to \\(\\mathbb{C}\\) and give the resulting set \\(\\hat{\\mathbb{C}} = \\mathbb{C} \\cup \\{\\infty\\}\\) a natural geometric structure. The key is <strong>stereographic projection</strong>, which identifies \\(\\hat{\\mathbb{C}}\\) with the unit sphere.</p>
     </div>
 </div>
 
 <h3>Stereographic Projection</h3>
 
-<p>Take the unit sphere \\(S^2 = \\{(X,Y,Z) \\in \\mathbb{R}^3 : X^2+Y^2+Z^2 = 1\\}\\). Place the complex plane as the equatorial plane \\(Z = 0\\), identifying \\(z = x+iy\\) with \\((x,y,0)\\). The <strong>north pole</strong> is \\(N = (0,0,1)\\).</p>
+<div class="env-block definition">
+    <div class="env-title">Definition (Stereographic Projection)</div>
+    <div class="env-body">
+        <p>Consider the unit sphere \\(S^2 = \\{(X, Y, Z) \\in \\mathbb{R}^3 : X^2 + Y^2 + Z^2 = 1\\}\\) and identify \\(\\mathbb{C}\\) with the plane \\(Z = 0\\) via \\(z = X + iY\\). The <strong>stereographic projection</strong> from the "north pole" \\(N = (0,0,1)\\) maps each point \\(P = (X,Y,Z) \\in S^2 \\setminus \\{N\\}\\) to the point \\(z \\in \\mathbb{C}\\) where the line \\(NP\\) intersects the plane \\(Z = 0\\):</p>
+        \\[z = \\frac{X + iY}{1 - Z}.\\]
+        <p>The inverse mapping is:</p>
+        \\[(X, Y, Z) = \\left(\\frac{2\\operatorname{Re}(z)}{|z|^2+1}, \\frac{2\\operatorname{Im}(z)}{|z|^2+1}, \\frac{|z|^2-1}{|z|^2+1}\\right).\\]
+    </div>
+</div>
+
+<p>Under this identification, the north pole corresponds to \\(\\infty\\). Points near \\(N\\) correspond to points with large \\(|z|\\), while points near the south pole correspond to points near \\(z = 0\\).</p>
+
+<h3>The Extended Complex Plane</h3>
 
 <div class="env-block definition">
-    <div class="env-title">Definition 0.9 (Stereographic Projection)</div>
+    <div class="env-title">Definition (Extended Complex Plane)</div>
     <div class="env-body">
-        <p>For \\(z \\in \\mathbb{C}\\), the stereographic projection \\(\\phi: \\mathbb{C} \\to S^2 \\setminus \\{N\\}\\) maps \\(z = x+iy\\) to the unique point where the line through \\(N\\) and \\((x,y,0)\\) intersects the sphere:</p>
-        \\[
-        \\phi(z) = \\left(\\frac{2x}{|z|^2+1},\\ \\frac{2y}{|z|^2+1},\\ \\frac{|z|^2-1}{|z|^2+1}\\right).
-        \\]
-        <p>The inverse sends \\((X,Y,Z) \\mapsto \\frac{X+iY}{1-Z}\\) for \\(Z \\ne 1\\).</p>
+        <p>The <strong>extended complex plane</strong> (or <strong>Riemann sphere</strong>) is \\(\\hat{\\mathbb{C}} = \\mathbb{C} \\cup \\{\\infty\\}\\), equipped with the topology inherited from \\(S^2\\) via stereographic projection. A neighborhood of \\(\\infty\\) is any set containing \\(\\{z : |z| > R\\} \\cup \\{\\infty\\}\\) for some \\(R > 0\\).</p>
     </div>
 </div>
 
-<p>As \\(|z| \\to \\infty\\), \\(\\phi(z) \\to N = (0,0,1)\\). This motivates:</p>
-
-<div class="env-block definition">
-    <div class="env-title">Definition 0.10 (Extended Complex Plane)</div>
+<div class="env-block theorem">
+    <div class="env-title">Theorem 0.7 (Properties of Stereographic Projection)</div>
     <div class="env-body">
-        <p>The <strong>extended complex plane</strong> (or <strong>Riemann sphere</strong>) is \\(\\hat{\\mathbb{C}} = \\mathbb{C} \\cup \\{\\infty\\}\\), where \\(\\infty\\) corresponds to the north pole \\(N\\). It is homeomorphic to \\(S^2\\).</p>
+        <ol>
+            <li>Stereographic projection is a <strong>conformal</strong> (angle-preserving) map.</li>
+            <li>Circles and lines in \\(\\mathbb{C}\\) correspond to circles on \\(S^2\\). (Lines are "circles through \\(\\infty\\).")</li>
+            <li>The chordal metric \\(d(z, w) = \\frac{2|z-w|}{\\sqrt{1+|z|^2}\\sqrt{1+|w|^2}}\\) extends to \\(\\hat{\\mathbb{C}}\\) with \\(d(z, \\infty) = \\frac{2}{\\sqrt{1+|z|^2}}\\).</li>
+        </ol>
     </div>
 </div>
 
-<h3>Properties of the Riemann Sphere</h3>
-
-<ul>
-    <li><strong>Compact:</strong> \\(\\hat{\\mathbb{C}}\\) has no boundary and every sequence has a convergent subsequence.</li>
-    <li><strong>Circles go to circles:</strong> Stereographic projection sends circles and lines in \\(\\mathbb{C}\\) to circles on \\(S^2\\) (lines in \\(\\mathbb{C}\\) are circles through \\(\\infty\\)).</li>
-    <li><strong>Conformal:</strong> Stereographic projection preserves angles.</li>
-    <li><strong>Symmetry:</strong> The antipodal point to \\(z\\) on the sphere corresponds to \\(-1/\\bar{z}\\) in \\(\\hat{\\mathbb{C}}\\).</li>
-</ul>
-
-<div class="env-block remark">
-    <div class="env-title">Role in Complex Analysis</div>
-    <div class="env-body">
-        <p>The Riemann sphere is the natural domain for Mobius transformations (Chapter 2), which are bijections \\(\\hat{\\mathbb{C}} \\to \\hat{\\mathbb{C}}\\). It also clarifies the behavior of functions "at infinity": the function \\(f(z) = 1/z\\) extends continuously to \\(\\hat{\\mathbb{C}}\\) by setting \\(f(0) = \\infty\\) and \\(f(\\infty) = 0\\).</p>
-    </div>
-</div>
+<p>The Riemann sphere is the natural setting for meromorphic functions and Mobius transformations, which we will study in later chapters.</p>
 
 <div class="viz-placeholder" data-viz="viz-stereographic"></div>
 `,
@@ -848,241 +1014,176 @@ z_k = e^{2\\pi i k/n} = \\cos\\frac{2\\pi k}{n} + i\\sin\\frac{2\\pi k}{n}, \\qu
                 {
                     id: 'viz-stereographic',
                     title: 'Stereographic Projection',
-                    description: 'Drag the point z on the complex plane (bottom). Its image on the Riemann sphere (wireframe) is shown. Points far from the origin map near the north pole.',
+                    description: 'Drag a point on the complex plane and see where it maps to on the Riemann sphere. The north pole corresponds to infinity. Points far from the origin cluster near the top of the sphere.',
                     setup: function(body, controls) {
-                        var viz = new VizEngine(body, { width: 560, height: 440, scale: 1 });
-                        var zx = 1.2, zy = 0.8;
-
-                        var dz = viz.addDraggable('z', zx, zy, viz.colors.blue, 8, function(x,y) {
-                            zx = x; zy = y; draw();
+                        var viz = new VizEngine(body, {
+                            width: 560, height: 460, scale: 50,
+                            originX: 280, originY: 340
                         });
 
-                        // We'll do a 2D side-view approximation:
-                        // Sphere center at screen (280, 180), radius 100px
-                        // Plane at y=360 (screen), center at (280, 360), scale 60px/unit
-                        var SC = { x: 280, y: 170, r: 100 };
-                        var PL = { y: 370, cx: 280, scale: 55 };
-
-                        // Override draggable bounds to plane region
-                        viz.draggables = [];
-                        var planeDrag = { id:'z', x: zx, y: 0, screenX: PL.cx + zx*PL.scale, screenY: PL.y, color: viz.colors.blue, radius: 9, onDrag: null };
-
-                        viz.canvas.addEventListener('mousedown', function(e) {
-                            var r = viz.canvas.getBoundingClientRect();
-                            var px = e.clientX - r.left, py = e.clientY - r.top;
-                            if (Math.abs(py - PL.y) < 20) {
-                                viz._planeDragging = true;
-                                zx = (px - PL.cx) / PL.scale;
-                                draw();
-                            }
-                        });
-                        viz.canvas.addEventListener('mousemove', function(e) {
-                            if (!viz._planeDragging) return;
-                            var r = viz.canvas.getBoundingClientRect();
-                            var px = e.clientX - r.left;
-                            zx = (px - PL.cx) / PL.scale;
-                            draw();
-                        });
-                        viz.canvas.addEventListener('mouseup', function() { viz._planeDragging = false; });
-                        viz.canvas.addEventListener('mouseleave', function() { viz._planeDragging = false; });
+                        var zd = viz.addDraggable('z', 1.5, 1.0, viz.colors.blue);
 
                         function draw() {
+                            viz.clear();
                             var ctx = viz.ctx;
-                            ctx.fillStyle = viz.colors.bg;
-                            ctx.fillRect(0,0,viz.width,viz.height);
 
-                            // Draw sphere wireframe (circle)
-                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1.5;
-                            ctx.beginPath(); ctx.arc(SC.x, SC.y, SC.r, 0, Math.PI*2); ctx.stroke();
+                            // Draw the plane (horizontal line at bottom)
+                            var planeY = 340;
+                            var sphereCenterX = 280, sphereCenterY = 170;
+                            var sphereR = 120;
 
-                            // Equator (dashed)
-                            ctx.strokeStyle = viz.colors.grid; ctx.lineWidth = 1; ctx.setLineDash([4,3]);
-                            ctx.beginPath(); ctx.ellipse(SC.x, SC.y, SC.r, SC.r*0.25, 0, 0, Math.PI*2); ctx.stroke();
-                            ctx.setLineDash([]);
+                            // Draw the sphere (circle, side view)
+                            ctx.strokeStyle = viz.colors.text + '66';
+                            ctx.lineWidth = 1.5;
+                            ctx.beginPath();
+                            ctx.arc(sphereCenterX, sphereCenterY, sphereR, 0, Math.PI * 2);
+                            ctx.stroke();
 
-                            // North pole
-                            var Nx = SC.x, Ny = SC.y - SC.r;
+                            // Draw equator (ellipse)
+                            ctx.strokeStyle = viz.colors.text + '33';
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.ellipse(sphereCenterX, sphereCenterY, sphereR, sphereR * 0.25, 0, 0, Math.PI * 2);
+                            ctx.stroke();
+
+                            // South and North pole
+                            var southPoleY = sphereCenterY + sphereR;
+                            var northPoleY = sphereCenterY - sphereR;
+
                             ctx.fillStyle = viz.colors.red;
-                            ctx.beginPath(); ctx.arc(Nx, Ny, 5, 0, Math.PI*2); ctx.fill();
-                            ctx.fillStyle = viz.colors.text; ctx.font = '12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-                            ctx.fillText('N = \u221e', Nx, Ny - 6);
+                            ctx.beginPath();
+                            ctx.arc(sphereCenterX, northPoleY, 5, 0, Math.PI * 2);
+                            ctx.fill();
+                            viz.screenText('N = \u221E', sphereCenterX + 15, northPoleY - 5, viz.colors.red, 11, 'left');
 
-                            // Complex plane line
-                            ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 2;
-                            ctx.beginPath(); ctx.moveTo(0, PL.y); ctx.lineTo(viz.width, PL.y); ctx.stroke();
+                            ctx.fillStyle = viz.colors.teal;
+                            ctx.beginPath();
+                            ctx.arc(sphereCenterX, southPoleY, 4, 0, Math.PI * 2);
+                            ctx.fill();
+                            viz.screenText('S = 0', sphereCenterX + 12, southPoleY + 2, viz.colors.teal, 11, 'left');
 
-                            // Tick marks on plane
-                            ctx.fillStyle = viz.colors.text; ctx.font = '10px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+                            // Draw the complex plane line
+                            ctx.strokeStyle = viz.colors.axis;
+                            ctx.lineWidth = 1;
+                            ctx.beginPath();
+                            ctx.moveTo(30, planeY);
+                            ctx.lineTo(530, planeY);
+                            ctx.stroke();
+
+                            // Axis ticks
+                            ctx.fillStyle = viz.colors.text;
+                            ctx.font = '10px -apple-system,sans-serif';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'top';
                             for (var t = -4; t <= 4; t++) {
-                                var tx = PL.cx + t * PL.scale;
-                                ctx.strokeStyle = viz.colors.axis; ctx.lineWidth = 1;
-                                ctx.beginPath(); ctx.moveTo(tx, PL.y-4); ctx.lineTo(tx, PL.y+4); ctx.stroke();
-                                if (t !== 0) ctx.fillText(t, tx, PL.y + 6);
+                                var tx = sphereCenterX + t * viz.scale;
+                                ctx.beginPath(); ctx.moveTo(tx, planeY - 3); ctx.lineTo(tx, planeY + 3); ctx.stroke();
+                                if (t !== 0) ctx.fillText(t, tx, planeY + 5);
                             }
-                            ctx.fillText('Re(z)', viz.width - 25, PL.y + 6);
 
-                            // Plane label
-                            ctx.fillStyle = viz.colors.text; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            ctx.fillText('\u2102  (complex plane)', 8, PL.y - 12);
+                            // Map z to sphere point
+                            var zx = zd.x, zy = zd.y;
+                            var rr = zx * zx + zy * zy;
+                            // Stereographic: (X, Y, Z) = (2Re/(|z|^2+1), 2Im/(|z|^2+1), (|z|^2-1)/(|z|^2+1))
+                            var SX = 2 * zx / (rr + 1);
+                            var SY = 2 * zy / (rr + 1);
+                            var SZ = (rr - 1) / (rr + 1);
 
-                            // z on plane
-                            var zpx = PL.cx + zx * PL.scale, zpy = PL.y;
-                            ctx.fillStyle = viz.colors.blue;
-                            ctx.beginPath(); ctx.arc(zpx, zpy, 8, 0, Math.PI*2); ctx.fill();
-                            ctx.fillStyle = viz.colors.blue; ctx.font = 'bold 12px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'bottom';
-                            ctx.fillText('z = ' + zx.toFixed(2), zpx, zpy - 10);
+                            // Side view of sphere: we project (SX, SY, SZ) onto a 2D view.
+                            // Use a simple view: x-axis horizontal, z-axis vertical
+                            // The "horizontal" component on screen is SX (real direction)
+                            // We also tilt slightly to show depth via SY
+                            var viewX = sphereCenterX + SX * sphereR + SY * sphereR * 0.15;
+                            var viewY = sphereCenterY - SZ * sphereR;
 
-                            // Stereographic map (side view, Im=0 for simplicity)
-                            // phi(x) = (2x/(x^2+1), 0, (x^2-1)/(x^2+1))
-                            var rr2 = zx*zx;
-                            var sX = 2*zx/(rr2+1);
-                            var sZ = (rr2-1)/(rr2+1);
-                            // Map sphere coords to screen
-                            var spx = SC.x + sX * SC.r;
-                            var spy = SC.y - sZ * SC.r;
-
-                            // Line from N through z to sphere
-                            ctx.strokeStyle = viz.colors.yellow + 'aa'; ctx.lineWidth = 1.5; ctx.setLineDash([5,3]);
-                            ctx.beginPath(); ctx.moveTo(Nx, Ny); ctx.lineTo(zpx, zpy); ctx.stroke();
+                            // Draw the projection line from N through sphere point to plane
+                            var planeScreenX = sphereCenterX + zx * viz.scale;
+                            ctx.strokeStyle = viz.colors.yellow + '66';
+                            ctx.lineWidth = 1;
+                            ctx.setLineDash([4, 4]);
+                            ctx.beginPath();
+                            ctx.moveTo(sphereCenterX, northPoleY);
+                            ctx.lineTo(planeScreenX, planeY);
+                            ctx.stroke();
                             ctx.setLineDash([]);
 
-                            // Sphere point
-                            ctx.fillStyle = viz.colors.orange;
-                            ctx.beginPath(); ctx.arc(spx, spy, 6, 0, Math.PI*2); ctx.fill();
-                            ctx.fillStyle = viz.colors.orange; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'left'; ctx.textBaseline = 'middle';
-                            ctx.fillText('\u03c6(z)', spx + 9, spy);
+                            // Point on sphere
+                            ctx.fillStyle = viz.colors.purple;
+                            ctx.beginPath();
+                            ctx.arc(viewX, viewY, 6, 0, Math.PI * 2);
+                            ctx.fill();
+                            viz.screenText('P', viewX + 10, viewY - 5, viz.colors.purple, 11, 'left');
 
-                            ctx.fillStyle = viz.colors.white; ctx.font = '11px -apple-system,sans-serif';
-                            ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-                            ctx.fillText(
-                                '|z| = ' + Math.abs(zx).toFixed(2) + '   \u03c6(z) = (' + sX.toFixed(2) + ', 0, ' + sZ.toFixed(2) + ')   [Im(z)=0 shown]',
-                                viz.width/2, viz.height - 22
-                            );
+                            // Point on plane
+                            ctx.fillStyle = viz.colors.blue;
+                            ctx.beginPath();
+                            ctx.arc(planeScreenX, planeY, 6, 0, Math.PI * 2);
+                            ctx.fill();
+
+                            viz.drawDraggables();
+
+                            // Info
+                            var sign = zy >= 0 ? '+' : '\u2212';
+                            viz.screenText('z = ' + zx.toFixed(2) + ' ' + sign + ' ' + Math.abs(zy).toFixed(2) + 'i     |z| = ' + Math.sqrt(rr).toFixed(3), viz.width / 2, 16, viz.colors.blue, 13);
+                            viz.screenText('Sphere: (' + SX.toFixed(3) + ', ' + SY.toFixed(3) + ', ' + SZ.toFixed(3) + ')', viz.width / 2, 36, viz.colors.purple, 12);
+
+                            // Chordal distance to infinity
+                            var chordalInf = 2 / Math.sqrt(1 + rr);
+                            viz.screenText('d(z, \u221E) = ' + chordalInf.toFixed(3), viz.width / 2, viz.height - 12, viz.colors.text, 11);
                         }
-                        draw();
+
+                        viz.animate(function() { draw(); });
                         return viz;
                     }
                 }
             ],
             exercises: [
                 {
-                    question: 'What is the stereographic projection of \\(z = 0\\)? Of \\(z = i\\)? What happens as \\(|z| \\to \\infty\\)?',
-                    hint: 'Substitute directly into the formula \\(\\phi(z) = \\left(\\frac{2x}{|z|^2+1}, \\frac{2y}{|z|^2+1}, \\frac{|z|^2-1}{|z|^2+1}\\right)\\).',
-                    solution: '\\(z=0\\): \\(\\phi(0) = (0, 0, -1)\\), the south pole. \\(z=i\\) (so \\(x=0, y=1, |z|^2=1\\)): \\(\\phi(i) = (0, 1, 0)\\), a point on the equator. As \\(|z| \\to \\infty\\): all components approach \\((0, 0, 1)\\), the north pole \\(N\\). This confirms that \\(\\infty\\) maps to the north pole.'
+                    question: 'Verify that the stereographic projection formula \\(z = (X+iY)/(1-Z)\\) and its inverse are consistent: substitute the inverse into the forward formula and check you get \\(z\\) back.',
+                    hint: 'Substitute \\(X = 2\\operatorname{Re}(z)/(|z|^2+1)\\), etc., into \\((X+iY)/(1-Z)\\).',
+                    solution: 'Substituting: \\(X + iY = 2z/(|z|^2+1)\\) and \\(1 - Z = 1 - (|z|^2-1)/(|z|^2+1) = 2/(|z|^2+1)\\). So \\((X+iY)/(1-Z) = [2z/(|z|^2+1)] / [2/(|z|^2+1)] = z\\). \\(\\checkmark\\)'
                 },
                 {
-                    question: 'Show that the unit circle \\(|z| = 1\\) maps to the equator \\(Z = 0\\) under stereographic projection.',
-                    hint: 'For \\(|z|=1\\), what is \\(|z|^2\\)?',
-                    solution: 'If \\(|z|^2 = x^2+y^2 = 1\\), then the \\(Z\\)-coordinate of \\(\\phi(z)\\) is \\(\\frac{|z|^2-1}{|z|^2+1} = \\frac{1-1}{1+1} = 0\\). So every point on the unit circle maps to the equator \\(Z = 0\\). \\(\\square\\)'
+                    question: 'Under stereographic projection, where does the unit circle \\(|z| = 1\\) map to on the sphere?',
+                    hint: 'Compute \\(Z\\) when \\(|z| = 1\\).',
+                    solution: 'When \\(|z| = 1\\), \\(Z = (|z|^2-1)/(|z|^2+1) = 0\\). So the unit circle maps to the equator of the sphere, \\(\\{(X,Y,0) : X^2 + Y^2 = 1\\}\\).'
                 }
             ]
         },
 
         // ================================================================
-        // SECTION 7: Functions on the Plane (Bridge to Ch 1)
+        // SECTION 7: Bridge
         // ================================================================
         {
             id: 'sec-bridge',
-            title: 'Functions on the Plane',
+            title: 'Looking Ahead',
             content: `
-<h2>Functions on the Plane</h2>
+<h2>Looking Ahead</h2>
 
-<div class="env-block intuition">
-    <div class="env-title">Looking Ahead</div>
-    <div class="env-body">
-        <p>We now know what the complex plane is. The central question of complex analysis is: what does it mean for a function \\(f: \\mathbb{C} \\to \\mathbb{C}\\) to be differentiable? The answer, and its extraordinary consequences, will occupy the rest of this course. This section sets up the vocabulary and highlights how profoundly different complex differentiability is from real differentiability.</p>
-    </div>
-</div>
+<p>We have assembled the foundations. \\(\\mathbb{C}\\) is a field with a rich geometry: addition is translation, multiplication is rotation-with-scaling, and the complex plane carries a natural topology. The Riemann sphere \\(\\hat{\\mathbb{C}}\\) gives us a compact setting in which "infinity" is a point like any other.</p>
 
-<h3>Complex-Valued Functions</h3>
-
-<p>A function \\(f: U \\to \\mathbb{C}\\) on a domain \\(U \\subseteq \\mathbb{C}\\) can always be split into real and imaginary parts:</p>
-\\[
-f(z) = f(x+iy) = u(x,y) + iv(x,y),
-\\]
-<p>where \\(u, v: U \\to \\mathbb{R}\\) are real-valued functions of two real variables. This decomposition connects complex analysis to the theory of harmonic functions and partial differential equations.</p>
-
-<div class="env-block example">
-    <div class="env-title">Example: \\(f(z) = z^2\\)</div>
-    <div class="env-body">
-        <p>\\(f(z) = (x+iy)^2 = x^2-y^2 + 2xyi\\). So \\(u(x,y) = x^2-y^2\\) and \\(v(x,y) = 2xy\\).</p>
-    </div>
-</div>
-
-<h3>Limits and Continuity</h3>
-
-<p>Limits and continuity for complex functions are defined exactly as for real functions, using \\(|{\\cdot}|\\) as the metric on \\(\\mathbb{C}\\):</p>
-\\[
-\\lim_{z \\to z_0} f(z) = L \\iff \\forall \\varepsilon > 0\\ \\exists \\delta > 0 : 0 < |z - z_0| < \\delta \\Rightarrow |f(z) - L| < \\varepsilon.
-\\]
-
-<p>The crucial difference from real analysis: in \\(\\mathbb{C}\\), \\(z\\) can approach \\(z_0\\) from infinitely many directions, not just left or right. This makes complex limits harder to satisfy, and complex differentiability a much stronger condition.</p>
-
-<h3>What Is Complex Differentiability?</h3>
-
-<p>The derivative of \\(f\\) at \\(z_0\\) is defined by the same limit as in real calculus:</p>
-\\[
-f'(z_0) = \\lim_{h \\to 0} \\frac{f(z_0+h) - f(z_0)}{h}, \\quad h \\in \\mathbb{C}.
-\\]
-
-<p>But since \\(h\\) can approach \\(0\\) from any direction, this limit is far more stringent than the real derivative. A function that is complex-differentiable at every point of a domain is called <em>analytic</em> (or <em>holomorphic</em>). Analytic functions have remarkable properties that real-differentiable functions never need to satisfy:</p>
+<p>What comes next is the heart of the subject: <strong>holomorphic functions</strong>, the complex-differentiable functions on domains in \\(\\mathbb{C}\\). The remarkable fact, which has no analogue in real analysis, is that complex differentiability is an extremely strong condition. A single complex derivative implies:</p>
 
 <ul>
-    <li>Being once complex-differentiable implies being infinitely differentiable.</li>
-    <li>An analytic function has a convergent power series expansion at every point.</li>
-    <li>An analytic function is entirely determined by its values on any curve in its domain.</li>
+    <li>The function is infinitely differentiable (smooth).</li>
+    <li>The function is analytic (equals its Taylor series locally).</li>
+    <li>The function satisfies the Cauchy-Riemann equations, linking the real and imaginary parts.</li>
+    <li>The function is determined (up to constants) by its values on any curve.</li>
 </ul>
 
+<p>This rigidity makes complex analysis simultaneously more powerful and more surprising than real analysis. In the next chapter, we begin with limits and continuity in \\(\\mathbb{C}\\), building toward the definition of the complex derivative.</p>
+
 <div class="env-block remark">
-    <div class="env-title">The Cauchy-Riemann Equations (Preview)</div>
+    <div class="env-title">A Taste of What Is to Come</div>
     <div class="env-body">
-        <p>Writing \\(f = u+iv\\), complex differentiability at \\(z_0\\) is equivalent to \\(u\\) and \\(v\\) being real-differentiable and satisfying the <strong>Cauchy-Riemann equations</strong>:</p>
-        \\[\\frac{\\partial u}{\\partial x} = \\frac{\\partial v}{\\partial y}, \\qquad \\frac{\\partial u}{\\partial y} = -\\frac{\\partial v}{\\partial x}.\\]
-        <p>These two scalar equations encode the one complex equation \\(f'(z_0) \\text{ exists}\\). We will derive and explore this in Chapter 1.</p>
-    </div>
-</div>
-
-<h3>Domain Coloring: Visualizing Complex Functions</h3>
-
-<p>Visualizing \\(f: \\mathbb{C} \\to \\mathbb{C}\\) is nontrivial: it maps a 2D space to a 2D space, requiring 4 real dimensions to graph. <strong>Domain coloring</strong> solves this by coloring each input \\(z\\) by the argument (hue) and modulus (brightness) of \\(f(z)\\). Zeros of \\(f\\) appear as points where all colors converge; poles appear where the function blows up.</p>
-
-<div class="env-block theorem">
-    <div class="env-title">Fundamental Theorem of Algebra (Preview)</div>
-    <div class="env-body">
-        <p>Every non-constant polynomial \\(p(z) = a_n z^n + \\cdots + a_0\\) with \\(a_n \\ne 0\\) has exactly \\(n\\) roots in \\(\\mathbb{C}\\) (counted with multiplicity). This is why \\(\\mathbb{C}\\) is the "right" setting for polynomial equations: it is <em>algebraically closed</em>.</p>
-    </div>
-</div>
-
-<div class="env-block intuition">
-    <div class="env-title">What Comes Next</div>
-    <div class="env-body">
-        <p><strong>Chapter 1</strong> develops complex differentiability rigorously, derives the Cauchy-Riemann equations, and begins the theory of analytic functions. The definitions introduced in this chapter, open sets, domains, modulus, argument, will be used constantly from this point on.</p>
+        <p>Consider the function \\(f(z) = z^2\\). In Cartesian form, \\(f(x+iy) = (x^2 - y^2) + 2xyi\\). The real part \\(u = x^2 - y^2\\) and imaginary part \\(v = 2xy\\) satisfy</p>
+        \\[\\frac{\\partial u}{\\partial x} = \\frac{\\partial v}{\\partial y} = 2x, \\qquad \\frac{\\partial u}{\\partial y} = -\\frac{\\partial v}{\\partial x} = -2y.\\]
+        <p>These are the <strong>Cauchy-Riemann equations</strong>. Every complex-differentiable function satisfies them, and the consequences are profound.</p>
     </div>
 </div>
 `,
             visualizations: [],
-            exercises: [
-                {
-                    question: 'Write \\(f(z) = z^3\\) in the form \\(u(x,y) + iv(x,y)\\). What are \\(u\\) and \\(v\\)?',
-                    hint: 'Expand \\((x+iy)^3\\) using the binomial theorem.',
-                    solution: '\\((x+iy)^3 = x^3 + 3x^2(iy) + 3x(iy)^2 + (iy)^3 = x^3 + 3ix^2y - 3xy^2 - iy^3 = (x^3 - 3xy^2) + i(3x^2y - y^3)\\). So \\(u(x,y) = x^3 - 3xy^2\\) and \\(v(x,y) = 3x^2y - y^3\\).'
-                },
-                {
-                    question: 'Verify that the Cauchy-Riemann equations hold for \\(f(z) = z^2\\), i.e., for \\(u = x^2-y^2\\) and \\(v = 2xy\\).',
-                    hint: 'Compute \\(\\partial u/\\partial x\\), \\(\\partial v/\\partial y\\), \\(\\partial u/\\partial y\\), \\(\\partial v/\\partial x\\) and check the two equalities.',
-                    solution: '\\(\\partial u/\\partial x = 2x\\), \\(\\partial v/\\partial y = 2x\\). \\(\\checkmark\\) \\(\\partial u/\\partial y = -2y\\), \\(\\partial v/\\partial x = 2y\\), so \\(\\partial u/\\partial y = -\\partial v/\\partial x\\). \\(\\checkmark\\) Both Cauchy-Riemann equations are satisfied everywhere, confirming that \\(f(z) = z^2\\) is entire (analytic on all of \\(\\mathbb{C}\\)).'
-                },
-                {
-                    question: 'Does \\(f(z) = \\bar{z}\\) satisfy the Cauchy-Riemann equations? Is it complex-differentiable anywhere?',
-                    hint: 'Write \\(f(z) = x - iy\\), so \\(u = x\\), \\(v = -y\\). Check the Cauchy-Riemann equations.',
-                    solution: '\\(\\partial u/\\partial x = 1\\), \\(\\partial v/\\partial y = -1\\). The first CR equation requires \\(1 = -1\\), which fails everywhere. So \\(f(z) = \\bar{z}\\) is nowhere complex-differentiable, despite being a perfectly smooth real function. This illustrates how much stronger complex differentiability is than real differentiability.'
-                }
-            ]
+            exercises: []
         }
     ]
 });
